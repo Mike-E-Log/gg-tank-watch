@@ -1130,6 +1130,9 @@
       .skeleton { animation: none; background: var(--border); }
     }
 
+    /* Desktop-only container: hidden on mobile, shown at 1024px+ */
+    .desktop-body { display: none; }
+
     /* ===== DESKTOP HYBRID LAYOUT (1024px+) ===== */
     @media (min-width: 1024px) {
       html, body { overflow: hidden; height: 100vh; }
