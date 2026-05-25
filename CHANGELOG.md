@@ -1,6 +1,22 @@
 # Changelog
 
-All notable changes to the GG MMA Tank Dashboard. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
+All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
+
+## [v0.8] — 2026-05-25 (dashboard redesign — PR-B)
+
+### Changed
+- **Rebrand to "GG Tank Watch"** across the topbar, page titles, and terms page.
+- **Hero is now a neutral status line** — removed the "What should I do?" framing and the "STAY PUT"/"LEAVE NOW" directive (liability: we issue no directives and imply no safety, per LEGAL R1/R2). Shows a labeled "Incident severity: HIGH" and a clamped situation summary; per-address verdicts stay in the Check tab. Reclaims map real-estate.
+- **News is one unified reverse-chronological feed** — official statements, articles, and videos merged and tagged by type (Official / Article / Video), replacing the confusing statements-vs-Coverage split.
+- **Info tab reorganized** by resident need: Incident status (tank + evacuation) → Where to go (shelters) → Closures (schools) → collapsible Sources & methodology → collapsible About.
+- **Topbar toggles**: "VI"/"EN" → "Viet"/"Eng"; Light/Dark text → sun/moon icons.
+
+### Added
+- **UPDATE banner is dismissible** — clicking it marks the latest statement as seen (localStorage); it stays gone until a newer statement arrives.
+- **Geocode result caching** (localStorage, 7-day TTL) to satisfy the OSM Nominatim caching policy.
+
+### Notes
+- New user-facing strings are English-only with EN fallback under VI until Anna verifies (G1 gate). Final hero/severity wording remains attorney-review-gated per `docs/LEGAL.md`. The takeover modal's "LEAVE NOW" directive is flagged for a separate liability decision in `docs/REDESIGN_PUNCHLIST.md`. A pre-existing em-dash mojibake in `status.json` `boundary_text` (Info → Evacuation → Boundary) is a data-pipeline issue for the DATA_QUALITY lane, not this PR.
 
 ## [v0.7] — 2026-05-25 (trust/safety on-page — PR-A)
 
