@@ -2,6 +2,38 @@
 
 All notable changes to the GG MMA Tank Dashboard. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.6] — 2026-05-25 (post-portfolio iteration)
+
+### Added
+- **Evacuation shelters panel + map markers** (D-025). 9 hand-curated shelters geocoded via Nominatim: Garden Grove Sports & Rec, Cypress Community Center, Savanna HS (Anaheim), Mile Square Park (Fountain Valley), Los Amigos HS (Fountain Valley), Ocean View HS (Huntington Beach), Golden West College, JFK HS (La Palma), OC Fair & Event Center (Costa Mesa — RV evacuees only). Each rendered as a blue square marker on the map; panel below safety-checker shows name, city, address, RV-only chip, and a "Directions ↗" link that opens Google Maps with the destination pre-filled. Prominent CTA at top: "Live list at ggcity.org/emergency" since the city stays the source of truth.
+- **News videos panel** generalized to **"Major news updates"** — supports both YouTube videos (`youtube_id` auto-derives `https://img.youtube.com/vi/{id}/hqdefault.jpg` thumbnail) and news article entries (no play overlay, document-icon placeholder when no thumbnail). 11 entries curated covering ABC7 LA, NBC LA, KTLA, ABC News, News18. Selection criteria: recency, coverage depth, format mix.
+- **Client-side OG image fetcher** for article thumbnails (Microlink API, free tier, no key). Articles without a hardcoded `thumbnail_url` get their preview image fetched + cached in localStorage for 24 hours. Falls back gracefully to the typed placeholder if Microlink fails or rate-limits.
+- **Statement backfill** (D-023 follow-up). Full incident timeline now: OCFA initial alert (Thu 5/21), Covey "tank will fail" press conference (Fri 5/22), drone temp rise 77→90°F (Sat 5/23), OC DA tipline launch + X-Law class action lawsuit (Sat evening), OCFA recon crack discovery (Sun 5/24), Chinsio-Kwong toxicity briefing, McGovern positive-intel update, gauge-pegged-at-100°F note, Costa Mesa fairgrounds opens for RV shelter. 12 statements in sidebar.
+- **Two fixed reference pins on map**: Trask & Harbor + Magnolia & Ellis, color-coded by current safety verdict (auto-recolored on wind updates).
+- **Safety checker**: geocodes any OC address/intersection via Nominatim, computes verdict (CRITICAL / HIGH / ELEVATED / SAFE), drops pin on map. New `D-019` and `D-020` in design log.
+- **Statement card polish**: 14px bold date+time as the dominant line, agency on its own line, `Newest` red badge + red left-border on the most recent, `Recent` amber badge on statements <2 hours old, relative time `(N min ago)` on every card.
+- **Sticky right sidebar** for statements (collapses to bottom-of-page below 1000px viewport). URGENT/UPDATE banner is now clickable — scrolls sidebar list to top + flashes the newest statement.
+- **Light/dark theme toggle** in top-right, light is default, preference saved per-browser.
+
+### Changed
+- **Hero**: 72px clamp → `clamp(20px, 3.2vw, 32px)`. Severity chip merged into the hero (was a separate row).
+- **Evac polygon**: extended west to ~Knott Ave to include Stanton + W Cypress portions per news reports.
+- **Blast radii**: recalibrated from generic 0.25/0.5/1.0 mi → BLEVE-scaled 0.11/0.31/0.93 mi (matching OCFA labels: 20 PSI overpressure / Moderate damage / Lightweight injury). Methodology documented in `config.json.notes`.
+- **Facility coordinates**: corrected to 33.7858, -118.0050 (12122 Western Ave per news reports — was a guess at 33.7748, -117.9978).
+- **BREAKING banner classification**: split into URGENT (red, pulsing, beep, for act-now changes) and UPDATE (amber, no beep, for info-level like new statements). `breaking_level: urgent | info` field added to `status.json`. See D-016.
+- **Map fitBounds**: now includes `fixed_points` and `shelters` so the southern/northern markers stay in viewport on initial load.
+- **Geocoder bias**: Garden Grove → Orange County (with viewbox fallback) so generic intersections like "Magnolia & Talbert" find the OC location instead of out-of-state matches. D-020.
+- **Section headers** added between page regions (`MAP`, `CHECK AN ADDRESS`, `EVACUATION SHELTERS`, `MAJOR NEWS UPDATES`, `INCIDENT DETAILS`, `SOURCES`) for visual hierarchy.
+
+### Fixed
+- **Writer bug**: piping partial facts (e.g., `cat data/news_seed.json | python scripts/update_status.py` which only contains `videos`) silently downgraded severity to "low" because `derive_severity()` walked off the rules table on missing fields. Next real tick fired a false URGENT "Severity bumped: low → high". Fix: only re-derive severity when this tick provides one of the severity-relevant fields (`evacuation_residents`, `evacuation_lifted`, `incident_resolved_iso`, `injuries`, `tank_failed`, `explosion_confirmed`). Otherwise carry prev. New `test_partial_facts_dont_downgrade_severity` locks the fix in. Eval went from 23/23 → 24/24.
+- **fitBounds** missed `fixed_points` so Magnolia & Ellis (the southern green pin) was cut below the viewport.
+- **Hardcoded ABC7 article thumbnails** weren't loading (likely CDN hotlink restrictions) — removed; replaced by Microlink OG fetch.
+
+### Repo
+- Initial push to **github.com/AnnaThyme/gg-tank-dashboard** (private).
+- 8 commits on `main` before this PR. GH Actions workflow runs eval suite on every push.
+
 ## [v0.5] — 2026-05-24 (portfolio cut)
 
 ### Added

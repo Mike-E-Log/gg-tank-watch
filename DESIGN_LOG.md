@@ -45,6 +45,10 @@ Each decision has:
 | D-022 | 2026-05-24 | Safety checker placement: below map | Active | 8.0 |
 | D-023 | 2026-05-24 | Statement card design: bold meta + relative time | Active | 9.0 |
 | D-024 | 2026-05-24 | Portfolio framing: eval suite + design log | Active | TBD |
+| D-025 | 2026-05-25 | Evac shelters: aggregate + link (hybrid) | Active | 9.0 |
+| D-026 | 2026-05-25 | News panel: generalize to videos + articles, Microlink OG fetch | Active | 8.7 |
+| D-027 | 2026-05-25 | Writer fix: partial facts must not recompute severity | Active | 9.3 |
+| D-028 | 2026-05-25 | PR workflow: feature branches + GitHub PRs for non-trivial changes | Active | TBD |
 
 ---
 
@@ -362,6 +366,63 @@ Each decision has:
 - **Principles applied:** P1 completeness, P5 explicit.
 - **Rubric:** TBD (this decision is too new to retroactively score).
 - **Lesson:** TBD. Note for future-self: the highest-leverage element of "portfolio quality" is showing the *thinking* (design log + eval suite + lessons) — not just the artifact.
+
+## D-025: Evacuation shelters — aggregate + link (hybrid)
+
+- **Date:** 2026-05-25
+- **Status:** Active.
+- **Context:** User asked to include the evacuation shelter list from `ggcity.org/emergency`. Tradeoff: scrape and display vs. just link out.
+- **Decision:** Hybrid. Pull 9 known shelter locations into `config.json.map.shelters` (geocoded via Nominatim, each with name, city, address, lat/lon, optional notes like "RV evacuees only"). Pin each on the map with a blue square 🏠 marker. Render a panel below the safety-checker with cards: name + address + "Directions ↗" link (opens Google Maps with destination pre-filled). Prominent CTA banner at top: "🛏️ Live list at ggcity.org/emergency — the city is the source of truth; the list below is a snapshot."
+- **Alternatives:**
+  - **Just link out (rejected):** loses map context (visual relationship between home, evac zone, nearest shelter) and the one-click directions.
+  - **Live-scrape ggcity.org every tick (rejected):** city's HTML structure isn't documented; would break on the first redesign; also overkill for a list that changes a few times per week.
+  - **Hybrid with prominent source-of-truth disclaimer (chosen):** map context + directions + offline-tolerant + clear about authoritativeness.
+- **Principles applied:** P1 completeness, P5 explicit, P3 pragmatic.
+- **Rubric:** Correctness 9 · Maintainability 9 · User-fit 9.
+- **Lesson:** Aggregate-or-link is a false dichotomy on emergency tools. Aggregate for the workflow value (map context, directions); link prominently so users know where to verify. The CTA banner makes the relationship between snapshot + source explicit.
+
+## D-026: News panel — generalize to videos + articles, Microlink OG fetch
+
+- **Date:** 2026-05-25
+- **Status:** Active.
+- **Context:** User asked to add YouTube videos with thumbnails for major changes, then added news article URLs (ABC7 entries). Initial implementation forced everything through a video-shaped card with a play overlay — articles looked like broken videos.
+- **Decision:**
+  - Single `videos` field on `status.json` holds both types. `youtube_id` auto-derives `https://img.youtube.com/vi/{id}/hqdefault.jpg` thumbnail. `is_video: true` flag for non-YouTube videos. Otherwise treated as article.
+  - Conditional render: play-button overlay only when video; article footer tag `📰 article`, video tag `▶ video`. Typed placeholder background (play-icon vs document-icon) when no thumbnail.
+  - **Client-side Microlink fetch** (`api.microlink.io`, free tier, no API key) for article OG images. Cached 24 hours in `localStorage`. Failures cached in-memory to avoid retry storms.
+- **Alternatives:**
+  - **Separate `videos` and `news_articles` arrays (rejected):** schema bloat, two render paths.
+  - **Server-side OG fetch in the writer (rejected):** the writer is intentionally stdlib + offline. Adding HTTP calls would broaden the failure surface.
+  - **Hardcode thumbnails per article (rejected initially, then reverted to it for ABC7 entries, then dropped):** the abcotvs CDN appears to block hotlinking. Microlink proxies through their servers, sidestepping the issue.
+- **Principles applied:** P5 explicit, P3 pragmatic, P1 completeness.
+- **Rubric:** Correctness 9 · Maintainability 8 · User-fit 9.
+- **Lesson:** Where the deterministic-vs-fragile boundary sits matters (cf. D-003). Server-side scraping in Python = brittle. Client-side OG via a hosted service = fragile but the failure mode is graceful (placeholder) and the cache amortizes the cost. Use third-party services as the "fragile path" with deterministic fallbacks.
+
+## D-027: Writer fix — partial facts must not recompute severity
+
+- **Date:** 2026-05-25
+- **Status:** Active.
+- **Context:** Operational `cat data/news_seed.json | python scripts/update_status.py` (only `videos` in the facts) silently downgraded severity to "low" because `derive_severity()` saw `residents=0`, `lifted=None`, and walked off the bottom of the rules table. The next real tick went "low → high" and fired URGENT — a false positive caused entirely by the seeding workflow.
+- **Decision:** Severity is only re-derived when this tick provides one of `(evacuation_residents, evacuation_lifted, incident_resolved_iso, injuries, tank_failed, explosion_confirmed)`. Otherwise carry forward from prev snapshot. New `test_partial_facts_dont_downgrade_severity` in `eval/test_writer.py` reproduces the bug and locks the fix in.
+- **Alternatives:**
+  - **Require facts to always include severity-relevant fields (rejected):** breaks the partial-update use case (e.g., adding only videos).
+  - **Compute severity from prev + facts merged (rejected as overkill):** would work but increases coupling; the gate-on-fields approach is simpler and explicit.
+- **Principles applied:** P5 explicit, P4 DRY (don't compute when not asked).
+- **Rubric:** Correctness 10 · Maintainability 9 · User-fit 9.
+- **Lesson:** Derivation functions need to know what they're being asked to derive FROM. Passing them an empty/partial dict and getting back a default is a classic silent-failure bug. Gate on field presence; the writer should treat "missing input" as "keep prev," not "set to default."
+
+## D-028: PR workflow for non-trivial changes
+
+- **Date:** 2026-05-25
+- **Status:** Active.
+- **Context:** First 8 commits landed directly on `main` while iterating live during an active emergency. That was the right velocity for the build phase. Now that the repo is a portfolio piece, the workflow should look like a real engineering team's.
+- **Decision:** Going forward, non-trivial changes (>3 files, new dependency, schema change, doc updates spanning multiple files) land via feature branch + GitHub PR + merge. Trivial direct-to-main is still OK for one-line fixes during active incident response.
+- **Alternatives:**
+  - **Always PR (rejected):** during the build phase, the PR overhead per change was wrong — 30-sec edits being PR'd would have killed momentum and added noise.
+  - **Never PR (rejected):** this is a portfolio piece now; the PR-merge history is part of the artifact.
+- **Principles applied:** P3 pragmatic (right tool per phase), P5 explicit.
+- **Rubric:** TBD — too new to score retrospectively.
+- **Lesson:** Process maturity isn't a single switch. Build phase ≠ portfolio phase ≠ team phase. Pick the lightest workflow that meets the current phase's quality bar.
 
 ---
 
