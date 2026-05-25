@@ -728,14 +728,6 @@
       cursor: pointer;
       font-family: inherit;
     }
-    .safety-lvl-safe { background: var(--safe-bg); border-color: var(--safe-border); }
-    .safety-lvl-safe h4 { color: var(--safe); }
-    .safety-lvl-elevated { background: var(--moderate-bg); border-color: var(--moderate-border); }
-    .safety-lvl-elevated h4 { color: var(--moderate); }
-    .safety-lvl-high { background: var(--high-bg); border-color: var(--high-border); }
-    .safety-lvl-high h4 { color: var(--high); }
-    .safety-lvl-critical { background: var(--critical-bg); border-color: var(--critical-border); }
-    .safety-lvl-critical h4 { color: var(--critical); }
     .safety-lvl-unknown { background: var(--banner-stale-bg); border-color: var(--border); }
     .safety-lvl-unknown h4 { color: var(--text-sec); }
 
@@ -870,11 +862,7 @@
           <span id="wind-text-map">--</span>
         </div>
         <div class="map-legend-overlay" id="map-legend">
-          <div class="legend-row"><span class="legend-dot" style="background:#7f1d1d"></span><span data-i18n="legend.blast20psi">20 PSI blast</span></div>
-          <div class="legend-row"><span class="legend-dot" style="background:#dc2626"></span><span data-i18n="legend.moderate">Moderate damage</span></div>
-          <div class="legend-row"><span class="legend-dot" style="background:#ea580c"></span><span data-i18n="legend.light">Light injury</span></div>
           <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span><span data-i18n="legend.evac">Evac zone</span></div>
-          <div class="legend-row"><span class="legend-dot" style="background:#a855f7"></span><span data-i18n="legend.plume">Plume (wind)</span></div>
           <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span><span data-i18n="legend.shelter">Shelter</span></div>
         </div>
       </div>
@@ -948,9 +936,8 @@
               <div class="info-section-title" data-i18n="info.method.title">Methodology &amp; trust</div>
               <div class="methodology-body">
                 <p data-i18n-html="info.method.pipeline"><strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.</p>
-                <p data-i18n-html="info.method.wind"><strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Plume direction is estimated from wind bearing + cone model -- not atmospheric dispersion modeling.</p>
-                <p data-i18n-html="info.method.blast"><strong>Blast zones:</strong> Radii estimated from BLEVE overpressure scaling for ~7,000 gal MMA (~100 tonnes TNT-equivalent). Visual scale matches the OCFA/OC Register published map. Not authoritative for legal purposes.</p>
-                <p data-i18n-html="info.method.checker"><strong>Safety checker:</strong> Uses ray-casting (point-in-polygon) for evac zone, haversine distance for blast zones, bearing math for plume cone intersection. Geocoding via OpenStreetMap Nominatim.</p>
+                <p data-i18n-html="info.method.wind"><strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Shown as current local wind conditions.</p>
+                <p data-i18n-html="info.method.checker"><strong>Safety checker:</strong> Geocodes the entered address via OpenStreetMap Nominatim, then tests whether the point falls inside the area officials have described as evacuated (point-in-polygon). Defers to the official evacuation checker for authoritative orders.</p>
                 <p data-i18n-html="info.method.eval"><strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests (writer logic, schema validation, safety checker math, geocoder behavior) and LLM-as-judge rubrics for design and data quality. All design decisions are logged in <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> with rationale and rubric scores.</p>
                 <p data-i18n-html="info.method.disclaimer"><strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.</p>
               </div>
@@ -1075,15 +1062,10 @@ const STRINGS = {
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
   // Takeover
   // Map legend + tooltips
-  "legend.blast20psi": { en: "20 PSI blast", vi: "Vùng nổ 20 PSI" },
-  "legend.moderate": { en: "Moderate damage", vi: "Thiệt hại trung bình" },
-  "legend.light": { en: "Light injury", vi: "Thương tích nhẹ" },
   "legend.evac": { en: "Evac zone", vi: "Khu sơ tán" },
-  "legend.plume": { en: "Plume (wind)", vi: "Vệt khí (gió)" },
   "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn" },
   "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán" },
   "map.tooltip.you": { en: "You", vi: "Bạn" },
-  "map.tooltip.plume": { en: "Plume — wind {speed} mph from {dir}", vi: "Vệt khí — gió {speed} mph từ hướng {dir}" },
   // News
   "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức" },
   "news.coverage": { en: "Coverage", vi: "Báo chí đưa tin" },
@@ -1105,27 +1087,17 @@ const STRINGS = {
   "news.empty": { en: "No coverage yet.", vi: "Chưa có tin tức." },
   "news.media.video": { en: "▶ video", vi: "▶ video" },
   "news.media.article": { en: "📰 article", vi: "📰 bài báo" },
-  // Check panel (safety verdicts — highest stakes)
+  // Check panel (address router — routes to official checker)
   "check.label": { en: "Check an address — and pin it on the map", vi: "Kiểm tra địa chỉ hoặc giao lộ" },
   "check.placeholder": { en: "e.g. 12500 Western Ave, Garden Grove", vi: "ví dụ: 12500 Western Ave, Garden Grove" },
   "check.button": { en: "Check", vi: "Kiểm tra" },
   "check.hint": { en: "Drops a pin on the map and shows distance to the tank. Geocoded via OpenStreetMap; defaults to Orange County, CA.", vi: "Định vị qua OpenStreetMap. Mặc định Orange County, CA." },
-  "check.verdict.critical": { en: "CRITICAL — within primary blast radius", vi: "NGUY CẤP — trong bán kính nổ chính" },
-  "check.verdict.evacuate": { en: "EVACUATE — inside the city's evacuation zone", vi: "SƠ TÁN — trong khu sơ tán của thành phố" },
-  "check.verdict.highrisk": { en: "HIGH RISK — within damage radius", vi: "NGUY CƠ CAO — trong bán kính thiệt hại" },
-  "check.verdict.elevated": { en: "ELEVATED — within injury radius or plume", vi: "MỨC ĐỘ NÂNG CAO — trong bán kính thương tích hoặc vệt khí" },
-  "check.verdict.downwind": { en: "DOWNWIND — beyond plume but in wind path", vi: "CUỐI HƯỚNG GIÓ — ngoài vệt khí nhưng trong đường gió" },
-  "check.verdict.likelysafe": { en: "OUTSIDE MAPPED ZONES — {mi} mi away", vi: "NGOÀI CÁC VÙNG TRÊN BẢN ĐỒ — cách {mi} mi" },
-  "check.factor.inside_evac": { en: "Inside the city's evacuation zone", vi: "Trong khu sơ tán của thành phố" },
-  "check.factor.blast": { en: "Inside blast zone: {label} (~{r} mi)", vi: "Trong vùng nổ: {label} (~{r} mi)" },
-  "check.factor.plume": { en: "Inside chemical plume cone (downwind, wind from {dir})", vi: "Trong vùng vệt khí hóa chất (cuối hướng gió, gió từ {dir})" },
-  "check.factor.downwind": { en: "Downwind of tank ({mi} mi out)", vi: "Cuối hướng gió so với bồn chứa ({mi} mi)" },
+  "check.router.inside": { en: "This address appears to fall within the area officials have described as evacuated. Confirm your status at the official checker." },
+  "check.router.near": { en: "This address does not appear inside the area officials have described, but conditions change. Confirm at the official checker." },
   "check.field.address": { en: "Address:", vi: "Địa chỉ:" },
   "check.field.distance": { en: "Distance:", vi: "Khoảng cách:" },
   "check.field.bearing": { en: "Bearing:", vi: "Hướng:" },
-  "check.noFactors": { en: "No risk factors at this location.", vi: "Không có yếu tố rủi ro tại vị trí này." },
   "check.viewMap": { en: "View on map", vi: "Xem trên bản đồ" },
-  "check.disclaimer": { en: "Estimate only — not official. Verify at ggcity.org/emergency; in an emergency, call 911.", vi: "Chỉ là ước tính — không chính thức. Xác minh tại ggcity.org/emergency; trong trường hợp khẩn cấp, gọi 911." },
   "check.loading": { en: 'Looking up "{q}"...', vi: 'Đang tìm "{q}"...' },
   "check.error.title": { en: "Could not check", vi: "Không thể kiểm tra" },
   "check.error.suffix": { en: ". Try a more specific address.", vi: ". Hãy thử địa chỉ cụ thể hơn." },
@@ -1161,16 +1133,12 @@ const STRINGS = {
     vi: "<strong>Quy trình dữ liệu:</strong> Tình trạng được cập nhật 30 phút một lần qua các nguồn web đã xác minh (kênh chính thức của cơ quan, trang web thành phố, hãng tin). Mỗi thông tin được đối chiếu với nhiều nguồn trước khi đăng."
   },
   "info.method.wind": {
-    en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Plume direction is estimated from wind bearing + cone model -- not atmospheric dispersion modeling.",
-    vi: "<strong>Dữ liệu gió:</strong> Quan sát trực tiếp từ trạm NOAA KFUL (Sân bay Fullerton Municipal), cập nhật 60 giây một lần. Hướng vệt khí được ước tính từ hướng gió + mô hình hình nón — không phải mô hình phát tán khí quyển."
-  },
-  "info.method.blast": {
-    en: "<strong>Blast zones:</strong> Radii estimated from BLEVE overpressure scaling for ~7,000 gal MMA (~100 tonnes TNT-equivalent). Visual scale matches the OCFA/OC Register published map. Not authoritative for legal purposes.",
-    vi: "<strong>Vùng nổ:</strong> Bán kính ước tính từ thang đo áp suất BLEVE cho ~7.000 gallon MMA (~100 tấn tương đương TNT). Tỷ lệ trực quan khớp với bản đồ do OCFA/OC Register công bố. Không có giá trị pháp lý."
+    en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Shown as current local wind conditions.",
+    vi: "<strong>Dữ liệu gió:</strong> Quan sát trực tiếp từ trạm NOAA KFUL (Sân bay Fullerton Municipal), cập nhật 60 giây một lần. Hiển thị điều kiện gió địa phương hiện tại."
   },
   "info.method.checker": {
-    en: "<strong>Safety checker:</strong> Uses ray-casting (point-in-polygon) for evac zone, haversine distance for blast zones, bearing math for plume cone intersection. Geocoding via OpenStreetMap Nominatim.",
-    vi: "<strong>Bộ kiểm tra:</strong> Dùng ray-casting (điểm-trong-đa-giác) cho khu sơ tán, khoảng cách haversine cho vùng nổ, phép tính hướng cho giao vùng vệt khí. Định vị qua OpenStreetMap Nominatim."
+    en: "<strong>Safety checker:</strong> Geocodes the entered address via OpenStreetMap Nominatim, then tests whether the point falls inside the area officials have described as evacuated (point-in-polygon). Defers to the official evacuation checker for authoritative orders.",
+    vi: "<strong>Bộ kiểm tra:</strong> Định vị địa chỉ qua OpenStreetMap Nominatim, sau đó kiểm tra xem điểm có nằm trong khu vực được cơ quan chức năng mô tả là cần sơ tán hay không (điểm-trong-đa-giác). Dẫn đến bộ kiểm tra sơ tán chính thức để có lệnh có thẩm quyền."
   },
   "info.method.eval": {
     en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests (writer logic, schema validation, safety checker math, geocoder behavior) and LLM-as-judge rubrics for design and data quality. All design decisions are logged in <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> with rationale and rubric scores.',
@@ -1310,36 +1278,16 @@ function setLang(lang) {
   if (lastSnap) render(lastSnap);
   if (configCache) renderShelters(configCache);
   if (configCache && fixedPointMarkers.length) recolorFixedPoints();
-  if (configCache && lastWind) renderPlume(configCache, lastWind);
 }
 currentLang = detectLang();
 window.toggleLangMenu = toggleLangMenu;
 document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeLangMenu(); });
 
-/* Translate a computeSafety() result into the active language without
-   touching the underlying math/string templates. Maps the structured
-   fields (level, insideEvac, distance_mi, factor sev) back to t() keys.
-   Falls back to the original English if the templates ever drift. */
+/* Map a computeSafety() result to the active-language router message. */
 function translateSafetyResult(r) {
   if (!r) return r;
-  var headline = r.headline;
-  if (r.level === "critical") headline = t("check.verdict.critical");
-  else if (r.level === "high") headline = r.insideEvac ? t("check.verdict.evacuate") : t("check.verdict.highrisk");
-  else if (r.level === "elevated") {
-    var hasSev2 = (r.factors || []).some(function(f){ return f.sev >= 2; });
-    headline = hasSev2 ? t("check.verdict.elevated") : t("check.verdict.downwind");
-  }
-  else if (r.level === "safe") headline = t("check.verdict.likelysafe", { mi: (r.distance_mi != null ? r.distance_mi.toFixed(1) : "?") });
-  var factors = (r.factors || []).map(function(f) {
-    var label = f.label;
-    var m;
-    if (/^Inside official evacuation zone$/.test(label)) label = t("check.factor.inside_evac");
-    else if ((m = label.match(/^Inside blast zone: (.+?) \(~([\d.]+) mi\)$/))) label = t("check.factor.blast", { label: m[1], r: m[2] });
-    else if ((m = label.match(/^Inside chemical plume cone \(downwind, wind from (\w+)\)$/))) label = t("check.factor.plume", { dir: m[1] });
-    else if ((m = label.match(/^Downwind of tank \(([\d.]+) mi out\)$/))) label = t("check.factor.downwind", { mi: m[1] });
-    return { sev: f.sev, label: label };
-  });
-  return { level: r.level, headline: headline, factors: factors, distance_mi: r.distance_mi, bearing_deg: r.bearing_deg, downwind: r.downwind, plumeReach: r.plumeReach, insideEvac: r.insideEvac };
+  var message = r.insideEvac ? t("check.router.inside") : t("check.router.near");
+  return { insideEvac: r.insideEvac, message: message, distance_mi: r.distance_mi, bearing_deg: r.bearing_deg };
 }
 
 let lastSnap = null;
@@ -1349,7 +1297,7 @@ let audioCtx = null;
 let lastFetchOK = true;
 let mapInited = false;
 let map = null;
-let layers = { evac: null, facility: null, blasts: [], plume: null, you: null };
+let layers = { evac: null, facility: null, you: null };
 let configCache = null;
 let lastWind = null;
 let safetyPin = null;
@@ -1527,13 +1475,6 @@ function initMap(cfg) {
     maxZoom: 19, attribution: '&copy; OpenStreetMap'
   }).addTo(map);
 
-  m.blast_zones_mi.forEach(function(b) {
-    var circle = L.circle([m.facility.lat, m.facility.lon], {
-      radius: b.radius * 1609.34, color: b.color, weight: 2, fillOpacity: 0.10, dashArray: "4 4"
-    }).addTo(map).bindTooltip(b.label + " (~" + b.radius + " mi)", {sticky: true});
-    layers.blasts.push(circle);
-  });
-
   layers.evac = L.polygon(m.evac_polygon, {
     color: "#3b82f6", weight: 2, fillOpacity: 0.12
   }).addTo(map).bindTooltip(t("map.tooltip.evac"), {sticky: true});
@@ -1583,24 +1524,9 @@ function initMap(cfg) {
   mapInited = true;
 }
 
-function renderPlume(cfg, wind) {
-  if (!map || !cfg || !wind) return;
-  var m = cfg.map;
+function updateWindDisplay(wind) {
+  if (!wind) return;
   var heading = (wind.directionDeg + 180) % 360;
-  var spread = (m.plume_cone_degrees || 30) / 2;
-  var maxLen = m.plume_max_length_mi || 4;
-  var lenMi = Math.max(1, Math.min(maxLen, (wind.speedMph || 5) * 0.4));
-  var origin = [m.facility.lat, m.facility.lon];
-  var left = destPoint(origin[0], origin[1], heading - spread, lenMi);
-  var right = destPoint(origin[0], origin[1], heading + spread, lenMi);
-  var mid = destPoint(origin[0], origin[1], heading, lenMi * 1.05);
-  if (layers.plume) map.removeLayer(layers.plume);
-  layers.plume = L.polygon([origin, left, mid, right], {
-    color: "#a855f7", weight: 2, fillColor: "#a855f7", fillOpacity: 0.18, dashArray: "6 6"
-  }).addTo(map).bindTooltip(
-    t("map.tooltip.plume", { speed: Math.round(wind.speedMph), dir: cardinalFromDeg(wind.directionDeg) }),
-    {sticky: true}
-  );
   var arrowMain = $("wind-arrow");
   if (arrowMain) arrowMain.style.transform = "rotate(" + heading + "deg)";
   var arrowMap = $("wind-arrow-map");
@@ -1647,11 +1573,6 @@ function pointInPolygon(pt, polygon) {
   }
   return inside;
 }
-function angleDiff(a, b) {
-  var d = Math.abs(a - b) % 360;
-  return d > 180 ? 360 - d : d;
-}
-
 var GEOCODE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days, per OSM caching policy
 function geocodeCacheGet(key) {
   try {
@@ -1705,66 +1626,34 @@ async function geocodeAddress(q, cfg) {
   return result;
 }
 
-function computeSafety(pt, cfg, wind) {
+function computeSafety(pt, cfg) {
   var m = cfg.map;
   var dMi = haversineMi(pt.lat, pt.lon, m.facility.lat, m.facility.lon);
   var brDeg = bearingDeg(m.facility.lat, m.facility.lon, pt.lat, pt.lon);
-  var downwind = false, plumeReach = false;
-  if (wind) {
-    var plumeHeading = (wind.directionDeg + 180) % 360;
-    var spread = (m.plume_cone_degrees || 30) / 2;
-    var within = angleDiff(brDeg, plumeHeading) <= spread;
-    var maxLen = Math.max(1, Math.min(m.plume_max_length_mi || 4, (wind.speedMph || 5) * 0.4));
-    downwind = within;
-    plumeReach = within && dMi <= maxLen;
-  }
-  var factors = [];
   var insideEvac = pointInPolygon([pt.lat, pt.lon], m.evac_polygon);
-  if (insideEvac) factors.push({ sev: 3, label: "Inside official evacuation zone" });
-  var blasts = (m.blast_zones_mi || []).slice().sort(function(a, b) { return a.radius - b.radius; });
-  var blastHit = null;
-  for (var i = 0; i < blasts.length; i++) {
-    if (dMi <= blasts[i].radius) { blastHit = blasts[i]; break; }
-  }
-  if (blastHit) {
-    var sev = blastHit.radius < 0.2 ? 4 : (blastHit.radius < 0.5 ? 3 : 2);
-    factors.push({ sev: sev, label: "Inside blast zone: " + blastHit.label + " (~" + blastHit.radius + " mi)" });
-  }
-  if (plumeReach) factors.push({ sev: 2, label: "Inside chemical plume cone (downwind, wind from " + cardinalFromDeg(wind.directionDeg) + ")" });
-  else if (downwind) factors.push({ sev: 1, label: "Downwind of tank (" + dMi.toFixed(1) + " mi out)" });
-  var maxSev = factors.reduce(function(m, f) { return Math.max(m, f.sev); }, 0);
-  var level, headline;
-  if (maxSev >= 4) { level = "critical"; headline = "CRITICAL — within primary blast radius"; }
-  else if (maxSev === 3) { level = "high"; headline = insideEvac ? "EVACUATE — inside official evac zone" : "HIGH RISK — within damage radius"; }
-  else if (maxSev === 2) { level = "elevated"; headline = "ELEVATED — within injury radius or plume"; }
-  else if (maxSev === 1) { level = "elevated"; headline = "DOWNWIND — beyond plume but in wind path"; }
-  else { level = "safe"; headline = "LIKELY SAFE — outside all zones (" + dMi.toFixed(1) + " mi)"; }
-  return { level: level, headline: headline, factors: factors, distance_mi: dMi, bearing_deg: brDeg, downwind: downwind, plumeReach: plumeReach, insideEvac: insideEvac };
+  return { insideEvac: insideEvac, distance_mi: dMi, bearing_deg: brDeg };
 }
 
 function renderSafetyResult(addr, pt, result) {
   var el = $("safety-result");
   var tr = translateSafetyResult(result);
-  el.className = "safety-result safety-lvl-" + tr.level;
-  var factorsList = tr.factors.length
-    ? "<ul>" + tr.factors.map(function(f) { return "<li>" + f.label + "</li>"; }).join("") + "</ul>"
-    : '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + t("check.noFactors") + '</div>';
+  var checkerUrl = (configCache && configCache.incident && configCache.incident.address_checker_url) || "https://ggcity.org/emergency";
+  el.className = "safety-result safety-lvl-router";
   el.innerHTML =
-    "<h4>" + tr.headline + "</h4>" +
+    '<div style="font-size:13px;margin-bottom:8px">' + tr.message + '</div>' +
     '<div class="verdict-line">' +
       "<span><strong>" + t("check.field.address") + "</strong> " + addr.displayName + "</span>" +
       "<span><strong>" + t("check.field.distance") + "</strong> " + tr.distance_mi.toFixed(2) + " mi</span>" +
       "<span><strong>" + t("check.field.bearing") + "</strong> " + cardinalFromDeg(tr.bearing_deg) + " (" + Math.round(tr.bearing_deg) + "°)</span>" +
     "</div>" +
-    factorsList +
-    '<button class="view-map-btn" onclick="switchTab(\'map\')">' + t("check.viewMap") + '</button>' +
-    '<div style="font-size:10px;color:var(--text-muted);margin-top:8px">' + t("check.disclaimer") + '</div>';
+    '<a href="' + checkerUrl + '" target="_blank" rel="noopener" class="view-map-btn" style="display:inline-block;margin-top:6px">' + checkerUrl + ' ↗</a>' +
+    '<button class="view-map-btn" onclick="switchTab(\'map\')" style="margin-left:8px">' + t("check.viewMap") + '</button>';
   if (safetyPin) map.removeLayer(safetyPin);
   if (safetyPinBuffer) map.removeLayer(safetyPinBuffer);
-  var color = ({ safe: "#059669", elevated: "#d97706", high: "#dc2626", critical: "#7f1d1d" })[tr.level] || "#94a3b8";
+  var color = "#3b82f6";
   safetyPin = L.circleMarker([pt.lat, pt.lon], {
     radius: 9, fillColor: color, color: "#fff", weight: 3, fillOpacity: 1
-  }).addTo(map).bindTooltip(tr.headline, { permanent: true, direction: "top", offset: [0, -10] });
+  }).addTo(map).bindTooltip(addr.displayName, { permanent: true, direction: "top", offset: [0, -10] });
   safetyPinBuffer = L.circleMarker([pt.lat, pt.lon], {
     radius: 13, fillColor: color, color: color, weight: 1, fillOpacity: 0.2
   }).addTo(map);
@@ -1794,7 +1683,7 @@ async function checkSafety() {
   el.innerHTML = '<h4>' + t("check.loading", { q: q }) + '</h4>';
   try {
     var addr = await geocodeAddress(q, configCache);
-    var result = computeSafety(addr, configCache, lastWind);
+    var result = computeSafety(addr, configCache);
     renderSafetyResult(addr, addr, result);
   } catch (e) {
     el.className = "safety-result safety-lvl-unknown";
@@ -1895,7 +1784,7 @@ async function refreshWind() {
   if (!configCache) return;
   var stationId = (configCache.map && configCache.map.weather_station) || "KFUL";
   lastWind = await fetchWind(stationId);
-  renderPlume(configCache, lastWind);
+  updateWindDisplay(lastWind);
   recolorFixedPoints();
   scheduleWindRefresh();
 }
@@ -1904,11 +1793,9 @@ function recolorFixedPoints() {
   if (!configCache || !fixedPointMarkers.length) return;
   fixedPointMarkers.forEach(function(m) {
     var fp = m.__fp;
-    var result = computeSafety({lat: fp.lat, lon: fp.lon}, configCache, lastWind);
-    var tr = translateSafetyResult(result);
-    var color = ({safe:"#059669", elevated:"#d97706", high:"#dc2626", critical:"#7f1d1d"})[tr.level] || "#6366f1";
-    m.setStyle({fillColor: color});
-    m.setTooltipContent("<strong>" + fp.label + "</strong><br>" + tr.headline + "<br><span style=\"font-size:11px;opacity:0.8\">" + tr.distance_mi.toFixed(1) + " mi · " + cardinalFromDeg(tr.bearing_deg) + "</span>");
+    var result = computeSafety({lat: fp.lat, lon: fp.lon}, configCache);
+    m.setStyle({fillColor: "#6366f1"});
+    m.setTooltipContent("<strong>" + fp.label + "</strong><br><span style=\"font-size:11px;opacity:0.8\">" + result.distance_mi.toFixed(1) + " mi · " + cardinalFromDeg(result.bearing_deg) + "</span>");
   });
 }
 

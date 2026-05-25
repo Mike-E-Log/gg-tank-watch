@@ -120,16 +120,12 @@ def test_config_json_required_fields():
     fails += _check_keys(cfg, ["zone_status", "dashboard_refresh_seconds", "stale_after_minutes", "incident", "map", "schema_version"], "config.json")
     if "map" in cfg:
         m = cfg["map"]
-        fails += _check_keys(m, ["facility", "evac_polygon", "blast_zones_mi", "plume_max_length_mi", "plume_cone_degrees", "weather_station"], "config.json.map")
+        fails += _check_keys(m, ["facility", "evac_polygon"], "config.json.map")
         if "facility" in m:
             fails += _check_keys(m["facility"], ["lat", "lon", "label"], "config.json.map.facility")
         if "evac_polygon" in m:
             if not isinstance(m["evac_polygon"], list) or len(m["evac_polygon"]) < 3:
                 fails.append("evac_polygon must be a polygon with >=3 vertices")
-        if "blast_zones_mi" in m:
-            for i, b in enumerate(m["blast_zones_mi"]):
-                if not all(k in b for k in ("radius", "label", "color")):
-                    fails.append(f"blast_zones_mi[{i}] missing radius/label/color")
     return {
         "passed": len(fails) == 0,
         "details": "all keys present" if not fails else "; ".join(fails),
