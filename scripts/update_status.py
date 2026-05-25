@@ -258,6 +258,16 @@ def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
     schools = facts.get("schools_closed") or prev.get("schools_closed") or []
     injuries = facts.get("injuries", 0) or 0
 
+    # Videos: list of {outlet, title, url, thumbnail_url?, published_iso?, youtube_id?}
+    # If youtube_id is set and thumbnail_url is missing, derive YouTube hqdefault.
+    raw_videos = facts.get("videos") if "videos" in facts else prev.get("videos") or []
+    videos = []
+    for v in raw_videos or []:
+        v = dict(v)
+        if not v.get("thumbnail_url") and v.get("youtube_id"):
+            v["thumbnail_url"] = f"https://img.youtube.com/vi/{v['youtube_id']}/hqdefault.jpg"
+        videos.append(v)
+
     # Detect breaking — pass actual prev (preserving None-ness) so first-run guard works.
     fires, reason, level = detect_breaking(prev_actual, incident, evacuation, statements, injuries)
 
@@ -303,6 +313,7 @@ def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
         "official_statements": statements,
         "sources_checked": sources,
         "schools_closed": schools,
+        "videos": videos,
         "breaking": breaking,
         "breaking_reason": breaking_reason,
         "breaking_since_iso": breaking_since,

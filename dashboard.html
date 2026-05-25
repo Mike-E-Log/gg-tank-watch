@@ -223,6 +223,71 @@
     }
     .banner:hover .banner-action { opacity: 1; text-decoration: underline; }
 
+    /* News videos grid */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .video-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.1s ease-out;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+    .video-card:hover { transform: translateY(-2px); border-color: var(--sev-low); }
+    .video-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238b949e"><path d="M8 5v14l11-7z"/></svg>') center/30% no-repeat;
+      overflow: hidden;
+    }
+    .video-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .video-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.7);
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .video-play::after {
+      content: "";
+      border-left: 14px solid white;
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      margin-left: 4px;
+    }
+    .video-meta {
+      padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .video-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text);
+    }
+    .video-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex; gap: 8px;
+    }
+
     /* Fixed-point labels on the map need a readable background in both themes */
     .leaflet-tooltip.fixed-point-label {
       background: var(--surface);
@@ -551,6 +616,12 @@
         <h3>Schools closed</h3>
         <div id="schools">—</div>
       </div>
+    </div>
+
+    <h2 class="section-header">News videos — major updates</h2>
+
+    <div id="videos-section" class="videos-grid">
+      <div style="grid-column:1/-1;color:var(--text-dim);font-size:13px">No videos in this snapshot yet. Add them via the writer's <code>videos</code> field.</div>
     </div>
 
     <h2 class="section-header">Sources</h2>
@@ -1215,6 +1286,35 @@ function render(snap) {
   }).join("");
 
   $("next-check").textContent = fmtAbsTime(snap.next_check_at_iso);
+
+  // News videos
+  const videos = (snap.videos || []).slice().sort((a, b) => {
+    const ta = a.published_iso ? new Date(a.published_iso).getTime() : 0;
+    const tb = b.published_iso ? new Date(b.published_iso).getTime() : 0;
+    return tb - ta;
+  });
+  const vsec = $("videos-section");
+  if (vsec) {
+    if (!videos.length) {
+      vsec.innerHTML = `<div style="grid-column:1/-1;color:var(--text-dim);font-size:13px">No news videos in this snapshot yet.</div>`;
+    } else {
+      vsec.innerHTML = videos.map(v => `
+        <a class="video-card" href="${v.url}" target="_blank" rel="noopener">
+          <div class="video-thumb">
+            ${v.thumbnail_url ? `<img loading="lazy" src="${v.thumbnail_url}" alt="${(v.title||'video').replace(/"/g,'&quot;')}">` : ''}
+            <div class="video-play"></div>
+          </div>
+          <div class="video-meta">
+            <div class="video-title">${v.title || "(untitled video)"}</div>
+            <div class="video-sub">
+              <span><strong>${v.outlet || "—"}</strong></span>
+              ${v.published_iso ? `<span>${fmtAbsDateTime(v.published_iso)}</span>` : ""}
+            </div>
+          </div>
+        </a>
+      `).join("");
+    }
+  }
 }
 
 /* ============ FETCH ORCHESTRATION ============ */

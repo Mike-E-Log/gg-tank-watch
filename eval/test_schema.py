@@ -29,7 +29,7 @@ def test_status_json_required_fields():
     fails += _check_keys(snap, [
         "schema_version", "last_updated_iso", "next_check_at_iso", "stale_after_iso",
         "incident", "tank", "evacuation", "you", "official_statements",
-        "sources_checked", "schools_closed",
+        "sources_checked", "schools_closed", "videos",
         "breaking", "breaking_reason", "breaking_since_iso", "_meta"
     ], "status.json")
     if "incident" in snap:
