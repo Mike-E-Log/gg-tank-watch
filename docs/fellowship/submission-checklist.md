@@ -10,8 +10,8 @@
 
 | Material | Location | Status |
 |----------|----------|--------|
-| Cover letter | `docs/fellowship/cover-letter-draft.md` | Draft |
-| Evidence summary | `docs/fellowship/evidence-summary.md` | Draft |
+| Cover letter | `docs/fellowship/cover-letter-draft.md` | Final (463 words) |
+| Evidence summary | `docs/fellowship/evidence-summary.md` | Final |
 | Portfolio repo (this repo) | Root of repository | Active |
 
 ## Evidence map — which doc demonstrates which principle
@@ -40,9 +40,9 @@ A reviewer evaluating the portfolio should follow this path:
 
 - [ ] **Repo accessibility.** Verify the repo is public or the application includes access instructions
 - [ ] **noindex does not block Greenhouse reviewers.** `noindex` is on `dashboard.html` meta tag and `vercel.json` — this blocks search engines, not direct URL access. Reviewers can still view the deployed site via direct link. Confirm the Vercel deployment URL is included in the application
-- [ ] **README is adequate.** README should orient a reviewer: what this is, why it exists, how to verify the eval harness, link to the architecture docs
-- [ ] **Eval harness runs clean.** `python eval/run_all.py --skip integration` exits 0. Run before submission
-- [ ] **Cover letter is final.** Review `docs/fellowship/cover-letter-draft.md` for tone, length (one page), and accuracy of file references
-- [ ] **No secrets in repo.** No API keys, tokens, or credentials committed
+- [x] **README is adequate.** "For Anthropic reviewers" signpost section added with direct links to CLAUDE.md, AI_CONTROL_ARCHITECTURE, FAILURE_ANALYSIS, PRIOR_ART, and eval/ (2026-05-25)
+- [x] **Eval harness runs clean.** `python eval/run_all.py --skip integration` exits 0. Verified 45/45 pass (2026-05-25)
+- [x] **Cover letter is final.** 463 words, all file references verified to exist (2026-05-25)
+- [x] **No secrets in repo.** Grepped for `sk-`, `ANTHROPIC_API_KEY=`, `ghp_`, `gho_` — no secrets in tracked files (2026-05-25)
 - [ ] **Attorney review status.** Note current status of Lane B3 (attorney review) in application if asked about deployment timeline
 - [ ] **Application form completed.** All required fields filled on Greenhouse form

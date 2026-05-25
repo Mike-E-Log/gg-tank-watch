@@ -9,6 +9,12 @@
 
 ---
 
+## For Anthropic reviewers
+
+This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 45 tests, exits 0).
+
+---
+
 ## What it does
 
 | | |
