@@ -19,6 +19,7 @@ GATHERER = REPO_ROOT / "scripts" / "gather_facts.py"
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 from gather_facts import extract_json  # noqa: E402  (lazy anthropic import is inside main())
+from gather_facts import PROMPT, MAX_USES  # noqa: E402
 
 
 def test_extract_json_strips_fences():
@@ -36,6 +37,33 @@ def test_extract_json_rejects_garbage():
         return {"passed": True, "details": "raised ValueError on garbage (not a silent {})"}
     except Exception as e:
         return {"passed": False, "details": f"raised wrong type {type(e).__name__}: {e}"}
+
+
+def test_prompt_includes_vietnamese_sources():
+    """Gatherer prompt must name Vietnamese-language sources for community coverage."""
+    vi_sources = ["Nguoi Viet", "nguoi-viet.com"]
+    found = any(s.lower() in PROMPT.lower() for s in vi_sources)
+    return {
+        "passed": found,
+        "details": f"Vietnamese source mentioned in prompt: {found}",
+    }
+
+
+def test_prompt_includes_credibility_guidance():
+    """Gatherer prompt must instruct model to prioritize official/Tier-1 sources."""
+    has_tier = "tier" in PROMPT.lower() or "prioritize official" in PROMPT.lower() or "official sources first" in PROMPT.lower()
+    return {
+        "passed": has_tier,
+        "details": f"Credibility guidance in prompt: {has_tier}",
+    }
+
+
+def test_max_uses_sufficient_for_expanded_sources():
+    """WEB_SEARCH_MAX_USES must be >= 12 to cover expanded source list."""
+    return {
+        "passed": MAX_USES >= 12,
+        "details": f"MAX_USES={MAX_USES} (need >= 12)",
+    }
 
 
 def test_graceful_failure_no_api_key():

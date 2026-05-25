@@ -33,7 +33,42 @@ from datetime import datetime, timezone
 
 MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-6")
 TOOL_TYPE = os.environ.get("WEB_SEARCH_TOOL_TYPE", "web_search_20250305")
-MAX_USES = int(os.environ.get("WEB_SEARCH_MAX_USES", "8"))
+MAX_USES = int(os.environ.get("WEB_SEARCH_MAX_USES", "14"))
+
+# Source credibility tiers for documentation and prompt construction.
+# Tier 1: official agencies (primary information producers)
+# Tier 2: established outlets with on-scene reporters + Nguoi Viet Daily News
+# Tier 3: reputable secondary outlets
+SOURCE_TIERS = {
+    "tier_1_official": [
+        "OCFA (ocfa.org)",
+        "OC Sheriff (ocsheriff.gov)",
+        "City of Garden Grove (ggcity.org/emergency)",
+        "Cal OES / Governor's Office (gov.ca.gov)",
+        "US EPA Region 9 (epa.gov)",
+        "SCAQMD (aqmd.gov)",
+    ],
+    "tier_2_primary_news": [
+        "ABC7 Los Angeles / KABC (abc7.com)",
+        "NBC Los Angeles / KNBC (nbclosangeles.com)",
+        "KTLA (ktla.com)",
+        "CBS Los Angeles / KCBS (cbsnews.com/losangeles)",
+        "LA Times (latimes.com)",
+        "OC Register (ocregister.com)",
+        "Associated Press (apnews.com)",
+        "CNN (cnn.com)",
+        "Nguoi Viet Daily News (nguoi-viet.com) — largest Vietnamese-American daily",
+    ],
+    "tier_3_secondary": [
+        "Fox 11 Los Angeles (foxla.com)",
+        "ABC News national (abcnews.com)",
+        "CBS News national (cbsnews.com)",
+        "NPR (npr.org)",
+        "Voice of OC (voiceofoc.org)",
+        "VnExpress International (e.vnexpress.net)",
+        "SBTN (sbtn.tv) — Vietnamese TV network",
+    ],
+}
 
 SCHEMA_HINT = """{
   "status_headline": "<one concise sentence on the current situation>",
@@ -59,10 +94,23 @@ PROMPT = f"""You are the data updater for a community emergency dashboard tracki
 Grove, California methyl methacrylate (MMA) storage-tank incident at GKN Aerospace,
 12122 Western Ave (began 2026-05-21; ~50,000 residents evacuated).
 
-Use web search to find the MOST RECENT verified status as of right now. Prioritize
-official / authoritative sources: Orange County Fire Authority (OCFA), OC Sheriff,
-ggcity.org/emergency, Cal OES, US EPA, SCAQMD, and established news outlets
-(LA Times, OC Register, KTLA, ABC7). Cross-check before reporting a fact.
+Use web search to find the MOST RECENT verified status as of right now.
+
+SOURCE PRIORITY (search official sources first, then work down):
+  Tier 1 — Official agencies (these ARE the information, highest credibility):
+    OCFA (ocfa.org), OC Sheriff (ocsheriff.gov), ggcity.org/emergency,
+    Cal OES / Governor (gov.ca.gov, caloes.ca.gov), US EPA, SCAQMD (aqmd.gov)
+  Tier 2 — Established news with reporters on scene:
+    ABC7/KABC, NBC LA/KNBC, KTLA, CBS LA/KCBS, LA Times, OC Register,
+    AP (apnews.com), CNN,
+    Nguoi Viet Daily News (nguoi-viet.com) — largest Vietnamese-American daily
+  Tier 3 — Reputable secondary outlets:
+    Fox 11 LA, ABC News national, CBS News national, NPR, Voice of OC,
+    VnExpress International (e.vnexpress.net), SBTN (sbtn.tv)
+
+Cross-check facts across tiers before reporting. Prefer Tier 1 statements verbatim.
+Include Vietnamese-language sources when they carry unique community information
+not available in English outlets.
 
 Rules:
 - Report ONLY facts you found in a source during this search. If you cannot
