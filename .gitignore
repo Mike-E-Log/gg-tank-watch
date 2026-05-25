@@ -1,0 +1,31 @@
+# Runtime artifacts (regenerated on every writer tick)
+status.json
+status.json.tmp
+updates.log
+breaking_events.jsonl
+
+# Restore points / autosaves
+*.bak
+*-autoplan-restore-*.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+
+# IDE / agent harness state
+.vscode/
+.idea/
+.claude/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Eval transient output (the .jsonl log itself is kept)
+eval/.last_run/

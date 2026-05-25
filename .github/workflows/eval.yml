@@ -1,0 +1,48 @@
+name: eval
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run eval suite (skip integration; no internet contract in CI)
+        run: |
+          python eval/run_all.py --skip integration
+        env:
+          PYTHONUNBUFFERED: "1"
+
+      - name: Upload scores.jsonl
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scores
+          path: eval/scores.jsonl
+          if-no-files-found: warn
+
+  eval-integration:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run integration suite (Nominatim live)
+        run: |
+          python eval/run_all.py --only test_geocoder

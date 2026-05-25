@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GG MMA Tank Dashboard</title>
+  <meta http-equiv="refresh" content="600">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+  <style>
+    /* ============================
+       Theme — light default, dark toggle. Variables swap based on .theme-dark on <html>.
+       ============================ */
+    :root, html.theme-light {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --text: #18181b;
+      --text-dim: #71717a;
+      --border: #e4e4e7;
+      --shadow: 0 1px 2px rgba(0,0,0,0.05);
+      --sev-low: #2563eb;
+      --sev-moderate: #d97706;
+      --sev-high: #dc2626;
+      --sev-critical: #7f1d1d;
+      --good: #16a34a;
+      --bad: #dc2626;
+      --hero-outside-bg: #dcfce7;
+      --hero-inside-bg: #fee2e2;
+      --hero-resolved-bg: #d1fae5;
+      --hero-unknown-bg: var(--surface);
+      --banner-stale-bg: #fef3c7;
+      --banner-offline-bg: #f1f5f9;
+      --banner-breaking-bg: #fee2e2;
+    }
+    html.theme-dark {
+      --bg: #0a0e14;
+      --surface: #151b23;
+      --text: #e6edf3;
+      --text-dim: #8b949e;
+      --border: #30363d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4);
+      --sev-low: #3b82f6;
+      --sev-moderate: #f59e0b;
+      --sev-high: #ef4444;
+      --sev-critical: #991b1b;
+      --good: #2ea043;
+      --bad: #ef4444;
+      --hero-outside-bg: rgba(46,160,67,0.18);
+      --hero-inside-bg: rgba(239,68,68,0.22);
+      --hero-resolved-bg: rgba(46,160,67,0.25);
+      --hero-unknown-bg: var(--surface);
+      --banner-stale-bg: rgba(245,158,11,0.15);
+      --banner-offline-bg: rgba(139,148,158,0.15);
+      --banner-breaking-bg: rgba(239,68,68,0.22);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+      min-height: 100vh;
+    }
+    .mono { font-family: "IBM Plex Mono", ui-monospace, "JetBrains Mono", "Consolas", monospace; }
+
+    .container { max-width: 1400px; margin: 0 auto; padding: 16px; }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 1000px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static !important; max-height: none !important; }
+    }
+    .sidebar {
+      position: sticky;
+      top: 16px;
+      max-height: calc(100vh - 32px);
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .sidebar-header {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar-list {
+      overflow-y: auto;
+      padding: 4px 0;
+      flex: 1;
+    }
+    .sidebar-list .stmt {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-list .stmt:last-child { border-bottom: none; }
+    .sidebar-list .stmt-datetime {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.2px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .sidebar-list .stmt-newest-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: var(--sev-high);
+      color: white;
+      vertical-align: middle;
+    }
+    .sidebar-list .stmt-fresh-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: var(--sev-moderate);
+      color: white;
+      vertical-align: middle;
+    }
+    .sidebar-list .stmt-agency {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+    .sidebar-list .stmt-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .sidebar-list .stmt-source {
+      display: inline-block;
+      font-size: 11px;
+      color: var(--sev-low);
+      margin-top: 6px;
+      text-decoration: none;
+    }
+    .sidebar-list .stmt-source:hover { text-decoration: underline; }
+    .sidebar-list .stmt.fresh-highlight {
+      background: var(--banner-stale-bg);
+      transition: background 2s ease-out;
+    }
+    .sidebar-list .stmt.is-newest {
+      background: linear-gradient(to right, rgba(220,38,38,0.06), transparent 30%);
+      border-left: 3px solid var(--sev-high);
+      padding-left: 11px;
+    }
+    .sidebar-list .stmt-relative {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-dim);
+      letter-spacing: 0;
+    }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 16px;
+    }
+    .topbar .title { font-weight: 600; letter-spacing: 0.3px; }
+    .topbar-right { display: flex; gap: 12px; align-items: center; }
+    .topbar .updated { color: var(--text-dim); font-size: 12px; }
+    .theme-toggle {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); padding: 4px 10px; font-size: 12px;
+      border-radius: 4px; cursor: pointer;
+    }
+    .theme-toggle:hover { border-color: var(--sev-low); color: var(--sev-low); }
+
+    .banner {
+      padding: 12px 16px; margin-bottom: 12px;
+      border: 1px solid var(--border); border-radius: 6px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: var(--shadow);
+    }
+    .banner-stale { background: var(--banner-stale-bg); border-color: var(--sev-moderate); color: var(--text); }
+    .banner-offline { background: var(--banner-offline-bg); border-color: var(--text-dim); color: var(--text-dim); }
+    .banner-breaking {
+      background: var(--banner-breaking-bg); border-color: var(--sev-high); color: var(--text);
+      animation: pulse-bg 1.5s ease-in-out infinite;
+    }
+    .banner-update {
+      background: var(--banner-stale-bg); border-color: var(--sev-moderate); color: var(--text);
+    }
+    .banner-info-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: rgba(0,0,0,0.15); color: inherit;
+      font-size: 11px; font-weight: 700; font-style: normal;
+      margin-left: 8px; cursor: help; text-decoration: none;
+    }
+    .banner-info-icon:hover { background: rgba(0,0,0,0.25); }
+    .banner-action {
+      font-size: 12px; font-weight: 600;
+      opacity: 0.7; white-space: nowrap;
+      padding-left: 12px;
+    }
+    .banner:hover .banner-action { opacity: 1; text-decoration: underline; }
+
+    /* Fixed-point labels on the map need a readable background in both themes */
+    .leaflet-tooltip.fixed-point-label {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 6px;
+      box-shadow: var(--shadow);
+    }
+    .leaflet-tooltip.fixed-point-label::before { display: none; }
+
+    /* Section headers between groups of content */
+    .section-header {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      margin: 20px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-header:first-of-type { margin-top: 16px; }
+    @keyframes pulse-bg { 0%,100%{opacity:1} 50%{opacity:0.7} }
+    @media (prefers-reduced-motion: reduce) { .banner-breaking { animation: none; } }
+
+    .hero {
+      padding: 16px 20px; margin-bottom: 12px;
+      border-radius: 6px; border: 1px solid var(--border);
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .hero-outside { background: var(--hero-outside-bg); border-color: var(--good); }
+    .hero-inside  { background: var(--hero-inside-bg); border-color: var(--sev-high); }
+    .hero-unknown { background: var(--hero-unknown-bg); }
+    .hero-resolved{ background: var(--hero-resolved-bg); border-color: var(--good); }
+    .hero h1 {
+      font-size: clamp(20px, 3.2vw, 32px); font-weight: 700;
+      line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 4px;
+    }
+    .hero h1.outside { color: var(--good); }
+    .hero h1.inside  { color: var(--sev-high); }
+    .hero .sub { color: var(--text-dim); font-size: 13px; }
+    .hero-meta {
+      display: flex; gap: 10px; align-items: center; justify-content: center;
+      margin-top: 8px; flex-wrap: wrap;
+    }
+    .hero-meta .headline-inline {
+      font-size: 13px; color: var(--text); opacity: 0.85;
+    }
+
+    .status-row { display: flex; gap: 12px; align-items: stretch; margin-bottom: 16px; }
+    .severity-chip {
+      padding: 6px 12px; border-radius: 4px;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 12px;
+      align-self: center; white-space: nowrap;
+    }
+    .sev-low      { background: var(--sev-low); color: white; }
+    .sev-moderate { background: var(--sev-moderate); color: white; }
+    .sev-high     { background: var(--sev-high); color: white; }
+    .sev-critical { background: var(--sev-critical); color: white; }
+    .headline { flex: 1; font-size: 18px; color: var(--text); display: flex; align-items: center; }
+
+    /* Map */
+    .map-section {
+      margin-bottom: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .map-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .map-header h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); font-weight: 600; }
+    .wind-readout {
+      font-size: 12px; color: var(--text-dim);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .wind-arrow {
+      display: inline-block;
+      width: 14px; height: 14px;
+      transition: transform 0.4s ease;
+    }
+    #map { height: 360px; width: 100%; background: var(--bg); }
+    .legend {
+      padding: 10px 16px;
+      font-size: 11px; color: var(--text-dim);
+      display: flex; flex-wrap: wrap; gap: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .legend-item { display: inline-flex; align-items: center; gap: 4px; }
+    .legend-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; border: 1px solid rgba(0,0,0,0.1); }
+
+    /* Safety check input */
+    .safety-section {
+      margin-bottom: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+      padding: 12px 16px;
+    }
+    .safety-section h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); font-weight: 600; margin-bottom: 8px; }
+    .safety-form { display: flex; gap: 8px; flex-wrap: wrap; }
+    .safety-form input {
+      flex: 1; min-width: 220px;
+      padding: 8px 12px;
+      background: var(--bg); color: var(--text);
+      border: 1px solid var(--border); border-radius: 4px;
+      font-size: 14px; font-family: inherit;
+    }
+    .safety-form input:focus { outline: 2px solid var(--sev-low); outline-offset: -1px; border-color: var(--sev-low); }
+    .safety-form button {
+      padding: 8px 16px;
+      background: var(--sev-low); color: white;
+      border: none; border-radius: 4px;
+      font-weight: 600; cursor: pointer; font-size: 14px;
+    }
+    .safety-form button:hover { opacity: 0.9; }
+    .safety-form button:disabled { opacity: 0.5; cursor: wait; }
+    .safety-form .hint {
+      width: 100%; font-size: 11px; color: var(--text-dim); margin-top: 4px;
+    }
+    .safety-result {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .safety-result.hidden { display: none; }
+    .safety-result h4 { font-size: 18px; margin-bottom: 6px; }
+    .safety-result .verdict-line {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      font-size: 13px; color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .safety-result .verdict-line strong { color: var(--text); }
+    .safety-result ul { margin-left: 18px; font-size: 13px; }
+    .safety-result li { margin: 2px 0; }
+    .safety-lvl-safe     { background: var(--hero-outside-bg);    border-color: var(--good); }
+    .safety-lvl-safe h4  { color: var(--good); }
+    .safety-lvl-elevated { background: var(--banner-stale-bg);    border-color: var(--sev-moderate); }
+    .safety-lvl-elevated h4 { color: var(--sev-moderate); }
+    .safety-lvl-high     { background: var(--hero-inside-bg);     border-color: var(--sev-high); }
+    .safety-lvl-high h4  { color: var(--sev-high); }
+    .safety-lvl-critical { background: var(--hero-inside-bg);     border-color: var(--sev-critical); }
+    .safety-lvl-critical h4 { color: var(--sev-critical); }
+    .safety-lvl-unknown  { background: var(--banner-offline-bg);  border-color: var(--text-dim); }
+    .safety-lvl-unknown h4 { color: var(--text-dim); }
+
+    /* Override Leaflet attribution for dark mode */
+    html.theme-dark .leaflet-control-attribution {
+      background: rgba(21,27,35,0.8) !important;
+      color: var(--text-dim) !important;
+    }
+    html.theme-dark .leaflet-control-attribution a { color: var(--sev-low) !important; }
+    html.theme-dark .leaflet-control-zoom a {
+      background: var(--surface) !important;
+      color: var(--text) !important;
+      border-color: var(--border) !important;
+    }
+
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px; margin-bottom: 16px;
+    }
+    .panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .panel h3 {
+      font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--text-dim); margin-bottom: 8px;
+    }
+    .big-number { font-size: 36px; font-weight: 600; }
+    .row {
+      display: flex; justify-content: space-between;
+      padding: 4px 0; border-bottom: 1px solid var(--border);
+    }
+    .row:last-child { border-bottom: none; }
+    .row .k { color: var(--text-dim); }
+    .row .v { color: var(--text); }
+    .yes  { color: var(--good); font-weight: 600; }
+    .no   { color: var(--bad); font-weight: 600; }
+
+    details {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 12px 16px; margin-bottom: 12px;
+      box-shadow: var(--shadow);
+    }
+    summary { cursor: pointer; color: var(--text-dim); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    summary:hover { color: var(--text); }
+    .source-list { margin-top: 12px; }
+    .source-list a {
+      color: var(--text); text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      display: block; padding: 6px 0;
+    }
+    .source-list a:hover { color: var(--sev-low); border-color: var(--sev-low); }
+
+    .footer {
+      color: var(--text-dim); font-size: 12px; text-align: center;
+      padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .footer a { color: var(--text-dim); }
+    .footer a:hover { color: var(--sev-low); }
+
+    .takeover {
+      position: fixed; inset: 0;
+      background: rgba(127,29,29,0.97); color: white;
+      z-index: 9999;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 32px; text-align: center;
+    }
+    .takeover h1 { font-size: clamp(48px, 10vw, 120px); line-height: 1; margin-bottom: 16px; }
+    .takeover p { font-size: 24px; margin-bottom: 32px; max-width: 800px; }
+    .takeover button {
+      background: white; color: #7f1d1d;
+      border: none; padding: 16px 32px;
+      font-size: 18px; font-weight: 700;
+      border-radius: 6px; cursor: pointer;
+    }
+    .takeover.hidden { display: none; }
+    .takeover-flash { animation: flash 0.5s ease-in-out infinite alternate; }
+    @keyframes flash {
+      from { background: rgba(127,29,29,0.97); }
+      to   { background: rgba(220,38,38,0.97); }
+    }
+    @media (prefers-reduced-motion: reduce) { .takeover-flash { animation: none; } }
+  </style>
+</head>
+<body>
+  <div id="takeover" class="takeover hidden">
+    <h1>YOU ARE INSIDE THE EVAC ZONE</h1>
+    <p id="takeover-reason">Your zone status just flipped to INSIDE. Evacuate now per OCFA guidance.</p>
+    <button onclick="dismissTakeover()">Acknowledged</button>
+  </div>
+
+  <div class="container">
+    <div class="topbar">
+      <div class="title mono">GG MMA Tank Dashboard</div>
+      <div class="topbar-right">
+        <span class="updated" id="updated-text">loading…</span>
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+      </div>
+    </div>
+
+    <div id="banners"></div>
+
+    <div class="layout">
+    <div class="main-col">
+
+    <div class="hero" id="hero">
+      <h1 id="hero-headline">Loading…</h1>
+      <div class="sub" id="hero-sub">Waiting for first snapshot</div>
+      <div class="hero-meta">
+        <div class="severity-chip" id="severity-chip">—</div>
+        <span class="headline-inline" id="status-headline">—</span>
+      </div>
+    </div>
+
+    <h2 class="section-header">Map · Wind · Blast zones · Plume</h2>
+
+    <!-- MAP -->
+    <div class="map-section">
+      <div class="map-header">
+        <h3>Live map — evac zone · blast zones · plume · wind</h3>
+        <div class="wind-readout" id="wind-readout">
+          <span>wind:</span>
+          <svg class="wind-arrow" id="wind-arrow" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 1 L13 14 L8 11 L3 14 Z"/>
+          </svg>
+          <span id="wind-text">—</span>
+        </div>
+      </div>
+      <div id="map"></div>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#7f1d1d"></span>20 PSI blast (0.11 mi)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#dc2626"></span>Moderate damage (0.31 mi)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#ea580c"></span>Light injury (0.93 mi)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6"></span>Evac zone</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#a855f7"></span>Plume (live wind)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#111;border:2px solid #fff"></span>Tank</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#16a34a;border:2px solid #fff;border-radius:50%"></span>Reference points (safety-colored)</span>
+      </div>
+    </div>
+
+    <h2 class="section-header">Check an address or intersection</h2>
+
+    <!-- SAFETY CHECK -->
+    <div class="safety-section">
+      <form class="safety-form" onsubmit="event.preventDefault(); checkSafety()">
+        <input id="safety-input" type="text" placeholder="e.g. Magnolia St and Talbert Ave, or 12345 Some St" autocomplete="off">
+        <button id="safety-button" type="submit">Check safety</button>
+        <span class="hint">Geocoded via OpenStreetMap (Nominatim). Orange County is the default search area.</span>
+      </form>
+      <div id="safety-result" class="safety-result hidden"></div>
+    </div>
+
+    <h2 class="section-header">Incident details</h2>
+
+    <div class="grid">
+      <div class="panel">
+        <h3>Tank</h3>
+        <div class="big-number mono" id="tank-temp">—</div>
+        <div class="row"><span class="k">Crack observed</span><span class="v" id="tank-crack">—</span></div>
+      </div>
+
+      <div class="panel">
+        <h3>Evacuation</h3>
+        <div class="big-number mono" id="evac-residents">—</div>
+        <div class="row"><span class="k">Area</span><span class="v mono" id="evac-area">— sq mi</span></div>
+        <div class="row"><span class="k">Order lifted</span><span class="v" id="evac-lifted">—</span></div>
+        <div class="row"><span class="k">Expanded today</span><span class="v" id="evac-expanded">—</span></div>
+        <div class="row"><span class="k">Boundary</span><span class="v mono" style="font-size:11px" id="evac-boundary">—</span></div>
+      </div>
+
+      <div class="panel">
+        <h3>Schools closed</h3>
+        <div id="schools">—</div>
+      </div>
+    </div>
+
+    <h2 class="section-header">Sources</h2>
+
+    <details>
+      <summary id="sources-summary">Verified from 0 sources</summary>
+      <div class="source-list" id="source-list"></div>
+    </details>
+
+    </div><!-- /.main-col -->
+
+    <aside class="sidebar" id="statements-details">
+      <div class="sidebar-header">
+        <span id="statements-summary">0 official statements</span>
+        <span style="font-weight:400;text-transform:none;letter-spacing:0">newest first</span>
+      </div>
+      <div class="sidebar-list" id="statements-list"></div>
+    </aside>
+
+    </div><!-- /.layout -->
+
+    <div class="footer">
+      <span>Next check: <span id="next-check" class="mono">—</span></span>
+      &nbsp;·&nbsp;
+      <a href="https://ggcity.org/emergency" target="_blank">Check address vs zone</a>
+      &nbsp;·&nbsp;
+      <a href="BRIEF_2026-05-24.md">Full brief</a>
+      &nbsp;·&nbsp;
+      <a href="go_bag.md">Go-bag</a>
+    </div>
+  </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+<script>
+const REFRESH_MS = 30000;
+const NORMAL_TITLE = "GG MMA Tank Dashboard";
+const BREAKING_TITLE = "🔴 BREAKING — GG MMA Tank";
+const WIND_REFRESH_MS = 5 * 60 * 1000;   // 5 min
+const WIND_CACHE_MS   = 5 * 60 * 1000;
+
+let lastZoneStatus = null;
+let titleToggle = null;
+let audioCtx = null;
+let lastFetchOK = true;
+let mapInited = false;
+let map = null;
+let layers = { evac: null, facility: null, blasts: [], plume: null, you: null };
+let configCache = null;
+let lastWind = null;
+let safetyPin = null;
+let safetyPinBuffer = null;
+let fixedPointMarkers = [];
+let lastSnapshotForChanges = null;
+
+function $(id) { return document.getElementById(id); }
+
+/* ============ THEME ============ */
+function applyTheme(theme) {
+  document.documentElement.classList.toggle("theme-dark", theme === "dark");
+  document.documentElement.classList.toggle("theme-light", theme !== "dark");
+  $("theme-toggle").textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+}
+function toggleTheme() {
+  const cur = document.documentElement.classList.contains("theme-dark") ? "dark" : "light";
+  const next = cur === "dark" ? "light" : "dark";
+  localStorage.setItem("gg-theme", next);
+  applyTheme(next);
+}
+applyTheme(localStorage.getItem("gg-theme") || "light");
+
+/* ============ FORMAT HELPERS ============ */
+function fmtNumber(n) { return (n === null || n === undefined) ? "—" : n.toLocaleString("en-US"); }
+function relativeTime(iso) {
+  if (!iso) return "—";
+  const then = new Date(iso), now = new Date();
+  const diffMin = Math.floor((now - then) / 60000);
+  if (diffMin < 1) return "just now";
+  if (diffMin < 60) return diffMin + " min ago";
+  const diffH = Math.floor(diffMin / 60);
+  if (diffH < 24) return then.toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"});
+  return then.toLocaleDateString("en-US", {weekday:"short"}) + " " + then.toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"});
+}
+function fmtAbsTime(iso) {
+  return iso ? new Date(iso).toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"}) : "—";
+}
+function fmtAbsDateTime(iso) {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  const date = d.toLocaleDateString("en-US", {weekday:"short", month:"short", day:"numeric"});
+  const time = d.toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"});
+  return `${date}, ${time}`;
+}
+function yesNo(v) {
+  if (v === true)  return '<span class="yes">yes</span>';
+  if (v === false) return '<span class="no">no</span>';
+  return "—";
+}
+
+/* ============ BANNERS ============ */
+const BREAKING_EXPLAIN = "Triggered when the writer detects a structural change vs the previous snapshot. URGENT = an evac order toggled, severity bumped, first injuries reported, or incident resolved (pulsing red + beep). UPDATE = a new official statement was published, or the resident-count shifted noticeably (amber, no beep). Auto-clears after 30 min if no fresh trigger. Click the banner to jump to the statements list.";
+
+function setBanners(banners) {
+  $("banners").innerHTML = banners.map(b => {
+    const aria = b.kind==='breaking' ? 'aria-live="assertive"' : '';
+    const clickable = (b.kind==='breaking' || b.kind==='update');
+    const info = clickable
+      ? `<a class="banner-info-icon" title="${BREAKING_EXPLAIN}" aria-label="What does this mean?" onclick="event.stopPropagation()">?</a>`
+      : '';
+    const action = clickable ? '<span class="banner-action">→ See statements</span>' : '';
+    const onclick = clickable ? 'onclick="jumpToStatements()" style="cursor:pointer"' : '';
+    return `<div class="banner banner-${b.kind}" ${aria} ${onclick}>
+       <span><strong>${b.title}</strong> ${b.message||''}${info}</span>
+       ${action}
+     </div>`;
+  }).join("");
+}
+
+function jumpToStatements() {
+  const sidebar = $("statements-details");
+  const list = $("statements-list");
+  if (!sidebar) return;
+  // On wide screens, the sidebar is sticky and always visible — just scroll
+  // its internal list to the top + highlight the newest statement.
+  // On narrow screens, scroll the page to bring the sidebar into view.
+  const isNarrow = window.matchMedia("(max-width: 1000px)").matches;
+  if (isNarrow) {
+    sidebar.scrollIntoView({behavior: "smooth", block: "start"});
+  }
+  if (list) list.scrollTop = 0;
+  sidebar.style.transition = "box-shadow 0.3s";
+  sidebar.style.boxShadow = "0 0 0 3px var(--sev-moderate)";
+  setTimeout(() => { sidebar.style.boxShadow = ""; }, 1500);
+  const firstStmt = list && list.querySelector(".stmt");
+  if (firstStmt) {
+    firstStmt.classList.add("fresh-highlight");
+    setTimeout(() => firstStmt.classList.remove("fresh-highlight"), 2500);
+  }
+}
+window.jumpToStatements = jumpToStatements;
+
+/* ============ TAB TITLE + BEEP ============ */
+function startBreakingTitle() {
+  if (titleToggle) return;
+  let on = true;
+  titleToggle = setInterval(() => { document.title = on ? BREAKING_TITLE : NORMAL_TITLE; on = !on; }, 1000);
+}
+function stopBreakingTitle() {
+  if (titleToggle) { clearInterval(titleToggle); titleToggle = null; }
+  document.title = NORMAL_TITLE;
+}
+function beep() {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.value = 880; osc.type = "square"; gain.gain.value = 0.15;
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+      }, i * 350);
+    }
+  } catch (e) { /* silent is acceptable */ }
+}
+
+/* ============ TAKEOVER ============ */
+function showTakeover(reason) {
+  $("takeover-reason").textContent = reason;
+  $("takeover").classList.remove("hidden");
+  $("takeover").classList.add("takeover-flash");
+  beep();
+}
+function dismissTakeover() {
+  $("takeover").classList.add("hidden");
+  $("takeover").classList.remove("takeover-flash");
+}
+window.dismissTakeover = dismissTakeover;
+window.toggleTheme = toggleTheme;
+
+/* ============ MAP ============ */
+
+// Bearing math — given a start lat/lon and bearing (deg from N, clockwise)
+// + distance (miles), compute the destination lat/lon. Spherical Earth approx.
+function destPoint(lat, lon, bearingDeg, distMi) {
+  const R = 3958.8; // Earth radius in miles
+  const br = bearingDeg * Math.PI / 180;
+  const φ1 = lat * Math.PI / 180;
+  const λ1 = lon * Math.PI / 180;
+  const dr = distMi / R;
+  const φ2 = Math.asin(Math.sin(φ1) * Math.cos(dr) + Math.cos(φ1) * Math.sin(dr) * Math.cos(br));
+  const λ2 = λ1 + Math.atan2(
+    Math.sin(br) * Math.sin(dr) * Math.cos(φ1),
+    Math.cos(dr) - Math.sin(φ1) * Math.sin(φ2)
+  );
+  return [φ2 * 180 / Math.PI, ((λ2 * 180 / Math.PI) + 540) % 360 - 180];
+}
+
+function initMap(cfg) {
+  if (mapInited) return;
+  const m = cfg.map;
+  const c = [m.facility.lat, m.facility.lon];
+  map = L.map("map", { zoomControl: true, scrollWheelZoom: true }).setView(c, 13);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Blast zone circles
+  m.blast_zones_mi.forEach(b => {
+    const c = L.circle([m.facility.lat, m.facility.lon], {
+      radius: b.radius * 1609.34, // mi -> meters
+      color: b.color, weight: 2, fillOpacity: 0.10, dashArray: "4 4"
+    }).addTo(map).bindTooltip(`${b.label} (~${b.radius} mi radius)`, {sticky: true});
+    layers.blasts.push(c);
+  });
+
+  // Evacuation polygon
+  layers.evac = L.polygon(m.evac_polygon, {
+    color: "#3b82f6", weight: 2, fillOpacity: 0.12
+  }).addTo(map).bindTooltip("Evacuation zone (per ggcity.org)", {sticky: true});
+
+  // Facility marker
+  layers.facility = L.circleMarker([m.facility.lat, m.facility.lon], {
+    radius: 8, fillColor: "#111", color: "#fff", weight: 2, fillOpacity: 1
+  }).addTo(map).bindTooltip(m.facility.label, {permanent: false, direction: "top"});
+
+  // Anna's location (if set)
+  if (m.anna_location && Array.isArray(m.anna_location)) {
+    layers.you = L.circleMarker(m.anna_location, {
+      radius: 7, fillColor: "#16a34a", color: "#fff", weight: 2, fillOpacity: 1
+    }).addTo(map).bindTooltip("You", {permanent: true, direction: "right", offset: [8, 0]});
+  }
+
+  // Fixed reference points (rendered with per-point safety color once we know wind)
+  fixedPointMarkers = (m.fixed_points || []).map(fp => {
+    const marker = L.circleMarker([fp.lat, fp.lon], {
+      radius: 7, fillColor: "#6366f1", color: "#fff", weight: 2, fillOpacity: 1
+    }).addTo(map).bindTooltip(fp.label, {permanent: true, direction: "right", offset: [8, 0], className: "fixed-point-label"});
+    marker.__fp = fp;
+    return marker;
+  });
+
+  // Fit map to show evac + blast zones
+  const allBounds = L.latLngBounds([
+    ...m.evac_polygon,
+    [m.facility.lat, m.facility.lon],
+    destPoint(m.facility.lat, m.facility.lon, 0, 1.5),
+    destPoint(m.facility.lat, m.facility.lon, 180, 1.5)
+  ]);
+  map.fitBounds(allBounds, { padding: [20, 20] });
+
+  mapInited = true;
+}
+
+function renderPlume(cfg, wind) {
+  if (!map || !cfg || !wind) return;
+  const m = cfg.map;
+  // Wind direction is FROM in NOAA data — plume blows TO the opposite heading
+  const heading = (wind.directionDeg + 180) % 360;
+  const spread = (cfg.map.plume_cone_degrees || 30) / 2;
+  const maxLen = cfg.map.plume_max_length_mi || 4;
+  // Length scales with wind speed (mph). Floor 1 mi, cap maxLen.
+  const lenMi = Math.max(1, Math.min(maxLen, (wind.speedMph || 5) * 0.4));
+
+  const origin = [m.facility.lat, m.facility.lon];
+  const left  = destPoint(origin[0], origin[1], heading - spread, lenMi);
+  const right = destPoint(origin[0], origin[1], heading + spread, lenMi);
+  // Add a few intermediate points for a smoother arc tip
+  const mid   = destPoint(origin[0], origin[1], heading, lenMi * 1.05);
+
+  if (layers.plume) map.removeLayer(layers.plume);
+  layers.plume = L.polygon([origin, left, mid, right], {
+    color: "#a855f7", weight: 2, fillColor: "#a855f7", fillOpacity: 0.18, dashArray: "6 6"
+  }).addTo(map).bindTooltip(
+    `Estimated plume — wind ${Math.round(wind.speedMph)} mph from ${cardinalFromDeg(wind.directionDeg)} (${Math.round(wind.directionDeg)}°)`,
+    {sticky: true}
+  );
+
+  // Rotate the wind arrow in the header (arrow points TO wind heading)
+  $("wind-arrow").style.transform = `rotate(${heading}deg)`;
+  $("wind-text").textContent = `${cardinalFromDeg(wind.directionDeg)} → ${cardinalFromDeg(heading)} @ ${Math.round(wind.speedMph)} mph`;
+}
+
+function cardinalFromDeg(deg) {
+  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  return dirs[Math.round(((deg % 360) / 22.5)) % 16];
+}
+
+/* ============ SAFETY CHECK ============ */
+window.checkSafety = checkSafety;
+
+function haversineMi(lat1, lon1, lat2, lon2) {
+  const R = 3958.8;
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+
+function bearingDeg(lat1, lon1, lat2, lon2) {
+  const toRad = d => d * Math.PI / 180;
+  const toDeg = r => r * 180 / Math.PI;
+  const φ1 = toRad(lat1), φ2 = toRad(lat2);
+  const Δλ = toRad(lon2 - lon1);
+  const y = Math.sin(Δλ) * Math.cos(φ2);
+  const x = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+  return (toDeg(Math.atan2(y, x)) + 360) % 360;
+}
+
+function pointInPolygon(pt, polygon) {
+  // Ray casting; polygon is [[lat,lon], ...]
+  const x = pt[1], y = pt[0]; // lon, lat
+  let inside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i][1], yi = polygon[i][0];
+    const xj = polygon[j][1], yj = polygon[j][0];
+    const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+function angleDiff(a, b) {
+  // smallest absolute angle between two bearings (0..180)
+  let d = Math.abs(a - b) % 360;
+  return d > 180 ? 360 - d : d;
+}
+
+async function geocodeAddress(q, cfg) {
+  // Nominatim: free, no key, CORS-friendly. Strategy: try the user's query with
+  // an "Orange County, CA" bias first. If that returns nothing, retry with a
+  // viewbox bounded to the OC area. "and" → "&" because Nominatim's intersection
+  // lookup is more reliable with the ampersand.
+  const queryRaw = q.replace(/\s+and\s+/i, " & ");
+  const bias = (cfg && cfg.map && cfg.map.geocode_bias) || "Orange County, CA";
+  const viewbox = (cfg && cfg.map && cfg.map.geocode_viewbox);
+  const looksFullAddr = /\b(CA|California|\d{5})\b/i.test(queryRaw);
+  const queryWithBias = looksFullAddr ? queryRaw : `${queryRaw}, ${bias}`;
+
+  // Attempt 1: free-text query with bias appended
+  let url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(queryWithBias)}`;
+  let resp = await fetch(url, { headers: { "Accept-Language": "en" } });
+  if (!resp.ok) throw new Error("Nominatim HTTP " + resp.status);
+  let arr = await resp.json();
+
+  // Attempt 2: viewbox-bounded search using raw query
+  if ((!arr || !arr.length) && viewbox && viewbox.length === 4) {
+    const [w, n, e, s] = viewbox;
+    url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(queryRaw)}&viewbox=${w},${n},${e},${s}&bounded=1`;
+    resp = await fetch(url, { headers: { "Accept-Language": "en" } });
+    if (resp.ok) arr = await resp.json();
+  }
+
+  if (!arr || !arr.length) {
+    throw new Error("No result for: " + queryRaw + ". Try adding a city, or use a full street address.");
+  }
+  return {
+    lat: parseFloat(arr[0].lat),
+    lon: parseFloat(arr[0].lon),
+    displayName: arr[0].display_name,
+  };
+}
+
+function computeSafety(pt, cfg, wind) {
+  // pt = {lat, lon}, returns { level, headline, factors[], distance_mi, bearing_deg, downwind }
+  const m = cfg.map;
+  const dMi = haversineMi(pt.lat, pt.lon, m.facility.lat, m.facility.lon);
+  const brDeg = bearingDeg(m.facility.lat, m.facility.lon, pt.lat, pt.lon);
+
+  // Plume check: is point within the plume cone?
+  let downwind = false, plumeReach = false;
+  if (wind) {
+    const plumeHeading = (wind.directionDeg + 180) % 360;
+    const spread = (m.plume_cone_degrees || 30) / 2;
+    const within = angleDiff(brDeg, plumeHeading) <= spread;
+    const maxLen = Math.max(1, Math.min(m.plume_max_length_mi || 4, (wind.speedMph || 5) * 0.4));
+    downwind = within;
+    plumeReach = within && dMi <= maxLen;
+  }
+
+  // Layer checks (most-severe first)
+  const factors = [];
+  const insideEvac = pointInPolygon([pt.lat, pt.lon], m.evac_polygon);
+  if (insideEvac) factors.push({ sev: 3, label: "Inside official evacuation zone" });
+
+  // Sort blast zones smallest -> largest
+  const blasts = [...(m.blast_zones_mi || [])].sort((a, b) => a.radius - b.radius);
+  let blastHit = null;
+  for (const b of blasts) {
+    if (dMi <= b.radius) { blastHit = b; break; }
+  }
+  if (blastHit) {
+    const sev = blastHit.radius < 0.2 ? 4 : (blastHit.radius < 0.5 ? 3 : 2);
+    factors.push({ sev, label: `Inside blast zone: ${blastHit.label} (~${blastHit.radius} mi radius)` });
+  }
+
+  if (plumeReach) factors.push({ sev: 2, label: `Inside current chemical plume cone (downwind of tank, wind from ${cardinalFromDeg(wind.directionDeg)})` });
+  else if (downwind) factors.push({ sev: 1, label: `Downwind of tank (beyond plume estimate, ${dMi.toFixed(1)} mi out)` });
+
+  const maxSev = factors.reduce((m, f) => Math.max(m, f.sev), 0);
+
+  let level, headline;
+  if (maxSev >= 4) { level = "critical"; headline = "💥 CRITICAL RISK — within primary blast radius"; }
+  else if (maxSev === 3) { level = "high"; headline = insideEvac ? "🛑 EVACUATE — inside official evac zone" : "⚠️ HIGH RISK — within moderate damage radius"; }
+  else if (maxSev === 2) { level = "elevated"; headline = "⚠️ ELEVATED RISK — within injury radius or active plume"; }
+  else if (maxSev === 1) { level = "elevated"; headline = "🌬️ DOWNWIND — beyond plume estimate but in wind path"; }
+  else { level = "safe"; headline = `✅ LIKELY SAFE — outside all designated zones (${dMi.toFixed(1)} mi from tank)`; }
+
+  return { level, headline, factors, distance_mi: dMi, bearing_deg: brDeg, downwind, plumeReach, insideEvac };
+}
+
+function renderSafetyResult(addr, pt, result) {
+  const el = $("safety-result");
+  el.className = "safety-result safety-lvl-" + result.level;
+  const factorsList = result.factors.length
+    ? `<ul>${result.factors.map(f => `<li>${f.label}</li>`).join("")}</ul>`
+    : `<div style="font-size:13px;color:var(--text-dim);margin-top:4px">No risk factors detected at this location.</div>`;
+  el.innerHTML = `
+    <h4>${result.headline}</h4>
+    <div class="verdict-line">
+      <span><strong>Address:</strong> ${addr.displayName}</span>
+      <span><strong>Distance:</strong> ${result.distance_mi.toFixed(2)} mi from tank</span>
+      <span><strong>Bearing:</strong> ${cardinalFromDeg(result.bearing_deg)} (${Math.round(result.bearing_deg)}°)</span>
+    </div>
+    ${factorsList}
+    <div style="font-size:11px;color:var(--text-dim);margin-top:8px">
+      Pin dropped on map. This is an estimate based on the map config — verify with ggcity.org/emergency for official zone status.
+    </div>
+  `;
+
+  // Drop a pin
+  if (safetyPin) map.removeLayer(safetyPin);
+  if (safetyPinBuffer) map.removeLayer(safetyPinBuffer);
+  const color = ({ safe: "#16a34a", elevated: "#d97706", high: "#dc2626", critical: "#7f1d1d" })[result.level] || "#71717a";
+  safetyPin = L.circleMarker([pt.lat, pt.lon], {
+    radius: 9, fillColor: color, color: "#fff", weight: 3, fillOpacity: 1
+  }).addTo(map).bindTooltip(result.headline, { permanent: true, direction: "top", offset: [0, -10] });
+  // A thin ring so it stands out against the polygon fill
+  safetyPinBuffer = L.circleMarker([pt.lat, pt.lon], {
+    radius: 13, fillColor: color, color: color, weight: 1, fillOpacity: 0.2
+  }).addTo(map);
+
+  // Pan/zoom to fit pin + facility
+  const bounds = L.latLngBounds([[pt.lat, pt.lon], [configCache.map.facility.lat, configCache.map.facility.lon]]);
+  map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
+}
+
+async function checkSafety() {
+  const q = $("safety-input").value.trim();
+  if (!q) return;
+  const btn = $("safety-button");
+  const el = $("safety-result");
+  btn.disabled = true;
+  btn.textContent = "Checking…";
+  el.className = "safety-result safety-lvl-unknown";
+  el.classList.remove("hidden");
+  el.innerHTML = `<h4>Geocoding…</h4><div style="font-size:13px;color:var(--text-dim)">Looking up “${q}” via OpenStreetMap.</div>`;
+  try {
+    const addr = await geocodeAddress(q, configCache);
+    const result = computeSafety(addr, configCache, lastWind);
+    renderSafetyResult(addr, addr, result);
+  } catch (e) {
+    el.className = "safety-result safety-lvl-unknown";
+    el.innerHTML = `<h4>Could not check</h4><div style="font-size:13px;color:var(--text-dim)">${e.message}. Try a more specific address (e.g. add the city + state, or use a full street address).</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Check safety";
+  }
+}
+
+/* ============ WIND ============ */
+async function fetchWind(stationId) {
+  // Cache for WIND_CACHE_MS
+  const cached = JSON.parse(localStorage.getItem("gg-wind") || "null");
+  if (cached && (Date.now() - cached.fetchedAt) < WIND_CACHE_MS) {
+    return cached.wind;
+  }
+  try {
+    const url = `https://api.weather.gov/stations/${stationId}/observations/latest`;
+    const resp = await fetch(url, {headers: {"User-Agent": "GG-Dashboard/1.0"}});
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    const data = await resp.json();
+    const props = data.properties || {};
+    const dirDeg = props.windDirection && props.windDirection.value;
+    const spdKmh = props.windSpeed && props.windSpeed.value;
+    if (dirDeg === null || dirDeg === undefined) throw new Error("no wind direction in obs");
+    const wind = {
+      directionDeg: dirDeg,
+      speedMph: spdKmh != null ? spdKmh * 0.621371 : 5,
+      observedAt: props.timestamp,
+      station: stationId,
+    };
+    localStorage.setItem("gg-wind", JSON.stringify({wind, fetchedAt: Date.now()}));
+    return wind;
+  } catch (e) {
+    console.warn("wind fetch failed:", e);
+    // Fallback: prevailing wind in southern CA is W -> E (270° from); reasonable default.
+    return cached ? cached.wind : { directionDeg: 270, speedMph: 5, observedAt: null, station: stationId, fallback: true };
+  }
+}
+
+async function refreshWind() {
+  if (!configCache) return;
+  const stationId = configCache.map && configCache.map.weather_station || "KFUL";
+  lastWind = await fetchWind(stationId);
+  renderPlume(configCache, lastWind);
+  recolorFixedPoints();
+}
+
+function recolorFixedPoints() {
+  if (!configCache || !fixedPointMarkers.length) return;
+  fixedPointMarkers.forEach(m => {
+    const fp = m.__fp;
+    const result = computeSafety({lat: fp.lat, lon: fp.lon}, configCache, lastWind);
+    const color = ({safe:"#16a34a", elevated:"#d97706", high:"#dc2626", critical:"#7f1d1d"})[result.level] || "#6366f1";
+    m.setStyle({fillColor: color});
+    m.setTooltipContent(`<strong>${fp.label}</strong><br>${result.headline}<br><span style="font-size:11px;opacity:0.8">${result.distance_mi.toFixed(1)} mi · ${cardinalFromDeg(result.bearing_deg)}</span>`);
+    if (m._tooltip) {
+      m._tooltip.options.opacity = 1;
+      m._tooltip.options.permanent = true;
+    }
+  });
+}
+
+/* ============ MAIN RENDER ============ */
+function render(snap) {
+  if (snap.schema_version !== 1) {
+    setBanners([{kind:"stale", title:"Schema changed", message:"Reload this page."}]);
+    return;
+  }
+
+  $("updated-text").textContent = "Updated " + relativeTime(snap.last_updated_iso);
+
+  const banners = [];
+  const stale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
+  if (stale) {
+    const min = Math.floor((new Date() - new Date(snap.last_updated_iso)) / 60000);
+    banners.push({kind:"stale", title:"⚠️ Data is stale", message:`Last update was ${min} min ago. The writer script may have stopped.`});
+  }
+  if (!lastFetchOK) banners.push({kind:"offline", title:"Offline", message:"Showing last successful fetch."});
+  if (snap.breaking) {
+    // breaking_level: "urgent" (act-now) vs "info" (informational). Fallback to urgent for older snapshots without the field.
+    const level = snap.breaking_level || "urgent";
+    if (level === "info") {
+      banners.push({kind:"update", title:"📢 UPDATE", message: snap.breaking_reason || ""});
+      stopBreakingTitle();
+    } else {
+      banners.push({kind:"breaking", title:"🚨 URGENT", message: snap.breaking_reason || ""});
+      startBreakingTitle();
+    }
+  } else {
+    stopBreakingTitle();
+  }
+  setBanners(banners);
+
+  // Hero zone verdict
+  const you = snap.you || {};
+  const zone = you.zone_status || "unknown";
+  const hero = $("hero");
+  const heroH = $("hero-headline");
+  const heroSub = $("hero-sub");
+  hero.classList.remove("hero-outside", "hero-inside", "hero-unknown", "hero-resolved");
+  heroH.classList.remove("outside", "inside");
+
+  if (snap.incident && snap.incident.resolved_iso) {
+    hero.classList.add("hero-resolved");
+    heroH.textContent = "INCIDENT RESOLVED";
+    heroH.classList.add("outside");
+    heroSub.textContent = "Evacuation lifted " + fmtAbsTime(snap.incident.resolved_iso);
+  } else if (zone === "outside_downwind" || zone === "outside") {
+    hero.classList.add("hero-outside");
+    heroH.textContent = "YOU ARE OUTSIDE THE EVAC ZONE";
+    heroH.classList.add("outside");
+    heroSub.textContent = "Downwind. Shelter-in-place posture. Verify at ggcity.org/emergency.";
+  } else if (zone === "inside") {
+    hero.classList.add("hero-inside");
+    heroH.textContent = "YOU ARE INSIDE THE EVAC ZONE";
+    heroH.classList.add("inside");
+    heroSub.textContent = "Evacuate per OCFA guidance.";
+  } else {
+    hero.classList.add("hero-unknown");
+    heroH.textContent = "ZONE STATUS UNKNOWN";
+    heroSub.textContent = "Check ggcity.org/emergency";
+  }
+
+  // Zone-flip outside -> inside fires takeover
+  if (lastZoneStatus !== null
+      && (lastZoneStatus === "outside_downwind" || lastZoneStatus === "outside")
+      && zone === "inside") {
+    showTakeover("Your zone status flipped from OUTSIDE -> INSIDE the evacuation zone.");
+  } else if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
+    // Urgent-only audible beep on fresh urgent breaking
+    // (avoids beeping on initial-load urgent state and on info-level updates)
+    // We compare reason to track "freshness" via dedup
+    if (window.__lastUrgentReason !== snap.breaking_reason) {
+      beep();
+      window.__lastUrgentReason = snap.breaking_reason;
+    }
+  }
+  if (!snap.breaking || (snap.breaking_level || "urgent") !== "urgent") {
+    window.__lastUrgentReason = null;
+  }
+  lastZoneStatus = zone;
+
+  // Severity + headline
+  const sev = (snap.incident && snap.incident.severity) || "low";
+  const sevChip = $("severity-chip");
+  sevChip.className = "severity-chip sev-" + sev;
+  sevChip.textContent = sev;
+  $("status-headline").textContent = (snap.incident && snap.incident.status_headline) || "—";
+
+  // Tank
+  const tank = snap.tank || {};
+  $("tank-temp").textContent = (tank.temp_f !== null && tank.temp_f !== undefined) ? tank.temp_f + "°F" : "—";
+  $("tank-crack").innerHTML = yesNo(tank.crack_observed);
+
+  // Evac
+  const evac = snap.evacuation || {};
+  $("evac-residents").textContent = fmtNumber(evac.residents);
+  $("evac-area").textContent = (evac.area_sq_mi || "—") + " sq mi";
+  $("evac-lifted").innerHTML = yesNo(evac.lifted);
+  $("evac-expanded").innerHTML = yesNo(evac.expanded_since_yesterday);
+  $("evac-boundary").textContent = evac.boundary_text || "—";
+
+  // Schools
+  const schools = snap.schools_closed || [];
+  $("schools").innerHTML = schools.length
+    ? schools.map(s => `<div class="row"><span class="v">${s}</span></div>`).join("")
+    : '<span style="color:var(--text-dim)">none reported</span>';
+
+  // Sources
+  const sources = snap.sources_checked || [];
+  $("sources-summary").textContent = `Verified from ${sources.length} source${sources.length===1?"":"s"}`;
+  $("source-list").innerHTML = sources.map(s =>
+    `<a href="${s.url}" target="_blank">${s.title || s.url}</a>`
+  ).join("");
+
+  // Statements — sort newest first, full date+time, render into the sidebar
+  const stmts = (snap.official_statements || []).slice().sort((a, b) => {
+    const ta = a.time_iso ? new Date(a.time_iso).getTime() : 0;
+    const tb = b.time_iso ? new Date(b.time_iso).getTime() : 0;
+    return tb - ta;
+  });
+  $("statements-summary").textContent = `${stmts.length} official statement${stmts.length===1?"":"s"}`;
+  const now = Date.now();
+  const TWO_HOURS = 2 * 60 * 60 * 1000;
+  $("statements-list").innerHTML = stmts.map((s, idx) => {
+    const t = s.time_iso ? new Date(s.time_iso).getTime() : 0;
+    const ageMs = t ? (now - t) : Infinity;
+    const isNewest = idx === 0;
+    const isFresh = !isNewest && ageMs < TWO_HOURS;
+    const badge = isNewest ? '<span class="stmt-newest-badge">Newest</span>'
+                : isFresh   ? '<span class="stmt-fresh-badge">Recent</span>'
+                : '';
+    const relative = t ? `<span class="stmt-relative">(${relativeTime(s.time_iso)})</span>` : '';
+    return `<div class="stmt${isNewest ? ' is-newest' : ''}">
+       <div class="stmt-datetime">${badge}${fmtAbsDateTime(s.time_iso)}${relative}</div>
+       <div class="stmt-agency">${s.agency || "—"}</div>
+       <div class="stmt-text">${s.text || ""}</div>
+       ${s.source_url ? `<a class="stmt-source" href="${s.source_url}" target="_blank">source ↗</a>` : ""}
+     </div>`;
+  }).join("");
+
+  $("next-check").textContent = fmtAbsTime(snap.next_check_at_iso);
+}
+
+/* ============ FETCH ORCHESTRATION ============ */
+async function loadConfig() {
+  try {
+    const resp = await fetch("config.json?t=" + Date.now(), {cache:"no-store"});
+    if (!resp.ok) throw new Error("config.json HTTP " + resp.status);
+    configCache = await resp.json();
+    initMap(configCache);
+    refreshWind();
+  } catch (e) {
+    console.warn("config.json load failed:", e);
+  }
+}
+
+async function fetchStatus() {
+  try {
+    const resp = await fetch("status.json?t=" + Date.now(), {cache:"no-store"});
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    const snap = await resp.json();
+    lastFetchOK = true;
+    render(snap);
+  } catch (e) {
+    lastFetchOK = false;
+    setBanners([{kind:"offline", title:"Offline / file missing", message:"Could not load status.json — " + e.message + ". If you opened this file via file://, use start_dashboard.bat instead."}]);
+    if (lastZoneStatus === null) {
+      $("hero-headline").textContent = "Initializing…";
+      $("hero-sub").textContent = "Waiting for first writer run (every 30 min). Or status.json is unreachable.";
+    }
+  }
+}
+
+/* ============ KICKOFF ============ */
+loadConfig().then(fetchStatus);
+setInterval(fetchStatus, REFRESH_MS);
+setInterval(refreshWind, WIND_REFRESH_MS);
+</script>
+</body>
+</html>
