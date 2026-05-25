@@ -29,3 +29,12 @@ desktop.ini
 
 # Eval transient output (the .jsonl log itself is kept)
 eval/.last_run/
+
+# Orchestration scratch (split-and-orchestrate wiki/state)
+.orchestra/
+
+# Secrets / local env (never commit)
+.env
+.env.local
+.env.*.local
+.vercel
