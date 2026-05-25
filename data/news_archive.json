@@ -1,0 +1,768 @@
+{
+  "audit": {
+    "generated_iso": "2026-05-25T03:10:00Z",
+    "method": "WebSearch + WebFetch verification",
+    "search_queries": [
+      "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+      "Garden Grove chemical tank emergency evacuation May 2026",
+      "ABC7 Garden Grove chemical tank live updates crack temperature",
+      "KTLA Garden Grove toxic tank YouTube video Orange County",
+      "NBC Los Angeles Garden Grove chemical tank methyl methacrylate explainer video",
+      "Garden Grove chemical tank Newsom state of emergency Orange County news",
+      "LA Times Garden Grove chemical tank GKN Aerospace evacuation",
+      "Orange County Register Garden Grove chemical tank GKN evacuation",
+      "Garden Grove chemical tank YouTube ABC News NBC LA Fox 11 video coverage May 24 2026"
+    ],
+    "outlets_consulted": [
+      "ABC7 Los Angeles (KABC)",
+      "ABC News (national)",
+      "NBC Los Angeles (NBC4 / KNBC)",
+      "NBC News (national)",
+      "KTLA",
+      "CBS News / CBS Los Angeles (KCAL)",
+      "CBS8 (San Diego)",
+      "FOX 11 Los Angeles (KTTV)",
+      "NPR",
+      "TIME",
+      "LAist",
+      "AOL",
+      "Los Cerritos Community News",
+      "News18 (N18G)",
+      "Wikipedia",
+      "WWAYTV3"
+    ],
+    "notes": "The incident is REAL and broadly verifiable across major national and Los Angeles / Orange County outlets, plus a dedicated Wikipedia article (en.wikipedia.org/wiki/Garden_Grove_chemical_leak) citing ~50 sources (LA Times, Guardian, CNN, CBS, Reuters, NPR, NYT, NBC, KTLA, ABC7, OC Register, AP). Core facts cross-confirmed: GKN Aerospace facility at 12122 Western Ave, Garden Grove; methyl methacrylate (MMA) tank overheating from ~2026-05-21 (~3:30-3:40pm PDT Thursday); ~50,000 evacuated over a ~9 sq mi zone (Stanton + parts of Garden Grove, Anaheim, Buena Park, Cypress, Westminster); Gov. Newsom state of emergency Sat 2026-05-23; OC DA Todd Spitzer criminal probe; class-action by X-Law Group + Presidio Law Firm; OCFA incident command (Covey, McGovern); rising internal temp (77F -> 90F -> >100F gauge-max); crack(s) found in overnight recon. All 6 YouTube IDs in the seed set resolve and their titles match the incident. CAVEATS: (1) Exact publish TIMESTAMPS for most items are approximate -- search/fetch surfaces dates but rarely minute-level publish times; ISO times carried from the seed or estimated are flagged per-item via published_iso_confidence. (2) WebFetch on YouTube returns the video title but the truncated page did NOT expose the channel name, so outlet attribution for video items relies on the seed + the search-result snippets that named the reporting outlet (e.g. KTLA's own timeline references these clips). (3) The seed ABC7 'entry' deep-links (per-update fragments under .../19152918/entry/NNNN/) are part of a live blog; the parent live-blog URL and the temperature entry (19158460) were directly verified to resolve, but not every individual entry fragment was independently fetched. (4) One seed published_iso looks like a likely data-entry artifact: the ABC7 'Map shows potential OC blast zone' item carries 2026-05-24T07:08:00Z which is plausible but unverified to the minute.",
+    "knowledge_cutoff_caveat": true,
+    "knowledge_cutoff_note": "Event postdates the assistant training cutoff (Jan 2026). ALL facts here are sourced from live WebSearch/WebFetch performed 2026-05-25, not from model memory."
+  },
+  "items": [
+    {
+      "title": "Neighbors in Garden Grove evacuate due to leaking chemical tank",
+      "outlet": "KTLA",
+      "url": "https://www.youtube.com/watch?v=oRVlU3PrtcI",
+      "type": "video",
+      "youtube_id": "oRVlU3PrtcI",
+      "published_iso": "2026-05-22T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Early evacuation coverage; notes evacuation centers at Garden Grove Sports & Rec Center and Cypress Recreation & Community Center.",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank YouTube ABC News NBC LA Fox 11 video coverage May 24 2026",
+        "fetched_iso": "2026-05-25T03:05:00Z",
+        "url_status": "verified-resolves",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Officials warn toxic tank in Garden Grove could explode",
+      "outlet": "KTLA",
+      "url": "https://www.youtube.com/watch?v=P3tTEWNL97o",
+      "type": "video",
+      "youtube_id": "P3tTEWNL97o",
+      "published_iso": "2026-05-22T20:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Friday report: thousands under evacuation orders after officials warned the leaking tank could explode.",
+      "provenance": {
+        "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
+        "fetched_iso": "2026-05-25T02:55:00Z",
+        "url_status": "unchecked",
+        "url_status_note": "Surfaced in KTLA-related search results with descriptive snippet; URL not individually fetched.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Fire officials concerned tank with toxic chemicals could explode in Garden Grove",
+      "outlet": "KTLA (likely)",
+      "url": "https://www.youtube.com/watch?v=H-wR6qybCPA",
+      "type": "video",
+      "youtube_id": "H-wR6qybCPA",
+      "published_iso": "2026-05-22T22:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Fire officials express concern the toxic tank could explode; aired during the Friday escalation.",
+      "provenance": {
+        "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
+        "fetched_iso": "2026-05-25T03:05:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "Title confirmed via WebFetch; channel name not exposed by YouTube page, outlet inferred from search context.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "BREAKING LIVE: Toxic Chemical Leak From 34,000-Gallon Tank Triggers Evacuations in California",
+      "outlet": "News18 (N18G)",
+      "url": "https://www.youtube.com/watch?v=erJI75y4N5s",
+      "type": "video",
+      "youtube_id": "erJI75y4N5s",
+      "published_iso": "2026-05-23T12:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "International (India) breaking live stream covering the 34,000-gallon MMA tank evacuations in California.",
+      "provenance": {
+        "search_query": "(seed cross-reference) verified via WebFetch",
+        "fetched_iso": "2026-05-25T02:48:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed title AND channel 'N18G'.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Thousands evacuated as 34,000-gallon tank spewing toxic chemicals into air in Garden Grove could explode",
+      "outlet": "KTLA",
+      "url": "https://ktla.com/news/orange-county/thousands-evacuated-toxic-chemicals-spew-into-air-garden-grove/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Headline coverage of the 34,000-gallon tank and mass evacuation in Garden Grove.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "url_status_note": "Top organic search hit; KTLA domain confirmed live via other fetched KTLA pages.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Thousands still evacuated amid Orange County toxic chemical leak that could lead to explosion",
+      "outlet": "KTLA",
+      "url": "https://www.youtube.com/watch?v=76zNi9GB88Y",
+      "type": "video",
+      "youtube_id": "76zNi9GB88Y",
+      "published_iso": "2026-05-23T18:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Saturday Sky5 report (KTLA's Rich Prickett) on continued evacuations over the leaking 34,000-gallon tank.",
+      "provenance": {
+        "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
+        "fetched_iso": "2026-05-25T03:05:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "Title confirmed via WebFetch; outlet/reporter (KTLA, Rich Prickett, Sky5) from search snippet.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Over 40,000 evacuated in California chemical leak as Orange County officials warn tank \"is going to fail,\" may explode",
+      "outlet": "CBS Los Angeles (KCAL)",
+      "url": "https://www.cbsnews.com/losangeles/news/flammable-epoxy-leak-in-orange-county-prompts-hazmat-response/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS LA reports 40,000+ evacuated; officials warn the tank 'is going to fail' and may explode.",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank emergency evacuation May 2026",
+        "fetched_iso": "2026-05-25T02:42:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Authorities urgently try to stop California chemical tank explosion; 50,000 under evacuation orders",
+      "outlet": "ABC News (national)",
+      "url": "https://abcnews.com/US/evacuation-orders-issued-california-city-chemical-tank-fails/story?id=133234846",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "National ABC News writethrough: 50,000 under evacuation orders as crews try to stop a tank explosion.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Little-Known Aerospace Giant GKN at Center of Massive Orange County Hazmat Crisis in Garden Grove",
+      "outlet": "Los Cerritos Community News",
+      "url": "https://www.loscerritosnews.net/2026/05/23/little-known-aerospace-giant-gkn-at-center-of-massive-orange-county-hazmat-crisis-in-garden-grove/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "date-in-url",
+      "summary": "Profile of GKN Aerospace as the company at the center of the hazmat crisis. Publish date 2026-05-23 embedded in URL path.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove residents asked to evacuate area; toxic tank could explode",
+      "outlet": "LAist",
+      "url": "https://laist.com/brief/news/garden-grove-residents-asked-to-evacuate-area-toxic-tank-could-explode",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "LAist brief on the evacuation request as the toxic tank threatened to explode.",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank emergency evacuation May 2026",
+        "fetched_iso": "2026-05-25T02:42:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Recap: Firefighters face 'unprecedented' Garden Grove chemical tank crisis (live blog)",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/live-updates-garden-grove-chemical-tank-crisis/3894268/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "NBC LA running recap/live blog of the 'unprecedented' crisis; cites drone temp readings and Tank #2 neutralizer.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:42:00Z",
+        "url_status": "unchecked",
+        "url_status_note": "Distinct from seed's NBC live-blog URL (3894473); this is the earlier '...-crisis/3894268' recap. Also referenced in seeded status.json official_statements.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove tank faces explosion or leak",
+      "outlet": "FOX 11 Los Angeles (KTTV)",
+      "url": "https://www.foxla.com/video/fmc-8z5j4dfq5fdsmhel",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T09:30:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "FOX 11 video report on the damaged tank in danger of exploding. Search snippet cites posting 2026-05-24 02:30 AM PDT (~09:30Z).",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank YouTube ABC News NBC LA Fox 11 video coverage May 24 2026",
+        "fetched_iso": "2026-05-25T03:00:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Chemical tank 'on the edge' of exploding in California as crews try to avert disaster",
+      "outlet": "NBC News (national)",
+      "url": "https://www.nbcnews.com/news/us-news/chemical-tank-edge-exploding-california-crews-try-avert-potential-disa-rcna346668",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "National NBC News: tank described by incident commander as 'literally on the edge' of exploding.",
+      "provenance": {
+        "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
+        "fetched_iso": "2026-05-25T02:55:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Southern California crews prepare for possible toxic tank explosion",
+      "outlet": "NBC News (national)",
+      "url": "https://www.nbcnews.com/news/us-news/california-evacuation-chemical-explosion-rcna346582",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "National NBC News on crews preparing for a possible toxic tank explosion in Southern California.",
+      "provenance": {
+        "search_query": "NBC Los Angeles Garden Grove chemical tank methyl methacrylate explainer video",
+        "fetched_iso": "2026-05-25T02:46:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Toxic chemicals rain from sky as terrifying leak at SoCal plant forces evacuations",
+      "outlet": "AOL",
+      "url": "https://www.aol.com/news/toxic-chemicals-rain-sky-terrifying-140924002.html",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Aggregated wire-style coverage of the SoCal plant leak forcing evacuations.",
+      "provenance": {
+        "search_query": "LA Times Garden Grove chemical tank GKN Aerospace evacuation",
+        "fetched_iso": "2026-05-25T02:50:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "California tank holding dangerous chemicals is set to explode or leak, officials say. Here's what to know",
+      "outlet": "CBS News (national)",
+      "url": "https://www.cbsnews.com/news/garden-grove-methyl-methacrylate-chemical-tank-california/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "National CBS explainer on the MMA tank set to explode or leak; what residents should know.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "What is methyl methacrylate? Toxic chemical leak in Garden Grove tank at center of hazmat crisis poses health, fire risks",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/post/what-is-methyl-methacrylate-toxic-chemical-leak-garden-grove-tank-center-hazmat-crisis/19152928/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 explainer on MMA, its health and fire risks. Referenced in seeded status.json official_statements.",
+      "provenance": {
+        "search_query": "NBC Los Angeles Garden Grove chemical tank methyl methacrylate explainer video",
+        "fetched_iso": "2026-05-25T02:46:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Explainer on methyl methacrylate",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/video/news/local/explainer-on-methyl-methacrylate/3894525/",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T16:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "NBC4 meteorologist Kelley Moody explains what MMA is; broadcast on Today in LA, Sun 2026-05-24.",
+      "provenance": {
+        "search_query": "NBC Los Angeles Garden Grove chemical tank methyl methacrylate explainer video",
+        "fetched_iso": "2026-05-25T02:47:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves and title matches.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Map shows potential blast zones should leaking chemical tank explode in Garden Grove",
+      "outlet": "KTLA",
+      "url": "https://ktla.com/news/orange-county/map-potential-blast-zones-chemical-tank-explode-garden-grove/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "KTLA maps the potential blast zones if the tank explodes (innermost severe-damage circle, moderate/light outward).",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Map shows potential OC blast zone if unstable chemical tank explodes",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19160210/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T07:08:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry showing the potential OC blast zone. (Seed published_iso 07:08Z is plausible but unverified to the minute.)",
+      "provenance": {
+        "search_query": "(seed cross-reference)",
+        "fetched_iso": "2026-05-25T02:52:00Z",
+        "url_status": "unchecked",
+        "url_status_note": "Parent live-blog (19152918) verified live; this entry fragment not independently fetched.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Newsom declares state of emergency in OC, makes additional shelter sites available",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19157546/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T19:30:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry on Newsom's state-of-emergency declaration and additional shelter sites.",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank Newsom state of emergency Orange County news",
+        "fetched_iso": "2026-05-25T02:44:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "State of emergency declared amid potentially explosive Orange County chemical incident",
+      "outlet": "KTLA",
+      "url": "https://ktla.com/news/state-of-emergency-garden-grove-chemical-incident/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T20:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "KTLA on Newsom's Saturday state-of-emergency declaration for Orange County.",
+      "provenance": {
+        "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
+        "fetched_iso": "2026-05-25T02:55:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "California Gov. Newsom declares state of emergency for Orange County chemical leak as DA launches probe into its cause",
+      "outlet": "CBS Los Angeles",
+      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-chemical-leak-plans-orange-county-california-evacuations/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T21:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS LA: Newsom declares state of emergency; OC DA Spitzer launches probe into the cause.",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank Newsom state of emergency Orange County news",
+        "fetched_iso": "2026-05-25T02:44:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Orange County DA launches probe into toxic chemical leak in California: \"We are not getting satisfactory answers\"",
+      "outlet": "CBS Los Angeles",
+      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-gkn-aerospace-chemical-leak-investigation-orange-county-district-attorney-whistleblowers/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T22:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS LA on DA Spitzer's investigation and call for GKN whistleblowers. Referenced in seeded status.json.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove: Tens of Thousands Ordered to Evacuate Over Chemical Tank Explosion Risk",
+      "outlet": "TIME",
+      "url": "https://time.com/article/2026/05/24/garden-grove-chemical-tank-explosion-/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-in-url",
+      "summary": "TIME national coverage of the mass evacuation over explosion risk. Publish date 2026-05-24 embedded in URL.",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank emergency evacuation May 2026",
+        "fetched_iso": "2026-05-25T02:42:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "California chemical tank has cracked causing state of emergency, thousands to evacuate",
+      "outlet": "NPR",
+      "url": "https://www.npr.org/2026/05/24/nx-s1-5833165/california-chemical-tank-malfunction-leak-explode-emergency-evacuate",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-in-url",
+      "summary": "NPR national report: tank has cracked; state of emergency; thousands evacuated. Publish date 2026-05-24 in URL.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Southern California chemical tank has a crack that could possibly lower risk of explosion",
+      "outlet": "CBS8 (San Diego)",
+      "url": "https://www.cbs8.com/article/news/nation-world/southern-california-orange-county-chemical-tank-damage-leak-explosion-risk-evacuation-state-emergency/507-828e4f9b-957d-49df-80d2-0eb52aa82fae",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS8 on the crack that could lower explosion risk.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Potentially explosive Garden Grove chemical incident continues to evolve Sunday",
+      "outlet": "KTLA",
+      "url": "https://ktla.com/news/orange-county/potentially-explosive-garden-grove-chemical-incident-continues-to-evolve-sunday/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T14:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "KTLA Sunday update as the incident continues to evolve (crack vetting, rising temp).",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank emergency evacuation May 2026",
+        "fetched_iso": "2026-05-25T02:42:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "What to know 48 hours into toxic chemical tank crisis in Orange County",
+      "outlet": "ABC News (national)",
+      "url": "https://www.youtube.com/watch?v=oGNppVWDiug",
+      "type": "video",
+      "youtube_id": "oGNppVWDiug",
+      "published_iso": "2026-05-23T20:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC News national video recap ~48 hours into the crisis.",
+      "provenance": {
+        "search_query": "(seed cross-reference) verified via WebFetch",
+        "fetched_iso": "2026-05-25T02:48:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed title; channel not exposed by page, outlet from seed.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Temperature in chemical storage tank has increased, not cooled, OCFA says",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19157063/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T15:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry: OCFA says tank temperature increased rather than cooled.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove chemical leak: Tank's internal temperature increasing",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gas-leak-temperature/3894210/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T16:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "NBC LA on the tank's rising internal temperature.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Live: The latest on the Garden Grove crisis",
+      "outlet": "ABC News (national)",
+      "url": "https://www.youtube.com/watch?v=JDvRR9feMUs",
+      "type": "video",
+      "youtube_id": "JDvRR9feMUs",
+      "published_iso": "2026-05-24T21:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC News national live coverage of the latest on the Garden Grove crisis.",
+      "provenance": {
+        "search_query": "(seed cross-reference) verified via WebFetch",
+        "fetched_iso": "2026-05-25T02:48:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed title; channel not exposed by page, outlet from seed.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Toxic tank still on path to spill or explode in Orange County",
+      "outlet": "KTLA",
+      "url": "https://www.youtube.com/watch?v=N8caNzoKrTo",
+      "type": "video",
+      "youtube_id": "N8caNzoKrTo",
+      "published_iso": "2026-05-24T17:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "KTLA video: toxic tank still on path to spill or explode (full title 'See the latest details').",
+      "provenance": {
+        "search_query": "(seed cross-reference) verified via WebFetch",
+        "fetched_iso": "2026-05-25T02:48:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed title; channel not exposed by page, outlet from seed.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Efforts to stop California chemical leak in Orange County on new trajectory, officials say, as 50,000 remain evacuated",
+      "outlet": "CBS Los Angeles",
+      "url": "https://www.cbsnews.com/losangeles/news/california-chemical-leak-orange-county-garden-grove-emergency/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T20:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS LA: response on a 'new trajectory' after crack discovery; 50,000 remain evacuated.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Resources for residents evacuated due to chemical tank crisis",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19162903/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T00:30:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry listing resources for evacuated residents.",
+      "provenance": {
+        "search_query": "(seed cross-reference)",
+        "fetched_iso": "2026-05-25T02:52:00Z",
+        "url_status": "unchecked",
+        "url_status_note": "Parent live-blog verified live; this entry fragment not independently fetched.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Live updates: Potential crack found in Garden Grove chemical tank may change strategy (running blog)",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/live-updates-garden-grove-chemical-tank-emergency/3894473/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T01:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "NBC LA running live blog on the potential crack that may change response strategy.",
+      "provenance": {
+        "search_query": "(seed cross-reference)",
+        "fetched_iso": "2026-05-25T02:52:00Z",
+        "url_status": "unchecked",
+        "url_status_note": "Also listed in seeded status.json sources_checked.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Crews find crack in tank, gain positive intel that could shift response strategy",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19163069/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T01:10:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry: crews find crack and gain positive intel that could shift strategy.",
+      "provenance": {
+        "search_query": "(seed cross-reference)",
+        "fetched_iso": "2026-05-25T02:52:00Z",
+        "url_status": "unchecked",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Temperature of unstable tank is increasing 1 degree per hour, officials say",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19158460/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T01:10:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry: tank temperature rising ~1 degree per hour, now over the 100F gauge max.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:50:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed entry resolves and headline matches.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Garden Grove chemical tank emergency: Toxic tank on path to spill or explode in Orange County; crews find cracks (live blog hub)",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T02:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7's master live-blog hub for the incident; updated continuously. Parent of all ABC7 entry fragments.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "Top hit and verified live; in seeded status.json sources_checked.",
+        "matches_seed": false
+      }
+    }
+  ],
+  "existing_provenance": [
+    {
+      "seed_outlet": "ABC7 Los Angeles",
+      "seed_title": "Map shows potential OC blast zone if unstable chemical tank explodes",
+      "seed_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19160210/",
+      "verification": "plausible-unverified",
+      "detail": "Parent ABC7 live-blog (19152918) verified live via WebFetch. This specific entry fragment (19160210) was not independently fetched; the live-blog structure and topic match. published_iso 2026-05-24T07:08:00Z is plausible but unverified to the minute."
+    },
+    {
+      "seed_outlet": "ABC7 Los Angeles",
+      "seed_title": "Crews find crack in tank, gain positive intel that could shift response strategy",
+      "seed_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19163069/",
+      "verification": "topic-corroborated",
+      "detail": "Crack discovery + 'positive intel could shift strategy' corroborated across ABC7, KTLA, CBS, NPR. Entry fragment not independently fetched; parent live-blog verified live."
+    },
+    {
+      "seed_outlet": "ABC7 Los Angeles",
+      "seed_title": "Temperature of unstable tank is increasing 1 degree per hour, officials say",
+      "seed_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19158460/",
+      "verification": "verified-resolves",
+      "detail": "WebFetch confirmed this exact entry resolves and headline matches verbatim. Also independently surfaced via search. NOTE: seed lists this with is_video:false and published_iso 2026-05-25T01:10:00Z (duplicated with the crack entry); the '1 degree per hour' detail is widely corroborated."
+    },
+    {
+      "seed_outlet": "ABC7 Los Angeles",
+      "seed_title": "Evacuees face uncertainty: 'We all want to go home'",
+      "seed_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19154796/",
+      "verification": "plausible-unverified",
+      "detail": "Human-interest evacuee entry. Not independently surfaced in searches and entry fragment not fetched; parent live-blog verified live. Theme (evacuees wanting to return; no return timeline) is corroborated by CBS/KTLA. Treat the exact headline/timestamp as seed-asserted."
+    },
+    {
+      "seed_outlet": "ABC7 Los Angeles",
+      "seed_title": "Resources for residents evacuated due to chemical tank crisis",
+      "seed_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19162903/",
+      "verification": "plausible-unverified",
+      "detail": "Resource-list entry. Not independently surfaced; entry fragment not fetched; parent live-blog verified live. Resource details (ggcity.org/emergency, hotlines) are corroborated by the broader coverage."
+    },
+    {
+      "seed_outlet": "NBC Los Angeles",
+      "seed_title": "Live updates: Potential crack found in Garden Grove chemical tank may change strategy (running blog)",
+      "seed_url": "https://www.nbclosangeles.com/news/local/live-updates-garden-grove-chemical-tank-emergency/3894473/",
+      "verification": "topic-corroborated",
+      "detail": "NBC LA live-blog URL slug + ID present in seeded status.json sources_checked. Topic fully corroborated. URL not independently fetched this run, but NBC LA domain + sibling live-blog (3894268) and video page (3894525) verified live."
+    },
+    {
+      "seed_outlet": "NBC Los Angeles",
+      "seed_title": "Explainer on methyl methacrylate",
+      "seed_url": "https://www.nbclosangeles.com/video/news/local/explainer-on-methyl-methacrylate/3894525/",
+      "verification": "verified-resolves",
+      "detail": "WebFetch confirmed page resolves, title matches, listed under the incident's continuing coverage. NBC4 meteorologist Kelley Moody explainer corroborated by search."
+    },
+    {
+      "seed_outlet": "KTLA",
+      "seed_title": "Toxic tank still on path to spill or explode in Orange County",
+      "seed_url": "https://www.youtube.com/watch?v=N8caNzoKrTo",
+      "verification": "verified-resolves",
+      "detail": "WebFetch confirmed YouTube video resolves; title matches ('...See the latest details'). Channel name not exposed by the truncated YouTube page; KTLA attribution from seed and consistent with KTLA's coverage style."
+    },
+    {
+      "seed_outlet": "ABC News (national)",
+      "seed_title": "What to know 48 hours into toxic chemical tank crisis",
+      "seed_url": "https://www.youtube.com/watch?v=oGNppVWDiug",
+      "verification": "verified-resolves",
+      "detail": "WebFetch confirmed video resolves; title 'What to know 48 hours into toxic chemical tank crisis in Orange County' matches. Channel not exposed by page; ABC News attribution from seed."
+    },
+    {
+      "seed_outlet": "ABC News (national)",
+      "seed_title": "Live: The latest on the Garden Grove crisis",
+      "seed_url": "https://www.youtube.com/watch?v=JDvRR9feMUs",
+      "verification": "verified-resolves",
+      "detail": "WebFetch confirmed video resolves; title 'Live: The latest on the Garden Grove crisis' matches. Channel not exposed by page; ABC News attribution from seed."
+    },
+    {
+      "seed_outlet": "News18 (N18G)",
+      "seed_title": "BREAKING LIVE: Toxic Chemical Leak From 34,000-Gallon Tank Triggers Evacuations in California",
+      "seed_url": "https://www.youtube.com/watch?v=erJI75y4N5s",
+      "verification": "verified-resolves",
+      "detail": "STRONGEST verification: WebFetch confirmed BOTH the exact title AND the channel ('N18G' = News18). Fully matches seed."
+    }
+  ]
+}
