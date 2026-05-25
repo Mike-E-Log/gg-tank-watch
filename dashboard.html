@@ -171,6 +171,20 @@
     .toggle-icon { width: 17px; height: 17px; display: block; }
     .flag { width: 16px; height: 11px; border-radius: 1px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15); display: block; }
     #theme-toggle { padding: 3px 6px; }
+    .lang-picker { position: relative; display: inline-flex; }
+    .lang-menu {
+      position: absolute; top: calc(100% + 4px); right: 0; z-index: 1500;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+      padding: 4px; min-width: 132px; box-shadow: 0 6px 20px rgba(0,0,0,0.22); display: none;
+    }
+    .lang-menu.open { display: block; }
+    .lang-menu button {
+      display: flex; align-items: center; gap: 8px; width: 100%;
+      background: none; border: none; color: var(--text); font-family: inherit;
+      font-size: 13px; padding: 8px; border-radius: 4px; cursor: pointer; text-align: left;
+    }
+    .lang-menu button:hover, .lang-menu button:focus { background: var(--bg); }
+    .lang-menu button[aria-current="true"] { font-weight: 700; }
     .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--banner-update-bg); }
     .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-sec); margin-bottom: 3px; }
     .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--text); margin: 0; }
@@ -805,7 +819,10 @@
       </div>
       <div class="topbar-right">
         <span class="topbar-updated" id="updated-text" data-i18n="updated.loading">loading...</span>
-        <button class="theme-toggle" id="lang-toggle" onclick="toggleLang()" title="Tiếng Việt / English">VI</button>
+        <div class="lang-picker" id="lang-picker">
+          <button class="theme-toggle" id="lang-toggle" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" title="Language / Ngôn ngữ">VI</button>
+          <div class="lang-menu" id="lang-menu" role="menu"></div>
+        </div>
         <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle theme">🌙</button>
       </div>
     </header>
@@ -998,6 +1015,10 @@ var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
 var ICON_MOON = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z" fill="#94a3b8"/></svg>';
 var FLAG_VN = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#da251d"/><polygon points="15,4 16.8,9.6 22.6,9.6 17.9,13 19.7,18.6 15,15.1 10.3,18.6 12.1,13 7.4,9.6 13.2,9.6" fill="#ff0"/></svg>';
 var FLAG_US = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><g fill="#b22234"><rect width="30" height="2" y="0"/><rect width="30" height="2" y="4"/><rect width="30" height="2" y="8"/><rect width="30" height="2" y="12"/><rect width="30" height="2" y="16"/></g><rect width="13" height="10" fill="#3c3b6e"/></svg>';
+// Spain (simplified: red-yellow-red bands, no coat of arms) and South Korea
+// (simplified taegeuk, no trigrams). Used by es/ko once their verified copy lands.
+var FLAG_ES = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#c60b1e"/><rect width="30" height="10" y="5" fill="#ffc400"/></svg>';
+var FLAG_KR = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><path d="M10 10a5 5 0 0 1 10 0z" fill="#cd2e3a"/><path d="M10 10a5 5 0 0 0 10 0z" fill="#0047a0"/></svg>';
 
 // Repair double-encoded UTF-8 mojibake in the feed data (the writer pipeline
 // emits e.g. em-dash as â€”). Root cause belongs in the refresh
@@ -1176,14 +1197,36 @@ const STRINGS = {
   "loading.firstData": { en: "Waiting for first data. Auto-retry in 30s.", vi: "Đang đợi dữ liệu đầu tiên. Tự động thử lại sau 30 giây." }
 };
 
+// Supported UI languages. A language appears in the picker only when ready:true —
+// i.e. verified native translations exist (G1: no machine-translated safety copy
+// ships). To add one: add its strings under each key in STRINGS, give it an entry
+// here, flip ready:true. t() falls back to English for any missing key, so a
+// language may ship partially translated (safety-critical first) without exposing
+// blanks. See docs/LANGUAGE_ACCESS.md.
+var LANGS = [
+  { code: "en", label: "English",    flag: FLAG_US, locale: "en-US", ready: true },
+  { code: "vi", label: "Tiếng Việt", flag: FLAG_VN, locale: "vi-VN", ready: true },
+  { code: "es", label: "Español",    flag: FLAG_ES, locale: "es-US", ready: false },
+  { code: "ko", label: "한국어",      flag: FLAG_KR, locale: "ko-KR", ready: false },
+];
+function readyLangs() { return LANGS.filter(function(l) { return l.ready; }); }
+function langByCode(code) {
+  for (var i = 0; i < LANGS.length; i++) { if (LANGS[i].code === code) return LANGS[i]; }
+  return LANGS[0];
+}
+
 let currentLang = "en";
 function detectLang() {
+  var ready = readyLangs().map(function(l) { return l.code; });
   try {
     var saved = localStorage.getItem("gg-lang");
-    if (saved === "en" || saved === "vi") return saved;
+    if (ready.indexOf(saved) !== -1) return saved;
   } catch (e) {}
   var browser = (navigator.language || navigator.userLanguage || "").toLowerCase();
-  return browser.indexOf("vi") === 0 ? "vi" : "en";
+  for (var i = 0; i < ready.length; i++) {
+    if (ready[i] !== "en" && browser.indexOf(ready[i]) === 0) return ready[i];
+  }
+  return "en";
 }
 function t(id, vars) {
   var entry = STRINGS[id];
@@ -1196,7 +1239,7 @@ function t(id, vars) {
   }
   return str;
 }
-function currentLocale() { return currentLang === "vi" ? "vi-VN" : "en-US"; }
+function currentLocale() { return langByCode(currentLang).locale; }
 function applyLang() {
   document.documentElement.setAttribute("lang", currentLang);
   document.querySelectorAll("[data-i18n]").forEach(function(el) {
@@ -1211,16 +1254,57 @@ function applyLang() {
   document.querySelectorAll("[data-i18n-title]").forEach(function(el) {
     el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
   });
-  var langBtn = document.getElementById("lang-toggle");
-  if (langBtn) langBtn.innerHTML = currentLang === "en" ? (FLAG_VN + "<span>Viet</span>") : (FLAG_US + "<span>Eng</span>");
+  renderLangPicker();
   var themeBtn = document.getElementById("theme-toggle");
   if (themeBtn) {
     var isDark = document.documentElement.classList.contains("theme-dark");
     themeBtn.innerHTML = isDark ? ICON_SUN : ICON_MOON;
   }
 }
+function renderLangPicker() {
+  var btn = document.getElementById("lang-toggle");
+  var menu = document.getElementById("lang-menu");
+  if (!btn || !menu) return;
+  var cur = langByCode(currentLang);
+  btn.innerHTML = cur.flag + "<span>" + cur.label + "</span>";
+  var ready = readyLangs();
+  // One ready language: nothing to choose — hide the control.
+  btn.style.display = ready.length > 1 ? "" : "none";
+  menu.innerHTML = ready.map(function(l) {
+    return '<button type="button" role="menuitemradio" aria-current="' +
+      (l.code === currentLang ? "true" : "false") + '" data-lang="' + l.code + '">' +
+      l.flag + "<span>" + l.label + "</span></button>";
+  }).join("");
+  menu.querySelectorAll("button").forEach(function(b) {
+    b.onclick = function() { setLang(b.getAttribute("data-lang")); closeLangMenu(); };
+  });
+}
+function openLangMenu() {
+  var menu = document.getElementById("lang-menu");
+  var btn = document.getElementById("lang-toggle");
+  if (!menu || !btn) return;
+  menu.classList.add("open");
+  btn.setAttribute("aria-expanded", "true");
+  setTimeout(function() { document.addEventListener("click", outsideLangClick); }, 0);
+}
+function closeLangMenu() {
+  var menu = document.getElementById("lang-menu");
+  var btn = document.getElementById("lang-toggle");
+  if (menu) menu.classList.remove("open");
+  if (btn) btn.setAttribute("aria-expanded", "false");
+  document.removeEventListener("click", outsideLangClick);
+}
+function outsideLangClick(e) {
+  var picker = document.getElementById("lang-picker");
+  if (picker && !picker.contains(e.target)) closeLangMenu();
+}
+function toggleLangMenu() {
+  var menu = document.getElementById("lang-menu");
+  if (menu && menu.classList.contains("open")) closeLangMenu(); else openLangMenu();
+}
 function setLang(lang) {
-  currentLang = (lang === "vi") ? "vi" : "en";
+  var L = langByCode(lang);
+  currentLang = (L.code === lang && L.ready) ? lang : "en";
   try { localStorage.setItem("gg-lang", currentLang); } catch (e) {}
   applyLang();
   if (lastSnap) render(lastSnap);
@@ -1228,11 +1312,9 @@ function setLang(lang) {
   if (configCache && fixedPointMarkers.length) recolorFixedPoints();
   if (configCache && lastWind) renderPlume(configCache, lastWind);
 }
-function toggleLang() {
-  setLang(currentLang === "en" ? "vi" : "en");
-}
 currentLang = detectLang();
-window.toggleLang = toggleLang;
+window.toggleLangMenu = toggleLangMenu;
+document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeLangMenu(); });
 
 /* Translate a computeSafety() result into the active language without
    touching the underlying math/string templates. Maps the structured
