@@ -207,6 +207,34 @@
     .safety-strip-sep { color: var(--text-muted); }
     .safety-strip-terms { margin-left: auto; }
 
+    /* ===== NEWS unified feed ===== */
+    .feed-item { padding: 10px 12px; border-bottom: 1px solid var(--border); display: block; color: inherit; text-decoration: none; }
+    .feed-item-official { cursor: default; }
+    a.feed-item { display: flex; gap: 10px; }
+    .feed-meta { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
+    .feed-chip { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
+    .feed-chip-official { background: var(--accent-light); color: var(--accent); }
+    .feed-chip-article  { background: var(--banner-update-bg); color: var(--moderate); }
+    .feed-chip-video    { background: var(--high-bg); color: var(--high); }
+    .feed-text { font-size: 13px; line-height: 1.4; color: var(--text); margin: 2px 0 4px; }
+    .feed-source { font-size: 11px; color: var(--accent); text-decoration: none; }
+    .feed-source:hover { text-decoration: underline; }
+
+    /* ===== INFO collapsible groups ===== */
+    .info-fold { border-bottom: 1px solid var(--border); }
+    .info-fold > summary {
+      cursor: pointer; padding: 12px 16px; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-sec);
+      list-style: none;
+    }
+    .info-fold > summary::-webkit-details-marker { display: none; }
+    .info-fold > summary::after { content: " ▸"; color: var(--text-muted); }
+    .info-fold[open] > summary::after { content: " ▾"; }
+    .info-group-title {
+      padding: 12px 16px 0; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; color: var(--text-sec);
+    }
+
     /* ===== HERO (neutral status) ===== */
     .hero {
       padding: 8px 16px 8px;
@@ -867,10 +895,8 @@
       </div>
 
       <div class="tab-panel" id="panel-news">
-        <div class="news-section-label" id="statements-count">0 official statements</div>
-        <div id="statements-list"></div>
-        <div class="news-section-label" data-i18n="news.coverage">Coverage</div>
-        <div id="videos-list"></div>
+        <div class="news-section-label" id="news-count" data-i18n="news.feed.title">News &amp; updates</div>
+        <div id="news-feed"></div>
       </div>
 
       <div class="tab-panel" id="panel-check">
@@ -887,14 +913,9 @@
 
       <div class="tab-panel" id="panel-info">
         <div class="info-panel-inner">
-          <div class="info-section">
-            <div class="info-section-title" data-i18n="info.about.title">Who made this</div>
-            <div class="methodology-body">
-              <p data-i18n="info.about.body">Built by two local volunteers, Mike &amp; Anna, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
-              <p data-i18n="info.about.official">For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.</p>
-              <p><a href="terms.html" data-i18n="info.about.termslink">Read the full Terms &amp; disclaimer</a></p>
-            </div>
-          </div>
+
+          <!-- 1. Incident status (Tank + Evacuation merged) -->
+          <div class="info-group-title" data-i18n="info.group.status">Incident status</div>
           <div class="info-section">
             <div class="info-section-title" data-i18n="info.tank.title">Tank</div>
             <div class="info-big mono" id="tank-temp">--</div>
@@ -908,6 +929,9 @@
             <div class="info-row"><span class="k" data-i18n="info.evac.expanded">Expanded today</span><span class="v" id="evac-expanded">--</span></div>
             <div class="info-row"><span class="k" data-i18n="info.evac.boundary">Boundary</span><span class="v" style="font-size:11px;text-align:right;max-width:60%" id="evac-boundary">--</span></div>
           </div>
+
+          <!-- 2. Where to go -->
+          <div class="info-group-title" data-i18n="info.group.wheretogo">Where to go</div>
           <div class="info-section">
             <div class="info-section-title" data-i18n="info.shelters.title">Evacuation shelters</div>
             <div class="shelters-cta" data-i18n-html="info.shelters.cta">
@@ -915,25 +939,46 @@
             </div>
             <div id="shelters-grid" class="shelters-grid"></div>
           </div>
+
+          <!-- 3. Closures -->
+          <div class="info-group-title" data-i18n="info.group.closures">Closures</div>
           <div class="info-section">
             <div class="info-section-title" data-i18n="info.schools.title">Schools closed</div>
             <div id="schools">--</div>
           </div>
-          <div class="info-section">
-            <div class="info-section-title" data-i18n="info.sources.title">Sources verified</div>
-            <div id="source-list"></div>
-          </div>
-          <div class="methodology-section">
-            <div class="info-section-title" data-i18n="info.method.title">Methodology & trust</div>
-            <div class="methodology-body">
-              <p data-i18n-html="info.method.pipeline"><strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.</p>
-              <p data-i18n-html="info.method.wind"><strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Plume direction is estimated from wind bearing + cone model -- not atmospheric dispersion modeling.</p>
-              <p data-i18n-html="info.method.blast"><strong>Blast zones:</strong> Radii estimated from BLEVE overpressure scaling for ~7,000 gal MMA (~100 tonnes TNT-equivalent). Visual scale matches the OCFA/OC Register published map. Not authoritative for legal purposes.</p>
-              <p data-i18n-html="info.method.checker"><strong>Safety checker:</strong> Uses ray-casting (point-in-polygon) for evac zone, haversine distance for blast zones, bearing math for plume cone intersection. Geocoding via OpenStreetMap Nominatim.</p>
-              <p data-i18n-html="info.method.eval"><strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests (writer logic, schema validation, safety checker math, geocoder behavior) and LLM-as-judge rubrics for design and data quality. All design decisions are logged in <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> with rationale and rubric scores.</p>
-              <p data-i18n-html="info.method.disclaimer"><strong>Disclaimer:</strong> This is a community tool, not an official government resource. Always verify with <a href="https://ggcity.org/emergency" target="_blank">ggcity.org/emergency</a> for authoritative zone status.</p>
+
+          <!-- 4. Sources & how this works (collapsed) -->
+          <details class="info-fold">
+            <summary data-i18n="info.group.sources">Sources &amp; how this works</summary>
+            <div class="info-section">
+              <div class="info-section-title" data-i18n="info.sources.title">Sources verified</div>
+              <div id="source-list"></div>
             </div>
-          </div>
+            <div class="methodology-section">
+              <div class="info-section-title" data-i18n="info.method.title">Methodology &amp; trust</div>
+              <div class="methodology-body">
+                <p data-i18n-html="info.method.pipeline"><strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.</p>
+                <p data-i18n-html="info.method.wind"><strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Plume direction is estimated from wind bearing + cone model -- not atmospheric dispersion modeling.</p>
+                <p data-i18n-html="info.method.blast"><strong>Blast zones:</strong> Radii estimated from BLEVE overpressure scaling for ~7,000 gal MMA (~100 tonnes TNT-equivalent). Visual scale matches the OCFA/OC Register published map. Not authoritative for legal purposes.</p>
+                <p data-i18n-html="info.method.checker"><strong>Safety checker:</strong> Uses ray-casting (point-in-polygon) for evac zone, haversine distance for blast zones, bearing math for plume cone intersection. Geocoding via OpenStreetMap Nominatim.</p>
+                <p data-i18n-html="info.method.eval"><strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests (writer logic, schema validation, safety checker math, geocoder behavior) and LLM-as-judge rubrics for design and data quality. All design decisions are logged in <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> with rationale and rubric scores.</p>
+                <p data-i18n-html="info.method.disclaimer"><strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.</p>
+              </div>
+            </div>
+          </details>
+
+          <!-- 5. About (collapsed, bottom) -->
+          <details class="info-fold">
+            <summary data-i18n="info.about.title">Who made this</summary>
+            <div class="info-section">
+              <div class="methodology-body">
+                <p data-i18n="info.about.body">Built by two local volunteers, Mike &amp; Anna, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
+                <p data-i18n="info.about.official">For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.</p>
+                <p><a href="terms.html" data-i18n="info.about.termslink">Read the full Terms &amp; disclaimer</a></p>
+              </div>
+            </div>
+          </details>
+
         </div>
       </div>
     </div>
@@ -1009,6 +1054,14 @@ const STRINGS = {
   // News
   "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức" },
   "news.coverage": { en: "Coverage", vi: "Báo chí đưa tin" },
+  "news.feed.title": { en: "News & updates" },
+  "news.type.official": { en: "🏛 Official" },
+  "news.type.article": { en: "📰 Article" },
+  "news.type.video": { en: "▶ Video" },
+  "info.group.status": { en: "Incident status" },
+  "info.group.wheretogo": { en: "Where to go" },
+  "info.group.closures": { en: "Closures" },
+  "info.group.sources": { en: "Sources & how this works" },
   "news.badge.newest": { en: "Newest", vi: "Mới nhất" },
   "news.badge.recent": { en: "Recent", vi: "Gần đây" },
   "news.source": { en: "source ↗", vi: "nguồn ↗" },
@@ -1297,11 +1350,23 @@ function yesNo(v) {
 }
 
 /* ============ BANNERS ============ */
+function updateAckSig() {
+  try { return localStorage.getItem("gg-update-ack-iso") || ""; } catch (e) { return ""; }
+}
+function ackUpdate(sig) {
+  try { if (sig) localStorage.setItem("gg-update-ack-iso", sig); } catch (e) {}
+}
+window.ackUpdate = ackUpdate;
+
 function setBanners(banners) {
   $("banners").innerHTML = banners.map(function(b) {
     var clickable = (b.kind === "breaking" || b.kind === "update");
     var action = clickable ? '<span class="banner-action">' + t("banner.action.news") + '</span>' : '';
-    var onclick = clickable ? 'onclick="switchTab(\'news\')"' : '';
+    // The update banner records the latest-statement signature on click, then dismisses
+    // until a newer statement arrives. Breaking (urgent) banners just navigate.
+    var onclick = b.kind === "update"
+      ? 'onclick="ackUpdate(\'' + (b.sig || '') + '\'); switchTab(\'news\'); this.remove()"'
+      : (clickable ? 'onclick="switchTab(\'news\')"' : '');
     return '<div class="banner banner-' + b.kind + '" ' + onclick + '>' +
       '<span><strong>' + b.title + '</strong> ' + (b.message || '') + '</span>' +
       action + '</div>';
@@ -1497,8 +1562,27 @@ function angleDiff(a, b) {
   return d > 180 ? 360 - d : d;
 }
 
+var GEOCODE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days, per OSM caching policy
+function geocodeCacheGet(key) {
+  try {
+    var raw = localStorage.getItem("gg-geocode-" + key);
+    if (!raw) return null;
+    var obj = JSON.parse(raw);
+    if (!obj || (Date.now() - obj.at) > GEOCODE_TTL_MS) return null;
+    return obj.val;
+  } catch (e) { return null; }
+}
+function geocodeCacheSet(key, val) {
+  try { localStorage.setItem("gg-geocode-" + key, JSON.stringify({ at: Date.now(), val: val })); } catch (e) {}
+}
+
 async function geocodeAddress(q, cfg) {
   var queryRaw = q.replace(/\s+and\s+/i, " & ");
+  var cacheKey = queryRaw.trim().toLowerCase();
+  // Nominatim policy requires caching identical queries (repeated identical
+  // requests may be classified as faulty and blocked). Serve from cache first.
+  var cached = geocodeCacheGet(cacheKey);
+  if (cached) return cached;
   var bias = (cfg && cfg.map && cfg.map.geocode_bias) || "Orange County, CA";
   var viewbox = (cfg && cfg.map && cfg.map.geocode_viewbox);
   var looksFullAddr = /\b(CA|California|\d{5})\b/i.test(queryRaw);
@@ -1526,7 +1610,9 @@ async function geocodeAddress(q, cfg) {
     }
   }
   if (!hit) throw new Error("No result in the monitored area for: " + queryRaw);
-  return { lat: parseFloat(hit.lat), lon: parseFloat(hit.lon), displayName: hit.display_name };
+  var result = { lat: parseFloat(hit.lat), lon: parseFloat(hit.lon), displayName: hit.display_name };
+  geocodeCacheSet(cacheKey, result);
+  return result;
 }
 
 function computeSafety(pt, cfg, wind) {
@@ -1756,7 +1842,16 @@ function render(snap) {
   if (snap.breaking) {
     var level = snap.breaking_level || "urgent";
     if (level === "info") {
-      banners.push({kind:"update", title: t("banner.update.title"), message: snap.breaking_reason || ""});
+      // Signature = newest official-statement timestamp. Suppress the update banner
+      // once the user has acked this signature; a newer statement re-raises it.
+      var newestStmtIso = (snap.official_statements || []).reduce(function(max, s) {
+        var ti = s.time_iso || "";
+        return ti > max ? ti : max;
+      }, "");
+      var sig = newestStmtIso || snap.last_updated_iso || "";
+      if (sig !== updateAckSig()) {
+        banners.push({kind:"update", title: t("banner.update.title"), message: snap.breaking_reason || "", sig: sig});
+      }
       stopBreakingTitle();
     } else {
       banners.push({kind:"breaking", title: t("banner.urgent.title"), message: snap.breaking_reason || ""});
@@ -1828,67 +1923,66 @@ function render(snap) {
       }).join("")
     : '<span style="color:var(--text-muted);font-size:12px">' + t("info.sources.empty") + '</span>';
 
-  // News tab: statements
-  var stmts = (snap.official_statements || []).slice().sort(function(a, b) {
-    var ta = a.time_iso ? new Date(a.time_iso).getTime() : 0;
-    var tb = b.time_iso ? new Date(b.time_iso).getTime() : 0;
+  // News tab: unified reverse-chron feed (official statements + articles + videos)
+  var feed = [];
+  (snap.official_statements || []).forEach(function(s) {
+    feed.push({
+      when: s.time_iso || "",
+      type: "official",
+      source: s.agency || "—",
+      text: s.text || "",
+      url: s.source_url || "",
+      isVideo: false,
+      thumb: ""
+    });
+  });
+  (snap.videos || []).forEach(function(v) {
+    var isVid = !!(v.youtube_id) || v.is_video === true;
+    feed.push({
+      when: v.published_iso || "",
+      type: isVid ? "video" : "article",
+      source: v.outlet || "—",
+      title: v.title || t("news.untitled"),
+      url: v.url || "",
+      isVideo: isVid,
+      thumb: v.thumbnail_url || ""
+    });
+  });
+  feed.sort(function(a, b) {
+    var ta = a.when ? new Date(a.when).getTime() : 0;
+    var tb = b.when ? new Date(b.when).getTime() : 0;
     return tb - ta;
   });
-  // Use English plural-s only in EN; vi has no plural marker
-  var countStr = (currentLang === "en")
-    ? (stmts.length + " official statement" + (stmts.length === 1 ? "" : "s"))
-    : t("news.statements.count", { n: stmts.length, s: "" });
-  $("statements-count").textContent = countStr;
-  var now = Date.now();
-  var TWO_HOURS = 2 * 60 * 60 * 1000;
-  $("statements-list").innerHTML = stmts.map(function(s, idx) {
-    var tms = s.time_iso ? new Date(s.time_iso).getTime() : 0;
-    var ageMs = tms ? (now - tms) : Infinity;
-    var isNewest = idx === 0;
-    var isFresh = !isNewest && ageMs < TWO_HOURS;
-    var badge = isNewest ? '<span class="stmt-badge stmt-badge-newest">' + t("news.badge.newest") + '</span>'
-              : isFresh ? '<span class="stmt-badge stmt-badge-recent">' + t("news.badge.recent") + '</span>'
-              : '';
-    var relative = tms ? '<span class="stmt-relative">(' + relativeTime(s.time_iso) + ')</span>' : '';
-    return '<div class="stmt' + (isNewest ? ' is-newest' : '') + '">' +
-      '<div class="stmt-top">' + badge +
-        '<span class="stmt-time">' + fmtAbsDateTime(s.time_iso) + '</span>' +
-        relative +
-      '</div>' +
-      '<div class="stmt-agency">' + (s.agency || "—") + '</div>' +
-      '<div class="stmt-text">' + (s.text || "") + '</div>' +
-      (s.source_url ? '<a class="stmt-source" href="' + s.source_url + '" target="_blank">' + t("news.source") + '</a>' : "") +
-    '</div>';
-  }).join("");
 
-  // News tab: videos/articles
-  var videos = (snap.videos || []).slice().sort(function(a, b) {
-    var ta = a.published_iso ? new Date(a.published_iso).getTime() : 0;
-    var tb = b.published_iso ? new Date(b.published_iso).getTime() : 0;
-    return tb - ta;
-  });
-  var vlist = $("videos-list");
-  if (!videos.length) {
-    vlist.innerHTML = '<div style="padding:10px 12px;color:var(--text-muted);font-size:12px">' + t("news.empty") + '</div>';
+  $("news-count").textContent = t("news.feed.title");
+  var feedEl = $("news-feed");
+  if (!feed.length) {
+    feedEl.innerHTML = '<div style="padding:10px 12px;color:var(--text-muted);font-size:12px">' + t("news.empty") + '</div>';
   } else {
-    vlist.innerHTML = videos.map(function(v) {
-      var isVideo = !!(v.youtube_id) || v.is_video === true;
-      var hasThumb = !!v.thumbnail_url;
-      var thumbClass = hasThumb ? "" : (isVideo ? "placeholder-video" : "placeholder-article");
-      var needsOg = !hasThumb;
-      var escapedUrl = (v.url || "").replace(/"/g, "&quot;");
-      return '<a class="news-item" href="' + v.url + '" target="_blank" rel="noopener" data-needs-og="' + needsOg + '" data-url="' + escapedUrl + '">' +
+    feedEl.innerHTML = feed.map(function(it) {
+      var chip = it.type === "official" ? '<span class="feed-chip feed-chip-official">' + t("news.type.official") + '</span>'
+               : it.type === "video"    ? '<span class="feed-chip feed-chip-video">' + t("news.type.video") + '</span>'
+               :                          '<span class="feed-chip feed-chip-article">' + t("news.type.article") + '</span>';
+      var when = it.when ? fmtAbsDateTime(it.when) : "";
+      var meta = '<div class="feed-meta">' + chip +
+        '<strong>' + it.source + '</strong>' +
+        (when ? ' · <span class="feed-time">' + when + '</span>' : '') +
+      '</div>';
+      if (it.type === "official") {
+        return '<div class="feed-item feed-item-official">' + meta +
+          '<div class="feed-text">' + it.text + '</div>' +
+          (it.url ? '<a class="feed-source" href="' + it.url + '" target="_blank" rel="noopener">' + t("news.source") + '</a>' : '') +
+        '</div>';
+      }
+      var escapedUrl = (it.url || "").replace(/"/g, "&quot;");
+      var thumbClass = it.thumb ? "" : (it.isVideo ? "placeholder-video" : "placeholder-article");
+      return '<a class="feed-item news-item" href="' + it.url + '" target="_blank" rel="noopener" data-needs-og="' + (!it.thumb) + '" data-url="' + escapedUrl + '">' +
         '<div class="news-thumb ' + thumbClass + '">' +
-          (hasThumb ? '<img loading="lazy" src="' + v.thumbnail_url + '" alt="">' : '') +
-          (isVideo ? '<div class="news-thumb-play"></div>' : '') +
+          (it.thumb ? '<img loading="lazy" src="' + it.thumb + '" alt="">' : '') +
+          (it.isVideo ? '<div class="news-thumb-play"></div>' : '') +
         '</div>' +
-        '<div class="news-meta">' +
-          '<div class="news-title">' + (v.title || t("news.untitled")) + '</div>' +
-          '<div class="news-sub">' +
-            '<strong>' + (v.outlet || "—") + '</strong>' +
-            (v.published_iso ? ' · ' + fmtAbsDateTime(v.published_iso) : '') +
-            ' · ' + (isVideo ? t("news.media.video") : t("news.media.article")) +
-          '</div>' +
+        '<div class="news-meta">' + meta +
+          '<div class="news-title">' + it.title + '</div>' +
         '</div>' +
       '</a>';
     }).join("");
