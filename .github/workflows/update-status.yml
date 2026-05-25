@@ -1,16 +1,20 @@
 name: update-status
 
-# Keeps status.json fresh with ZERO dependency on any contributor's computer.
-# Runs on GitHub's hosted runners, gathers current incident facts via the
-# Anthropic web-search tool, runs the existing writer, and commits the refreshed
-# status.json. Vercel auto-deploys on the push. Every refresh = one git commit,
-# which is the data's audit trail.
+# DORMANT (2026-05-25) — the "no machine required" cloud path, kept for later.
+# A headless GitHub Actions runner can only use a METERED ANTHROPIC_API_KEY
+# (no OAuth subscription), so for now we refresh LOCALLY on subscription credits
+# via scripts/refresh_local.py with the contributor's machine left on. See
+# docs/DATA_SYNC.md.
+#
+# To switch to this metered cloud cron later: uncomment the `schedule:` trigger
+# below. The ANTHROPIC_API_KEY repo secret is already set, so re-enabling the
+# schedule is the only change needed. workflow_dispatch stays enabled so this
+# can still be run manually on demand.
 
 on:
-  schedule:
-    # Every ~20 min. GitHub cron is best-effort and can lag 5-15 min; 20 min
-    # gives headroom under the dashboard's 30-min staleness threshold.
-    - cron: "*/20 * * * *"
+  # schedule:
+  #   # Every ~20 min; lags 5-15 min, under the dashboard's 30-min stale threshold.
+  #   - cron: "*/20 * * * *"   # <-- uncomment to activate the metered cloud path
   workflow_dispatch: {}
 
 # Never run two refreshers at once (they'd race on the status.json commit).

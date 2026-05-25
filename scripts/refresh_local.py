@@ -1,0 +1,124 @@
+"""Local, subscription-billed refresh of status.json.
+
+This is the CURRENTLY-ACTIVE data-sync path. It runs on a contributor's machine
+(left on) and bills the Claude **subscription** instead of metered API credits:
+it gathers current incident facts via `claude -p` with the OAuth subscription
+(ANTHROPIC_API_KEY unset) and the WebSearch tool, runs the existing writer, and
+commits the refreshed status.json so Vercel auto-deploys.
+
+Why this exists: the cloud cron (.github/workflows/update-status.yml) is the
+"no machine required" path but a headless GitHub Actions runner can only use a
+metered ANTHROPIC_API_KEY (no OAuth). For now we prefer subscription credits, so
+we run locally. To switch back to the metered cloud cron later, re-enable the
+schedule in that workflow (the API-key secret is already set). See docs/DATA_SYNC.md.
+
+Reuses the prompt + JSON extraction from gather_facts.py so the two paths stay
+in lockstep — only the model call differs (claude -p subscription vs SDK + key).
+
+Usage:
+    python scripts/refresh_local.py            # gather -> write -> commit -> push
+    python scripts/refresh_local.py --dry-run  # gather -> write status.json only
+
+Env:
+    CLAUDE_MODEL   optional, default "sonnet" (cheaper on the shared subscription
+                   quota than Opus; the gather is a simple structured task)
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+from gather_facts import PROMPT, extract_json  # noqa: E402  (reuse the one prompt)
+
+MODEL = os.environ.get("CLAUDE_MODEL", "sonnet")
+REPO = HERE.parent
+
+
+def gather_via_subscription() -> dict:
+    """Run `claude -p` on the subscription (key unset) and return the facts dict."""
+    claude = shutil.which("claude")
+    if not claude:
+        sys.stderr.write("`claude` CLI not found on PATH\n")
+        raise SystemExit(2)
+
+    env = dict(os.environ)
+    env.pop("ANTHROPIC_API_KEY", None)  # force OAuth subscription billing
+
+    proc = subprocess.run(
+        [claude, "-p", PROMPT, "--model", MODEL,
+         "--allowedTools", "WebSearch", "--permission-mode", "acceptEdits",
+         "--output-format", "json"],
+        capture_output=True, text=True, env=env, cwd=str(REPO),
+    )
+    if proc.returncode != 0:
+        sys.stderr.write(f"claude -p failed (exit {proc.returncode}):\n{proc.stderr[:1000]}\n")
+        raise SystemExit(1)
+
+    try:
+        envelope = json.loads(proc.stdout)
+    except json.JSONDecodeError as e:
+        sys.stderr.write(f"claude -p output was not JSON: {e}\n{proc.stdout[:1000]}\n")
+        raise SystemExit(1)
+
+    result_text = envelope.get("result", "")
+    try:
+        return extract_json(result_text)
+    except (ValueError, json.JSONDecodeError) as e:
+        sys.stderr.write(f"could not parse facts from claude result: {e}\n{result_text[:1500]}\n")
+        raise SystemExit(1)
+
+
+def write_status(facts: dict) -> None:
+    """Feed facts to the existing writer over stdin (avoids PowerShell pipe corruption)."""
+    subprocess.run(
+        [sys.executable, str(HERE / "update_status.py")],
+        input=json.dumps(facts, ensure_ascii=False), text=True, check=True, cwd=str(REPO),
+    )
+
+
+def commit_and_push() -> None:
+    """Commit status.json (if it changed) and push — the data audit trail."""
+    def git(*args):
+        return subprocess.run(["git", *args], cwd=str(REPO), capture_output=True, text=True)
+
+    # status.json is gitignored for local dev; -f because the bot tracks it.
+    git("add", "-f", "status.json")
+    if git("diff", "--cached", "--quiet").returncode == 0:
+        print("status.json unchanged; nothing to commit")
+        return
+    git("config", "user.name", "gg-tank-bot")
+    git("config", "user.email", "github-actions[bot]@users.noreply.github.com")
+    git("commit", "-m", "chore(data): refresh status.json [skip ci]")
+    branch = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
+    git("pull", "--rebase", "--autostash", "origin", branch)
+    push = git("push")
+    if push.returncode != 0:
+        sys.stderr.write(f"git push failed:\n{push.stderr[:1000]}\n")
+        raise SystemExit(1)
+    print("status.json refreshed and pushed")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dry-run", action="store_true", help="gather + write status.json, skip git")
+    args = ap.parse_args()
+
+    facts = gather_via_subscription()
+    write_status(facts)
+    if args.dry_run:
+        print("dry-run: status.json written, git skipped")
+        return 0
+    commit_and_push()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
