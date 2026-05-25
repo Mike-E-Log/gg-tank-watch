@@ -788,6 +788,7 @@
     }
     .source-item:last-child { border-bottom: none; }
     .source-item:hover { color: var(--accent); }
+    .source-time { color: var(--text-muted); font-size: 11px; margin-left: 4px; }
 
     /* ===== DESKTOP ===== */
     @media (min-width: 768px) {
@@ -1124,6 +1125,7 @@ const STRINGS = {
   "info.schools.none": { en: "None reported", vi: "Chưa có báo cáo" },
   "info.sources.title": { en: "Sources verified", vi: "Nguồn đã xác minh" },
   "info.sources.empty": { en: "No sources in this snapshot", vi: "Không có nguồn trong bản chụp này" },
+  "info.sources.checked": { en: "checked", vi: "đã kiểm tra" },
   "common.yes": { en: "yes", vi: "có" },
   "common.no": { en: "no", vi: "không" },
   // Methodology
@@ -1895,7 +1897,8 @@ function render(snap) {
   var sources = snap.sources_checked || [];
   $("source-list").innerHTML = sources.length
     ? sources.map(function(s) {
-        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + '</a>';
+        var checked = s.fetched_iso ? ' <span class="source-time">' + t("info.sources.checked") + ' ' + relativeTime(s.fetched_iso) + '</span>' : '';
+        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + checked + '</a>';
       }).join("")
     : '<span style="color:var(--text-muted);font-size:12px">' + t("info.sources.empty") + '</span>';
 
@@ -1951,7 +1954,7 @@ function render(snap) {
       var chip = it.type === "official" ? '<span class="feed-chip feed-chip-official">' + t("news.type.official") + '</span>'
                : it.type === "video"    ? '<span class="feed-chip feed-chip-video">' + t("news.type.video") + '</span>'
                :                          '<span class="feed-chip feed-chip-article">' + t("news.type.article") + '</span>';
-      var when = it.when ? fmtAbsDateTime(it.when) : "";
+      var when = it.when ? relativeTime(it.when) : "";
       var meta = '<div class="feed-meta">' + chip +
         '<strong>' + it.source + '</strong>' +
         (when ? ' · <span class="feed-time">' + when + '</span>' : '') +

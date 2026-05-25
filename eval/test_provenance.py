@@ -134,6 +134,49 @@ def test_lifted_requires_corroboration():
     }
 
 
+def test_every_statement_has_source_and_time():
+    """Every official statement in status.json carries source_url + time_iso (T2 data contract)."""
+    s = json.load(open(REPO_ROOT / "status.json", encoding="utf-8"))
+    missing = []
+    for i, st in enumerate(s.get("official_statements", [])):
+        if not st.get("source_url"):
+            missing.append(f"stmt[{i}] missing source_url")
+        if not st.get("time_iso"):
+            missing.append(f"stmt[{i}] missing time_iso")
+    return {
+        "passed": len(missing) == 0,
+        "details": "; ".join(missing) if missing else "all statements have source + time",
+    }
+
+
+def test_sources_checked_have_fetched_time():
+    """Every sources_checked entry carries fetched_iso (T2 freshness contract)."""
+    s = json.load(open(REPO_ROOT / "status.json", encoding="utf-8"))
+    missing = []
+    for i, src in enumerate(s.get("sources_checked", [])):
+        if not src.get("fetched_iso"):
+            missing.append(f"source[{i}] missing fetched_iso")
+    return {
+        "passed": len(missing) == 0,
+        "details": "; ".join(missing) if missing else "all sources have fetched_iso",
+    }
+
+
+def test_feed_renders_source_attribution():
+    """dashboard.html feed render includes source name + relative time for every item type (T2 UI)."""
+    html = open(REPO_ROOT / "dashboard.html", encoding="utf-8").read()
+    checks = {
+        "feed meta shows source": "it.source" in html,
+        "feed meta shows relative time": "relativeTime(it.when)" in html,
+        "sources_checked shows fetched time": "fetched_iso" in html and "relativeTime(s.fetched_iso)" in html,
+    }
+    failed = [k for k, v in checks.items() if not v]
+    return {
+        "passed": len(failed) == 0,
+        "details": f"missing: {failed}" if failed else "all feed items render source + time",
+    }
+
+
 def test_resolved_requires_two_sources():
     """incident_resolved_iso: 1 source -> suppressed (severity stays); 2 sources incl
     official -> honored (severity low + RESOLVED breaking). Asymmetric gate (P0-1)."""
