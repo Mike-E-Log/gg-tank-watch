@@ -157,7 +157,19 @@
       border-radius: 4px;
       cursor: pointer;
       font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1;
     }
+    .toggle-icon { width: 17px; height: 17px; display: block; }
+    .flag { width: 16px; height: 11px; border-radius: 1px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15); display: block; }
+    #theme-toggle { padding: 3px 6px; }
+    .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--banner-update-bg); }
+    .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-sec); margin-bottom: 3px; }
+    .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--text); margin: 0; }
+    .info-roads-defer { font-size: 12px; color: var(--text-sec); line-height: 1.45; }
+    .info-roads-defer a { color: var(--accent); }
 
     /* ===== BANNERS ===== */
     .banners { flex-shrink: 0; }
@@ -261,10 +273,6 @@
       line-height: 1.4;
       color: var(--text-sec);
       margin: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
     }
     .severity-chip {
       display: inline-block;
@@ -849,6 +857,7 @@
       </div>
 
       <div class="tab-panel" id="panel-news">
+        <div id="news-situation" class="news-situation" hidden></div>
         <div class="news-section-label" id="news-count" data-i18n="news.feed.title">News &amp; updates</div>
         <div id="news-feed"></div>
       </div>
@@ -899,6 +908,10 @@
           <div class="info-section">
             <div class="info-section-title" data-i18n="info.schools.title">Schools closed</div>
             <div id="schools">--</div>
+          </div>
+          <div class="info-section">
+            <div class="info-section-title" data-i18n="info.roads.title">Road closures</div>
+            <div class="info-roads-defer" data-i18n-html="info.roads.defer">Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.</div>
           </div>
 
           <!-- 4. Sources & how this works (collapsed) -->
@@ -962,6 +975,23 @@
 const REFRESH_MS = 30000;
 const NORMAL_TITLE = "GG Tank Watch";
 const BREAKING_TITLE = "\u{1F534} BREAKING — GG Tank Watch";
+
+// Toggle icons (inline SVG for cross-platform consistency; emoji flags render as
+// letters on Windows, and the sun emoji is too faint, so we draw our own).
+var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><g fill="#f59e0b">' +
+  '<circle cx="12" cy="12" r="5"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(0 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(45 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(90 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(135 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(180 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(225 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(270 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(315 12 12)"/>' +
+  '</g></svg>';
+var ICON_MOON = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z" fill="#94a3b8"/></svg>';
+var FLAG_VN = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#da251d"/><polygon points="15,4 16.8,9.6 22.6,9.6 17.9,13 19.7,18.6 15,15.1 10.3,18.6 12.1,13 7.4,9.6 13.2,9.6" fill="#ff0"/></svg>';
+var FLAG_US = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><g fill="#b22234"><rect width="30" height="2" y="0"/><rect width="30" height="2" y="4"/><rect width="30" height="2" y="8"/><rect width="30" height="2" y="12"/><rect width="30" height="2" y="16"/></g><rect width="13" height="10" fill="#3c3b6e"/></svg>';
 const WIND_BASE_MS = 60000;
 const WIND_MAX_MS = 480000;
 
@@ -988,6 +1018,7 @@ const STRINGS = {
   // Hero (safety verdicts)
   "hero.severity.label": { en: "Incident severity:" },
   "hero.summary.loading": { en: "Loading current status…" },
+  "hero.lead": { en: "Active chemical-tank emergency in Garden Grove." },
   "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders." },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
   // Takeover
@@ -1005,12 +1036,15 @@ const STRINGS = {
   "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức" },
   "news.coverage": { en: "Coverage", vi: "Báo chí đưa tin" },
   "news.feed.title": { en: "News & updates" },
+  "news.situation.label": { en: "Current situation" },
   "news.type.official": { en: "🏛 Official" },
   "news.type.article": { en: "📰 Article" },
   "news.type.video": { en: "▶ Video" },
   "info.group.status": { en: "Incident status" },
   "info.group.wheretogo": { en: "Where to go" },
   "info.group.closures": { en: "Closures" },
+  "info.roads.title": { en: "Road closures" },
+  "info.roads.defer": { en: 'Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.' },
   "info.group.sources": { en: "Sources & how this works" },
   "news.badge.newest": { en: "Newest", vi: "Mới nhất" },
   "news.badge.recent": { en: "Recent", vi: "Gần đây" },
@@ -1147,11 +1181,11 @@ function applyLang() {
     el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
   });
   var langBtn = document.getElementById("lang-toggle");
-  if (langBtn) langBtn.textContent = currentLang === "en" ? "Viet" : "Eng";
+  if (langBtn) langBtn.innerHTML = currentLang === "en" ? (FLAG_VN + "<span>Viet</span>") : (FLAG_US + "<span>Eng</span>");
   var themeBtn = document.getElementById("theme-toggle");
   if (themeBtn) {
     var isDark = document.documentElement.classList.contains("theme-dark");
-    themeBtn.textContent = isDark ? "☀" : "🌙";
+    themeBtn.innerHTML = isDark ? ICON_SUN : ICON_MOON;
   }
 }
 function setLang(lang) {
@@ -1221,7 +1255,7 @@ function applyTheme(theme) {
   document.documentElement.classList.toggle("theme-dark", theme === "dark");
   document.documentElement.classList.toggle("theme-light", theme !== "dark");
   // Button shows the theme it switches TO: dark active -> sun, light active -> moon.
-  $("theme-toggle").textContent = theme === "dark" ? "☀" : "🌙";
+  $("theme-toggle").innerHTML = theme === "dark" ? ICON_SUN : ICON_MOON;
 }
 function toggleTheme() {
   const cur = document.documentElement.classList.contains("theme-dark") ? "dark" : "light";
@@ -1806,8 +1840,7 @@ function render(snap) {
   if (resolved) {
     heroSummary.textContent = t("hero.summary.resolved");
   } else {
-    var headline = (snap.incident && snap.incident.status_headline) || "";
-    heroSummary.textContent = headline || t("hero.summary.default");
+    heroSummary.textContent = t("hero.lead");
   }
 
   // Urgent breaking alert (sound only; no directive modal)
@@ -1889,6 +1922,18 @@ function render(snap) {
   });
 
   $("news-count").textContent = t("news.feed.title");
+  // Current-situation summary (the full status headline lives here, not the hero)
+  var sitEl = $("news-situation");
+  var sitText = (snap.incident && snap.incident.status_headline) || "";
+  if (sitText && !(snap.incident && snap.incident.resolved_iso)) {
+    sitEl.innerHTML = '<div class="news-situation-label"></div><p class="news-situation-text"></p>';
+    sitEl.querySelector(".news-situation-label").textContent = t("news.situation.label");
+    sitEl.querySelector(".news-situation-text").textContent = sitText;
+    sitEl.hidden = false;
+  } else {
+    sitEl.hidden = true;
+    sitEl.innerHTML = "";
+  }
   var feedEl = $("news-feed");
   if (!feed.length) {
     feedEl.innerHTML = '<div style="padding:10px 12px;color:var(--text-muted);font-size:12px">' + t("news.empty") + '</div>';
