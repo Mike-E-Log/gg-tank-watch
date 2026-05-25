@@ -38,6 +38,8 @@ import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
+from urllib.request import urlopen, Request
+from urllib.error import URLError
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 CONFIG_PATH = PROJECT_DIR / "config.json"
@@ -348,6 +350,40 @@ def atomic_write_status(snapshot: dict) -> None:
     _retry_io(lambda: os.replace(STATUS_TMP_PATH, STATUS_PATH), tag="status.json atomic rename")
 
 
+def fetch_air_quality(config: dict) -> dict | None:
+    """Fetch current AQI from EPA AirNow. Returns None if key unset or fetch fails."""
+    api_key = os.environ.get("AIRNOW_API_KEY")
+    if not api_key:
+        return None
+    fac = (config.get("map") or {}).get("facility") or {}
+    lat, lon = fac.get("lat"), fac.get("lon")
+    if not lat or not lon:
+        return None
+    url = (
+        f"https://www.airnowapi.org/aq/observation/latLong/current/"
+        f"?format=application/json&latitude={lat}&longitude={lon}"
+        f"&distance=25&API_KEY={api_key}"
+    )
+    try:
+        req = Request(url, headers={"User-Agent": "GGTankWatch/1.0"})
+        with urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read())
+        if not data:
+            return None
+        # AirNow returns a list of observations; pick the PM2.5 or first entry
+        obs = next((d for d in data if d.get("ParameterName") == "PM2.5"), data[0])
+        return {
+            "aqi": obs.get("AQI"),
+            "category": obs.get("Category", {}).get("Name", "Unknown"),
+            "parameter": obs.get("ParameterName", "PM2.5"),
+            "source": "EPA AirNow",
+            "fetched_iso": utcnow_iso(),
+        }
+    except (URLError, json.JSONDecodeError, KeyError, StopIteration):
+        log_line("WARN", "AirNow fetch failed")
+        return None
+
+
 def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
     """Merge prev + new facts into a full snapshot. Missing facts inherit from prev."""
     prev_actual = prev  # preserve None-ness for breaking detector
@@ -463,6 +499,10 @@ def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
         data_as_of, data_as_of_dt = now_iso, now_dt
     stale_after = (data_as_of_dt + timedelta(minutes=MAX_AGE_MINUTES)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
+    air_quality = fetch_air_quality(config)
+    if air_quality is None:
+        air_quality = (prev or {}).get("air_quality")
+
     snapshot = {
         "schema_version": SCHEMA_VERSION,
         "writer_version": WRITER_VERSION,
@@ -478,6 +518,7 @@ def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
         "sources_checked": sources,
         "schools_closed": schools,
         "videos": videos,
+        "air_quality": air_quality,
         "breaking": breaking,
         "breaking_reason": breaking_reason,
         "breaking_since_iso": breaking_since,
