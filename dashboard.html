@@ -247,8 +247,25 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16/9;
-      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238b949e"><path d="M8 5v14l11-7z"/></svg>') center/30% no-repeat;
+      background: var(--border);
       overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .video-thumb.placeholder-video {
+      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238b949e"><path d="M8 5v14l11-7z"/></svg>') center/30% no-repeat;
+    }
+    .video-thumb.placeholder-article {
+      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238b949e"><path d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm0 5h16v2H4z"/></svg>') center/24% no-repeat;
+    }
+    .video-thumb-outlet-fallback {
+      position: absolute;
+      bottom: 8px; left: 8px;
+      background: rgba(0,0,0,0.6); color: white;
+      padding: 3px 8px; border-radius: 3px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.3px;
+      max-width: calc(100% - 16px);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
     .video-thumb img {
       width: 100%; height: 100%;
@@ -1300,18 +1317,21 @@ function render(snap) {
     } else {
       vsec.innerHTML = videos.map(v => {
         const isVideo = !!(v.youtube_id) || v.is_video === true;
+        const hasThumb = !!v.thumbnail_url;
+        const thumbClass = hasThumb ? "" : (isVideo ? "placeholder-video" : "placeholder-article");
         return `
         <a class="video-card" href="${v.url}" target="_blank" rel="noopener">
-          <div class="video-thumb">
-            ${v.thumbnail_url ? `<img loading="lazy" src="${v.thumbnail_url}" alt="${(v.title||'update').replace(/"/g,'&quot;')}">` : ''}
-            ${isVideo ? `<div class="video-play"></div>` : ''}
+          <div class="video-thumb ${thumbClass}">
+            ${hasThumb ? `<img loading="lazy" src="${v.thumbnail_url}" alt="${(v.title||'update').replace(/"/g,'&quot;')}">` : ''}
+            ${isVideo && hasThumb ? `<div class="video-play"></div>` : ''}
+            ${!hasThumb && v.outlet ? `<div class="video-thumb-outlet-fallback">${v.outlet}</div>` : ''}
           </div>
           <div class="video-meta">
             <div class="video-title">${v.title || "(untitled)"}</div>
             <div class="video-sub">
               <span><strong>${v.outlet || "—"}</strong></span>
               ${v.published_iso ? `<span>${fmtAbsDateTime(v.published_iso)}</span>` : ""}
-              ${isVideo ? '<span style="color:var(--sev-low)">▶ video</span>' : ''}
+              <span style="color:var(--sev-low)">${isVideo ? '▶ video' : '📰 article'}</span>
             </div>
           </div>
         </a>`;
