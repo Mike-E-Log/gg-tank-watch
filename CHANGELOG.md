@@ -2,6 +2,23 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.9] — 2026-05-25 (post-redesign polish + liability)
+
+### Changed
+- **Removed the takeover "LEAVE NOW" modal** — the last on-screen directive. We issue no directives (LEGAL R1/R2); the urgent-breaking alert beep is kept. The full-screen flashing modal is gone.
+- **Hero shows a short lead** ("Active chemical-tank emergency in Garden Grove"); the full situation summary moved to a **"Current situation"** block at the top of News (it was truncating in the hero).
+- **Stale banner removed** — staleness now shows in the topbar freshness text ("~20 min · last X", turns red with ⚠ when stale), preserving the G3 staleness signal without a separate banner.
+- **Language toggle is now a flag** (🇻🇳 Viet / 🇺🇸 Eng) and the theme toggle uses clearer custom sun/moon icons (the emoji sun was too faint and rendered as letters on some platforms).
+- **Check** label and hint now make clear that checking an address pins it on the map.
+- **Credit** updated to "Mike and Nancy".
+
+### Added
+- **Road closures** section in the Info tab (defers to ggcity.org/emergency; we hold no authoritative road-closure feed).
+
+### Fixed
+- **Mojibake in feed data** — em-dashes and degree signs (`â€"`, `Â°`) now render correctly ("—", "100°F") via a client-side repair. Root cause is the refresh pipeline emitting double-encoded UTF-8; that fix belongs in the DATA_QUALITY lane.
+- Meta description no longer carries the old "What should I do?" framing or the old brand name.
+
 ## [v0.8] — 2026-05-25 (dashboard redesign — PR-B)
 
 ### Changed

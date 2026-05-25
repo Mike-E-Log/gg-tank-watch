@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
   <title>GG Tank Watch</title>
   <meta http-equiv="refresh" content="600">
-  <meta name="description" content="Real-time situational awareness for the Garden Grove MMA tank emergency. What should I do?">
+  <meta name="description" content="GG Tank Watch — unofficial, volunteer-built situational awareness for the Garden Grove chemical-tank emergency. Always verify with ggcity.org/emergency.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -114,7 +114,7 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      min-width: 0;
+      flex-shrink: 0;
     }
     .topbar-title {
       font-weight: 700;
@@ -141,13 +141,19 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-shrink: 0;
+      flex: 1 1 auto;
+      min-width: 0;
+      justify-content: flex-end;
     }
     .topbar-updated {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
       white-space: nowrap;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+    .topbar-updated.stale { color: var(--high); font-weight: 700; }
     .theme-toggle {
       background: none;
       border: 1px solid var(--border);
@@ -157,7 +163,19 @@
       border-radius: 4px;
       cursor: pointer;
       font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1;
     }
+    .toggle-icon { width: 17px; height: 17px; display: block; }
+    .flag { width: 16px; height: 11px; border-radius: 1px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15); display: block; }
+    #theme-toggle { padding: 3px 6px; }
+    .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--banner-update-bg); }
+    .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-sec); margin-bottom: 3px; }
+    .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--text); margin: 0; }
+    .info-roads-defer { font-size: 12px; color: var(--text-sec); line-height: 1.45; }
+    .info-roads-defer a { color: var(--accent); }
 
     /* ===== BANNERS ===== */
     .banners { flex-shrink: 0; }
@@ -261,10 +279,6 @@
       line-height: 1.4;
       color: var(--text-sec);
       margin: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
     }
     .severity-chip {
       display: inline-block;
@@ -769,46 +783,6 @@
     .source-item:last-child { border-bottom: none; }
     .source-item:hover { color: var(--accent); }
 
-    /* ===== TAKEOVER ===== */
-    .takeover {
-      position: fixed;
-      inset: 0;
-      background: rgba(127,29,29,0.97);
-      color: white;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 32px;
-      text-align: center;
-    }
-    .takeover h1 {
-      font-size: clamp(40px, 10vw, 100px);
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-    .takeover p { font-size: 20px; margin-bottom: 32px; max-width: 600px; }
-    .takeover button {
-      background: white;
-      color: #7f1d1d;
-      border: none;
-      padding: 14px 28px;
-      font-size: 16px;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .takeover.hidden { display: none; }
-    .takeover-flash { animation: flash 0.5s ease-in-out infinite alternate; }
-    @keyframes flash {
-      from { background: rgba(127,29,29,0.97); }
-      to   { background: rgba(220,38,38,0.97); }
-    }
-    @media (prefers-reduced-motion: reduce) { .takeover-flash { animation: none; } }
-
     /* ===== DESKTOP ===== */
     @media (min-width: 768px) {
       .hero-action { font-size: 36px; }
@@ -821,12 +795,6 @@
   </style>
 </head>
 <body>
-  <div id="takeover" class="takeover hidden">
-    <h1 data-i18n="takeover.h1">LEAVE NOW</h1>
-    <p id="takeover-reason" data-i18n="takeover.reason.default">Your zone status just flipped to INSIDE. Evacuate now per OCFA guidance.</p>
-    <button onclick="dismissTakeover()" data-i18n="takeover.button">Acknowledged</button>
-  </div>
-
   <div class="app">
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
@@ -895,6 +863,7 @@
       </div>
 
       <div class="tab-panel" id="panel-news">
+        <div id="news-situation" class="news-situation" hidden></div>
         <div class="news-section-label" id="news-count" data-i18n="news.feed.title">News &amp; updates</div>
         <div id="news-feed"></div>
       </div>
@@ -946,6 +915,10 @@
             <div class="info-section-title" data-i18n="info.schools.title">Schools closed</div>
             <div id="schools">--</div>
           </div>
+          <div class="info-section">
+            <div class="info-section-title" data-i18n="info.roads.title">Road closures</div>
+            <div class="info-roads-defer" data-i18n-html="info.roads.defer">Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.</div>
+          </div>
 
           <!-- 4. Sources & how this works (collapsed) -->
           <details class="info-fold">
@@ -972,7 +945,7 @@
             <summary data-i18n="info.about.title">Who made this</summary>
             <div class="info-section">
               <div class="methodology-body">
-                <p data-i18n="info.about.body">Built by two local volunteers, Mike &amp; Anna, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
+                <p data-i18n="info.about.body">Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
                 <p data-i18n="info.about.official">For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.</p>
                 <p><a href="terms.html" data-i18n="info.about.termslink">Read the full Terms &amp; disclaimer</a></p>
               </div>
@@ -1008,6 +981,45 @@
 const REFRESH_MS = 30000;
 const NORMAL_TITLE = "GG Tank Watch";
 const BREAKING_TITLE = "\u{1F534} BREAKING — GG Tank Watch";
+
+// Toggle icons (inline SVG for cross-platform consistency; emoji flags render as
+// letters on Windows, and the sun emoji is too faint, so we draw our own).
+var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><g fill="#f59e0b">' +
+  '<circle cx="12" cy="12" r="5"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(0 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(45 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(90 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(135 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(180 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(225 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(270 12 12)"/>' +
+  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(315 12 12)"/>' +
+  '</g></svg>';
+var ICON_MOON = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z" fill="#94a3b8"/></svg>';
+var FLAG_VN = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#da251d"/><polygon points="15,4 16.8,9.6 22.6,9.6 17.9,13 19.7,18.6 15,15.1 10.3,18.6 12.1,13 7.4,9.6 13.2,9.6" fill="#ff0"/></svg>';
+var FLAG_US = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><g fill="#b22234"><rect width="30" height="2" y="0"/><rect width="30" height="2" y="4"/><rect width="30" height="2" y="8"/><rect width="30" height="2" y="12"/><rect width="30" height="2" y="16"/></g><rect width="13" height="10" fill="#3c3b6e"/></svg>';
+
+// Repair double-encoded UTF-8 mojibake in the feed data (the writer pipeline
+// emits e.g. em-dash as â€”). Root cause belongs in the refresh
+// pipeline; this is a defensive display-side fix. Only the em-dash is present
+// today; the rest cover common CP1252 mojibake so future data is safe too.
+function fixMojibake(s) {
+  if (typeof s !== "string" || s.indexOf("â") === -1) return s;
+  return s
+    .replace(/â€”/g, "—")
+    .replace(/â€“/g, "–")
+    .replace(/â€™/g, "’")
+    .replace(/â€˜/g, "‘")
+    .replace(/â€œ/g, "“")
+    .replace(/â€/g, "”")
+    .replace(/â€¦/g, "…");
+}
+function deepFix(o) {
+  if (typeof o === "string") return fixMojibake(o).replace(/Â([ -¿])/g, "$1").replace(/Â/g, "");
+  if (Array.isArray(o)) { for (var i = 0; i < o.length; i++) o[i] = deepFix(o[i]); return o; }
+  if (o && typeof o === "object") { for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) o[k] = deepFix(o[k]); return o; }
+  return o;
+}
 const WIND_BASE_MS = 60000;
 const WIND_MAX_MS = 480000;
 
@@ -1021,6 +1033,8 @@ const STRINGS = {
   "theme.dark": { en: "Dark", vi: "Tối" },
   "theme.light": { en: "Light", vi: "Sáng" },
   "updated.loading": { en: "loading...", vi: "đang tải..." },
+  "updated.freshness": { en: "⟳ ~20 min · {t}" },
+  "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}." },
   // Trust / safety (PR-A) — new EN strings; VI falls back to EN until Anna verifies (G1 gate)
   "topbar.unofficial": { en: "UNOFFICIAL" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
@@ -1028,19 +1042,16 @@ const STRINGS = {
   "safety.strip.official": { en: "Official source:" },
   "safety.strip.terms": { en: "Full terms & disclaimer" },
   "info.about.title": { en: "Who made this" },
-  "info.about.body": { en: "Built by two local volunteers, Mike & Anna, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
+  "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
   "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA." },
   "info.about.termslink": { en: "Read the full Terms & disclaimer" },
   // Hero (safety verdicts)
   "hero.severity.label": { en: "Incident severity:" },
   "hero.summary.loading": { en: "Loading current status…" },
+  "hero.lead": { en: "Active chemical-tank emergency in Garden Grove." },
   "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders." },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
   // Takeover
-  "takeover.h1": { en: "LEAVE NOW", vi: "RỜI ĐI NGAY" },
-  "takeover.reason.flip": { en: "Your zone status flipped from OUTSIDE → INSIDE the evacuation zone.", vi: "Tình trạng khu vực của bạn đã chuyển từ NGOÀI → TRONG khu sơ tán." },
-  "takeover.reason.default": { en: "Your zone status just flipped to INSIDE. Evacuate now per OCFA guidance.", vi: "Tình trạng khu vực của bạn vừa chuyển sang TRONG khu sơ tán. Sơ tán ngay theo hướng dẫn của OCFA." },
-  "takeover.button": { en: "Acknowledged", vi: "Đã hiểu" },
   // Map legend + tooltips
   "legend.blast20psi": { en: "20 PSI blast", vi: "Vùng nổ 20 PSI" },
   "legend.moderate": { en: "Moderate damage", vi: "Thiệt hại trung bình" },
@@ -1055,12 +1066,15 @@ const STRINGS = {
   "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức" },
   "news.coverage": { en: "Coverage", vi: "Báo chí đưa tin" },
   "news.feed.title": { en: "News & updates" },
+  "news.situation.label": { en: "Current situation" },
   "news.type.official": { en: "🏛 Official" },
   "news.type.article": { en: "📰 Article" },
   "news.type.video": { en: "▶ Video" },
   "info.group.status": { en: "Incident status" },
   "info.group.wheretogo": { en: "Where to go" },
   "info.group.closures": { en: "Closures" },
+  "info.roads.title": { en: "Road closures" },
+  "info.roads.defer": { en: 'Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.' },
   "info.group.sources": { en: "Sources & how this works" },
   "news.badge.newest": { en: "Newest", vi: "Mới nhất" },
   "news.badge.recent": { en: "Recent", vi: "Gần đây" },
@@ -1070,10 +1084,10 @@ const STRINGS = {
   "news.media.video": { en: "▶ video", vi: "▶ video" },
   "news.media.article": { en: "📰 article", vi: "📰 bài báo" },
   // Check panel (safety verdicts — highest stakes)
-  "check.label": { en: "Check an address or intersection", vi: "Kiểm tra địa chỉ hoặc giao lộ" },
+  "check.label": { en: "Check an address — and pin it on the map", vi: "Kiểm tra địa chỉ hoặc giao lộ" },
   "check.placeholder": { en: "e.g. 12500 Western Ave, Garden Grove", vi: "ví dụ: 12500 Western Ave, Garden Grove" },
   "check.button": { en: "Check", vi: "Kiểm tra" },
-  "check.hint": { en: "Geocoded via OpenStreetMap. Defaults to Orange County, CA.", vi: "Định vị qua OpenStreetMap. Mặc định Orange County, CA." },
+  "check.hint": { en: "Drops a pin on the map and shows distance to the tank. Geocoded via OpenStreetMap; defaults to Orange County, CA.", vi: "Định vị qua OpenStreetMap. Mặc định Orange County, CA." },
   "check.verdict.critical": { en: "CRITICAL — within primary blast radius", vi: "NGUY CẤP — trong bán kính nổ chính" },
   "check.verdict.evacuate": { en: "EVACUATE — inside the city's evacuation zone", vi: "SƠ TÁN — trong khu sơ tán của thành phố" },
   "check.verdict.highrisk": { en: "HIGH RISK — within damage radius", vi: "NGUY CƠ CAO — trong bán kính thiệt hại" },
@@ -1197,11 +1211,11 @@ function applyLang() {
     el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
   });
   var langBtn = document.getElementById("lang-toggle");
-  if (langBtn) langBtn.textContent = currentLang === "en" ? "Viet" : "Eng";
+  if (langBtn) langBtn.innerHTML = currentLang === "en" ? (FLAG_VN + "<span>Viet</span>") : (FLAG_US + "<span>Eng</span>");
   var themeBtn = document.getElementById("theme-toggle");
   if (themeBtn) {
     var isDark = document.documentElement.classList.contains("theme-dark");
-    themeBtn.textContent = isDark ? "☀" : "🌙";
+    themeBtn.innerHTML = isDark ? ICON_SUN : ICON_MOON;
   }
 }
 function setLang(lang) {
@@ -1271,7 +1285,7 @@ function applyTheme(theme) {
   document.documentElement.classList.toggle("theme-dark", theme === "dark");
   document.documentElement.classList.toggle("theme-light", theme !== "dark");
   // Button shows the theme it switches TO: dark active -> sun, light active -> moon.
-  $("theme-toggle").textContent = theme === "dark" ? "☀" : "🌙";
+  $("theme-toggle").innerHTML = theme === "dark" ? ICON_SUN : ICON_MOON;
 }
 function toggleTheme() {
   const cur = document.documentElement.classList.contains("theme-dark") ? "dark" : "light";
@@ -1400,18 +1414,6 @@ function beep() {
   } catch (e) { /* silent */ }
 }
 
-/* ============ TAKEOVER ============ */
-function showTakeover(reason) {
-  $("takeover-reason").textContent = reason;
-  $("takeover").classList.remove("hidden");
-  $("takeover").classList.add("takeover-flash");
-  beep();
-}
-function dismissTakeover() {
-  $("takeover").classList.add("hidden");
-  $("takeover").classList.remove("takeover-flash");
-}
-window.dismissTakeover = dismissTakeover;
 
 /* ============ MAP ============ */
 function destPoint(lat, lon, bearingDeg, distMi) {
@@ -1824,20 +1826,24 @@ function recolorFixedPoints() {
 
 /* ============ MAIN RENDER ============ */
 function render(snap) {
+  snap = deepFix(snap);
   lastSnap = snap;
   if (snap.schema_version !== 1) {
     setBanners([{kind:"stale", title: t("banner.schema.title"), message: t("banner.schema.msg")}]);
     return;
   }
-  $("updated-text").textContent = relativeTime(snap.last_updated_iso);
+  // Freshness: ~20 min cadence + last update. The stale state lives here now
+  // (replaced the old stale banner) so the G3 staleness signal stays visible.
+  var updEl = $("updated-text");
+  var isStale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
+  var rel = relativeTime(snap.last_updated_iso);
+  updEl.textContent = (isStale ? "⚠ " : "") + t("updated.freshness", { t: rel });
+  updEl.title = t("updated.title", { t: rel });
+  updEl.classList.toggle("stale", !!isStale);
 
   // Banners
   var banners = [];
-  var stale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
-  if (stale) {
-    var min = Math.floor((new Date() - new Date(snap.last_updated_iso)) / 60000);
-    banners.push({kind:"stale", title: t("banner.stale.title"), message: t("banner.stale.msg", { n: min })});
-  }
+  // (Stale banner removed — staleness now shows in the topbar freshness text above.)
   if (!lastFetchOK) banners.push({kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.msg")});
   if (snap.breaking) {
     var level = snap.breaking_level || "urgent";
@@ -1868,16 +1874,11 @@ function render(snap) {
   if (resolved) {
     heroSummary.textContent = t("hero.summary.resolved");
   } else {
-    var headline = (snap.incident && snap.incident.status_headline) || "";
-    heroSummary.textContent = headline || t("hero.summary.default");
+    heroSummary.textContent = t("hero.lead");
   }
 
-  // Zone-flip takeover
-  if (lastZoneStatus !== null
-      && (lastZoneStatus === "outside_downwind" || lastZoneStatus === "outside")
-      && zone === "inside") {
-    showTakeover(t("takeover.reason.flip"));
-  } else if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
+  // Urgent breaking alert (sound only; no directive modal)
+  if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
     if (window.__lastUrgentReason !== snap.breaking_reason) {
       beep();
       window.__lastUrgentReason = snap.breaking_reason;
@@ -1955,6 +1956,18 @@ function render(snap) {
   });
 
   $("news-count").textContent = t("news.feed.title");
+  // Current-situation summary (the full status headline lives here, not the hero)
+  var sitEl = $("news-situation");
+  var sitText = (snap.incident && snap.incident.status_headline) || "";
+  if (sitText && !(snap.incident && snap.incident.resolved_iso)) {
+    sitEl.innerHTML = '<div class="news-situation-label"></div><p class="news-situation-text"></p>';
+    sitEl.querySelector(".news-situation-label").textContent = t("news.situation.label");
+    sitEl.querySelector(".news-situation-text").textContent = sitText;
+    sitEl.hidden = false;
+  } else {
+    sitEl.hidden = true;
+    sitEl.innerHTML = "";
+  }
   var feedEl = $("news-feed");
   if (!feed.length) {
     feedEl.innerHTML = '<div style="padding:10px 12px;color:var(--text-muted);font-size:12px">' + t("news.empty") + '</div>';
