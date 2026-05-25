@@ -618,10 +618,10 @@
       </div>
     </div>
 
-    <h2 class="section-header">News videos — major updates</h2>
+    <h2 class="section-header">Major news updates</h2>
 
     <div id="videos-section" class="videos-grid">
-      <div style="grid-column:1/-1;color:var(--text-dim);font-size:13px">No videos in this snapshot yet. Add them via the writer's <code>videos</code> field.</div>
+      <div style="grid-column:1/-1;color:var(--text-dim);font-size:13px">No news updates in this snapshot yet. Add them via the writer's <code>videos</code> field (works for both YouTube videos and news article entries).</div>
     </div>
 
     <h2 class="section-header">Sources</h2>
@@ -1298,21 +1298,24 @@ function render(snap) {
     if (!videos.length) {
       vsec.innerHTML = `<div style="grid-column:1/-1;color:var(--text-dim);font-size:13px">No news videos in this snapshot yet.</div>`;
     } else {
-      vsec.innerHTML = videos.map(v => `
+      vsec.innerHTML = videos.map(v => {
+        const isVideo = !!(v.youtube_id) || v.is_video === true;
+        return `
         <a class="video-card" href="${v.url}" target="_blank" rel="noopener">
           <div class="video-thumb">
-            ${v.thumbnail_url ? `<img loading="lazy" src="${v.thumbnail_url}" alt="${(v.title||'video').replace(/"/g,'&quot;')}">` : ''}
-            <div class="video-play"></div>
+            ${v.thumbnail_url ? `<img loading="lazy" src="${v.thumbnail_url}" alt="${(v.title||'update').replace(/"/g,'&quot;')}">` : ''}
+            ${isVideo ? `<div class="video-play"></div>` : ''}
           </div>
           <div class="video-meta">
-            <div class="video-title">${v.title || "(untitled video)"}</div>
+            <div class="video-title">${v.title || "(untitled)"}</div>
             <div class="video-sub">
               <span><strong>${v.outlet || "—"}</strong></span>
               ${v.published_iso ? `<span>${fmtAbsDateTime(v.published_iso)}</span>` : ""}
+              ${isVideo ? '<span style="color:var(--sev-low)">▶ video</span>' : ''}
             </div>
           </div>
-        </a>
-      `).join("");
+        </a>`;
+      }).join("");
     }
   }
 }
