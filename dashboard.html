@@ -7,7 +7,7 @@
   <meta name="description" content="GG Tank Watch — unofficial, volunteer-built situational awareness for the Garden Grove chemical-tank emergency. Always verify with ggcity.org/emergency.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0e6f5e">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -82,6 +82,19 @@
       height: 100%;
     }
     .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+
+    /* ===== VIETNAMESE TYPOGRAPHY ===== */
+    html[lang="vi"] {
+      font-family: "Be Vietnam Pro", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.5;
+    }
+    html[lang="vi"] .topbar-title,
+    html[lang="vi"] .hero-severity-label {
+      font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+    }
+    html[lang="vi"] .topbar-title {
+      letter-spacing: 0.3px;
+    }
 
     /* ===== APP SHELL ===== */
     .app {
