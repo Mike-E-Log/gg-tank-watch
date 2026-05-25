@@ -1,26 +1,26 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-25T07:59:32Z",
-  "data_as_of_iso": "2026-05-25T07:59:32Z",
-  "next_check_at_iso": "2026-05-25T08:29:32Z",
-  "stale_after_iso": "2026-05-25T08:39:32Z",
+  "last_updated_iso": "2026-05-25T18:04:54Z",
+  "data_as_of_iso": "2026-05-25T18:04:54Z",
+  "next_check_at_iso": "2026-05-25T18:34:54Z",
+  "stale_after_iso": "2026-05-25T18:44:54Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "~50,000 residents remain under mandatory evacuation orders in Garden Grove as OCFA conducts an overnight confirmation mission after a single crack was discovered in the overheated MMA tank at GKN Aerospace; the tank's internal temperature has exceeded the 100\u00c2\u00b0F gauge maximum and no injuries have been reported.",
+    "status_headline": "OCFA confirmed Monday morning May 25 that the catastrophic BLEVE explosion threat is eliminated after tank pressure was relieved; ~50,000 residents remain under evacuation orders while a smaller explosion or leak risk persists.",
     "severity": "high",
     "resolved_iso": null
   },
   "tank": {
-    "temp_f": 100,
+    "temp_f": 93,
     "crack_observed": true
   },
   "evacuation": {
     "residents": 50000,
     "area_sq_mi": 9,
-    "boundary_text": "N: Ball Road, S: Trask Avenue, W: Valley View Street, E: Dale Street \u00e2\u20ac\u201d includes portions of Garden Grove, Anaheim, Cypress, Stanton, Buena Park, and Westminster",
+    "boundary_text": "South to Trask Avenue, north to Ball Road, west to Valley View Street, east to Dale Street",
     "lifted": false,
     "expanded_since_yesterday": false
   },
@@ -31,81 +31,77 @@
   "official_statements": [
     {
       "agency": "OCFA",
-      "time_iso": "2026-05-24T18:12:00Z",
-      "text": "OCFA Interim Chief TJ McGovern, on crack discovery: 'We're not there yet, but this was a step in the right direction.'",
-      "source_url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/"
+      "time_iso": "2026-05-25T14:00:00Z",
+      "text": "The threat of a BLEVE (Boiling Liquid Expanding Vapor Explosion) at the GKN Aerospace site is now off the table. Crews worked overnight to confirm pressure in the tank was releasing after a crack was discovered; tank temperature is currently at 93\u00b0F and continuing to decline.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     },
     {
-      "agency": "OCFA",
-      "time_iso": "2026-05-25T00:29:00Z",
-      "text": "OCFA Capt. Brian Yau: 'There is no vapors being detected by the air monitors, and there is no active leak that is on the ground.'",
-      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19164358/"
+      "agency": "OCFA Interim Chief TJ McGovern",
+      "time_iso": "2026-05-25T14:00:00Z",
+      "text": "Crisis is not averted. We still have potential for an explosion that is not as bad as a BLEVE, but it is still a threat. Areas outside the evacuation zone are currently considered completely safe and day-to-day activities can continue as normal.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     },
     {
-      "agency": "OCFA",
-      "time_iso": "2026-05-25T04:14:00Z",
-      "text": "OCFA Interim Chief TJ McGovern: 'The BLEVE threat is the worst-case catastrophic event that we have been talking about. We are not there yet. We need to run this operation tonight.'",
-      "source_url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/"
+      "agency": "California Governor Gavin Newsom",
+      "time_iso": "2026-05-23T19:00:00Z",
+      "text": "Declared a state of emergency in Orange County and requested a Federal Emergency Declaration from President Trump. 785 state and local first responders are deployed to Orange County.",
+      "source_url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak"
     },
     {
-      "agency": "OCFA",
-      "time_iso": "2026-05-22T23:50:00Z",
-      "text": "OCFA Division Chief Craig Covey: 'There are literally two options left remaining: One, the tank fails and spills a total of about 6,000 to 7,000 gallons of very bad chemicals into the parking lot and that area. Or two, the tank goes into a thermal runaway and blows up, affecting the tanks that are around it that have fuel or chemicals in them as well.'",
-      "source_url": "https://abcnews.com/US/evacuation-orders-issued-california-city-chemical-tank-fails/story?id=133234846"
+      "agency": "South Coast AQMD / US EPA",
+      "time_iso": "2026-05-24T19:00:00Z",
+      "text": "24 air quality monitors have been deployed around the evacuation zone; air quality levels remain completely normal.",
+      "source_url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak"
     }
   ],
   "sources_checked": [
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove chemical tank emergency: Crews investigating if OC chemical tank pressure has been relieved after crack discovered \u00e2\u20ac\u201d ABC7 Los Angeles",
-      "fetched_iso": "2026-05-25T15:00:00Z"
+      "title": "Garden Grove chemical leak: Threat of massive explosion at OC chemical tank has been eliminated, evacuations still in place \u2014 ABC7 Los Angeles",
+      "fetched_iso": "2026-05-25T18:00:00Z"
     },
     {
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19153168/",
-      "title": "OCFA says temperature of toxic chemical tank in crisis has stabilized \u00e2\u20ac\u201d ABC7 Los Angeles",
-      "fetched_iso": "2026-05-25T15:00:00Z"
-    },
-    {
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19164358/",
-      "title": "Temperature of unstable chemical tank climbs to over 100 degrees, OCFA says \u00e2\u20ac\u201d ABC7 Los Angeles",
-      "fetched_iso": "2026-05-25T15:00:00Z"
-    },
-    {
-      "url": "https://abcnews.com/US/evacuation-orders-issued-california-city-chemical-tank-fails/story?id=133234846",
-      "title": "Authorities urgently try to stop California chemical tank explosion; 50,000 under evacuation orders \u00e2\u20ac\u201d ABC News",
-      "fetched_iso": "2026-05-25T15:00:00Z"
-    },
-    {
-      "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
-      "title": "Garden Grove chemical leak: Fire officials say overnight operation at tank site yields 'positive intel' \u00e2\u20ac\u201d OCDE Newsroom",
-      "fetched_iso": "2026-05-25T15:00:00Z"
+      "url": "https://www.nbclosangeles.com/news/local/live-updates-garden-grove-chemical-tank-emergency/3894473/",
+      "title": "Live updates: Crack found in Garden Grove chemical tank \u2014 NBC Los Angeles",
+      "fetched_iso": "2026-05-25T18:01:00Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
-      "title": "Garden Grove chemical leak \u00e2\u20ac\u201d Wikipedia (last edited May 25, 2026)",
-      "fetched_iso": "2026-05-25T15:00:00Z"
+      "title": "Garden Grove chemical leak \u2014 Wikipedia",
+      "fetched_iso": "2026-05-25T18:04:00Z"
     },
     {
-      "url": "https://www.npr.org/2026/05/24/nx-s1-5833165/california-chemical-tank-malfunction-leak-explode-emergency-evacuate",
-      "title": "California chemical tank has cracked, causing state of emergency, thousands to evacuate \u00e2\u20ac\u201d NPR",
-      "fetched_iso": "2026-05-25T15:00:00Z"
+      "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
+      "title": "Garden Grove chemical leak: OC school districts adjust operations as emergency response continues \u2014 OCDE Newsroom",
+      "fetched_iso": "2026-05-25T18:04:00Z"
     },
     {
-      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-chemical-leak-plans-orange-county-california-evacuations/",
-      "title": "California Gov. Newsom declares state of emergency for Orange County chemical leak as DA launches probe \u00e2\u20ac\u201d CBS Los Angeles",
-      "fetched_iso": "2026-05-25T15:00:00Z"
+      "url": "https://abcnews.com/US/evacuation-orders-issued-california-city-chemical-tank-fails/story?id=133234846",
+      "title": "Authorities urgently try to stop California chemical tank explosion; 50,000 under evacuation orders \u2014 ABC News",
+      "fetched_iso": "2026-05-25T18:00:00Z"
     },
     {
-      "url": "https://ktla.com/news/orange-county/thousands-evacuated-again-after-toxic-tank-leak-in-garden-grove/",
-      "title": "Thousands evacuated in Garden Grove as officials worry toxic chemicals in tank could explode \u00e2\u20ac\u201d KTLA",
-      "fetched_iso": "2026-05-25T15:00:00Z"
+      "url": "https://ktla.com/news/orange-county/thousands-still-evacuated-amid-orange-county-toxic-chemical-leak-that-could-lead-to-explosion/",
+      "title": "Thousands still evacuated amid Orange County toxic chemical leak that could lead to explosion \u2014 KTLA",
+      "fetched_iso": "2026-05-25T18:02:00Z"
+    },
+    {
+      "url": "https://ktla.com/news/orange-county/timeline-orange-county-chemical-tank-crisis/",
+      "title": "Timeline: Orange County chemical tank crisis \u2014 KTLA",
+      "fetched_iso": "2026-05-25T18:00:00Z"
+    },
+    {
+      "url": "https://time.com/article/2026/05/24/garden-grove-chemical-tank-explosion-/",
+      "title": "Garden Grove: Tens of Thousands Ordered to Evacuate Over Chemical Tank Explosion Risk \u2014 TIME",
+      "fetched_iso": "2026-05-25T18:00:00Z"
     }
   ],
   "schools_closed": [
-    "Garden Grove Unified School District (13 campuses closed through May 27)",
-    "Magnolia School District \u00e2\u20ac\u201d Robert M. Pyles STEM Academy",
-    "Savanna School District (all campuses, week of May 25; summer programs suspended through June 1)",
-    "Westminster School District \u00e2\u20ac\u201d Fryberger Elementary, Sequoia Elementary"
+    "Garden Grove Unified School District (Barker, Bryant, Carver, Enders, Garden Park, Lawrence, Wakeham, Patton elementaries; Bell and Alamitos intermediates; Pacifica and Rancho Alamitos high schools \u2014 closed through May 27)",
+    "Westminster School District (Fryberger Elementary, Sequoia Elementary \u2014 closed indefinitely)",
+    "Magnolia School District (Robert M. Pyles STEM Academy \u2014 closed indefinitely)",
+    "Savanna School District (all campuses \u2014 closed week of May 25, reopen targeted June 1)",
+    "OCDE ACCESS Program (3 impacted sites on remote instruction)"
   ],
   "videos": [
     {
@@ -192,15 +188,15 @@
   ],
   "breaking": true,
   "breaking_reason": "4 new official statement(s)",
-  "breaking_since_iso": "2026-05-25T07:59:32Z",
+  "breaking_since_iso": "2026-05-25T18:04:54Z",
   "breaking_level": "info",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
-      "6a402aab719d996a",
-      "7a901db8de6cf7b2",
-      "f4438bf013a2ef00",
-      "14ad16db1332b4e8"
+      "9ca847c67a5682cf",
+      "58d0cb37b4836c4a",
+      "5d22966308c035b6",
+      "70ec7266534a77f7"
     ],
     "last_residents_shift_iso": null
   }
