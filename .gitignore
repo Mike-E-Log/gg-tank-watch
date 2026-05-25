@@ -33,8 +33,14 @@ eval/.last_run/
 # Orchestration scratch (split-and-orchestrate wiki/state)
 .orchestra/
 
+# Build-loop / planning artifacts (regenerated per session)
+loop/
+plan/
+prompts/
+
 # Secrets / local env (never commit)
 .env
 .env.local
 .env.*.local
 .vercel
+.gstack/
