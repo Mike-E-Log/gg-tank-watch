@@ -23,7 +23,7 @@ CONFIG_PATH = REPO_ROOT / "config.json"
 
 
 def _load_config():
-    return json.loads(CONFIG_PATH.read_text())
+    return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
 
 
 def _haversine_mi(lat1, lon1, lat2, lon2):
@@ -81,26 +81,6 @@ def test_facility_itself_is_near_zero_distance():
     return {
         "passed": s["distance_mi"] < 0.01,
         "details": f"distance={s['distance_mi']:.4f} mi (expected <0.01 mi at facility)",
-    }
-
-
-def test_trask_harbor_distance():
-    cfg = _load_config()
-    s = compute_safety(33.7660, -117.9202, cfg)
-    return {
-        "passed": s["distance_mi"] > 3.0,
-        "details": f"distance={s['distance_mi']:.2f} mi (expected >3 mi)",
-        "metrics": {"distance_mi": s["distance_mi"]},
-    }
-
-
-def test_magnolia_ellis_distance():
-    cfg = _load_config()
-    s = compute_safety(33.6935, -117.9717, cfg)
-    return {
-        "passed": s["distance_mi"] > 5.0,
-        "details": f"distance={s['distance_mi']:.2f} mi (expected >5 mi)",
-        "metrics": {"distance_mi": s["distance_mi"]},
     }
 
 

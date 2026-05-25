@@ -2,6 +2,36 @@
 
 How GG Tank Watch ensures model outputs cannot break user safety.
 
+## Control flow at a glance
+
+```mermaid
+flowchart TD
+    A["gather_facts.py\n(LLM + WebSearch)"] -->|"structured JSON\nvia stdin"| B
+
+    subgraph CONTROL ["CONTROL LAYER — update_status.py"]
+        direction TB
+        B["chokepoint\n(single entry point)"]
+        B --> C["P0-1 Corroboration gate\nDanger downgrade? Needs ≥2 sources\n+≥1 official host. Single source → safe default."]
+        B --> D["P0-2 Provenance check\nSource URL not in sources_checked? Drop it.\nNo source_url at all? Reject statement."]
+        B --> E["P0-3 Freshness honesty\nEmpty-facts tick? data_as_of_iso stays old.\nStaleness banner keys off data age, not write age."]
+        B --> F["P1-1 Date sanity\nFuture or malformed resolved_iso? Null it.\nSeverity = computed, never extracted."]
+    end
+
+    CONTROL -->|"validated snapshot"| G["status.json\n(atomic rename)"]
+
+    G --> H["dashboard.html\n(client render)"]
+    H --> I["Staleness banner\n(fires on data age)"]
+    H --> J["Source attribution\n(every statement)"]
+    H --> K["AI disclosure\n(persistent)"]
+
+    style CONTROL fill:#fef3c7,stroke:#d97706,color:#000
+    style A fill:#dbeafe,stroke:#3b82f6,color:#000
+    style G fill:#dcfce7,stroke:#16a34a,color:#000
+    style H fill:#dcfce7,stroke:#16a34a,color:#000
+```
+
+**Asymmetric gating principle:** danger upgrades fire on 1 source (over-warning is acceptable); danger downgrades require ≥2 sources including ≥1 official host (under-warning is catastrophic). The LLM cannot write `status.json` directly — all output passes through the chokepoint.
+
 ## The problem
 
 An LLM summarizes live news sources every 30 minutes and writes structured data to a dashboard serving ~50,000 evacuated residents during a chemical tank emergency. If the model hallucinates an "all-clear," a sheltering family might stop evacuating. If it fabricates a source, the dashboard's credibility collapses. If it timestamps stale data as fresh, the staleness banner never fires and users trust outdated information.

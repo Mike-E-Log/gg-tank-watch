@@ -139,7 +139,7 @@ def test_air_quality_shape_if_present():
 
 
 def test_config_json_required_fields():
-    cfg = json.loads(CONFIG_PATH.read_text())
+    cfg = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     fails = []
     fails += _check_keys(cfg, ["zone_status", "dashboard_refresh_seconds", "stale_after_minutes", "incident", "map", "schema_version"], "config.json")
     if "map" in cfg:
@@ -157,7 +157,7 @@ def test_config_json_required_fields():
 
 
 def test_config_facility_coords_in_southern_california():
-    cfg = json.loads(CONFIG_PATH.read_text())
+    cfg = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     f = cfg["map"]["facility"]
     in_socal = (32.5 < f["lat"] < 34.5) and (-119.0 < f["lon"] < -117.0)
     return {

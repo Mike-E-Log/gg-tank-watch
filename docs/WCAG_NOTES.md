@@ -53,10 +53,12 @@ The dashboard is designed for stressed residents checking their phone during an 
 ### Form labels
 - The address-check input relies on placeholder text rather than a visible `<label>`. Screen readers can read the placeholder, but an associated label is more reliable.
 
-## Planned improvements
+## In progress (dashboard stream)
 
-1. Add `:focus-visible` outlines to all interactive elements
-2. Wrap tab content in `<main>` landmark
-3. Add a visible `<label>` to the address-check input
-4. Add a skip-navigation link
+The following gaps are being addressed by the dashboard workstream:
+
+1. **In progress** — Add `:focus-visible` outlines to all interactive elements
+2. **In progress** — Wrap tab content in `<main>` landmark
+3. **In progress** — Add a visible `<label>` to the address-check input
+4. **In progress** — Add a skip-navigation link
 5. Audit muted-text contrast ratios against WCAG AA (4.5:1 for normal text)

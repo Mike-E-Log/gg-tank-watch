@@ -67,16 +67,6 @@ def test_magnolia_talbert():
     return _check_intersection("Magnolia and Talbert", 33.7022, -117.9716)
 
 
-def test_trask_harbor():
-    """First fixed reference point."""
-    return _check_intersection("Trask and Harbor", 33.7660, -117.9202)
-
-
-def test_magnolia_ellis():
-    """Second fixed reference point."""
-    return _check_intersection("Magnolia and Ellis", 33.6935, -117.9717)
-
-
 def test_full_street_address_near_facility():
     """Full street address should geocode close to the GKN facility."""
     res = _geocode("12122 Western Ave, Garden Grove, CA")

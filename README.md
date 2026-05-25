@@ -11,7 +11,50 @@
 
 ## For Anthropic reviewers
 
-This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 45 tests, exits 0).
+This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 46 tests, exits 0).
+
+### Safety architecture (30-second scan)
+
+The LLM's output passes through a single chokepoint before reaching `status.json`. The control layer enforces four structural properties — no prompting required:
+
+| Control | What it prevents | Asymmetry |
+|---------|-----------------|-----------|
+| **P0-1 Corroboration gate** | A single hallucinated `evacuation_lifted: true` fires an all-clear | Danger downgrades need ≥2 sources + ≥1 official. Upgrades fire on 1. |
+| **P0-2 Provenance check** | Fabricated source URL or unattributed quote reaches the dashboard | Statement dropped unless its URL was actually fetched this run |
+| **P0-3 Freshness honesty** | Empty-facts run stamps a fresh timestamp on stale data | `data_as_of_iso` advances only on source-backed facts; staleness banner keys off data age, not write age |
+| **P1-1 Date sanity** | Future-dated or malformed `incident_resolved_iso` flips incident to resolved | Future/malformed timestamps are nulled before snapshot write |
+
+Full diagram and test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md)
+
+### Eval quick-start
+
+```bash
+python eval/run_all.py --skip integration
+```
+
+Expected output (46 tests, all green):
+
+```
+  behavioral       39/39   (100.0% pass)
+  schema            7/7    (100.0% pass)
+----------------------------------------------------------------
+  TOTAL            46/46   (100.0% pass)
+```
+
+Test categories: 5-state behavioral sequence (writer state machine) · corroboration gate · provenance · freshness · date sanity · severity derivation · gatherer failure contract · encoding integrity · schema validation. Results append to `eval/scores.jsonl` for regression tracking.
+
+Red-team report (12 failure modes, guarded/unguarded verdict per mode): [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md)
+
+### Performance
+
+| Metric | Value | How |
+|--------|-------|-----|
+| First paint (3G) | ~500 ms | Single HTTP request, no framework, ~30 KB original code |
+| JS dependencies | 0 | Vanilla JS + CDN Leaflet (map only); no React, no build step |
+| Offline resilience | PWA + service worker | Caches last-known state; staleness banner fires when stale |
+| Initial HTTP requests | 1 | Entire app ships in one HTML file; `status.json` fetched client-side after paint |
+
+A single-file HTML app that beats most React apps on first paint while serving a safety-critical audience on mobile data. The zero-dependency constraint is also a safety property: no supply-chain risk, no bundler foot-guns, no CDN failure (beyond Leaflet tiles, which degrade gracefully).
 
 ---
 
