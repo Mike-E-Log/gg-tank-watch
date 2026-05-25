@@ -114,6 +114,30 @@ def test_status_json_freshness_fields():
     }
 
 
+def test_air_quality_shape_if_present():
+    """If air_quality is present in status.json, it must have aqi, category, source, fetched_iso."""
+    if not STATUS_PATH.exists():
+        return {"passed": False, "details": "status.json not found"}
+    snap = json.loads(STATUS_PATH.read_text())
+    aq = snap.get("air_quality")
+    if aq is None:
+        return {"passed": True, "details": "air_quality not present (AIRNOW_API_KEY unset); skipped"}
+    issues = []
+    if not isinstance(aq.get("aqi"), (int, float)):
+        issues.append(f"aqi must be numeric, got {type(aq.get('aqi')).__name__}")
+    if not isinstance(aq.get("category"), str):
+        issues.append("category must be string")
+    if aq.get("source") != "EPA AirNow":
+        issues.append(f"source must be 'EPA AirNow', got {aq.get('source')!r}")
+    fi = aq.get("fetched_iso", "")
+    if not (isinstance(fi, str) and fi.endswith("Z") and len(fi) >= 20):
+        issues.append(f"fetched_iso shape wrong: {fi!r}")
+    return {
+        "passed": len(issues) == 0,
+        "details": "air_quality shape valid" if not issues else "; ".join(issues),
+    }
+
+
 def test_config_json_required_fields():
     cfg = json.loads(CONFIG_PATH.read_text())
     fails = []

@@ -895,6 +895,8 @@
       <span class="stat-sep">|</span>
       <div class="stat"><span class="stat-val mono" id="temp-compact">--</span></div>
       <span class="stat-sep">|</span>
+      <div class="stat" id="aqi-stat" style="display:none"><span class="stat-val mono" id="aqi-compact">--</span></div>
+      <span class="stat-sep" id="aqi-sep" style="display:none">|</span>
       <div class="stat"><span class="stat-val mono" id="evac-compact">--</span></div>
       <span class="stat-sep">|</span>
       <div class="stat"><span id="refresh-text" class="mono" style="font-size:10px">30s</span></div>
@@ -1955,6 +1957,13 @@ function render(snap) {
   var evac = snap.evacuation || {};
   $("temp-compact").textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
   $("evac-compact").textContent = (evac.residents != null) ? fmtCompact(evac.residents) + " evac" : "—";
+  var aq = snap.air_quality;
+  if (aq && aq.aqi != null) {
+    $("aqi-compact").textContent = "AQI " + aq.aqi + " · " + (aq.category || "");
+    $("aqi-compact").title = (aq.source || "EPA AirNow") + " · " + relativeTime(aq.fetched_iso);
+    $("aqi-stat").style.display = "";
+    $("aqi-sep").style.display = "";
+  }
 
   // Info tab details
   $("tank-temp").textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
