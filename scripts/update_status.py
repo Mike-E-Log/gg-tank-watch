@@ -222,12 +222,24 @@ def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
     incident_cfg = config.get("incident", {})
 
     # Build sub-objects with fall-through to prev
+    # Severity is derived from facts, but only re-derive when this tick actually
+    # provides the relevant fields. A partial facts dict (e.g., only `videos`)
+    # must NOT silently downgrade severity to "low" — it should keep prev.
+    severity_relevant_keys = (
+        "evacuation_residents", "evacuation_lifted", "incident_resolved_iso",
+        "injuries", "tank_failed", "explosion_confirmed"
+    )
+    if facts and any(k in facts for k in severity_relevant_keys):
+        derived_severity = derive_severity(facts)
+    else:
+        derived_severity = prev_incident.get("severity", "low")
+
     incident = {
         "name": incident_cfg.get("name") or prev_incident.get("name") or "Garden Grove MMA Tank Leak",
         "facility": incident_cfg.get("facility") or prev_incident.get("facility"),
         "started_iso": incident_cfg.get("started_iso") or prev_incident.get("started_iso"),
         "status_headline": facts.get("status_headline") or prev_incident.get("status_headline") or "Status unknown",
-        "severity": derive_severity(facts) if facts else prev_incident.get("severity", "low"),
+        "severity": derived_severity,
         "resolved_iso": facts.get("incident_resolved_iso") if "incident_resolved_iso" in facts else prev_incident.get("resolved_iso"),
     }
     tank = {

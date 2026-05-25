@@ -203,6 +203,27 @@ def test_garbage_input_keeps_prev_values():
     }
 
 
+def test_partial_facts_dont_downgrade_severity():
+    """Piping only `videos` (no evac/incident fields) must NOT recompute
+    severity from zeros. Severity must carry forward from prev snapshot."""
+    _reset_sandbox()
+    # Tick 1: real evac data -> severity should derive to "high"
+    _tick({"evacuation_residents": 50000, "evacuation_lifted": False, "tank_temp_f": 100})
+    snap1 = json.loads((SANDBOX / "status.json").read_text())
+    if snap1["incident"]["severity"] != "high":
+        return {"passed": False, "details": f"setup failed: expected severity=high, got {snap1['incident']['severity']}"}
+    # Tick 2: partial facts (only videos, no evac fields)
+    _tick({"videos": [{"outlet": "test", "title": "test", "url": "https://example.invalid"}]})
+    snap2 = json.loads((SANDBOX / "status.json").read_text())
+    return {
+        "passed": (
+            snap2["incident"]["severity"] == "high"
+            and not (snap2["breaking"] and "Severity" in (snap2.get("breaking_reason") or ""))
+        ),
+        "details": f"severity={snap2['incident']['severity']}, breaking={snap2['breaking']}, reason={snap2.get('breaking_reason')}",
+    }
+
+
 def test_schema_invariants():
     """status.json must have required fields with correct types."""
     _reset_sandbox()
