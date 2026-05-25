@@ -144,10 +144,11 @@
       flex-shrink: 0;
     }
     .topbar-updated {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
       white-space: nowrap;
     }
+    .topbar-updated.stale { color: var(--high); font-weight: 700; }
     .theme-toggle {
       background: none;
       border: 1px solid var(--border);
@@ -939,7 +940,7 @@
             <summary data-i18n="info.about.title">Who made this</summary>
             <div class="info-section">
               <div class="methodology-body">
-                <p data-i18n="info.about.body">Built by two local volunteers, Mike &amp; Anna, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
+                <p data-i18n="info.about.body">Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
                 <p data-i18n="info.about.official">For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.</p>
                 <p><a href="terms.html" data-i18n="info.about.termslink">Read the full Terms &amp; disclaimer</a></p>
               </div>
@@ -992,6 +993,28 @@ var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
 var ICON_MOON = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z" fill="#94a3b8"/></svg>';
 var FLAG_VN = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#da251d"/><polygon points="15,4 16.8,9.6 22.6,9.6 17.9,13 19.7,18.6 15,15.1 10.3,18.6 12.1,13 7.4,9.6 13.2,9.6" fill="#ff0"/></svg>';
 var FLAG_US = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><g fill="#b22234"><rect width="30" height="2" y="0"/><rect width="30" height="2" y="4"/><rect width="30" height="2" y="8"/><rect width="30" height="2" y="12"/><rect width="30" height="2" y="16"/></g><rect width="13" height="10" fill="#3c3b6e"/></svg>';
+
+// Repair double-encoded UTF-8 mojibake in the feed data (the writer pipeline
+// emits e.g. em-dash as â€”). Root cause belongs in the refresh
+// pipeline; this is a defensive display-side fix. Only the em-dash is present
+// today; the rest cover common CP1252 mojibake so future data is safe too.
+function fixMojibake(s) {
+  if (typeof s !== "string" || s.indexOf("â") === -1) return s;
+  return s
+    .replace(/â€”/g, "—")
+    .replace(/â€“/g, "–")
+    .replace(/â€™/g, "’")
+    .replace(/â€˜/g, "‘")
+    .replace(/â€œ/g, "“")
+    .replace(/â€/g, "”")
+    .replace(/â€¦/g, "…");
+}
+function deepFix(o) {
+  if (typeof o === "string") return fixMojibake(o).replace(/Â([ -¿])/g, "$1").replace(/Â/g, "");
+  if (Array.isArray(o)) { for (var i = 0; i < o.length; i++) o[i] = deepFix(o[i]); return o; }
+  if (o && typeof o === "object") { for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) o[k] = deepFix(o[k]); return o; }
+  return o;
+}
 const WIND_BASE_MS = 60000;
 const WIND_MAX_MS = 480000;
 
@@ -1005,6 +1028,8 @@ const STRINGS = {
   "theme.dark": { en: "Dark", vi: "Tối" },
   "theme.light": { en: "Light", vi: "Sáng" },
   "updated.loading": { en: "loading...", vi: "đang tải..." },
+  "updated.freshness": { en: "⟳ ~20 min · {t}" },
+  "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}." },
   // Trust / safety (PR-A) — new EN strings; VI falls back to EN until Anna verifies (G1 gate)
   "topbar.unofficial": { en: "UNOFFICIAL" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
@@ -1012,7 +1037,7 @@ const STRINGS = {
   "safety.strip.official": { en: "Official source:" },
   "safety.strip.terms": { en: "Full terms & disclaimer" },
   "info.about.title": { en: "Who made this" },
-  "info.about.body": { en: "Built by two local volunteers, Mike & Anna, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
+  "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
   "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA." },
   "info.about.termslink": { en: "Read the full Terms & disclaimer" },
   // Hero (safety verdicts)
@@ -1054,10 +1079,10 @@ const STRINGS = {
   "news.media.video": { en: "▶ video", vi: "▶ video" },
   "news.media.article": { en: "📰 article", vi: "📰 bài báo" },
   // Check panel (safety verdicts — highest stakes)
-  "check.label": { en: "Check an address or intersection", vi: "Kiểm tra địa chỉ hoặc giao lộ" },
+  "check.label": { en: "Check an address — and pin it on the map", vi: "Kiểm tra địa chỉ hoặc giao lộ" },
   "check.placeholder": { en: "e.g. 12500 Western Ave, Garden Grove", vi: "ví dụ: 12500 Western Ave, Garden Grove" },
   "check.button": { en: "Check", vi: "Kiểm tra" },
-  "check.hint": { en: "Geocoded via OpenStreetMap. Defaults to Orange County, CA.", vi: "Định vị qua OpenStreetMap. Mặc định Orange County, CA." },
+  "check.hint": { en: "Drops a pin on the map and shows distance to the tank. Geocoded via OpenStreetMap; defaults to Orange County, CA.", vi: "Định vị qua OpenStreetMap. Mặc định Orange County, CA." },
   "check.verdict.critical": { en: "CRITICAL — within primary blast radius", vi: "NGUY CẤP — trong bán kính nổ chính" },
   "check.verdict.evacuate": { en: "EVACUATE — inside the city's evacuation zone", vi: "SƠ TÁN — trong khu sơ tán của thành phố" },
   "check.verdict.highrisk": { en: "HIGH RISK — within damage radius", vi: "NGUY CƠ CAO — trong bán kính thiệt hại" },
@@ -1796,20 +1821,24 @@ function recolorFixedPoints() {
 
 /* ============ MAIN RENDER ============ */
 function render(snap) {
+  snap = deepFix(snap);
   lastSnap = snap;
   if (snap.schema_version !== 1) {
     setBanners([{kind:"stale", title: t("banner.schema.title"), message: t("banner.schema.msg")}]);
     return;
   }
-  $("updated-text").textContent = relativeTime(snap.last_updated_iso);
+  // Freshness: ~20 min cadence + last update. The stale state lives here now
+  // (replaced the old stale banner) so the G3 staleness signal stays visible.
+  var updEl = $("updated-text");
+  var isStale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
+  var rel = relativeTime(snap.last_updated_iso);
+  updEl.textContent = (isStale ? "⚠ " : "") + t("updated.freshness", { t: rel });
+  updEl.title = t("updated.title", { t: rel });
+  updEl.classList.toggle("stale", !!isStale);
 
   // Banners
   var banners = [];
-  var stale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
-  if (stale) {
-    var min = Math.floor((new Date() - new Date(snap.last_updated_iso)) / 60000);
-    banners.push({kind:"stale", title: t("banner.stale.title"), message: t("banner.stale.msg", { n: min })});
-  }
+  // (Stale banner removed — staleness now shows in the topbar freshness text above.)
   if (!lastFetchOK) banners.push({kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.msg")});
   if (snap.breaking) {
     var level = snap.breaking_level || "urgent";
