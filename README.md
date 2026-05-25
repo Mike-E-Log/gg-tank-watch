@@ -18,7 +18,7 @@
 | **Safety checker** | Type any address or intersection ("Magnolia & Talbert") → geocoded via Nominatim → verdict (SAFE / ELEVATED / HIGH / CRITICAL) + pin dropped on the map |
 | **Update banner** | URGENT (red, pulsing, beep) for act-now changes; UPDATE (amber, no beep) for informational. Click → scrolls sidebar to highlight the newest statement |
 | **Statements sidebar** | Sticky, scrollable, newest-first, with `Newest` + `Recent` badges. Source links on each |
-| **Auto-refresh** | Dashboard polls `status.json` every 30 s. Writer refreshes `status.json` every 30 min via a background loop. Wind refreshes every 5 min from NOAA's free API |
+| **Auto-refresh** | Dashboard polls `status.json` every 30 s. A refresh job re-gathers facts and rewrites `status.json` on a ~20-min cadence (see [Data sync](#data-sync--how-statusjson-stays-fresh)). Wind refreshes every 5 min from NOAA's free API |
 | **Theme** | Light default with dark toggle, saved per browser |
 
 ## Why I built it
@@ -29,7 +29,7 @@ The emergency was multi-day and evolving. The available signals — news live-bl
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  /loop cron (every 30 min) → WebSearch (Claude tool)                │
+│  refresh job (~20 min) → claude -p WebSearch (subscription)         │
 │       ↓ extracts structured facts as JSON                           │
 │       ↓ pipes to stdin                                              │
 │  scripts/update_status.py  (Python stdlib only)                     │
@@ -53,6 +53,21 @@ The emergency was multi-day and evolving. The available signals — news live-bl
 
 **No backend, no database, no auth, no build step.** Two files of real code (Python writer + HTML/JS reader), JSON as the message bus, browser as the runtime. The whole thing is double-clickable.
 
+## Data sync — how `status.json` stays fresh
+
+`status.json` is the only thing that changes after deploy, so keeping it current is the one real ops problem. I built two interchangeable paths and deliberately run the cheaper one:
+
+| Path | Where it runs | Billing | Status |
+|---|---|---|---|
+| `scripts/refresh_local.py` | a contributor's machine, left on | **subscription credits, $0 metered** — calls `claude -p` on the OAuth subscription with `ANTHROPIC_API_KEY` unset | **active** |
+| `.github/workflows/update-status.yml` | GitHub-hosted runner, no machine needed | **metered `ANTHROPIC_API_KEY`** (~$200–330/mo at a 20-min cadence) | **dormant** — `schedule:` commented out |
+
+Both share one gatherer: `refresh_local.py` imports `PROMPT` + `extract_json` from `gather_facts.py`, so the two paths stay in lockstep and only the model call differs (subscription CLI vs. metered SDK). Each run gathers facts via WebSearch, writes `status.json`, commits it with `[skip ci]`, and pushes — Vercel auto-deploys the new snapshot.
+
+**The tradeoff is the point.** A headless cloud runner can't use the OAuth subscription, only a metered key, so "no machine required" costs real money while "$0 metered" needs a machine that's on. For a single-incident dashboard that isn't cleared for wide distribution yet, the right call is to keep the cloud cron wired-but-dormant (the secret's already set; uncommenting one line flips it on) and refresh locally on subscription credits. Full writeup in [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md).
+
+**The failure mode is honest by design.** If a gather fails, the writer writes nothing: `status.json` keeps its old timestamp and the dashboard's staleness banner fires. It never stamps a fresh time onto stale data.
+
 ## Stack
 
 - **Frontend:** vanilla HTML/CSS/JS + [Leaflet](https://leafletjs.com/) (map) + [OpenStreetMap](https://www.openstreetmap.org/) (tiles, geocoding). No framework, no build step, ~30 KB of original code.
@@ -61,7 +76,7 @@ The emergency was multi-day and evolving. The available signals — news live-bl
   - Wind from NOAA's free `api.weather.gov` (station KFUL Fullerton Muni)
   - Geocoding from OpenStreetMap Nominatim
   - Blast-zone radii estimated from BLEVE scaling for the actual tank inventory (~7,000 gal MMA ≈ ~100 tonnes TNT-equivalent overpressure)
-- **Trigger:** Claude Code's in-session `/loop` cron (every 30 min) does the WebSearch and pipes a structured facts JSON to the writer.
+- **Trigger:** `scripts/refresh_local.py` (run on a ~20-min schedule) gathers facts via `claude -p` WebSearch on the subscription and pipes structured JSON to the writer. See [Data sync](#data-sync--how-statusjson-stays-fresh) for the dual-path design.
 - **No deps beyond Python 3 stdlib + a CDN-loaded Leaflet.**
 
 ## How design decisions get made and tracked
@@ -150,9 +165,12 @@ gg-tank-dashboard/
 ├── BRIEF_2026-05-24.md             ← source-cited factual brief
 ├── PERSONAL_UPDATE_2026-05-24.md   ← personal status update drafts
 ├── scripts/
+│   ├── refresh_local.py            ← subscription-billed refresh (active path)
+│   ├── gather_facts.py             ← metered SDK gatherer (cloud path)
 │   └── update_status.py            ← the writer
 ├── docs/
-│   └── SPEC.md                     ← full SPEC + autoplan trail
+│   ├── SPEC.md                     ← full SPEC + autoplan trail
+│   └── DATA_SYNC.md                ← dual-path data-sync design + cost tradeoff
 └── eval/
     ├── README.md
     ├── run_all.py                  ← runs everything, appends scores.jsonl
