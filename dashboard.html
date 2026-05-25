@@ -81,7 +81,7 @@
       overflow: hidden;
       height: 100%;
     }
-    .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+    .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
 
     /* ===== VIETNAMESE TYPOGRAPHY ===== */
     html[lang="vi"] {
@@ -96,12 +96,40 @@
       letter-spacing: 0.3px;
     }
 
+    /* ===== SKIP NAVIGATION ===== */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 8px;
+      z-index: 9999;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: 0 0 6px 6px;
+      text-decoration: none;
+      transition: top 0.15s ease;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ===== FOCUS STYLES ===== */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    input:focus-visible {
+      outline-offset: -1px;
+    }
+
     /* ===== APP SHELL ===== */
     .app {
       display: flex;
       flex-direction: column;
-      height: 100vh;  /* fallback for browsers without dvh */
-      height: 100dvh; /* wins where supported: tracks mobile browser chrome so the bottom tab bar stays visible */
+      height: 100vh;
+      height: 100dvh;
       max-width: 800px;
       margin: 0 auto;
       overflow: hidden;
@@ -151,7 +179,7 @@
       letter-spacing: 0.6px;
       text-transform: uppercase;
       color: #fff;
-      background: var(--text-sec);
+      background: var(--gold);
       padding: 2px 6px;
       border-radius: 4px;
       white-space: nowrap;
@@ -247,7 +275,11 @@
     .banner-offline { background: var(--banner-stale-bg); color: var(--text-muted); cursor: default; }
     .banner-action { font-size: 11px; opacity: 0.7; }
     @keyframes pulse-bg { 0%,100%{opacity:1} 50%{opacity:0.7} }
-    @media (prefers-reduced-motion: reduce) { .banner-breaking { animation: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .banner-breaking { animation: none; }
+      .tab-panel { transition: none; }
+      .data-flash { animation: none !important; }
+    }
 
     /* ===== SAFETY STRIP (persistent disclaimer + official source) ===== */
     .safety-strip {
@@ -292,6 +324,7 @@
       text-decoration: none;
       color: var(--text);
       font-size: 13px;
+      min-height: 48px;
     }
     .official-link:hover { border-color: var(--accent); }
     .official-link-tag {
@@ -310,14 +343,14 @@
       flex-shrink: 0;
       padding: 4px 12px;
       font-size: 11px;
-      color: var(--text-muted);
+      color: var(--gold);
       background: var(--card);
       border-bottom: 1px solid var(--border);
       text-align: center;
     }
 
     /* ===== NEWS unified feed ===== */
-    .feed-item { padding: 10px 12px; border-bottom: 1px solid var(--border); display: block; color: inherit; text-decoration: none; }
+    .feed-item { padding: 10px 12px; border-bottom: 1px solid var(--border); display: block; color: inherit; text-decoration: none; border-top: 2px solid transparent; border-image: linear-gradient(90deg, var(--accent), transparent) 1; }
     .feed-item-official { cursor: default; }
     a.feed-item { display: flex; gap: 10px; }
     .feed-meta { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
@@ -337,8 +370,8 @@
       list-style: none;
     }
     .info-fold > summary::-webkit-details-marker { display: none; }
-    .info-fold > summary::after { content: " ▸"; color: var(--text-muted); }
-    .info-fold[open] > summary::after { content: " ▾"; }
+    .info-fold > summary::after { content: " \25B8"; color: var(--text-muted); }
+    .info-fold[open] > summary::after { content: " \25BE"; }
     .info-group-title {
       padding: 12px 16px 0; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
       text-transform: uppercase; color: var(--text-sec);
@@ -379,6 +412,14 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .hero-check-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-sec);
+      text-align: left;
+      margin-bottom: 4px;
+    }
     .hero-check input {
       flex: 1;
       padding: 10px 12px;
@@ -389,10 +430,7 @@
       font-size: 16px;
       font-family: inherit;
       min-width: 0;
-    }
-    .hero-check input:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: -1px;
+      min-height: 48px;
     }
     .hero-check button {
       padding: 10px 16px;
@@ -405,7 +443,7 @@
       font-family: inherit;
       cursor: pointer;
       white-space: nowrap;
-      min-height: 44px;
+      min-height: 48px;
     }
     .hero-check button:disabled { opacity: 0.5; }
     .hero-verdict {
@@ -483,6 +521,15 @@
       transition: transform 0.4s ease;
     }
 
+    /* ===== DATA FLASH MICRO-INTERACTION ===== */
+    @keyframes data-flash-anim {
+      0% { background-color: var(--accent-light); }
+      100% { background-color: transparent; }
+    }
+    .data-flash {
+      animation: data-flash-anim 0.6s ease-out;
+    }
+
     /* ===== TAB CONTENT ===== */
     .tab-content {
       flex: 1;
@@ -497,7 +544,7 @@
       overflow-x: hidden;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.12s ease;
+      transition: opacity 0.15s ease;
       -webkit-overflow-scrolling: touch;
     }
     .tab-panel.active {
@@ -746,6 +793,115 @@
       gap: 6px;
     }
 
+    /* ===== TIMELINE ===== */
+    .timeline-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px 4px;
+    }
+    .timeline-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .timeline-count {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .filter-chips {
+      display: flex;
+      gap: 6px;
+      padding: 6px 12px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-sec);
+      cursor: pointer;
+      white-space: nowrap;
+      min-height: 32px;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .filter-chip:hover { border-color: var(--accent); }
+    .filter-chip.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .filter-divider {
+      width: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+      align-self: stretch;
+      margin: 4px 2px;
+    }
+    .timeline-event {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .timeline-event-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+      flex-wrap: wrap;
+    }
+    .timeline-event-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    .timeline-event-cat {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+    .timeline-event-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--text);
+    }
+    .timeline-event-desc {
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--text-sec);
+      margin-top: 3px;
+    }
+    .timeline-event-source {
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+      margin-top: 4px;
+      display: inline-block;
+    }
+    .timeline-event-source:hover { text-decoration: underline; }
+    .timeline-empty {
+      padding: 24px 12px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
     /* ===== EVACUATION SHELTERS ===== */
     .shelters-cta {
       background: var(--surface);
@@ -786,9 +942,9 @@
     .shelter-card .directions {
       font-size: 12px; color: var(--accent); text-decoration: none;
       margin-top: 6px; align-self: flex-start;
+      min-height: 44px; display: inline-flex; align-items: center;
     }
     .shelter-card .directions:hover { text-decoration: underline; }
-    /* Shelter map marker */
     .shelter-icon { background: none !important; border: none !important; }
     .shelter-marker {
       width: 22px; height: 22px; background: #2563eb; border: 2px solid white;
@@ -796,88 +952,96 @@
       font-size: 13px; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
 
-    /* ===== CHECK PANEL ===== */
-    .check-panel-inner { padding: 16px 12px; }
-    .check-label {
-      font-size: 11px;
+    /* ===== COMMUNITY RESOURCES ===== */
+    .community-resource-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .community-resource-card .cr-title { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.25; }
+    .community-resource-card .cr-title-vi { font-size: 12px; color: var(--text-muted); font-style: italic; }
+    .community-resource-card .cr-desc { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
+    .community-resource-card .cr-actions { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .community-resource-card .cr-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      min-height: 44px;
+    }
+    .cr-action-phone {
+      background: var(--accent);
+      color: #fff;
+    }
+    .cr-action-url {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--accent);
+    }
+    .cr-action-url:hover { border-color: var(--accent); }
+    .cr-cat-chip {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      align-self: flex-start;
+    }
+    .cr-cat-government { background: var(--accent-light); color: var(--accent); }
+    .cr-cat-safety { background: var(--moderate-bg); color: var(--moderate); }
+    .cr-cat-shelter { background: #dbeafe; color: #2563eb; }
+    .cr-cat-community { background: var(--gold-light); color: var(--gold); }
+
+    /* ===== RESOURCES TAB ===== */
+    .resources-section { padding: 10px 12px; }
+    .resources-section-title {
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
       color: var(--text-muted);
       margin-bottom: 8px;
     }
-    .safety-form {
-      display: flex;
-      gap: 8px;
+    .resources-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
     }
-    .safety-form input {
-      flex: 1;
-      padding: 10px 12px;
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 16px;
-      font-family: inherit;
-    }
-    .safety-form input:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: -1px;
-    }
-    .safety-form button {
+
+    /* ===== ABOUT PANEL ===== */
+    .about-panel-inner { padding: 0 0 24px; }
+    .about-section {
       padding: 12px 16px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .about-section-title {
+      font-size: 10px;
       font-weight: 700;
-      font-size: 14px;
-      font-family: inherit;
-      cursor: pointer;
-      white-space: nowrap;
-      min-height: 44px;
-    }
-    .safety-form button:disabled { opacity: 0.5; }
-    .safety-hint {
-      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       color: var(--text-muted);
-      margin-top: 6px;
+      margin-bottom: 6px;
     }
-    .safety-result {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-    }
-    .safety-result.hidden { display: none; }
-    .safety-result h4 { font-size: 16px; margin-bottom: 4px; }
-    .safety-result .verdict-line {
+    .about-body {
       font-size: 12px;
       color: var(--text-sec);
-      margin-bottom: 6px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      line-height: 1.5;
     }
-    .safety-result ul { margin-left: 16px; font-size: 12px; }
-    .safety-result li { margin: 2px 0; }
-    .safety-result .view-map-btn {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 6px 12px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .safety-lvl-unknown { background: var(--banner-stale-bg); border-color: var(--border); }
-    .safety-lvl-unknown h4 { color: var(--text-sec); }
+    .about-body p { margin-bottom: 6px; }
+    .about-body a { color: var(--accent); text-decoration: none; }
+    .about-body a:hover { text-decoration: underline; }
 
-    /* ===== INFO PANEL ===== */
+    /* ===== INFO PANEL (incident status data rows) ===== */
     .info-panel-inner { padding: 0 0 24px; }
     .info-section {
       padding: 10px 12px;
@@ -903,27 +1067,6 @@
     .yes { color: var(--safe); font-weight: 600; }
     .no { color: var(--high); font-weight: 600; }
 
-    .methodology-section {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    .methodology-title {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      cursor: pointer;
-    }
-    .methodology-body {
-      font-size: 12px;
-      color: var(--text-sec);
-      line-height: 1.5;
-    }
-    .methodology-body p { margin-bottom: 6px; }
-    .methodology-body a { color: var(--accent); text-decoration: none; }
-    .methodology-body a:hover { text-decoration: underline; }
     .source-item {
       display: block;
       padding: 5px 0;
@@ -970,29 +1113,169 @@
     .app.severity-critical::before {
       opacity: 0;
     }
-    .feed-item {
-      border-top: 2px solid transparent;
-      border-image: linear-gradient(90deg, var(--accent), transparent) 1;
+
+    /* ===== LOADING SKELETON ===== */
+    .skeleton {
+      background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.5s ease-in-out infinite;
+      border-radius: 4px;
+      display: inline-block;
     }
-    .unofficial-pill {
-      background: var(--gold);
+    @keyframes skeleton-shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
-    .ai-disclosure {
-      color: var(--gold);
+    @media (prefers-reduced-motion: reduce) {
+      .skeleton { animation: none; background: var(--border); }
     }
 
-    /* ===== DESKTOP ===== */
-    @media (min-width: 768px) {
+    /* ===== DESKTOP HYBRID LAYOUT (1024px+) ===== */
+    @media (min-width: 1024px) {
+      html, body { overflow: hidden; height: 100vh; }
+      .app {
+        max-width: none;
+        flex-direction: column;
+        height: 100vh;
+      }
+      .desktop-body {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .desktop-map-panel {
+        flex: 0 0 55%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid var(--border);
+      }
+      .desktop-map-panel #panel-map {
+        position: relative;
+        flex: 1;
+        opacity: 1;
+        pointer-events: auto;
+        overflow: hidden;
+      }
+      .desktop-sidebar {
+        flex: 0 0 45%;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .desktop-sidebar .hero {
+        flex-shrink: 0;
+      }
+      .desktop-sidebar .sidebar-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+        flex-shrink: 0;
+      }
+      .desktop-sidebar .sidebar-tab-btn {
+        flex: 1;
+        padding: 10px 0;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: color 0.15s;
+        min-height: 44px;
+      }
+      .desktop-sidebar .sidebar-tab-btn.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      .desktop-sidebar .sidebar-content {
+        flex: 1;
+        position: relative;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .desktop-sidebar .sidebar-panel {
+        position: absolute;
+        inset: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+      }
+      .desktop-sidebar .sidebar-panel.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      /* Hide the mobile tab bar on desktop */
+      .tab-bar { display: none; }
+      /* Hide the mobile tab-content wrapper — desktop uses its own layout */
+      .tab-content { display: none; }
+      /* Stats strip gets more room */
+      .stats-strip { gap: 12px; padding: 6px 24px; justify-content: center; }
+      .stat-sep { margin: 0 6px; }
+    }
+
+    /* ===== TABLET (768-1023) ===== */
+    @media (min-width: 768px) and (max-width: 1023px) {
       .hero-action { font-size: 36px; }
       .tab-btn { padding: 8px 0 6px; }
       .tab-btn-icon { font-size: 16px; }
       .news-item { padding: 12px 16px; }
       .info-section { padding: 12px 16px; }
-      .check-panel-inner { padding: 20px 16px; }
+      .resources-grid { grid-template-columns: repeat(2, 1fr); }
     }
+
+    /* ===== PRINT CSS ===== */
+    @media print {
+      html, body { overflow: visible; height: auto; }
+      .app { max-width: none; height: auto; overflow: visible; }
+      .app::before { display: none; }
+      .tab-bar, .tab-content, .desktop-body { display: none !important; }
+      .refresh-bar, .banners, .theme-toggle, #lang-toggle, .lang-picker,
+      .hero-check, .hero-verdict, .stats-strip, .map-wind-overlay,
+      .map-legend-overlay, .skip-link { display: none !important; }
+      .safety-strip { background: none; border: 1px solid #ccc; }
+      .ai-disclosure { color: #333; background: none; border: 1px solid #ccc; font-weight: 700; }
+      .print-only { display: block !important; }
+      .print-content {
+        display: block !important;
+        padding: 16px;
+      }
+      .print-content section {
+        page-break-inside: avoid;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 16px;
+      }
+      .print-content h2 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #000;
+      }
+      .print-content p, .print-content li, .print-content div {
+        font-size: 12px;
+        color: #333;
+        line-height: 1.5;
+      }
+      .print-content a::after {
+        content: " (" attr(href) ")";
+        font-size: 10px;
+        color: #666;
+      }
+      .print-content a { color: #333; text-decoration: underline; }
+      * { color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+    .print-only { display: none; }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="app">
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
@@ -1004,10 +1287,10 @@
       <div class="topbar-right">
         <span class="topbar-updated" id="updated-text" data-i18n="updated.loading">loading...</span>
         <div class="lang-picker" id="lang-picker">
-          <button class="theme-toggle" id="lang-toggle" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" title="Language / Ngôn ngữ">VI</button>
+          <button class="theme-toggle" id="lang-toggle" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" title="Language / Ng&#xF4;n ng&#x1EEF;">VI</button>
           <div class="lang-menu" id="lang-menu" role="menu"></div>
         </div>
-        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle theme">🌙</button>
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle theme">&#x1F319;</button>
       </div>
     </header>
 
@@ -1018,8 +1301,9 @@
         <span class="hero-severity-label" data-i18n="hero.severity.label">Incident severity:</span>
         <span class="severity-chip" id="severity-chip">--</span>
       </div>
-      <p class="hero-summary" id="hero-summary" data-i18n="hero.summary.loading">Loading current status…</p>
+      <p class="hero-summary" id="hero-summary" data-i18n="hero.summary.loading">Loading current status&#x2026;</p>
       <form class="hero-check" onsubmit="event.preventDefault(); heroCheckSafety()">
+        <label for="hero-check-input" class="hero-check-label" data-i18n="hero.check.label">Check your address</label>
         <input id="hero-check-input" type="text" placeholder="Check your address" data-i18n-placeholder="hero.check.placeholder" autocomplete="off">
         <button id="hero-check-btn" type="submit" data-i18n="hero.check.button">Check</button>
       </form>
@@ -1027,13 +1311,13 @@
     </section>
 
     <div class="safety-strip" role="note">
-      <span class="safety-strip-info" data-i18n="safety.strip.info">Informational only — not official. In an emergency, call 911.</span>
+      <span class="safety-strip-info" data-i18n="safety.strip.info">Informational only &#x2014; not official. In an emergency, call 911.</span>
       <span class="safety-strip-official">
         <span data-i18n="safety.strip.official">Official source:</span>
         <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>
-        <span class="safety-strip-sep">·</span><a href="tel:911">911</a>
-        <span class="safety-strip-sep">·</span><a href="tel:+17146287085">714-628-7085</a>
-        <span class="safety-strip-sep">·</span>OCFA
+        <span class="safety-strip-sep">&#xB7;</span><a href="tel:911">911</a>
+        <span class="safety-strip-sep">&#xB7;</span><a href="tel:+17146287085">714-628-7085</a>
+        <span class="safety-strip-sep">&#xB7;</span>OCFA
       </span>
       <a class="safety-strip-terms" href="terms.html" data-i18n="safety.strip.terms">Full terms &amp; disclaimer</a>
     </div>
@@ -1055,7 +1339,51 @@
       <div class="stat"><span id="refresh-text" class="mono" style="font-size:10px">30s</span></div>
     </div>
 
-    <div class="tab-content">
+    <!-- ===== DESKTOP HYBRID LAYOUT (visible only at 1024px+) ===== -->
+    <div class="desktop-body">
+      <div class="desktop-map-panel">
+        <div class="tab-panel active" id="panel-map-desktop" role="tabpanel" aria-label="Map">
+          <div id="map-desktop"></div>
+          <div class="map-wind-overlay" id="map-wind-overlay-desktop">
+            <svg class="wind-arrow-sm" id="wind-arrow-map-desktop" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
+            <span id="wind-text-map-desktop">--</span>
+          </div>
+          <div class="map-legend-overlay" id="map-legend-desktop">
+            <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span><span data-i18n="legend.evac">Evac zone</span></div>
+            <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span><span data-i18n="legend.shelter">Shelter</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="desktop-sidebar">
+        <nav class="sidebar-tabs" role="tablist" aria-label="Sidebar sections">
+          <button class="sidebar-tab-btn active" role="tab" id="stab-updates" aria-selected="true" aria-controls="spanel-updates" onclick="switchSidebarTab('updates')" data-i18n="tab.updates">Updates</button>
+          <button class="sidebar-tab-btn" role="tab" id="stab-resources" aria-selected="false" aria-controls="spanel-resources" onclick="switchSidebarTab('resources')" data-i18n="tab.resources">Resources</button>
+          <button class="sidebar-tab-btn" role="tab" id="stab-about" aria-selected="false" aria-controls="spanel-about" onclick="switchSidebarTab('about')" data-i18n="tab.about">About</button>
+        </nav>
+        <div class="sidebar-content" id="main-content-desktop">
+          <div class="sidebar-panel active" id="spanel-updates" role="tabpanel" aria-labelledby="stab-updates">
+            <div id="desktop-news-situation" class="news-situation" hidden></div>
+            <div class="news-section-label" id="desktop-news-count" data-i18n="news.feed.title">News &amp; updates</div>
+            <div id="desktop-news-feed"></div>
+            <div class="timeline-header">
+              <span class="timeline-title" data-i18n="timeline.title">Incident timeline</span>
+              <span class="timeline-count mono" id="desktop-timeline-count"></span>
+            </div>
+            <div class="filter-chips" id="desktop-filter-chips"></div>
+            <div id="desktop-timeline-feed"></div>
+          </div>
+          <div class="sidebar-panel" id="spanel-resources" role="tabpanel" aria-labelledby="stab-resources">
+            <div id="desktop-resources-content"></div>
+          </div>
+          <div class="sidebar-panel" id="spanel-about" role="tabpanel" aria-labelledby="stab-about">
+            <div id="desktop-about-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MOBILE TAB CONTENT (visible below 1024px) ===== -->
+    <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
         <div id="map"></div>
         <div class="map-wind-overlay" id="map-wind-overlay">
@@ -1068,245 +1396,110 @@
         </div>
       </div>
 
-      <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
+      <div class="tab-panel" id="panel-updates" role="tabpanel" aria-labelledby="tab-updates">
         <div id="news-situation" class="news-situation" hidden></div>
         <div class="news-section-label" id="news-count" data-i18n="news.feed.title">News &amp; updates</div>
         <div id="news-feed"></div>
-      </div>
-
-      <div class="tab-panel" id="panel-check" role="tabpanel" aria-labelledby="tab-check">
-        <div class="check-panel-inner">
-          <div class="check-label" data-i18n="check.label">Check an address or intersection</div>
-          <form class="safety-form" onsubmit="event.preventDefault(); checkSafety()">
-            <input id="safety-input" type="text" placeholder="e.g. 12500 Western Ave, Garden Grove" data-i18n-placeholder="check.placeholder" autocomplete="off">
-            <button id="safety-button" type="submit" data-i18n="check.button">Check</button>
-          </form>
-          <div class="safety-hint" data-i18n="check.hint">Geocoded via OpenStreetMap. Defaults to Orange County, CA.</div>
-          <div id="safety-result" class="safety-result hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+        <div class="timeline-header">
+          <span class="timeline-title" data-i18n="timeline.title">Incident timeline</span>
+          <span class="timeline-count mono" id="timeline-count"></span>
         </div>
+        <div class="filter-chips" id="filter-chips"></div>
+        <div id="timeline-feed"></div>
       </div>
 
-      <div class="tab-panel" id="panel-info" role="tabpanel" aria-labelledby="tab-info">
-        <div class="info-panel-inner">
-
-          <!-- 1. Incident status (Tank + Evacuation merged) -->
-          <div class="info-group-title" data-i18n="info.group.status">Incident status</div>
-          <div class="info-section">
-            <div class="info-section-title" data-i18n="info.tank.title">Tank</div>
-            <div class="info-big mono" id="tank-temp">--</div>
-            <div class="info-row"><span class="k" data-i18n="info.tank.crack">Crack observed</span><span class="v" id="tank-crack">--</span></div>
-          </div>
-          <div class="info-section">
-            <div class="info-section-title" data-i18n="info.evac.title">Evacuation</div>
-            <div class="info-big mono" id="evac-residents">--</div>
-            <div class="info-row"><span class="k" data-i18n="info.evac.area">Area</span><span class="v mono" id="evac-area">--</span></div>
-            <div class="info-row"><span class="k" data-i18n="info.evac.lifted">Order lifted</span><span class="v" id="evac-lifted">--</span></div>
-            <div class="info-row"><span class="k" data-i18n="info.evac.expanded">Expanded today</span><span class="v" id="evac-expanded">--</span></div>
-            <div class="info-row"><span class="k" data-i18n="info.evac.boundary">Boundary</span><span class="v" style="font-size:11px;text-align:right;max-width:60%" id="evac-boundary">--</span></div>
-          </div>
-
-          <div class="lotus-divider"></div>
-
-          <!-- 2. Where to go -->
-          <div class="info-group-title" data-i18n="info.group.wheretogo">Where to go</div>
-          <div class="info-section">
-            <div class="info-section-title" data-i18n="info.shelters.title">Evacuation shelters</div>
-            <div class="shelters-cta" data-i18n-html="info.shelters.cta">
-              &#128719; <strong>Live list at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; the city is the source of truth; the list below is a snapshot.
-            </div>
-            <div id="shelters-grid" class="shelters-grid"></div>
-          </div>
-
-          <div class="lotus-divider"></div>
-
-          <!-- 3. Official sources -->
-          <div class="info-group-title" data-i18n="info.group.official">Official sources</div>
-          <div class="info-section official-sources-panel">
-            <p class="official-sources-note" data-i18n="info.official.note">No single source should be your only one. Subscribe to official alerts and check multiple channels.</p>
-            <div class="official-links">
-              <a class="official-link" href="https://ggcity.org/emergency" target="_blank" rel="noopener">
-                <span class="official-link-label" data-i18n="info.official.city">City of Garden Grove emergency page</span>
-                <span class="official-link-tag">Official</span>
-              </a>
-              <a class="official-link" href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener">
-                <span class="official-link-label" data-i18n="info.official.zonehaven">Genasys / Zonehaven zone lookup</span>
-                <span class="official-link-tag">Official</span>
-              </a>
-              <a class="official-link" href="https://member.everbridge.net/892807736729480/login" target="_blank" rel="noopener">
-                <span class="official-link-label" data-i18n="info.official.alert">AlertOC sign-up (official county alerts)</span>
-                <span class="official-link-tag">Official</span>
-              </a>
-              <a class="official-link" href="https://www.airnow.gov/?city=Garden%20Grove&state=CA" target="_blank" rel="noopener">
-                <span class="official-link-label" data-i18n="info.official.airnow">EPA AirNow air quality</span>
-                <span class="official-link-tag">Official</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="lotus-divider"></div>
-
-          <!-- 4. Closures (renumbered from 3) -->
-          <div class="info-group-title" data-i18n="info.group.closures">Closures</div>
-          <div class="info-section">
-            <div class="info-section-title" data-i18n="info.schools.title">Schools closed</div>
-            <div id="schools">--</div>
-          </div>
-          <div class="info-section">
-            <div class="info-section-title" data-i18n="info.roads.title">Road closures</div>
-            <div class="info-roads-defer" data-i18n-html="info.roads.defer">Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.</div>
-          </div>
-
-          <!-- 4. Sources & how this works (collapsed) -->
-          <details class="info-fold">
-            <summary data-i18n="info.group.sources">Sources &amp; how this works</summary>
-            <div class="info-section">
-              <div class="info-section-title" data-i18n="info.sources.title">Sources verified</div>
-              <div id="source-list"></div>
-            </div>
-            <div class="methodology-section">
-              <div class="info-section-title" data-i18n="info.method.title">Methodology &amp; trust</div>
-              <div class="methodology-body">
-                <p data-i18n-html="info.method.pipeline"><strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.</p>
-                <p data-i18n-html="info.method.wind"><strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Shown as current local wind conditions.</p>
-                <p data-i18n-html="info.method.checker"><strong>Safety checker:</strong> Geocodes the entered address via OpenStreetMap Nominatim, then tests whether the point falls inside the area officials have described as evacuated (point-in-polygon). Defers to the official evacuation checker for authoritative orders.</p>
-                <p data-i18n-html="info.method.eval"><strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests (writer logic, schema validation, safety checker math, geocoder behavior) and LLM-as-judge rubrics for design and data quality. All design decisions are logged in <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> with rationale and rubric scores.</p>
-                <p data-i18n-html="info.method.disclaimer"><strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.</p>
-              </div>
-            </div>
-          </details>
-
-          <!-- 5. About (collapsed, bottom) -->
-          <details class="info-fold">
-            <summary data-i18n="info.about.title">Who made this</summary>
-            <div class="info-section">
-              <div class="methodology-body">
-                <p data-i18n="info.about.body">Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
-                <p data-i18n="info.about.official">For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.</p>
-                <p><a href="terms.html" data-i18n="info.about.termslink">Read the full Terms &amp; disclaimer</a></p>
-                <p><a href="docs/CODE_OF_CONDUCT.md" data-i18n="info.about.conductlink">Information Conduit Code of Conduct</a></p>
-              </div>
-            </div>
-          </details>
-
-        </div>
+      <div class="tab-panel" id="panel-resources" role="tabpanel" aria-labelledby="tab-resources">
+        <div id="resources-content"></div>
       </div>
-    </div>
+
+      <div class="tab-panel" id="panel-about" role="tabpanel" aria-labelledby="tab-about">
+        <div id="about-content"></div>
+      </div>
+    </main>
 
     <nav class="tab-bar" role="tablist" aria-label="Dashboard sections">
       <button class="tab-btn active" role="tab" id="tab-map" aria-selected="true" aria-controls="panel-map" data-tab="map" onclick="switchTab('map')">
         <span class="tab-btn-icon">&#x1F5FA;</span>
         <span class="tab-btn-label" data-i18n="tab.map">Map</span>
       </button>
-      <button class="tab-btn" role="tab" id="tab-news" aria-selected="false" aria-controls="panel-news" data-tab="news" onclick="switchTab('news')">
+      <button class="tab-btn" role="tab" id="tab-updates" aria-selected="false" aria-controls="panel-updates" data-tab="updates" onclick="switchTab('updates')">
         <span class="tab-btn-icon">&#x1F4F0;</span>
-        <span class="tab-btn-label" data-i18n="tab.news">News</span>
+        <span class="tab-btn-label" data-i18n="tab.updates">Updates</span>
       </button>
-      <button class="tab-btn" role="tab" id="tab-check" aria-selected="false" aria-controls="panel-check" data-tab="check" onclick="switchTab('check')">
-        <span class="tab-btn-icon">&#x1F50D;</span>
-        <span class="tab-btn-label" data-i18n="tab.check">Check</span>
+      <button class="tab-btn" role="tab" id="tab-resources" aria-selected="false" aria-controls="panel-resources" data-tab="resources" onclick="switchTab('resources')">
+        <span class="tab-btn-icon">&#x1F91D;</span>
+        <span class="tab-btn-label" data-i18n="tab.resources">Resources</span>
       </button>
-      <button class="tab-btn" role="tab" id="tab-info" aria-selected="false" aria-controls="panel-info" data-tab="info" onclick="switchTab('info')">
+      <button class="tab-btn" role="tab" id="tab-about" aria-selected="false" aria-controls="panel-about" data-tab="about" onclick="switchTab('about')">
         <span class="tab-btn-icon">&#x2139;</span>
-        <span class="tab-btn-label" data-i18n="tab.info">Info</span>
+        <span class="tab-btn-label" data-i18n="tab.about">About</span>
       </button>
     </nav>
   </div>
 
+  <!-- ===== PRINT-ONLY CONTENT ===== -->
+  <div class="print-only print-content" id="print-content"></div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
 <script>
-const REFRESH_MS = 30000;
-const NORMAL_TITLE = "GG Tank Watch";
-const BREAKING_TITLE = "\u{1F534} BREAKING — GG Tank Watch";
+var REFRESH_MS = 30000;
+var NORMAL_TITLE = "GG Tank Watch";
+var BREAKING_TITLE = "\u{1F534} BREAKING — GG Tank Watch";
 
-// Toggle icons (inline SVG for cross-platform consistency; emoji flags render as
-// letters on Windows, and the sun emoji is too faint, so we draw our own).
-var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><g fill="#f59e0b">' +
-  '<circle cx="12" cy="12" r="5"/>' +
-  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(0 12 12)"/>' +
-  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(45 12 12)"/>' +
-  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(90 12 12)"/>' +
-  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(135 12 12)"/>' +
-  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(180 12 12)"/>' +
-  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(225 12 12)"/>' +
-  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(270 12 12)"/>' +
-  '<path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(315 12 12)"/>' +
-  '</g></svg>';
+var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><g fill="#f59e0b"><circle cx="12" cy="12" r="5"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(0 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(45 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(90 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(135 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(180 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(225 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(270 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(315 12 12)"/></g></svg>';
 var ICON_MOON = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z" fill="#94a3b8"/></svg>';
 var FLAG_VN = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#da251d"/><polygon points="15,4 16.8,9.6 22.6,9.6 17.9,13 19.7,18.6 15,15.1 10.3,18.6 12.1,13 7.4,9.6 13.2,9.6" fill="#ff0"/></svg>';
 var FLAG_US = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><g fill="#b22234"><rect width="30" height="2" y="0"/><rect width="30" height="2" y="4"/><rect width="30" height="2" y="8"/><rect width="30" height="2" y="12"/><rect width="30" height="2" y="16"/></g><rect width="13" height="10" fill="#3c3b6e"/></svg>';
-// Spain (simplified: red-yellow-red bands, no coat of arms) and South Korea
-// (simplified taegeuk, no trigrams). Used by es/ko once their verified copy lands.
 var FLAG_ES = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#c60b1e"/><rect width="30" height="10" y="5" fill="#ffc400"/></svg>';
 var FLAG_KR = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><path d="M10 10a5 5 0 0 1 10 0z" fill="#cd2e3a"/><path d="M10 10a5 5 0 0 0 10 0z" fill="#0047a0"/></svg>';
 
-// Repair double-encoded UTF-8 mojibake in the feed data (the writer pipeline
-// emits e.g. em-dash as â€”). Root cause belongs in the refresh
-// pipeline; this is a defensive display-side fix. Only the em-dash is present
-// today; the rest cover common CP1252 mojibake so future data is safe too.
 function fixMojibake(s) {
   if (typeof s !== "string" || s.indexOf("â") === -1) return s;
-  return s
-    .replace(/â€”/g, "—")
-    .replace(/â€“/g, "–")
-    .replace(/â€™/g, "’")
-    .replace(/â€˜/g, "‘")
-    .replace(/â€œ/g, "“")
-    .replace(/â€/g, "”")
-    .replace(/â€¦/g, "…");
+  return s.replace(/â€”/g,"—").replace(/â€“/g,"–").replace(/â€™/g,"’").replace(/â€˜/g,"‘").replace(/â€œ/g,"“").replace(/â€/g,"”").replace(/â€¦/g,"…");
 }
 function deepFix(o) {
-  if (typeof o === "string") return fixMojibake(o).replace(/Â([ -¿])/g, "$1").replace(/Â/g, "");
+  if (typeof o === "string") return fixMojibake(o).replace(/Â([ -¿])/g, "$1").replace(/Â/g, "");
   if (Array.isArray(o)) { for (var i = 0; i < o.length; i++) o[i] = deepFix(o[i]); return o; }
   if (o && typeof o === "object") { for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) o[k] = deepFix(o[k]); return o; }
   return o;
 }
-const WIND_BASE_MS = 60000;
-const WIND_MAX_MS = 480000;
+var WIND_BASE_MS = 60000;
+var WIND_MAX_MS = 480000;
 
 /* ============ I18N (EN / VI) ============ */
-const STRINGS = {
-  // Tabs + topbar
+var STRINGS = {
   "tab.map": { en: "Map", vi: "Bản đồ", es: "Mapa" },
-  "tab.news": { en: "News", vi: "Tin tức", es: "Noticias" },
-  "tab.check": { en: "Check", vi: "Kiểm tra", es: "Verificar" },
-  "tab.info": { en: "Info", vi: "Thông tin", es: "Info" },
+  "tab.updates": { en: "Updates", vi: "Cập nhật", es: "Actualizaciones" },
+  "tab.resources": { en: "Resources", vi: "Tài nguyên", es: "Recursos" },
+  "tab.about": { en: "About", vi: "Giới thiệu", es: "Acerca de" },
   "theme.dark": { en: "Dark", vi: "Tối", es: "Oscuro" },
   "theme.light": { en: "Light", vi: "Sáng", es: "Claro" },
   "updated.loading": { en: "loading...", vi: "đang tải...", es: "cargando..." },
   "updated.freshness": { en: "⟳ ~20 min · {t}", vi: "⟳ ~20 phút · {t}", es: "⟳ ~20 min · {t}" },
   "updated.stale": { en: "⚠ Stale · last updated {t}", vi: "⚠ Cũ · cập nhật lần cuối {t}", es: "⚠ Desactualizado · última actualización {t}" },
   "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}.", vi: "Tự động cập nhật khoảng 20 phút một lần. Lần cập nhật cuối {t}.", es: "Se actualiza automáticamente cada 20 minutos. Última actualización {t}." },
-  // Trust / safety (PR-A)
   "topbar.unofficial": { en: "UNOFFICIAL", vi: "KHÔNG CHÍNH THỨC", es: "NO OFICIAL" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source", vi: "Do tình nguyện viên xây dựng — không phải nguồn chính thức của chính phủ", es: "Hecho por voluntarios — no es una fuente oficial del gobierno" },
   "safety.strip.info": { en: "Informational only — not official. In an emergency, call 911.", vi: "Chỉ mang tính thông tin — không chính thức. Trong trường hợp khẩn cấp, gọi 911.", es: "Solo informativo — no oficial. En una emergencia, llame al 911." },
   "safety.strip.official": { en: "Official source:", vi: "Nguồn chính thức:", es: "Fuente oficial:" },
   "safety.strip.terms": { en: "Full terms & disclaimer", vi: "Điều khoản & miễn trừ đầy đủ", es: "Términos y descargo de responsabilidad completos" },
   "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels.", vi: "Các tóm tắt trên trang này được tổng hợp với sự hỗ trợ của AI từ các nguồn chính thức và tin tức, sau đó được kiểm tra bởi người thật. Luôn xác nhận thông tin an toàn sinh mạng với các kênh chính thức.", es: "Los resúmenes en esta página se compilan con asistencia de IA a partir de fuentes oficiales y de noticias, luego son verificados por una persona. Siempre confirme la información de seguridad con los canales oficiales." },
-  "info.about.title": { en: "Who made this", vi: "Ai xây dựng trang này", es: "Quién hizo esto" },
-  "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.", vi: "Được xây dựng bởi hai tình nguyện viên địa phương, Mike và Nancy, để hỗ trợ cộng đồng trong sự cố bồn chứa hóa chất tại Garden Grove. Trang này không liên kết, không được xác nhận, hay vận hành bởi Thành phố Garden Grove, Cơ quan Cứu hỏa Quận Cam, hoặc bất kỳ cơ quan chính phủ nào. Miễn phí, không cần đăng ký, không quảng cáo — chúng tôi không thu thập dữ liệu của bạn.", es: "Creado por dos voluntarios locales, Mike y Nancy, para ayudar a nuestra comunidad durante la emergencia del tanque químico en Garden Grove. No está afiliado, respaldado ni operado por la Ciudad de Garden Grove, la Autoridad de Bomberos del Condado de Orange ni ninguna agencia gubernamental. Gratis, sin registro, sin anuncios — no recopilamos sus datos." },
-  "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.", vi: "Để biết lệnh và cập nhật chính thức, luôn sử dụng ggcity.org/emergency · 714-628-7085 · OCFA.", es: "Para órdenes y actualizaciones oficiales, siempre use ggcity.org/emergency · 714-628-7085 · OCFA." },
-  "info.about.termslink": { en: "Read the full Terms & disclaimer", vi: "Đọc Điều khoản & miễn trừ đầy đủ", es: "Leer los Términos y descargo de responsabilidad completos" },
-  "info.about.conductlink": { en: "Information Conduit Code of Conduct", vi: "Quy tắc ứng xử Kênh Thông tin", es: "Código de Conducta del Canal de Información" },
-  // Hero (safety verdicts)
   "hero.severity.label": { en: "Incident severity:", vi: "Mức độ nghiêm trọng:", es: "Gravedad del incidente:" },
   "hero.summary.loading": { en: "Loading current status…", vi: "Đang tải tình trạng hiện tại…", es: "Cargando estado actual…" },
   "hero.lead": { en: "Active chemical-tank emergency in Garden Grove.", vi: "Tình trạng khẩn cấp bồn chứa hóa chất đang diễn ra tại Garden Grove.", es: "Emergencia activa de tanque químico en Garden Grove." },
   "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders.", vi: "Sự cố bồn chứa hóa chất đang diễn ra tại Garden Grove. Hãy tuân theo lệnh của cơ quan chức năng.", es: "Incidente activo de tanque químico en Garden Grove. Siga las órdenes oficiales." },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest.", vi: "Sự cố đã được giải quyết. Xem ggcity.org/emergency để biết thông tin mới nhất.", es: "Incidente resuelto. Consulte ggcity.org/emergency para la información más reciente." },
+  "hero.check.label": { en: "Check your address", vi: "Kiểm tra địa chỉ của bạn", es: "Verifique su dirección" },
   "hero.check.placeholder": { en: "Check your address", vi: "Kiểm tra địa chỉ của bạn", es: "Verifique su dirección" },
   "hero.check.button": { en: "Check", vi: "Kiểm tra", es: "Verificar" },
   "hero.verdict.inside": { en: "⚠ This address appears inside the evacuation area. Confirm at ggcity.org/emergency", vi: "⚠ Địa chỉ này có vẻ nằm trong khu vực sơ tán. Xác nhận tại ggcity.org/emergency", es: "⚠ Esta dirección parece estar dentro del área de evacuación. Confirme en ggcity.org/emergency" },
   "hero.verdict.outside": { en: "✓ Outside current evacuation zone — confirm at ggcity.org/emergency", vi: "✓ Ngoài khu vực sơ tán hiện tại — xác nhận tại ggcity.org/emergency", es: "✓ Fuera de la zona de evacuación actual — confirme en ggcity.org/emergency" },
   "hero.verdict.loading": { en: "Checking…", vi: "Đang kiểm tra…", es: "Verificando…" },
   "hero.verdict.error": { en: "Could not check — try a more specific address", vi: "Không thể kiểm tra — hãy thử địa chỉ cụ thể hơn", es: "No se pudo verificar — intente con una dirección más específica" },
-  // Takeover
-  // Map legend + tooltips
   "legend.evac": { en: "Evac zone", vi: "Khu sơ tán", es: "Zona de evacuación" },
   "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn", es: "Refugio" },
   "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán", es: "Zona de evacuación" },
   "map.tooltip.you": { en: "You", vi: "Bạn", es: "Usted" },
-  // News
   "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức", es: "{n} comunicado{s} oficial{s}" },
   "news.coverage": { en: "Coverage", vi: "Báo chí đưa tin", es: "Cobertura" },
   "news.feed.title": { en: "News & updates", vi: "Tin tức & cập nhật", es: "Noticias y actualizaciones" },
@@ -1315,40 +1508,6 @@ const STRINGS = {
   "news.type.article": { en: "📰 Article", vi: "📰 Bài báo", es: "📰 Artículo" },
   "news.type.video": { en: "▶ Video", vi: "▶ Video", es: "▶ Video" },
   "info.group.status": { en: "Incident status", vi: "Tình trạng sự cố", es: "Estado del incidente" },
-  "info.group.wheretogo": { en: "Where to go", vi: "Nơi cần đến", es: "A dónde ir" },
-  "info.group.official": { en: "Official sources", vi: "Nguồn chính thức", es: "Fuentes oficiales" },
-  "info.official.note": { en: "No single source should be your only one. Subscribe to official alerts and check multiple channels.", vi: "Không nên chỉ dựa vào một nguồn duy nhất. Hãy đăng ký nhận cảnh báo chính thức và kiểm tra nhiều kênh.", es: "Ninguna fuente debe ser la única. Suscríbase a las alertas oficiales y consulte múltiples canales." },
-  "info.official.city": { en: "City of Garden Grove emergency page", vi: "Trang khẩn cấp Thành phố Garden Grove", es: "Página de emergencia de la Ciudad de Garden Grove" },
-  "info.official.zonehaven": { en: "Genasys / Zonehaven zone lookup", vi: "Tra cứu khu vực Genasys / Zonehaven", es: "Búsqueda de zona Genasys / Zonehaven" },
-  "info.official.alert": { en: "AlertOC sign-up (official county alerts)", vi: "Đăng ký AlertOC (cảnh báo chính thức của quận)", es: "Registro en AlertOC (alertas oficiales del condado)" },
-  "info.official.airnow": { en: "EPA AirNow air quality", vi: "Chất lượng không khí EPA AirNow", es: "Calidad del aire EPA AirNow" },
-  "info.group.closures": { en: "Closures", vi: "Đóng cửa", es: "Cierres" },
-  "info.roads.title": { en: "Road closures", vi: "Đóng đường", es: "Cierres de calles" },
-  "info.roads.defer": { en: 'Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.', vi: 'Các đường trong khu vực sơ tán đã đóng. Xem <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> để biết thông tin đóng đường hiện tại.', es: 'Las calles dentro de la zona de evacuación están cerradas. Consulte <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> para los cierres de calles actuales.' },
-  "info.group.sources": { en: "Sources & how this works", vi: "Nguồn & cách hoạt động", es: "Fuentes y cómo funciona" },
-  "news.badge.newest": { en: "Newest", vi: "Mới nhất", es: "Más reciente" },
-  "news.badge.recent": { en: "Recent", vi: "Gần đây", es: "Reciente" },
-  "news.source": { en: "source ↗", vi: "nguồn ↗", es: "fuente ↗" },
-  "news.untitled": { en: "(untitled)", vi: "(không có tiêu đề)", es: "(sin título)" },
-  "news.empty": { en: "No coverage yet.", vi: "Chưa có tin tức.", es: "Aún no hay cobertura." },
-  "news.media.video": { en: "▶ video", vi: "▶ video", es: "▶ video" },
-  "news.media.article": { en: "📰 article", vi: "📰 bài báo", es: "📰 artículo" },
-  // Check panel (address router — routes to official checker)
-  "check.label": { en: "Check an address — and pin it on the map", vi: "Kiểm tra địa chỉ hoặc giao lộ", es: "Verifique una dirección — y márquela en el mapa" },
-  "check.placeholder": { en: "e.g. 12500 Western Ave, Garden Grove", vi: "ví dụ: 12500 Western Ave, Garden Grove", es: "ej. 12500 Western Ave, Garden Grove" },
-  "check.button": { en: "Check", vi: "Kiểm tra", es: "Verificar" },
-  "check.hint": { en: "Drops a pin on the map and shows distance to the tank. Geocoded via OpenStreetMap; defaults to Orange County, CA.", vi: "Định vị qua OpenStreetMap. Mặc định Orange County, CA.", es: "Coloca un pin en el mapa y muestra la distancia al tanque. Geocodificado vía OpenStreetMap; predeterminado al Condado de Orange, CA." },
-  "check.router.inside": { en: "This address appears to fall within the area officials have described as evacuated. Confirm your status at the official checker.", vi: "Địa chỉ này có vẻ nằm trong khu vực mà cơ quan chức năng mô tả là đã sơ tán. Xác nhận tình trạng của bạn tại bộ kiểm tra chính thức.", es: "Esta dirección parece estar dentro del área que las autoridades han descrito como evacuada. Confirme su estado en el verificador oficial." },
-  "check.router.near": { en: "This address does not appear inside the area officials have described, but conditions change. Confirm at the official checker.", vi: "Địa chỉ này không có vẻ nằm trong khu vực mà cơ quan chức năng mô tả, nhưng tình hình có thể thay đổi. Xác nhận tại bộ kiểm tra chính thức.", es: "Esta dirección no parece estar dentro del área descrita por las autoridades, pero las condiciones cambian. Confirme en el verificador oficial." },
-  "check.field.address": { en: "Address:", vi: "Địa chỉ:", es: "Dirección:" },
-  "check.field.distance": { en: "Distance:", vi: "Khoảng cách:", es: "Distancia:" },
-  "check.field.bearing": { en: "Bearing:", vi: "Hướng:", es: "Dirección:" },
-  "check.viewMap": { en: "View on map", vi: "Xem trên bản đồ", es: "Ver en el mapa" },
-  "check.loading": { en: 'Looking up "{q}"...', vi: 'Đang tìm "{q}"...', es: 'Buscando "{q}"...' },
-  "check.error.title": { en: "Could not check", vi: "Không thể kiểm tra", es: "No se pudo verificar" },
-  "check.error.suffix": { en: ". Try a more specific address.", vi: ". Hãy thử địa chỉ cụ thể hơn.", es: ". Intente con una dirección más específica." },
-  "check.error.noResult": { en: "No result in the monitored area for: {q}", vi: "Không tìm thấy kết quả trong khu vực giám sát cho: {q}", es: "Sin resultados en el área monitoreada para: {q}" },
-  // Info panel
   "info.tank.title": { en: "Tank", vi: "Bồn chứa", es: "Tanque" },
   "info.tank.crack": { en: "Crack observed", vi: "Đã thấy vết nứt", es: "Grieta observada" },
   "info.evac.title": { en: "Evacuation", vi: "Sơ tán", es: "Evacuación" },
@@ -1375,34 +1534,34 @@ const STRINGS = {
   "info.sources.checked": { en: "checked", vi: "đã kiểm tra", es: "verificado" },
   "common.yes": { en: "yes", vi: "có", es: "sí" },
   "common.no": { en: "no", vi: "không", es: "no" },
-  // Methodology
   "info.method.title": { en: "Methodology & trust", vi: "Phương pháp & độ tin cậy", es: "Metodología y confianza" },
-  "info.method.pipeline": {
-    en: "<strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.",
-    vi: "<strong>Quy trình dữ liệu:</strong> Tình trạng được cập nhật 30 phút một lần qua các nguồn web đã xác minh (kênh chính thức của cơ quan, trang web thành phố, hãng tin). Mỗi thông tin được đối chiếu với nhiều nguồn trước khi đăng.",
-    es: "<strong>Pipeline de datos:</strong> Estado actualizado cada 30 min a través de fuentes web verificadas (canales oficiales de agencias, sitios web de la ciudad, medios de comunicación). Cada dato se contrasta con múltiples fuentes antes de publicar."
-  },
-  "info.method.wind": {
-    en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Shown as current local wind conditions.",
-    vi: "<strong>Dữ liệu gió:</strong> Quan sát trực tiếp từ trạm NOAA KFUL (Sân bay Fullerton Municipal), cập nhật 60 giây một lần. Hiển thị điều kiện gió địa phương hiện tại.",
-    es: "<strong>Datos del viento:</strong> Observaciones en vivo de la estación NOAA KFUL (Aeropuerto Municipal de Fullerton), consultada cada 60 segundos. Muestra las condiciones de viento locales actuales."
-  },
-  "info.method.checker": {
-    en: "<strong>Safety checker:</strong> Geocodes the entered address via OpenStreetMap Nominatim, then tests whether the point falls inside the area officials have described as evacuated (point-in-polygon). Defers to the official evacuation checker for authoritative orders.",
-    vi: "<strong>Bộ kiểm tra:</strong> Định vị địa chỉ qua OpenStreetMap Nominatim, sau đó kiểm tra xem điểm có nằm trong khu vực được cơ quan chức năng mô tả là cần sơ tán hay không (điểm-trong-đa-giác). Dẫn đến bộ kiểm tra sơ tán chính thức để có lệnh có thẩm quyền.",
-    es: "<strong>Verificador de seguridad:</strong> Geocodifica la dirección ingresada vía OpenStreetMap Nominatim, luego verifica si el punto cae dentro del área que las autoridades han descrito como evacuada (punto en polígono). Remite al verificador oficial de evacuación para órdenes autorizadas."
-  },
-  "info.method.eval": {
-    en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests (writer logic, schema validation, safety checker math, geocoder behavior) and LLM-as-judge rubrics for design and data quality. All design decisions are logged in <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> with rationale and rubric scores.',
-    vi: '<strong>Đánh giá:</strong> Dashboard này có <a href="eval/">bộ kiểm thử</a> gồm các kiểm thử hành vi (logic ghi dữ liệu, xác thực schema, toán kiểm tra an toàn, hành vi định vị) và các rubric LLM-as-judge cho thiết kế và chất lượng dữ liệu. Mọi quyết định thiết kế được ghi trong <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> với lý do và điểm rubric.',
-    es: '<strong>Evaluación:</strong> Este dashboard tiene un <a href="eval/">conjunto de pruebas</a> que incluye pruebas de comportamiento (lógica del escritor, validación de esquema, matemáticas del verificador de seguridad, comportamiento del geocodificador) y rúbricas LLM-as-judge para diseño y calidad de datos. Todas las decisiones de diseño están registradas en <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> con justificación y puntajes de rúbrica.'
-  },
-  "info.method.disclaimer": {
-    en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.',
-    vi: '<strong>Tuyên bố miễn trừ:</strong> Đây là công cụ cộng đồng, không phải nguồn chính thức của chính phủ. Mọi nội dung chỉ để tham khảo và có thể không chính xác hoặc lỗi thời. Luôn xác minh tại <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; trong trường hợp khẩn cấp, gọi 911. Xem <a href="terms.html">Điều khoản &amp; miễn trừ</a> đầy đủ.',
-    es: '<strong>Descargo de responsabilidad:</strong> Esta es una herramienta comunitaria, no un recurso oficial del gobierno. Todo el contenido es solo informativo y puede ser inexacto o estar desactualizado. Siempre verifique en <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; en una emergencia, llame al 911. Vea los <a href="terms.html">Términos y descargo de responsabilidad</a> completos.'
-  },
-  // Banners
+  "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.", vi: "<strong>Quy trình dữ liệu:</strong> Tình trạng được cập nhật 30 phút một lần qua các nguồn web đã xác minh. Mỗi thông tin được đối chiếu với nhiều nguồn trước khi đăng.", es: "<strong>Pipeline de datos:</strong> Estado actualizado cada 30 min a través de fuentes web verificadas. Cada dato se contrasta con múltiples fuentes antes de publicar." },
+  "info.method.wind": { en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds.", vi: "<strong>Dữ liệu gió:</strong> Quan sát trực tiếp từ trạm NOAA KFUL, cập nhật 60 giây một lần.", es: "<strong>Datos del viento:</strong> Observaciones en vivo de la estación NOAA KFUL, consultada cada 60 segundos." },
+  "info.method.checker": { en: "<strong>Safety checker:</strong> Geocodes the entered address via OpenStreetMap Nominatim, then tests whether the point falls inside the area officials have described as evacuated (point-in-polygon). Defers to the official evacuation checker for authoritative orders.", vi: "<strong>Bộ kiểm tra:</strong> Định vị địa chỉ qua OpenStreetMap Nominatim, sau đó kiểm tra xem điểm có nằm trong khu vực sơ tán hay không.", es: "<strong>Verificador de seguridad:</strong> Geocodifica la dirección ingresada vía OpenStreetMap Nominatim, luego verifica si el punto cae dentro del área evacuada." },
+  "info.method.eval": { en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests and LLM-as-judge rubrics for design and data quality.', vi: '<strong>Đánh giá:</strong> Dashboard này có <a href="eval/">bộ kiểm thử</a> gồm các kiểm thử hành vi và các rubric LLM-as-judge.', es: '<strong>Evaluación:</strong> Este dashboard tiene un <a href="eval/">conjunto de pruebas</a> que incluye pruebas de comportamiento y rúbricas LLM-as-judge.' },
+  "info.method.disclaimer": { en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.', vi: '<strong>Tuyên bố miễn trừ:</strong> Đây là công cụ cộng đồng, không phải nguồn chính thức. Luôn xác minh tại <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; trong trường hợp khẩn cấp, gọi 911.', es: '<strong>Descargo de responsabilidad:</strong> Esta es una herramienta comunitaria. Siempre verifique en <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; en una emergencia, llame al 911.' },
+  "info.about.title": { en: "Who made this", vi: "Ai xây dựng trang này", es: "Quién hizo esto" },
+  "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.", vi: "Được xây dựng bởi hai tình nguyện viên địa phương, Mike và Nancy, để hỗ trợ cộng đồng trong sự cố bồn chứa hóa chất tại Garden Grove. Miễn phí, không cần đăng ký, không quảng cáo — chúng tôi không thu thập dữ liệu của bạn.", es: "Creado por dos voluntarios locales, Mike y Nancy, para ayudar a nuestra comunidad durante la emergencia del tanque químico en Garden Grove. Gratis, sin registro, sin anuncios — no recopilamos sus datos." },
+  "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.", vi: "Để biết lệnh và cập nhật chính thức, luôn sử dụng ggcity.org/emergency · 714-628-7085 · OCFA.", es: "Para órdenes y actualizaciones oficiales, siempre use ggcity.org/emergency · 714-628-7085 · OCFA." },
+  "info.about.termslink": { en: "Read the full Terms & disclaimer", vi: "Đọc Điều khoản & miễn trừ đầy đủ", es: "Leer los Términos y descargo de responsabilidad completos" },
+  "info.about.conductlink": { en: "Information Conduit Code of Conduct", vi: "Quy tắc ứng xử Kênh Thông tin", es: "Código de Conducta del Canal de Información" },
+  "info.group.closures": { en: "Closures", vi: "Đóng cửa", es: "Cierres" },
+  "info.roads.title": { en: "Road closures", vi: "Đóng đường", es: "Cierres de calles" },
+  "info.roads.defer": { en: 'Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.', vi: 'Các đường trong khu vực sơ tán đã đóng. Xem <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> để biết thông tin đóng đường hiện tại.', es: 'Las calles dentro de la zona de evacuación están cerradas. Consulte <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> para los cierres de calles actuales.' },
+  "info.group.official": { en: "Official sources", vi: "Nguồn chính thức", es: "Fuentes oficiales" },
+  "info.official.note": { en: "No single source should be your only one. Subscribe to official alerts and check multiple channels.", vi: "Không nên chỉ dựa vào một nguồn duy nhất. Hãy đăng ký nhận cảnh báo chính thức và kiểm tra nhiều kênh.", es: "Ninguna fuente debe ser la única. Suscríbase a las alertas oficiales y consulte múltiples canales." },
+  "info.official.city": { en: "City of Garden Grove emergency page", vi: "Trang khẩn cấp Thành phố Garden Grove", es: "Página de emergencia de la Ciudad de Garden Grove" },
+  "info.official.zonehaven": { en: "Genasys / Zonehaven zone lookup", vi: "Tra cứu khu vực Genasys / Zonehaven", es: "Búsqueda de zona Genasys / Zonehaven" },
+  "info.official.alert": { en: "AlertOC sign-up (official county alerts)", vi: "Đăng ký AlertOC (cảnh báo chính thức của quận)", es: "Registro en AlertOC (alertas oficiales del condado)" },
+  "info.official.airnow": { en: "EPA AirNow air quality", vi: "Chất lượng không khí EPA AirNow", es: "Calidad del aire EPA AirNow" },
+  "info.group.sources": { en: "Sources & how this works", vi: "Nguồn & cách hoạt động", es: "Fuentes y cómo funciona" },
+  "news.badge.newest": { en: "Newest", vi: "Mới nhất", es: "Más reciente" },
+  "news.badge.recent": { en: "Recent", vi: "Gần đây", es: "Reciente" },
+  "news.source": { en: "source ↗", vi: "nguồn ↗", es: "fuente ↗" },
+  "news.untitled": { en: "(untitled)", vi: "(không có tiêu đề)", es: "(sin título)" },
+  "news.empty": { en: "No coverage yet.", vi: "Chưa có tin tức.", es: "Aún no hay cobertura." },
+  "news.media.video": { en: "▶ video", vi: "▶ video", es: "▶ video" },
+  "news.media.article": { en: "📰 article", vi: "📰 bài báo", es: "📰 artículo" },
   "banner.schema.title": { en: "⚠️ Schema changed", vi: "⚠️ Đã thay đổi cấu trúc", es: "⚠️ Esquema cambiado" },
   "banner.schema.msg": { en: "Reload this page.", vi: "Hãy tải lại trang này.", es: "Recargue esta página." },
   "banner.stale.title": { en: "⚠️ Stale", vi: "⚠️ Cũ", es: "⚠️ Desactualizado" },
@@ -1412,24 +1571,28 @@ const STRINGS = {
   "banner.offline.detail": { en: "Could not load status.json — {err}", vi: "Không thể tải status.json — {err}", es: "No se pudo cargar status.json — {err}" },
   "banner.update.title": { en: "📢 UPDATE", vi: "📢 CẬP NHẬT", es: "📢 ACTUALIZACIÓN" },
   "banner.urgent.title": { en: "🚨 URGENT", vi: "🚨 KHẨN CẤP", es: "🚨 URGENTE" },
-  "banner.action.news": { en: "→ News", vi: "→ Tin tức", es: "→ Noticias" },
-  // Time + loading
+  "banner.action.updates": { en: "→ Updates", vi: "→ Cập nhật", es: "→ Actualizaciones" },
   "time.justNow": { en: "just now", vi: "vừa xong", es: "ahora mismo" },
   "time.minAgo": { en: "{n} min ago", vi: "{n} phút trước", es: "hace {n} min" },
-  "loading.firstData": { en: "Waiting for first data. Auto-retry in 30s.", vi: "Đang đợi dữ liệu đầu tiên. Tự động thử lại sau 30 giây.", es: "Esperando los primeros datos. Reintento automático en 30s." }
+  "loading.firstData": { en: "Waiting for first data. Auto-retry in 30s.", vi: "Đang đợi dữ liệu đầu tiên. Tự động thử lại sau 30 giây.", es: "Esperando los primeros datos. Reintento automático en 30s." },
+  /* G1 placeholder — new keys for tab restructure */
+  "timeline.title": { en: "Incident timeline", vi: "Dòng thời gian sự cố" /* G1 placeholder */, es: "Línea de tiempo del incidente" },
+  "timeline.empty": { en: "No events match filters", vi: "Không có sự kiện khớp bộ lọc" /* G1 placeholder */, es: "Ningún evento coincide con los filtros" },
+  "timeline.events": { en: "{n} events", vi: "{n} sự kiện" /* G1 placeholder */, es: "{n} eventos" },
+  "resources.shelters": { en: "Shelters", vi: "Nơi trú ẩn" /* G1 placeholder */, es: "Refugios" },
+  "resources.government": { en: "Government", vi: "Chính phủ" /* G1 placeholder */, es: "Gobierno" },
+  "resources.safety": { en: "Safety", vi: "An toàn" /* G1 placeholder */, es: "Seguridad" },
+  "resources.community": { en: "Community", vi: "Cộng đồng" /* G1 placeholder */, es: "Comunidad" },
+  "resources.call": { en: "Call", vi: "Gọi" /* G1 placeholder */, es: "Llamar" },
+  "resources.visit": { en: "Visit", vi: "Truy cập" /* G1 placeholder */, es: "Visitar" },
+  "filter.all": { en: "All", vi: "Tất cả" /* G1 placeholder */, es: "Todos" }
 };
 
-// Supported UI languages. A language appears in the picker only when ready:true —
-// i.e. verified native translations exist (G1: no machine-translated safety copy
-// ships). To add one: add its strings under each key in STRINGS, give it an entry
-// here, flip ready:true. t() falls back to English for any missing key, so a
-// language may ship partially translated (safety-critical first) without exposing
-// blanks. See docs/LANGUAGE_ACCESS.md.
 var LANGS = [
   { code: "en", label: "English",    flag: FLAG_US, locale: "en-US", ready: true },
   { code: "vi", label: "Tiếng Việt", flag: FLAG_VN, locale: "vi-VN", ready: true },
   { code: "es", label: "Español",    flag: FLAG_ES, locale: "es-US", ready: false },
-  { code: "ko", label: "한국어",      flag: FLAG_KR, locale: "ko-KR", ready: false },
+  { code: "ko", label: "한국어",      flag: FLAG_KR, locale: "ko-KR", ready: false }
 ];
 function readyLangs() { return LANGS.filter(function(l) { return l.ready; }); }
 function langByCode(code) {
@@ -1437,7 +1600,7 @@ function langByCode(code) {
   return LANGS[0];
 }
 
-let currentLang = "en";
+var currentLang = "en";
 function detectLang() {
   var ready = readyLangs().map(function(l) { return l.code; });
   try {
@@ -1490,7 +1653,6 @@ function renderLangPicker() {
   var cur = langByCode(currentLang);
   btn.innerHTML = cur.flag + "<span>" + cur.label + "</span>";
   var ready = readyLangs();
-  // One ready language: nothing to choose — hide the control.
   btn.style.display = ready.length > 1 ? "" : "none";
   menu.innerHTML = ready.map(function(l) {
     return '<button type="button" role="menuitemradio" aria-current="' +
@@ -1530,61 +1692,77 @@ function setLang(lang) {
   try { localStorage.setItem("gg-lang", currentLang); } catch (e) {}
   applyLang();
   if (lastSnap) render(lastSnap);
-  if (configCache) renderShelters(configCache);
+  if (configCache) { renderShelters(configCache); renderResources(); renderAbout(); }
+  if (timelineData) renderTimeline();
   if (configCache && fixedPointMarkers.length) recolorFixedPoints();
 }
 currentLang = detectLang();
 window.toggleLangMenu = toggleLangMenu;
 document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeLangMenu(); });
 
-/* Map a computeSafety() result to the active-language router message. */
 function translateSafetyResult(r) {
   if (!r) return r;
-  var message = r.insideEvac ? t("check.router.inside") : t("check.router.near");
+  var message = r.insideEvac ? t("hero.verdict.inside") : t("hero.verdict.outside");
   return { insideEvac: r.insideEvac, message: message, distance_mi: r.distance_mi, bearing_deg: r.bearing_deg };
 }
 
-let lastSnap = null;
-let lastZoneStatus = null;
-let titleToggle = null;
-let audioCtx = null;
-let lastFetchOK = true;
-let mapInited = false;
-let map = null;
-let layers = { evac: null, facility: null, you: null };
-let configCache = null;
-let lastWind = null;
-let safetyPin = null;
-let safetyPinBuffer = null;
-let fixedPointMarkers = [];
-let windInterval = WIND_BASE_MS;
-let windTimer = null;
-let lastObservationTime = null;
-let refreshCountdown = 30;
-let countdownTimer = null;
+var lastSnap = null;
+var lastZoneStatus = null;
+var titleToggle = null;
+var audioCtx = null;
+var lastFetchOK = true;
+var mapInited = false;
+var map = null;
+var layers = { evac: null, facility: null, you: null };
+var configCache = null;
+var lastWind = null;
+var safetyPin = null;
+var safetyPinBuffer = null;
+var fixedPointMarkers = [];
+var windInterval = WIND_BASE_MS;
+var windTimer = null;
+var lastObservationTime = null;
+var refreshCountdown = 30;
+var countdownTimer = null;
+var timelineData = null;
+var activeFilters = { days: [], categories: [] };
+var isDesktop = false;
 
 function $(id) { return document.getElementById(id); }
+
+function checkDesktop() {
+  isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+}
+checkDesktop();
+window.addEventListener("resize", function() {
+  var was = isDesktop;
+  checkDesktop();
+  if (was !== isDesktop) {
+    if (map) {
+      setTimeout(function() { map.invalidateSize(); }, 100);
+    }
+  }
+});
 
 /* ============ THEME ============ */
 function applyTheme(theme) {
   document.documentElement.classList.toggle("theme-dark", theme === "dark");
   document.documentElement.classList.toggle("theme-light", theme !== "dark");
-  // Button shows the theme it switches TO: dark active -> sun, light active -> moon.
   $("theme-toggle").innerHTML = theme === "dark" ? ICON_SUN : ICON_MOON;
 }
 function toggleTheme() {
-  const cur = document.documentElement.classList.contains("theme-dark") ? "dark" : "light";
-  const next = cur === "dark" ? "light" : "dark";
+  var cur = document.documentElement.classList.contains("theme-dark") ? "dark" : "light";
+  var next = cur === "dark" ? "light" : "dark";
   localStorage.setItem("gg-theme", next);
   applyTheme(next);
 }
 applyTheme(localStorage.getItem("gg-theme") || "light");
 window.toggleTheme = toggleTheme;
 
-/* ============ TABS ============ */
+/* ============ TABS (MOBILE) ============ */
 function switchTab(tabId) {
-  document.querySelectorAll(".tab-panel").forEach(function(p) { p.classList.remove("active"); });
-  document.querySelectorAll(".tab-btn").forEach(function(b) {
+  document.querySelectorAll(".tab-content > .tab-panel").forEach(function(p) { p.classList.remove("active"); });
+  document.querySelectorAll(".tab-bar .tab-btn").forEach(function(b) {
     b.classList.remove("active");
     b.setAttribute("aria-selected", "false");
   });
@@ -1598,14 +1776,25 @@ function switchTab(tabId) {
   if (tabId === "map" && map) {
     setTimeout(function() { map.invalidateSize(); }, 50);
   }
-  if (tabId === "check") {
-    setTimeout(function() {
-      var input = $("safety-input");
-      if (input) input.focus();
-    }, 100);
-  }
 }
 window.switchTab = switchTab;
+
+/* ============ SIDEBAR TABS (DESKTOP) ============ */
+function switchSidebarTab(tabId) {
+  document.querySelectorAll(".sidebar-panel").forEach(function(p) { p.classList.remove("active"); });
+  document.querySelectorAll(".sidebar-tab-btn").forEach(function(b) {
+    b.classList.remove("active");
+    b.setAttribute("aria-selected", "false");
+  });
+  var panel = $("spanel-" + tabId);
+  if (panel) panel.classList.add("active");
+  var tab = $("stab-" + tabId);
+  if (tab) {
+    tab.classList.add("active");
+    tab.setAttribute("aria-selected", "true");
+  }
+}
+window.switchSidebarTab = switchSidebarTab;
 
 /* ============ REFRESH COUNTDOWN ============ */
 function startRefreshCountdown() {
@@ -1628,10 +1817,6 @@ function fmtCompact(n) {
   if (n >= 1000) return Math.round(n / 1000) + "K";
   return String(n);
 }
-// Pin a 12-hour clock explicitly so the displayed time format doesn't vary with
-// the active language (toLocaleTimeString defaults to the locale's convention —
-// 12h under some, 24h under others — which made the same instant render as both
-// "12:59 AM" and "0:59"). Locale still localizes the AM/PM wording.
 var TIME_OPTS = {hour:"numeric", minute:"2-digit", hour12:true};
 function relativeTime(iso) {
   if (!iso) return "—";
@@ -1671,12 +1856,11 @@ window.ackUpdate = ackUpdate;
 function setBanners(banners) {
   $("banners").innerHTML = banners.map(function(b) {
     var clickable = (b.kind === "breaking" || b.kind === "update");
-    var action = clickable ? '<span class="banner-action">' + t("banner.action.news") + '</span>' : '';
-    // The update banner records the latest-statement signature on click, then dismisses
-    // until a newer statement arrives. Breaking (urgent) banners just navigate.
+    var action = clickable ? '<span class="banner-action">' + t("banner.action.updates") + '</span>' : '';
+    var tabTarget = isDesktop ? "switchSidebarTab('updates')" : "switchTab('updates')";
     var onclick = b.kind === "update"
-      ? 'onclick="ackUpdate(\'' + (b.sig || '') + '\'); switchTab(\'news\'); this.remove()"'
-      : (clickable ? 'onclick="switchTab(\'news\')"' : '');
+      ? 'onclick="ackUpdate(\'' + (b.sig || '') + '\'); ' + tabTarget + '; this.remove()"'
+      : (clickable ? 'onclick="' + tabTarget + '"' : '');
     return '<div class="banner banner-' + b.kind + '" ' + onclick + '>' +
       '<span><strong>' + b.title + '</strong> ' + (b.message || '') + '</span>' +
       action + '</div>';
@@ -1707,9 +1891,8 @@ function beep() {
         }, idx * 350);
       })(i);
     }
-  } catch (e) { /* silent */ }
+  } catch (e) {}
 }
-
 
 /* ============ MAP ============ */
 function destPoint(lat, lon, bearingDeg, distMi) {
@@ -1719,10 +1902,7 @@ function destPoint(lat, lon, bearingDeg, distMi) {
   var l1 = lon * Math.PI / 180;
   var dr = distMi / R;
   var p2 = Math.asin(Math.sin(p1) * Math.cos(dr) + Math.cos(p1) * Math.sin(dr) * Math.cos(br));
-  var l2 = l1 + Math.atan2(
-    Math.sin(br) * Math.sin(dr) * Math.cos(p1),
-    Math.cos(dr) - Math.sin(p1) * Math.sin(p2)
-  );
+  var l2 = l1 + Math.atan2(Math.sin(br) * Math.sin(dr) * Math.cos(p1), Math.cos(dr) - Math.sin(p1) * Math.sin(p2));
   return [p2 * 180 / Math.PI, ((l2 * 180 / Math.PI) + 540) % 360 - 180];
 }
 
@@ -1730,7 +1910,10 @@ function initMap(cfg) {
   if (mapInited) return;
   var m = cfg.map;
   var c = [m.facility.lat, m.facility.lon];
-  map = L.map("map", { zoomControl: true, scrollWheelZoom: true, attributionControl: true }).setView(c, 13);
+  var mapContainer = isDesktop ? "map-desktop" : "map";
+  var el = $(mapContainer);
+  if (!el) return;
+  map = L.map(el, { zoomControl: true, scrollWheelZoom: true, attributionControl: true }).setView(c, 13);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19, attribution: '&copy; OpenStreetMap'
   }).addTo(map);
@@ -1757,7 +1940,6 @@ function initMap(cfg) {
     return marker;
   });
 
-  // Evacuation shelters (blue square markers, distinct from green ref points)
   (m.shelters || []).forEach(function(s) {
     var icon = L.divIcon({
       className: "shelter-icon",
@@ -1765,7 +1947,7 @@ function initMap(cfg) {
       iconSize: [22, 22],
       iconAnchor: [11, 11]
     });
-    L.marker([s.lat, s.lon], { icon }).addTo(map).bindTooltip(
+    L.marker([s.lat, s.lon], { icon: icon }).addTo(map).bindTooltip(
       "<strong>" + s.name + "</strong><br>" + s.city + (s.notes ? '<br><span style="opacity:0.8;font-size:11px">' + s.notes + "</span>" : ""),
       { direction: "top", offset: [0, -8] }
     );
@@ -1787,18 +1969,20 @@ function initMap(cfg) {
 function updateWindDisplay(wind) {
   if (!wind) return;
   var heading = (wind.directionDeg + 180) % 360;
-  var arrowMain = $("wind-arrow");
-  if (arrowMain) arrowMain.style.transform = "rotate(" + heading + "deg)";
-  var arrowMap = $("wind-arrow-map");
-  if (arrowMap) arrowMap.style.transform = "rotate(" + heading + "deg)";
+  ["wind-arrow", "wind-arrow-map", "wind-arrow-map-desktop"].forEach(function(id) {
+    var el = $(id);
+    if (el) el.style.transform = "rotate(" + heading + "deg)";
+  });
   var windCompact = cardinalFromDeg(wind.directionDeg) + "→" + cardinalFromDeg(heading) + " " + Math.round(wind.speedMph) + "mph";
   var el = $("wind-compact");
   if (el) el.textContent = windCompact;
-  var mapEl = $("wind-text-map");
-  if (mapEl) {
-    var obs = wind.observedAt ? " (obs " + fmtAbsTime(wind.observedAt) + ")" : "";
-    mapEl.textContent = windCompact + obs;
-  }
+  ["wind-text-map", "wind-text-map-desktop"].forEach(function(id) {
+    var mapEl = $(id);
+    if (mapEl) {
+      var obs = wind.observedAt ? " (obs " + fmtAbsTime(wind.observedAt) + ")" : "";
+      mapEl.textContent = windCompact + obs;
+    }
+  });
 }
 
 function cardinalFromDeg(deg) {
@@ -1833,7 +2017,7 @@ function pointInPolygon(pt, polygon) {
   }
   return inside;
 }
-var GEOCODE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days, per OSM caching policy
+var GEOCODE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 function geocodeCacheGet(key) {
   try {
     var raw = localStorage.getItem("gg-geocode-" + key);
@@ -1850,8 +2034,6 @@ function geocodeCacheSet(key, val) {
 async function geocodeAddress(q, cfg) {
   var queryRaw = q.replace(/\s+and\s+/i, " & ");
   var cacheKey = queryRaw.trim().toLowerCase();
-  // Nominatim policy requires caching identical queries (repeated identical
-  // requests may be classified as faulty and blocked). Serve from cache first.
   var cached = geocodeCacheGet(cacheKey);
   if (cached) return cached;
   var bias = (cfg && cfg.map && cfg.map.geocode_bias) || "Orange County, CA";
@@ -1867,11 +2049,6 @@ async function geocodeAddress(q, cfg) {
   }
   var arr = await nominatim(queryWithBias);
   var hit = (arr && arr.length) ? arr[0] : null;
-  // Keep results within the monitored region: if the bias query missed or landed
-  // outside the incident viewbox, re-query bounded and discard the out-of-region
-  // hit, so a far same-named match (e.g. a "Western Ave" in another county) can't
-  // resolve to a confident verdict for the wrong place. In-region ambiguity stays
-  // visible because renderSafetyResult always shows the matched address + distance.
   if (viewbox && viewbox.length === 4) {
     var w = viewbox[0], n = viewbox[1], e = viewbox[2], s = viewbox[3];
     var inBox = hit && parseFloat(hit.lon) >= w && parseFloat(hit.lon) <= e && parseFloat(hit.lat) >= s && parseFloat(hit.lat) <= n;
@@ -1895,19 +2072,18 @@ function computeSafety(pt, cfg) {
 }
 
 function renderSafetyResult(addr, pt, result) {
-  var el = $("safety-result");
   var tr = translateSafetyResult(result);
   var checkerUrl = (configCache && configCache.incident && configCache.incident.address_checker_url) || "https://ggcity.org/emergency";
-  el.className = "safety-result safety-lvl-router";
-  el.innerHTML =
+  var tabTarget = isDesktop ? "switchSidebarTab('updates')" : "switchTab('map')";
+  var html =
     '<div style="font-size:13px;margin-bottom:8px">' + tr.message + '</div>' +
-    '<div class="verdict-line">' +
-      "<span><strong>" + t("check.field.address") + "</strong> " + addr.displayName + "</span>" +
-      "<span><strong>" + t("check.field.distance") + "</strong> " + tr.distance_mi.toFixed(2) + " mi</span>" +
-      "<span><strong>" + t("check.field.bearing") + "</strong> " + cardinalFromDeg(tr.bearing_deg) + " (" + Math.round(tr.bearing_deg) + "°)</span>" +
+    '<div class="verdict-line" style="font-size:12px;color:var(--text-sec);display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px">' +
+      "<span><strong>Address:</strong> " + addr.displayName + "</span>" +
+      "<span><strong>Distance:</strong> " + tr.distance_mi.toFixed(2) + " mi</span>" +
+      "<span><strong>Bearing:</strong> " + cardinalFromDeg(tr.bearing_deg) + " (" + Math.round(tr.bearing_deg) + "°)</span>" +
     "</div>" +
-    '<a href="' + checkerUrl + '" target="_blank" rel="noopener" class="view-map-btn" style="display:inline-block;margin-top:6px">' + checkerUrl + ' ↗</a>' +
-    '<button class="view-map-btn" onclick="switchTab(\'map\')" style="margin-left:8px">' + t("check.viewMap") + '</button>';
+    '<a href="' + checkerUrl + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;font-family:inherit">' + checkerUrl + ' ↗</a>' +
+    '<button onclick="' + tabTarget + '" style="margin-left:8px;padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">View on map</button>';
   if (safetyPin) map.removeLayer(safetyPin);
   if (safetyPinBuffer) map.removeLayer(safetyPinBuffer);
   var color = "#3b82f6";
@@ -1919,43 +2095,17 @@ function renderSafetyResult(addr, pt, result) {
   }).addTo(map);
   var bounds = L.latLngBounds([[pt.lat, pt.lon], [configCache.map.facility.lat, configCache.map.facility.lon]]);
   map.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
+  return html;
 }
 
-/* Translate known English error messages thrown from geocodeAddress() into
-   the active language. Keeps geocodeAddress() itself untouched (partner's
-   lane); falls through to the original English for unknown errors. */
 function translateErrorMessage(msg) {
   if (!msg) return msg;
   var m = msg.match(/^No result in the monitored area for: (.+)$/);
-  if (m) return t("check.error.noResult", { q: m[1] });
+  if (m) return "No result in the monitored area for: " + m[1];
   return msg;
 }
 
-async function checkSafety() {
-  var q = $("safety-input").value.trim();
-  if (!q) return;
-  var btn = $("safety-button");
-  var el = $("safety-result");
-  btn.disabled = true;
-  btn.textContent = "...";
-  el.className = "safety-result safety-lvl-unknown";
-  el.classList.remove("hidden");
-  el.innerHTML = '<h4>' + t("check.loading", { q: q }) + '</h4>';
-  try {
-    var addr = await geocodeAddress(q, configCache);
-    var result = computeSafety(addr, configCache);
-    renderSafetyResult(addr, addr, result);
-  } catch (e) {
-    el.className = "safety-result safety-lvl-unknown";
-    el.innerHTML = "<h4>" + t("check.error.title") + "</h4><div style=\"font-size:12px;color:var(--text-sec)\">" + translateErrorMessage(e.message) + t("check.error.suffix") + "</div>";
-  } finally {
-    btn.disabled = false;
-    btn.textContent = t("check.button");
-  }
-}
-window.checkSafety = checkSafety;
-
-/* ============ HERO CHECK (compact, reuses geocode + verdict) ============ */
+/* ============ HERO CHECK ============ */
 async function heroCheckSafety() {
   var q = $("hero-check-input").value.trim();
   if (!q) return;
@@ -1971,7 +2121,6 @@ async function heroCheckSafety() {
     el.className = "hero-verdict active " + (inside ? "hero-verdict-inside" : "hero-verdict-outside");
     el.textContent = inside ? t("hero.verdict.inside") : t("hero.verdict.outside");
     try { localStorage.setItem("gg-hero-check", JSON.stringify({ q: q, inside: inside, at: Date.now() })); } catch (e) {}
-    $("safety-input").value = q;
     renderSafetyResult(addr, addr, result);
   } catch (e) {
     el.className = "hero-verdict hero-verdict-error active";
@@ -2046,7 +2195,7 @@ async function hydrateMissingThumbnails() {
   }
 }
 
-/* ============ WIND (ADAPTIVE POLLING) ============ */
+/* ============ WIND ============ */
 async function fetchWind(stationId) {
   try {
     var url = "https://api.weather.gov/stations/" + stationId + "/observations/latest";
@@ -2100,203 +2249,170 @@ function recolorFixedPoints() {
   });
 }
 
-/* ============ MAIN RENDER ============ */
-function render(snap) {
-  snap = deepFix(snap);
-  lastSnap = snap;
-  if (snap.schema_version !== 1) {
-    setBanners([{kind:"stale", title: t("banner.schema.title"), message: t("banner.schema.msg")}]);
+/* ============ TIMELINE ============ */
+var CATEGORY_LABELS = {
+  initial_response: "Initial Response",
+  tank_status: "Tank Status",
+  official_statement: "Official Statement",
+  evacuation: "Evacuation",
+  community_impact: "Community Impact",
+  school_closure: "School Closure",
+  government_action: "Government Action",
+  air_quality: "Air Quality",
+  media_coverage: "Media Coverage"
+};
+var DAY_LABELS = {
+  1: "Day 1 · Wed 5/21",
+  2: "Day 2 · Thu 5/22",
+  3: "Day 3 · Fri 5/23",
+  4: "Day 4 · Sat 5/24",
+  5: "Day 5 · Sun 5/25"
+};
+
+function toggleFilter(type, value) {
+  var arr = activeFilters[type];
+  var idx = arr.indexOf(value);
+  if (idx === -1) arr.push(value); else arr.splice(idx, 1);
+  renderTimeline();
+}
+window.toggleFilter = toggleFilter;
+
+function renderFilterChips(containerId) {
+  var container = $(containerId);
+  if (!container || !timelineData) return;
+  var days = [];
+  var cats = [];
+  timelineData.events.forEach(function(e) {
+    if (days.indexOf(e.day) === -1) days.push(e.day);
+    if (cats.indexOf(e.category) === -1) cats.push(e.category);
+  });
+  days.sort();
+  var html = '';
+  days.forEach(function(d) {
+    var active = activeFilters.days.indexOf(d) !== -1 ? ' active' : '';
+    html += '<button class="filter-chip' + active + '" onclick="toggleFilter(\'days\',' + d + ')">' + (DAY_LABELS[d] || 'Day ' + d) + '</button>';
+  });
+  html += '<div class="filter-divider"></div>';
+  cats.forEach(function(c) {
+    var active = activeFilters.categories.indexOf(c) !== -1 ? ' active' : '';
+    html += '<button class="filter-chip' + active + '" onclick="toggleFilter(\'categories\',\'' + c + '\')">' + (CATEGORY_LABELS[c] || c) + '</button>';
+  });
+  container.innerHTML = html;
+}
+
+function renderTimelineEvents(feedId, countId) {
+  var feed = $(feedId);
+  var countEl = $(countId);
+  if (!feed || !timelineData) return;
+  var events = timelineData.events.filter(function(e) {
+    if (activeFilters.days.length && activeFilters.days.indexOf(e.day) === -1) return false;
+    if (activeFilters.categories.length && activeFilters.categories.indexOf(e.category) === -1) return false;
+    return true;
+  });
+  if (countEl) countEl.textContent = t("timeline.events", { n: events.length });
+  if (!events.length) {
+    feed.innerHTML = '<div class="timeline-empty">' + t("timeline.empty") + '</div>';
     return;
   }
-  // Freshness: ~20 min cadence + last update. The stale state lives here now
-  // (replaced the old stale banner) so the G3 staleness signal stays visible.
-  var updEl = $("updated-text");
-  var isStale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
-  var rel = relativeTime(snap.last_updated_iso);
-  updEl.textContent = t(isStale ? "updated.stale" : "updated.freshness", { t: rel });
-  updEl.title = t("updated.title", { t: rel });
-  updEl.classList.toggle("stale", !!isStale);
+  feed.innerHTML = events.map(function(e) {
+    var time = e.timestamp_local ? fmtAbsDateTime(e.timestamp_local) : fmtAbsDateTime(e.timestamp_utc);
+    var catLabel = CATEGORY_LABELS[e.category] || e.category;
+    return '<div class="timeline-event">' +
+      '<div class="timeline-event-header">' +
+        '<span class="timeline-event-time">' + time + '</span>' +
+        '<span class="timeline-event-cat">' + catLabel + '</span>' +
+      '</div>' +
+      '<div class="timeline-event-title">' + e.title + '</div>' +
+      (e.description ? '<div class="timeline-event-desc">' + e.description + '</div>' : '') +
+      (e.source_url ? '<a class="timeline-event-source" href="' + e.source_url + '" target="_blank" rel="noopener">' + (e.source_name || 'source') + ' ↗</a>' : '') +
+    '</div>';
+  }).join("");
+}
 
-  // Banners
-  var banners = [];
-  // (Stale banner removed — staleness now shows in the topbar freshness text above.)
-  if (!lastFetchOK) banners.push({kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.msg")});
-  if (snap.breaking) {
-    var level = snap.breaking_level || "urgent";
-    if (level === "info") {
-      // Signature = newest official-statement timestamp. Suppress the update banner
-      // once the user has acked this signature; a newer statement re-raises it.
-      var newestStmtIso = (snap.official_statements || []).reduce(function(max, s) {
-        var ti = s.time_iso || "";
-        return ti > max ? ti : max;
-      }, "");
-      var sig = newestStmtIso || snap.last_updated_iso || "";
-      if (sig !== updateAckSig()) {
-        banners.push({kind:"update", title: t("banner.update.title"), message: snap.breaking_reason || "", sig: sig});
-      }
-      stopBreakingTitle();
-    } else {
-      banners.push({kind:"breaking", title: t("banner.urgent.title"), message: snap.breaking_reason || ""});
-      startBreakingTitle();
-    }
-  } else { stopBreakingTitle(); }
-  setBanners(banners);
+function renderTimeline() {
+  renderFilterChips("filter-chips");
+  renderTimelineEvents("timeline-feed", "timeline-count");
+  renderFilterChips("desktop-filter-chips");
+  renderTimelineEvents("desktop-timeline-feed", "desktop-timeline-count");
+}
 
-  // Hero — neutral situation status (no directives; per-address verdicts live in the Check tab)
-  var you = snap.you || {};
-  var zone = you.zone_status || "unknown";
-  var heroSummary = $("hero-summary");
-  var resolved = !!(snap.incident && snap.incident.resolved_iso);
-  if (resolved) {
-    heroSummary.textContent = t("hero.summary.resolved");
-  } else {
-    heroSummary.textContent = t("hero.lead");
-  }
-
-  // Urgent breaking alert (sound only; no directive modal)
-  if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
-    if (window.__lastUrgentReason !== snap.breaking_reason) {
-      beep();
-      window.__lastUrgentReason = snap.breaking_reason;
-    }
-  }
-  if (!snap.breaking || (snap.breaking_level || "urgent") !== "urgent") {
-    window.__lastUrgentReason = null;
-  }
-  lastZoneStatus = zone;
-
-  // Severity chip (labeled by the "Incident severity:" prefix in markup)
-  var sev = (snap.incident && snap.incident.severity) || "low";
-  var sevChip = $("severity-chip");
-  sevChip.className = "severity-chip sev-" + sev;
-  sevChip.textContent = sev;
-
-  var appEl = document.querySelector('.app');
-  appEl.className = 'app';
-  if (sev === 'high') appEl.classList.add('severity-high');
-  if (sev === 'critical') appEl.classList.add('severity-critical');
-
-  // Stats strip
-  var tank = snap.tank || {};
-  var evac = snap.evacuation || {};
-  $("temp-compact").textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
-  $("evac-compact").textContent = (evac.residents != null) ? fmtCompact(evac.residents) + " evac" : "—";
-  var aq = snap.air_quality;
-  if (aq && aq.aqi != null) {
-    $("aqi-compact").textContent = "AQI " + aq.aqi + " · " + (aq.category || "");
-    $("aqi-compact").title = (aq.source || "EPA AirNow") + " · " + relativeTime(aq.fetched_iso);
-    $("aqi-stat").style.display = "";
-    $("aqi-sep").style.display = "";
-  }
-
-  // Info tab details
-  $("tank-temp").textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
-  $("tank-crack").innerHTML = yesNo(tank.crack_observed);
-  $("evac-residents").textContent = fmtNumber(evac.residents);
-  $("evac-area").textContent = (evac.area_sq_mi || "—") + " sq mi";
-  $("evac-lifted").innerHTML = yesNo(evac.lifted);
-  $("evac-expanded").innerHTML = yesNo(evac.expanded_since_yesterday);
-  $("evac-boundary").textContent = evac.boundary_text || "—";
-
-  // Schools
-  var schools = snap.schools_closed || [];
-  $("schools").innerHTML = schools.length
-    ? schools.map(function(s) { return '<div class="info-row"><span class="v">' + s + '</span></div>'; }).join("")
-    : '<span style="color:var(--text-muted);font-size:12px">' + t("info.schools.none") + '</span>';
-
-  // Sources
-  var sources = snap.sources_checked || [];
-  $("source-list").innerHTML = sources.length
-    ? sources.map(function(s) {
-        var checked = s.fetched_iso ? ' <span class="source-time">' + t("info.sources.checked") + ' ' + relativeTime(s.fetched_iso) + '</span>' : '';
-        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + checked + '</a>';
-      }).join("")
-    : '<span style="color:var(--text-muted);font-size:12px">' + t("info.sources.empty") + '</span>';
-
-  // News tab: unified reverse-chron feed (official statements + articles + videos)
-  var feed = [];
-  (snap.official_statements || []).forEach(function(s) {
-    feed.push({
-      when: s.time_iso || "",
-      type: "official",
-      source: s.agency || "—",
-      text: s.text || "",
-      url: s.source_url || "",
-      isVideo: false,
-      thumb: ""
-    });
-  });
-  (snap.videos || []).forEach(function(v) {
-    var isVid = !!(v.youtube_id) || v.is_video === true;
-    feed.push({
-      when: v.published_iso || "",
-      type: isVid ? "video" : "article",
-      source: v.outlet || "—",
-      title: v.title || t("news.untitled"),
-      url: v.url || "",
-      isVideo: isVid,
-      thumb: v.thumbnail_url || ""
-    });
-  });
-  feed.sort(function(a, b) {
-    var ta = a.when ? new Date(a.when).getTime() : 0;
-    var tb = b.when ? new Date(b.when).getTime() : 0;
-    return tb - ta;
-  });
-
-  $("news-count").textContent = t("news.feed.title");
-  // Current-situation summary (the full status headline lives here, not the hero)
-  var sitEl = $("news-situation");
-  var sitText = (snap.incident && snap.incident.status_headline) || "";
-  if (sitText && !(snap.incident && snap.incident.resolved_iso)) {
-    sitEl.innerHTML = '<div class="news-situation-label"></div><p class="news-situation-text"></p>';
-    sitEl.querySelector(".news-situation-label").textContent = t("news.situation.label");
-    sitEl.querySelector(".news-situation-text").textContent = sitText;
-    sitEl.hidden = false;
-  } else {
-    sitEl.hidden = true;
-    sitEl.innerHTML = "";
-  }
-  var feedEl = $("news-feed");
-  if (!feed.length) {
-    feedEl.innerHTML = '<div style="padding:10px 12px;color:var(--text-muted);font-size:12px">' + t("news.empty") + '</div>';
-  } else {
-    feedEl.innerHTML = feed.map(function(it) {
-      var chip = it.type === "official" ? '<span class="feed-chip feed-chip-official">' + t("news.type.official") + '</span>'
-               : it.type === "video"    ? '<span class="feed-chip feed-chip-video">' + t("news.type.video") + '</span>'
-               :                          '<span class="feed-chip feed-chip-article">' + t("news.type.article") + '</span>';
-      var when = it.when ? relativeTime(it.when) : "";
-      var meta = '<div class="feed-meta">' + chip +
-        '<strong>' + it.source + '</strong>' +
-        (when ? ' · <span class="feed-time">' + when + '</span>' : '') +
-      '</div>';
-      if (it.type === "official") {
-        return '<div class="feed-item feed-item-official">' + meta +
-          '<div class="feed-text">' + it.text + '</div>' +
-          (it.url ? '<a class="feed-source" href="' + it.url + '" target="_blank" rel="noopener">' + t("news.source") + '</a>' : '') +
-        '</div>';
-      }
-      var escapedUrl = (it.url || "").replace(/"/g, "&quot;");
-      var thumbClass = it.thumb ? "" : (it.isVideo ? "placeholder-video" : "placeholder-article");
-      return '<a class="feed-item news-item" href="' + it.url + '" target="_blank" rel="noopener" data-needs-og="' + (!it.thumb) + '" data-url="' + escapedUrl + '">' +
-        '<div class="news-thumb ' + thumbClass + '">' +
-          (it.thumb ? '<img loading="lazy" src="' + it.thumb + '" alt="">' : '') +
-          (it.isVideo ? '<div class="news-thumb-play"></div>' : '') +
-        '</div>' +
-        '<div class="news-meta">' + meta +
-          '<div class="news-title">' + it.title + '</div>' +
-        '</div>' +
-      '</a>';
-    }).join("");
-    hydrateMissingThumbnails();
+async function loadTimeline() {
+  try {
+    var resp = await fetch("timeline.json?t=" + Date.now(), {cache:"no-store"});
+    if (!resp.ok) throw new Error("timeline.json HTTP " + resp.status);
+    timelineData = await resp.json();
+    renderTimeline();
+  } catch (e) {
+    console.warn("timeline load failed:", e);
   }
 }
 
-/* ============ FETCH ORCHESTRATION ============ */
-function renderShelters(cfg) {
-  var grid = $("shelters-grid");
+/* ============ RESOURCES TAB ============ */
+function renderResources() {
+  var html = '';
+  html += '<div class="resources-section">';
+  html += '<div class="resources-section-title" data-i18n="info.shelters.title">' + t("info.shelters.title") + '</div>';
+  html += '<div class="shelters-cta" data-i18n-html="info.shelters.cta">' + t("info.shelters.cta") + '</div>';
+  html += '<div class="shelters-grid" id="resources-shelters-grid"></div>';
+  html += '</div>';
+
+  html += '<div class="lotus-divider"></div>';
+
+  var resources = (configCache && configCache.community_resources) || [];
+  if (resources.length) {
+    var categories = ["government", "safety", "shelter", "community"];
+    categories.forEach(function(cat) {
+      var catResources = resources.filter(function(r) { return r.category === cat; });
+      if (!catResources.length) return;
+      var catKey = "resources." + cat;
+      html += '<div class="resources-section">';
+      html += '<div class="resources-section-title">' + t(catKey) + '</div>';
+      html += '<div class="resources-grid">';
+      catResources.forEach(function(r) {
+        var titleVi = (currentLang === "vi" && r.title_vi) ? '<div class="cr-title-vi">' + r.title_vi + '</div>' : '';
+        var actions = '<div class="cr-actions">';
+        if (r.phone) actions += '<a class="cr-action cr-action-phone" href="tel:' + r.phone.replace(/[^+\d]/g, '') + '">☎ ' + r.phone + '</a>';
+        if (r.url) actions += '<a class="cr-action cr-action-url" href="' + r.url + '" target="_blank" rel="noopener">' + t("resources.visit") + ' ↗</a>';
+        actions += '</div>';
+        html += '<div class="community-resource-card">' +
+          '<span class="cr-cat-chip cr-cat-' + cat + '">' + t(catKey) + '</span>' +
+          '<div class="cr-title">' + r.title + '</div>' +
+          titleVi +
+          '<div class="cr-desc">' + (r.description || '') + '</div>' +
+          actions +
+        '</div>';
+      });
+      html += '</div></div>';
+    });
+  }
+
+  html += '<div class="lotus-divider"></div>';
+
+  html += '<div class="resources-section">';
+  html += '<div class="resources-section-title" data-i18n="info.group.official">' + t("info.group.official") + '</div>';
+  html += '<p class="official-sources-note" data-i18n="info.official.note">' + t("info.official.note") + '</p>';
+  html += '<div class="official-links">' +
+    '<a class="official-link" href="https://ggcity.org/emergency" target="_blank" rel="noopener"><span>' + t("info.official.city") + '</span><span class="official-link-tag">Official</span></a>' +
+    '<a class="official-link" href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener"><span>' + t("info.official.zonehaven") + '</span><span class="official-link-tag">Official</span></a>' +
+    '<a class="official-link" href="https://member.everbridge.net/892807736729480/login" target="_blank" rel="noopener"><span>' + t("info.official.alert") + '</span><span class="official-link-tag">Official</span></a>' +
+    '<a class="official-link" href="https://www.airnow.gov/?city=Garden%20Grove&state=CA" target="_blank" rel="noopener"><span>' + t("info.official.airnow") + '</span><span class="official-link-tag">Official</span></a>' +
+  '</div>';
+  html += '</div>';
+
+  $("resources-content").innerHTML = html;
+  $("desktop-resources-content").innerHTML = html;
+  renderResourceShelters("resources-shelters-grid");
+  var desktopShelterGrids = document.querySelectorAll("#desktop-resources-content .shelters-grid");
+  desktopShelterGrids.forEach(function(g) { renderResourceSheltersInto(g); });
+}
+
+function renderResourceShelters(gridId) {
+  var grid = $(gridId);
   if (!grid) return;
-  var shelters = (cfg && cfg.map && cfg.map.shelters) || [];
+  renderResourceSheltersInto(grid);
+}
+function renderResourceSheltersInto(grid) {
+  var shelters = (configCache && configCache.map && configCache.map.shelters) || [];
   if (!shelters.length) {
     grid.innerHTML = '<div style="grid-column:1/-1;color:var(--text-muted);font-size:13px">' + t("info.shelters.empty") + '</div>';
     return;
@@ -2313,13 +2429,304 @@ function renderShelters(cfg) {
   }).join("");
 }
 
+/* ============ ABOUT TAB ============ */
+function renderAbout() {
+  var html = '<div class="about-panel-inner">';
+
+  html += '<div class="about-section">';
+  html += '<div class="about-section-title" data-i18n="info.group.status">' + t("info.group.status") + '</div>';
+  html += '<div class="info-section-title" data-i18n="info.tank.title">' + t("info.tank.title") + '</div>';
+  html += '<div class="info-big mono" id="about-tank-temp">--</div>';
+  html += '<div class="info-row"><span class="k" data-i18n="info.tank.crack">' + t("info.tank.crack") + '</span><span class="v" id="about-tank-crack">--</span></div>';
+  html += '</div>';
+
+  html += '<div class="about-section">';
+  html += '<div class="info-section-title" data-i18n="info.evac.title">' + t("info.evac.title") + '</div>';
+  html += '<div class="info-big mono" id="about-evac-residents">--</div>';
+  html += '<div class="info-row"><span class="k">' + t("info.evac.area") + '</span><span class="v mono" id="about-evac-area">--</span></div>';
+  html += '<div class="info-row"><span class="k">' + t("info.evac.lifted") + '</span><span class="v" id="about-evac-lifted">--</span></div>';
+  html += '<div class="info-row"><span class="k">' + t("info.evac.expanded") + '</span><span class="v" id="about-evac-expanded">--</span></div>';
+  html += '<div class="info-row"><span class="k">' + t("info.evac.boundary") + '</span><span class="v" style="font-size:11px;text-align:right;max-width:60%" id="about-evac-boundary">--</span></div>';
+  html += '</div>';
+
+  html += '<div class="lotus-divider"></div>';
+
+  html += '<div class="about-section">';
+  html += '<div class="about-section-title" data-i18n="info.group.closures">' + t("info.group.closures") + '</div>';
+  html += '<div class="info-section-title">' + t("info.schools.title") + '</div>';
+  html += '<div id="about-schools">--</div>';
+  html += '<div class="info-section-title" style="margin-top:8px">' + t("info.roads.title") + '</div>';
+  html += '<div class="info-roads-defer" data-i18n-html="info.roads.defer">' + t("info.roads.defer") + '</div>';
+  html += '</div>';
+
+  html += '<div class="lotus-divider"></div>';
+
+  html += '<div class="about-section">';
+  html += '<div class="about-section-title">' + t("info.group.sources") + '</div>';
+  html += '<div class="info-section-title">' + t("info.sources.title") + '</div>';
+  html += '<div id="about-source-list"></div>';
+  html += '</div>';
+
+  html += '<div class="about-section">';
+  html += '<div class="about-section-title">' + t("info.method.title") + '</div>';
+  html += '<div class="about-body">';
+  html += '<p>' + t("info.method.pipeline") + '</p>';
+  html += '<p>' + t("info.method.wind") + '</p>';
+  html += '<p>' + t("info.method.checker") + '</p>';
+  html += '<p>' + t("info.method.eval") + '</p>';
+  html += '<p>' + t("info.method.disclaimer") + '</p>';
+  html += '</div></div>';
+
+  html += '<div class="lotus-divider"></div>';
+
+  html += '<div class="about-section">';
+  html += '<div class="about-section-title">' + t("info.about.title") + '</div>';
+  html += '<div class="about-body">';
+  html += '<p>' + t("info.about.body") + '</p>';
+  html += '<p>' + t("info.about.official") + '</p>';
+  html += '<p><a href="terms.html">' + t("info.about.termslink") + '</a></p>';
+  html += '<p><a href="docs/CODE_OF_CONDUCT.md">' + t("info.about.conductlink") + '</a></p>';
+  html += '</div></div>';
+
+  html += '</div>';
+
+  $("about-content").innerHTML = html;
+  $("desktop-about-content").innerHTML = html;
+}
+
+function updateAboutData(snap) {
+  var tank = snap.tank || {};
+  var evac = snap.evacuation || {};
+  document.querySelectorAll("[id='about-tank-temp']").forEach(function(el) {
+    el.textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
+  });
+  document.querySelectorAll("[id='about-tank-crack']").forEach(function(el) {
+    el.innerHTML = yesNo(tank.crack_observed);
+  });
+  document.querySelectorAll("[id='about-evac-residents']").forEach(function(el) {
+    el.textContent = fmtNumber(evac.residents);
+  });
+  document.querySelectorAll("[id='about-evac-area']").forEach(function(el) {
+    el.textContent = (evac.area_sq_mi || "—") + " sq mi";
+  });
+  document.querySelectorAll("[id='about-evac-lifted']").forEach(function(el) {
+    el.innerHTML = yesNo(evac.lifted);
+  });
+  document.querySelectorAll("[id='about-evac-expanded']").forEach(function(el) {
+    el.innerHTML = yesNo(evac.expanded_since_yesterday);
+  });
+  document.querySelectorAll("[id='about-evac-boundary']").forEach(function(el) {
+    el.textContent = evac.boundary_text || "—";
+  });
+  var schools = snap.schools_closed || [];
+  document.querySelectorAll("[id='about-schools']").forEach(function(el) {
+    el.innerHTML = schools.length
+      ? schools.map(function(s) { return '<div class="info-row"><span class="v">' + s + '</span></div>'; }).join("")
+      : '<span style="color:var(--text-muted);font-size:12px">' + t("info.schools.none") + '</span>';
+  });
+  var sources = snap.sources_checked || [];
+  document.querySelectorAll("[id='about-source-list']").forEach(function(el) {
+    el.innerHTML = sources.length
+      ? sources.map(function(s) {
+          var checked = s.fetched_iso ? ' <span class="source-time">' + t("info.sources.checked") + ' ' + relativeTime(s.fetched_iso) + '</span>' : '';
+          return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + checked + '</a>';
+        }).join("")
+      : '<span style="color:var(--text-muted);font-size:12px">' + t("info.sources.empty") + '</span>';
+  });
+}
+
+/* ============ SHELTERS (for old render path) ============ */
+function renderShelters(cfg) {
+  renderResourceShelters("resources-shelters-grid");
+}
+
+/* ============ PRINT CONTENT ============ */
+function renderPrintContent(snap) {
+  var html = '<h1>GG Tank Watch — Printed Summary</h1>';
+  html += '<p style="font-size:11px;color:#666">Printed from gg-tank-dashboard. Verify at ggcity.org/emergency. AI-assisted summaries checked by a person.</p>';
+  html += '<section><h2>Incident Status</h2>';
+  var tank = snap.tank || {};
+  var evac = snap.evacuation || {};
+  html += '<p>Tank temperature: ' + ((tank.temp_f != null) ? tank.temp_f + '°F' : '—') + '</p>';
+  html += '<p>Evacuees: ' + fmtNumber(evac.residents) + '</p>';
+  html += '<p>Area: ' + (evac.area_sq_mi || '—') + ' sq mi</p>';
+  html += '</section>';
+  html += '<section><h2>Official Sources</h2>';
+  html += '<ul><li><a href="https://ggcity.org/emergency">ggcity.org/emergency</a></li>';
+  html += '<li><a href="https://www.airnow.gov/?city=Garden%20Grove&state=CA">EPA AirNow</a></li>';
+  html += '<li>Emergency: 911 | Info: 714-628-7085</li></ul></section>';
+  html += '<section><h2>Disclaimer</h2><p>' + t("info.method.disclaimer").replace(/<[^>]+>/g, '') + '</p></section>';
+  $("print-content").innerHTML = html;
+}
+
+/* ============ MAIN RENDER ============ */
+function render(snap) {
+  snap = deepFix(snap);
+  lastSnap = snap;
+  if (snap.schema_version !== 1) {
+    setBanners([{kind:"stale", title: t("banner.schema.title"), message: t("banner.schema.msg")}]);
+    return;
+  }
+  var updEl = $("updated-text");
+  var isStale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
+  var rel = relativeTime(snap.last_updated_iso);
+  updEl.textContent = t(isStale ? "updated.stale" : "updated.freshness", { t: rel });
+  updEl.title = t("updated.title", { t: rel });
+  updEl.classList.toggle("stale", !!isStale);
+
+  var banners = [];
+  if (!lastFetchOK) banners.push({kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.msg")});
+  if (snap.breaking) {
+    var level = snap.breaking_level || "urgent";
+    if (level === "info") {
+      var newestStmtIso = (snap.official_statements || []).reduce(function(max, s) {
+        var ti = s.time_iso || "";
+        return ti > max ? ti : max;
+      }, "");
+      var sig = newestStmtIso || snap.last_updated_iso || "";
+      if (sig !== updateAckSig()) {
+        banners.push({kind:"update", title: t("banner.update.title"), message: snap.breaking_reason || "", sig: sig});
+      }
+      stopBreakingTitle();
+    } else {
+      banners.push({kind:"breaking", title: t("banner.urgent.title"), message: snap.breaking_reason || ""});
+      startBreakingTitle();
+    }
+  } else { stopBreakingTitle(); }
+  setBanners(banners);
+
+  var you = snap.you || {};
+  var zone = you.zone_status || "unknown";
+  var heroSummary = $("hero-summary");
+  var resolved = !!(snap.incident && snap.incident.resolved_iso);
+  if (resolved) {
+    heroSummary.textContent = t("hero.summary.resolved");
+  } else {
+    heroSummary.textContent = t("hero.lead");
+  }
+
+  if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
+    if (window.__lastUrgentReason !== snap.breaking_reason) {
+      beep();
+      window.__lastUrgentReason = snap.breaking_reason;
+    }
+  }
+  if (!snap.breaking || (snap.breaking_level || "urgent") !== "urgent") {
+    window.__lastUrgentReason = null;
+  }
+  lastZoneStatus = zone;
+
+  var sev = (snap.incident && snap.incident.severity) || "low";
+  var sevChip = $("severity-chip");
+  sevChip.className = "severity-chip sev-" + sev;
+  sevChip.textContent = sev;
+
+  var appEl = document.querySelector('.app');
+  appEl.className = 'app';
+  if (sev === 'high') appEl.classList.add('severity-high');
+  if (sev === 'critical') appEl.classList.add('severity-critical');
+
+  var tank = snap.tank || {};
+  var evac = snap.evacuation || {};
+  $("temp-compact").textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
+  $("evac-compact").textContent = (evac.residents != null) ? fmtCompact(evac.residents) + " evac" : "—";
+  var aq = snap.air_quality;
+  if (aq && aq.aqi != null) {
+    $("aqi-compact").textContent = "AQI " + aq.aqi + " · " + (aq.category || "");
+    $("aqi-compact").title = (aq.source || "EPA AirNow") + " · " + relativeTime(aq.fetched_iso);
+    $("aqi-stat").style.display = "";
+    $("aqi-sep").style.display = "";
+  }
+
+  updateAboutData(snap);
+
+  var feed = [];
+  (snap.official_statements || []).forEach(function(s) {
+    feed.push({ when: s.time_iso || "", type: "official", source: s.agency || "—", text: s.text || "", url: s.source_url || "", isVideo: false, thumb: "" });
+  });
+  (snap.videos || []).forEach(function(v) {
+    var isVid = !!(v.youtube_id) || v.is_video === true;
+    feed.push({ when: v.published_iso || "", type: isVid ? "video" : "article", source: v.outlet || "—", title: v.title || t("news.untitled"), url: v.url || "", isVideo: isVid, thumb: v.thumbnail_url || "" });
+  });
+  feed.sort(function(a, b) {
+    var ta = a.when ? new Date(a.when).getTime() : 0;
+    var tb = b.when ? new Date(b.when).getTime() : 0;
+    return tb - ta;
+  });
+
+  var feedHtml = buildFeedHtml(feed, snap);
+
+  ["news-feed", "desktop-news-feed"].forEach(function(id) {
+    var el = $(id);
+    if (el) el.innerHTML = feedHtml;
+  });
+
+  var sitText = (snap.incident && snap.incident.status_headline) || "";
+  ["news-situation", "desktop-news-situation"].forEach(function(id) {
+    var sitEl = $(id);
+    if (!sitEl) return;
+    if (sitText && !(snap.incident && snap.incident.resolved_iso)) {
+      sitEl.innerHTML = '<div class="news-situation-label"></div><p class="news-situation-text"></p>';
+      sitEl.querySelector(".news-situation-label").textContent = t("news.situation.label");
+      sitEl.querySelector(".news-situation-text").textContent = sitText;
+      sitEl.hidden = false;
+    } else {
+      sitEl.hidden = true;
+      sitEl.innerHTML = "";
+    }
+  });
+
+  ["news-count", "desktop-news-count"].forEach(function(id) {
+    var el = $(id);
+    if (el) el.textContent = t("news.feed.title");
+  });
+
+  hydrateMissingThumbnails();
+  renderPrintContent(snap);
+}
+
+function buildFeedHtml(feed, snap) {
+  if (!feed.length) {
+    return '<div style="padding:10px 12px;color:var(--text-muted);font-size:12px">' + t("news.empty") + '</div>';
+  }
+  return feed.map(function(it) {
+    var chip = it.type === "official" ? '<span class="feed-chip feed-chip-official">' + t("news.type.official") + '</span>'
+             : it.type === "video"    ? '<span class="feed-chip feed-chip-video">' + t("news.type.video") + '</span>'
+             :                          '<span class="feed-chip feed-chip-article">' + t("news.type.article") + '</span>';
+    var when = it.when ? relativeTime(it.when) : "";
+    var meta = '<div class="feed-meta">' + chip +
+      '<strong>' + it.source + '</strong>' +
+      (when ? ' · <span class="feed-time">' + when + '</span>' : '') +
+    '</div>';
+    if (it.type === "official") {
+      return '<div class="feed-item feed-item-official">' + meta +
+        '<div class="feed-text">' + it.text + '</div>' +
+        (it.url ? '<a class="feed-source" href="' + it.url + '" target="_blank" rel="noopener">' + t("news.source") + '</a>' : '') +
+      '</div>';
+    }
+    var escapedUrl = (it.url || "").replace(/"/g, "&quot;");
+    var thumbClass = it.thumb ? "" : (it.isVideo ? "placeholder-video" : "placeholder-article");
+    return '<a class="feed-item news-item" href="' + it.url + '" target="_blank" rel="noopener" data-needs-og="' + (!it.thumb) + '" data-url="' + escapedUrl + '">' +
+      '<div class="news-thumb ' + thumbClass + '">' +
+        (it.thumb ? '<img loading="lazy" src="' + it.thumb + '" alt="">' : '') +
+        (it.isVideo ? '<div class="news-thumb-play"></div>' : '') +
+      '</div>' +
+      '<div class="news-meta">' + meta +
+        '<div class="news-title">' + it.title + '</div>' +
+      '</div>' +
+    '</a>';
+  }).join("");
+}
+
+/* ============ FETCH ORCHESTRATION ============ */
 async function loadConfig() {
   try {
     var resp = await fetch("config.json?t=" + Date.now(), {cache:"no-store"});
     if (!resp.ok) throw new Error("config.json HTTP " + resp.status);
     configCache = await resp.json();
     initMap(configCache);
-    renderShelters(configCache);
+    renderResources();
+    renderAbout();
     refreshWind();
   } catch (e) {
     console.warn("config load failed:", e);
@@ -2339,7 +2746,6 @@ async function fetchStatus() {
     setBanners([{kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.detail", { err: e.message })}]);
     if (lastZoneStatus === null) {
       $("hero-summary").textContent = t("hero.summary.loading");
-      $("hero-instruction").textContent = t("loading.firstData");
     }
   }
 }
@@ -2347,7 +2753,10 @@ async function fetchStatus() {
 /* ============ KICKOFF ============ */
 applyLang();
 restoreHeroCheck();
-loadConfig().then(fetchStatus);
+loadConfig().then(function() {
+  fetchStatus();
+  loadTimeline();
+});
 setInterval(fetchStatus, REFRESH_MS);
 </script>
   <script>

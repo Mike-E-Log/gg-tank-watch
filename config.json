@@ -23,10 +23,7 @@
     ],
     "evac_polygon_note": "Approximate area that may be affected based on news reports. Not authoritative — confirm your status at ggcity.org/emergency.",
     "anna_location": null,
-    "fixed_points": [
-      {"label": "Trask & Harbor", "lat": 33.7660, "lon": -117.9202},
-      {"label": "Magnolia & Ellis", "lat": 33.6935, "lon": -117.9717}
-    ],
+    "fixed_points": [],
     "shelters": [
       {"name": "Garden Grove Sports & Rec Center", "city": "Garden Grove", "address": "13641 Deodara Dr, Garden Grove, CA 92644", "lat": 33.7631, "lon": -117.9659, "notes": "All evacuees"},
       {"name": "Cypress Community Center", "city": "Cypress", "address": "Graham St, Cypress, CA 90630", "lat": 33.8235, "lon": -118.0339, "notes": "All evacuees"},
@@ -42,6 +39,33 @@
     "geocode_bias": "Orange County, CA",
     "geocode_viewbox": [-118.10, 33.85, -117.85, 33.65]
   },
+  "community_resources": [
+    {
+      "id": "fema-assistance",
+      "title": "FEMA Individual Assistance",
+      "title_vi": "Hỗ trợ cá nhân FEMA",
+      "url": "https://www.disasterassistance.gov/",
+      "phone": "1-800-621-3362",
+      "description": "Federal emergency declaration approved May 25. Register for reimbursement.",
+      "category": "government"
+    },
+    {
+      "id": "da-tipline",
+      "title": "OC District Attorney Tip Line",
+      "title_vi": "Đường dây tố giác Biện lý Quận",
+      "phone": "714-347-8714",
+      "description": "Anonymous tip line for the GKN Aerospace investigation.",
+      "category": "safety"
+    },
+    {
+      "id": "price-gouging",
+      "title": "Price Gouging Hotline",
+      "title_vi": "Đường dây nóng tăng giá bất hợp pháp",
+      "phone": "1-800-952-5225",
+      "description": "CA Attorney General price gouging advisory. Report violations.",
+      "category": "safety"
+    }
+  ],
   "schema_version": 1,
   "notes": "Edit zone_status to 'inside' if your address gets added to the evac zone. Set incident.resolved_iso (in a manual writer run via stdin) once the incident officially ends. The map coordinates are best-effort estimates - the evac polygon is the four-street rectangle. anna_location: [lat, lon] if you want your home marked on the map; null otherwise."
 }
