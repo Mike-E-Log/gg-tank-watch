@@ -141,7 +141,12 @@ def test_t5_incident_resolved_fires_urgent():
     exit_code, snap = _tick({
         "evacuation_lifted": True,
         "incident_resolved_iso": "2026-05-26T12:00:00Z",
-        "status_headline": "all clear"
+        "status_headline": "all clear",
+        # P0-1: a danger downgrade must be corroborated (>=2 sources, >=1 official).
+        "sources_checked": [
+            {"url": "https://ocfa.org/all-clear"},
+            {"url": "https://latimes.com/all-clear"},
+        ],
     })
     return {
         "passed": (exit_code == 0
@@ -155,17 +160,20 @@ def test_t5_incident_resolved_fires_urgent():
 def test_new_statement_fires_info_not_urgent():
     """A new official statement (hash novel vs prev) should fire INFO breaking, not URGENT."""
     _reset_sandbox()
+    # P0-2: statements must carry a source_url present in sources_checked to survive.
     _tick({
         "tank_temp_f": 100, "evacuation_residents": 50000, "evacuation_lifted": False,
+        "sources_checked": [{"url": "https://ocfa.org/s1"}],
         "official_statements": [
-            {"agency": "OCFA", "time_iso": "2026-05-24T15:00:00Z", "text": "first statement"}
+            {"agency": "OCFA", "time_iso": "2026-05-24T15:00:00Z", "text": "first statement", "source_url": "https://ocfa.org/s1"}
         ]
     })
     exit_code, snap = _tick({
         "tank_temp_f": 100, "evacuation_residents": 50000, "evacuation_lifted": False,
+        "sources_checked": [{"url": "https://ocfa.org/s1"}, {"url": "https://caloes.ca.gov/s2"}],
         "official_statements": [
-            {"agency": "OCFA", "time_iso": "2026-05-24T15:00:00Z", "text": "first statement"},
-            {"agency": "Newsom", "time_iso": "2026-05-24T18:00:00Z", "text": "NEW statement that should fire"}
+            {"agency": "OCFA", "time_iso": "2026-05-24T15:00:00Z", "text": "first statement", "source_url": "https://ocfa.org/s1"},
+            {"agency": "Newsom", "time_iso": "2026-05-24T18:00:00Z", "text": "NEW statement that should fire", "source_url": "https://caloes.ca.gov/s2"}
         ]
     })
     return {

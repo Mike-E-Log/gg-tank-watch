@@ -90,6 +90,30 @@ def test_status_json_semantic_invariants():
     }
 
 
+def test_status_json_freshness_fields():
+    """data_as_of_iso (P0-3), if present, must be ISO-Z and <= last_updated_iso;
+    stale_after_iso must be > data_as_of_iso. Presence-gated so it passes pre-P0-3."""
+    if not STATUS_PATH.exists():
+        return {"passed": False, "details": "status.json not found"}
+    snap = json.loads(STATUS_PATH.read_text())
+    daof = snap.get("data_as_of_iso")
+    if daof is None:
+        return {"passed": True, "details": "data_as_of_iso not present (pre-P0-3); skipped"}
+    issues = []
+    if not (isinstance(daof, str) and daof.endswith("Z") and len(daof) >= 20):
+        issues.append(f"data_as_of_iso shape wrong: {daof!r}")
+    lu = snap.get("last_updated_iso", "")
+    if isinstance(lu, str) and daof > lu:
+        issues.append(f"data_as_of_iso {daof} should be <= last_updated_iso {lu}")
+    stale = snap.get("stale_after_iso", "")
+    if isinstance(stale, str) and stale and not (stale > daof):
+        issues.append(f"stale_after_iso {stale} should be > data_as_of_iso {daof}")
+    return {
+        "passed": len(issues) == 0,
+        "details": "freshness fields valid" if not issues else "; ".join(issues),
+    }
+
+
 def test_config_json_required_fields():
     cfg = json.loads(CONFIG_PATH.read_text())
     fails = []
