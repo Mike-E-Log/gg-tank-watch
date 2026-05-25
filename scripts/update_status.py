@@ -37,6 +37,7 @@ import time
 import traceback
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlparse
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 CONFIG_PATH = PROJECT_DIR / "config.json"
@@ -61,6 +62,106 @@ RESIDENTS_RATE_LIMIT_MIN = 120
 
 # Severity is derived, not extracted from sources.
 SEVERITY_RANK = {"low": 0, "moderate": 1, "high": 2, "critical": 3}
+
+# Data-freshness window (P0-3): stale_after = data_as_of + MAX_AGE. 40 min = 2x the
+# 20-min refresh cadence, tolerating one missed run plus cron lag.
+MAX_AGE_MINUTES = 40
+
+# Authoritative agency hosts for the P0-1 corroboration gate. A danger DOWNGRADE
+# (evacuation lifted / incident resolved) must be backed by >=1 of these. News
+# outlets are trusted for reporting but do not alone authorize an "all-clear".
+OFFICIAL_HOSTS = frozenset({
+    "ocfa.org", "ocsheriff.gov", "ggcity.org", "caloes.ca.gov", "epa.gov", "aqmd.gov",
+})
+
+# A tick advances data_as_of_iso (P0-3) only if it carries >=1 non-null value here.
+SUBSTANTIVE_KEYS = (
+    "status_headline", "tank_temp_f", "tank_crack_observed", "evacuation_residents",
+    "evacuation_area_sq_mi", "evacuation_boundary_text", "evacuation_lifted",
+    "evacuation_expanded", "injuries", "incident_resolved_iso",
+    "official_statements", "sources_checked", "schools_closed",
+)
+
+
+def _url_host(url) -> str | None:
+    """Lowercased host of a well-formed http(s) URL, normalized (www. stripped); else None."""
+    if not isinstance(url, str):
+        return None
+    try:
+        p = urlparse(url.strip())
+    except (ValueError, AttributeError):
+        return None
+    if p.scheme not in ("http", "https") or not p.hostname:
+        return None
+    host = p.hostname.lower()
+    return host[4:] if host.startswith("www.") else host
+
+
+def _host_is_official(host) -> bool:
+    return bool(host) and any(host == h or host.endswith("." + h) for h in OFFICIAL_HOSTS)
+
+
+def validate_provenance(facts: dict) -> dict:
+    """P0-2: drop fabricated/malformed provenance before it reaches the snapshot.
+
+    - sources_checked entries whose URL is not a well-formed http(s) URL are dropped.
+    - official_statements whose source_url is malformed, OR whose host is not among
+      the (cleaned) sources_checked hosts, are dropped — a statement citing a source
+      we never actually retrieved this run is treated as fabricated.
+    Only acts on keys present in facts; logs every drop.
+    """
+    if isinstance(facts.get("sources_checked"), list):
+        kept = []
+        for s in facts["sources_checked"]:
+            if _url_host((s or {}).get("url")):
+                kept.append(s)
+            else:
+                log_line("WARN", f"P0-2 dropped sources_checked entry with bad URL: {(s or {}).get('url')!r}")
+        facts["sources_checked"] = kept
+
+    ref_hosts = {h for h in (_url_host((s or {}).get("url")) for s in (facts.get("sources_checked") or [])) if h}
+
+    if isinstance(facts.get("official_statements"), list):
+        kept = []
+        for st in facts["official_statements"]:
+            host = _url_host((st or {}).get("source_url"))
+            if host and host in ref_hosts:
+                kept.append(st)
+            else:
+                log_line("WARN", f"P0-2 dropped statement citing unretrieved/bad source_url: {(st or {}).get('source_url')!r}")
+        facts["official_statements"] = kept
+    return facts
+
+
+def apply_corroboration_gate(facts: dict) -> dict:
+    """P0-1: a danger DOWNGRADE must be backed by >=2 retrieved sources incl >=1
+    official-agency host, else force the field to its safe default. Asymmetric —
+    danger UPGRADES (injuries, expansion, severity bump) are untouched. Operates on
+    the already-validated sources_checked (call after validate_provenance)."""
+    hosts = [h for h in (_url_host((s or {}).get("url")) for s in (facts.get("sources_checked") or [])) if h]
+    corroborated = len(hosts) >= 2 and any(_host_is_official(h) for h in hosts)
+
+    if facts.get("evacuation_lifted") is True and not corroborated:
+        log_line("WARN", f"P0-1 unconfirmed all-clear suppressed: evacuation_lifted forced false (N={len(hosts)}, official={any(_host_is_official(h) for h in hosts)})")
+        facts["evacuation_lifted"] = False
+    if facts.get("incident_resolved_iso") and not corroborated:
+        log_line("WARN", f"P0-1 unconfirmed all-clear suppressed: incident_resolved_iso forced null (N={len(hosts)})")
+        facts["incident_resolved_iso"] = None
+    return facts
+
+
+def _facts_are_source_backed(facts: dict) -> bool:
+    """True if this tick carries >=1 substantive non-null/non-empty fact (P0-3)."""
+    if not facts:
+        return False
+    for k in SUBSTANTIVE_KEYS:
+        if k not in facts:
+            continue
+        v = facts[k]
+        if v is None or (isinstance(v, (list, str)) and len(v) == 0):
+            continue
+        return True
+    return False
 
 
 def utcnow_iso() -> str:
@@ -309,13 +410,27 @@ def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
     from datetime import timedelta
     now_dt = datetime.now(timezone.utc)
     interval_min = config.get("writer_interval_minutes", 30)
-    stale_after = (now_dt + timedelta(minutes=interval_min)).strftime("%Y-%m-%dT%H:%M:%SZ")
     next_check = (now_dt + timedelta(minutes=interval_min)).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    # P0-3: data_as_of_iso advances ONLY when this tick learned a source-backed fact;
+    # otherwise it inherits prev. stale_after keys off data-age (not write-age), so a
+    # writer that runs but learns nothing can no longer look fresh.
+    prev_data_as_of = (prev_actual or {}).get("data_as_of_iso")
+    if _facts_are_source_backed(facts):
+        data_as_of = now_iso
+    else:
+        data_as_of = prev_data_as_of or now_iso
+    try:
+        data_as_of_dt = datetime.strptime(data_as_of, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except (ValueError, TypeError):
+        data_as_of, data_as_of_dt = now_iso, now_dt
+    stale_after = (data_as_of_dt + timedelta(minutes=MAX_AGE_MINUTES)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     snapshot = {
         "schema_version": SCHEMA_VERSION,
         "writer_version": WRITER_VERSION,
         "last_updated_iso": now_iso,
+        "data_as_of_iso": data_as_of,
         "next_check_at_iso": next_check,
         "stale_after_iso": stale_after,
         "incident": incident,
@@ -347,6 +462,11 @@ def main() -> int:
     config = load_config()
     prev = load_previous_status()
     facts = read_facts_from_stdin()
+
+    # Safety gates (order matters): strip fabricated provenance first, then judge
+    # whether any surviving sources corroborate a danger downgrade.
+    facts = validate_provenance(facts)   # P0-2
+    facts = apply_corroboration_gate(facts)  # P0-1
 
     if not facts:
         log_line("WARN", "stdin facts empty; producing snapshot from prev only (no fact updates this tick)")
