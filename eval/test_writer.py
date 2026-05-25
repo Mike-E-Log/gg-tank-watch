@@ -140,7 +140,7 @@ def test_t5_incident_resolved_fires_urgent():
     _tick({"tank_temp_f": 100, "evacuation_residents": 50000, "evacuation_lifted": False})
     exit_code, snap = _tick({
         "evacuation_lifted": True,
-        "incident_resolved_iso": "2026-05-26T12:00:00Z",
+        "incident_resolved_iso": "2026-05-24T12:00:00Z",
         "status_headline": "all clear",
         # P0-1: a danger downgrade must be corroborated (>=2 sources, >=1 official).
         "sources_checked": [

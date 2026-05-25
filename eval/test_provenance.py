@@ -141,7 +141,7 @@ def test_resolved_requires_two_sources():
     _reset_sandbox()
     _tick({"evacuation_residents": 50000, "evacuation_lifted": False})
     snap1 = _tick({
-        "incident_resolved_iso": "2026-05-26T12:00:00Z",
+        "incident_resolved_iso": "2026-05-24T12:00:00Z",
         "evacuation_residents": 50000, "evacuation_lifted": False,
         "sources_checked": [{"url": "https://ocfa.org/only-one"}],
     })
@@ -152,7 +152,7 @@ def test_resolved_requires_two_sources():
     _reset_sandbox()
     _tick({"evacuation_residents": 50000, "evacuation_lifted": False})
     snap2 = _tick({
-        "incident_resolved_iso": "2026-05-26T12:00:00Z",
+        "incident_resolved_iso": "2026-05-24T12:00:00Z",
         "evacuation_lifted": True,
         "sources_checked": GOOD_SOURCES,
     })
