@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
-  <title>GG MMA Tank Dashboard</title>
+  <title>GG Tank Watch</title>
   <meta http-equiv="refresh" content="600">
   <meta name="description" content="Real-time situational awareness for the Garden Grove MMA tank emergency. What should I do?">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -207,46 +207,36 @@
     .safety-strip-sep { color: var(--text-muted); }
     .safety-strip-terms { margin-left: auto; }
 
-    /* ===== HERO ===== */
+    /* ===== HERO (neutral status) ===== */
     .hero {
-      padding: 12px 16px 10px;
+      padding: 8px 16px 8px;
       text-align: center;
       flex-shrink: 0;
       border-bottom: 1px solid var(--border);
     }
-    .hero-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-    .hero-action {
-      font-size: clamp(26px, 7vw, 40px);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.5px;
-    }
-    .hero-action.act-safe { color: var(--safe); }
-    .hero-action.act-danger { color: var(--high); }
-    .hero-action.act-unknown { color: var(--text-sec); }
-    .hero-instruction {
-      font-size: 14px;
-      color: var(--text-sec);
-      margin: 2px 0 6px;
-      font-weight: 500;
-    }
-    .hero-context {
+    .hero-severity {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 4px;
     }
-    .hero-status {
-      font-size: 12px;
-      color: var(--text-muted);
+    .hero-severity-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-sec);
+    }
+    .hero-summary {
+      font-size: 13px;
+      line-height: 1.4;
+      color: var(--text-sec);
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .severity-chip {
       display: inline-block;
@@ -814,26 +804,24 @@
 
     <header class="topbar">
       <div class="topbar-left">
-        <span class="topbar-title">GG MMA Tank Dashboard</span>
+        <span class="topbar-title">GG Tank Watch</span>
         <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
       </div>
       <div class="topbar-right">
         <span class="topbar-updated" id="updated-text" data-i18n="updated.loading">loading...</span>
         <button class="theme-toggle" id="lang-toggle" onclick="toggleLang()" title="Tiếng Việt / English">VI</button>
-        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" data-i18n="theme.dark">Dark</button>
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle theme">🌙</button>
       </div>
     </header>
 
     <div class="banners" id="banners"></div>
 
     <section class="hero" id="hero">
-      <div class="hero-label" data-i18n="hero.label">What should I do?</div>
-      <h1 class="hero-action" id="hero-action" data-i18n="hero.loading">Loading...</h1>
-      <p class="hero-instruction" id="hero-instruction" data-i18n="hero.waiting">Waiting for data</p>
-      <div class="hero-context">
+      <div class="hero-severity">
+        <span class="hero-severity-label" data-i18n="hero.severity.label">Incident severity:</span>
         <span class="severity-chip" id="severity-chip">--</span>
-        <span class="hero-status" id="hero-status">--</span>
       </div>
+      <p class="hero-summary" id="hero-summary" data-i18n="hero.summary.loading">Loading current status…</p>
     </section>
 
     <div class="safety-strip" role="note">
@@ -973,8 +961,8 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
 <script>
 const REFRESH_MS = 30000;
-const NORMAL_TITLE = "GG MMA Tank Dashboard";
-const BREAKING_TITLE = "\u{1F534} BREAKING — GG MMA Tank";
+const NORMAL_TITLE = "GG Tank Watch";
+const BREAKING_TITLE = "\u{1F534} BREAKING — GG Tank Watch";
 const WIND_BASE_MS = 60000;
 const WIND_MAX_MS = 480000;
 
@@ -999,22 +987,10 @@ const STRINGS = {
   "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA." },
   "info.about.termslink": { en: "Read the full Terms & disclaimer" },
   // Hero (safety verdicts)
-  "hero.label": { en: "What should I do?", vi: "Tôi nên làm gì?" },
-  "hero.loading": { en: "Loading...", vi: "Đang tải..." },
-  "hero.waiting": { en: "Waiting for data", vi: "Đang đợi dữ liệu" },
-  "hero.leave.action": { en: "LEAVE NOW.", vi: "RỜI ĐI NGAY." },
-  "hero.leave.instr": { en: "Evacuate immediately per OCFA guidance. Go upwind.", vi: "Sơ tán ngay theo hướng dẫn của OCFA. Đi ngược chiều gió." },
-  "hero.leave.status": { en: "You are INSIDE the evacuation zone", vi: "Bạn đang Ở TRONG khu vực sơ tán" },
-  "hero.stay.action": { en: "STAY PUT.", vi: "Ở YÊN TRONG NHÀ." },
-  "hero.stay.instr": { en: "Close windows and doors. Stay indoors. Monitor for updates.", vi: "Đóng cửa sổ và cửa ra vào. Ở trong nhà. Theo dõi cập nhật." },
-  "hero.stay.status.downwind": { en: "Outside evac zone · downwind", vi: "Ngoài khu sơ tán · cuối hướng gió" },
-  "hero.stay.status": { en: "Outside the evacuation zone", vi: "Ngoài khu vực sơ tán" },
-  "hero.unknown.action": { en: "CHECK YOUR STATUS.", vi: "KIỂM TRA TÌNH TRẠNG CỦA BẠN." },
-  "hero.unknown.instr": { en: "Use the Check tab or visit ggcity.org/emergency.", vi: "Dùng thẻ Kiểm tra hoặc truy cập ggcity.org/emergency." },
-  "hero.unknown.status": { en: "Zone status unknown", vi: "Chưa rõ tình trạng khu vực" },
-  "hero.allclear.action": { en: "ALL CLEAR.", vi: "ĐÃ HẾT BÁO ĐỘNG." },
-  "hero.allclear.instr": { en: "Evacuation lifted. Normal activities can resume.", vi: "Lệnh sơ tán đã được dỡ bỏ. Có thể trở lại sinh hoạt bình thường." },
-  "hero.allclear.status": { en: "Resolved {time}", vi: "Kết thúc lúc {time}" },
+  "hero.severity.label": { en: "Incident severity:" },
+  "hero.summary.loading": { en: "Loading current status…" },
+  "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders." },
+  "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
   // Takeover
   "takeover.h1": { en: "LEAVE NOW", vi: "RỜI ĐI NGAY" },
   "takeover.reason.flip": { en: "Your zone status flipped from OUTSIDE → INSIDE the evacuation zone.", vi: "Tình trạng khu vực của bạn đã chuyển từ NGOÀI → TRONG khu sơ tán." },
@@ -1168,11 +1144,11 @@ function applyLang() {
     el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
   });
   var langBtn = document.getElementById("lang-toggle");
-  if (langBtn) langBtn.textContent = currentLang === "en" ? "VI" : "EN";
+  if (langBtn) langBtn.textContent = currentLang === "en" ? "Viet" : "Eng";
   var themeBtn = document.getElementById("theme-toggle");
   if (themeBtn) {
     var isDark = document.documentElement.classList.contains("theme-dark");
-    themeBtn.textContent = isDark ? t("theme.light") : t("theme.dark");
+    themeBtn.textContent = isDark ? "☀" : "🌙";
   }
 }
 function setLang(lang) {
@@ -1241,7 +1217,8 @@ function $(id) { return document.getElementById(id); }
 function applyTheme(theme) {
   document.documentElement.classList.toggle("theme-dark", theme === "dark");
   document.documentElement.classList.toggle("theme-light", theme !== "dark");
-  $("theme-toggle").textContent = theme === "dark" ? t("theme.light") : t("theme.dark");
+  // Button shows the theme it switches TO: dark active -> sun, light active -> moon.
+  $("theme-toggle").textContent = theme === "dark" ? "☀" : "🌙";
 }
 function toggleTheme() {
   const cur = document.documentElement.classList.contains("theme-dark") ? "dark" : "light";
@@ -1788,36 +1765,16 @@ function render(snap) {
   } else { stopBreakingTitle(); }
   setBanners(banners);
 
-  // Hero — "What should I do?"
+  // Hero — neutral situation status (no directives; per-address verdicts live in the Check tab)
   var you = snap.you || {};
   var zone = you.zone_status || "unknown";
-  var heroAction = $("hero-action");
-  var heroInstr = $("hero-instruction");
-  var heroStatus = $("hero-status");
-  heroAction.className = "hero-action";
-
-  if (snap.incident && snap.incident.resolved_iso) {
-    heroAction.textContent = t("hero.allclear.action");
-    heroAction.classList.add("act-safe");
-    heroInstr.textContent = t("hero.allclear.instr");
-    heroStatus.textContent = t("hero.allclear.status", { time: fmtAbsTime(snap.incident.resolved_iso) });
-  } else if (zone === "inside") {
-    heroAction.textContent = t("hero.leave.action");
-    heroAction.classList.add("act-danger");
-    heroInstr.textContent = t("hero.leave.instr");
-    heroStatus.textContent = t("hero.leave.status");
-  } else if (zone === "outside_downwind" || zone === "outside") {
-    heroAction.textContent = t("hero.stay.action");
-    heroAction.classList.add("act-safe");
-    heroInstr.textContent = t("hero.stay.instr");
-    heroStatus.textContent = zone === "outside_downwind"
-      ? t("hero.stay.status.downwind")
-      : t("hero.stay.status");
+  var heroSummary = $("hero-summary");
+  var resolved = !!(snap.incident && snap.incident.resolved_iso);
+  if (resolved) {
+    heroSummary.textContent = t("hero.summary.resolved");
   } else {
-    heroAction.textContent = t("hero.unknown.action");
-    heroAction.classList.add("act-unknown");
-    heroInstr.textContent = t("hero.unknown.instr");
-    heroStatus.textContent = t("hero.unknown.status");
+    var headline = (snap.incident && snap.incident.status_headline) || "";
+    heroSummary.textContent = headline || t("hero.summary.default");
   }
 
   // Zone-flip takeover
@@ -1836,14 +1793,11 @@ function render(snap) {
   }
   lastZoneStatus = zone;
 
-  // Severity chip
+  // Severity chip (labeled by the "Incident severity:" prefix in markup)
   var sev = (snap.incident && snap.incident.severity) || "low";
   var sevChip = $("severity-chip");
   sevChip.className = "severity-chip sev-" + sev;
   sevChip.textContent = sev;
-  $("hero-status").insertAdjacentElement("beforebegin", sevChip);
-  var statusHL = (snap.incident && snap.incident.status_headline) || "";
-  if (statusHL) heroStatus.textContent += " · " + statusHL;
 
   // Stats strip
   var tank = snap.tank || {};
@@ -1988,7 +1942,7 @@ async function fetchStatus() {
     lastFetchOK = false;
     setBanners([{kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.detail", { err: e.message })}]);
     if (lastZoneStatus === null) {
-      $("hero-action").textContent = t("hero.loading");
+      $("hero-summary").textContent = t("hero.summary.loading");
       $("hero-instruction").textContent = t("loading.firstData");
     }
   }
