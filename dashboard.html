@@ -728,14 +728,6 @@
       cursor: pointer;
       font-family: inherit;
     }
-    .safety-lvl-safe { background: var(--safe-bg); border-color: var(--safe-border); }
-    .safety-lvl-safe h4 { color: var(--safe); }
-    .safety-lvl-elevated { background: var(--moderate-bg); border-color: var(--moderate-border); }
-    .safety-lvl-elevated h4 { color: var(--moderate); }
-    .safety-lvl-high { background: var(--high-bg); border-color: var(--high-border); }
-    .safety-lvl-high h4 { color: var(--high); }
-    .safety-lvl-critical { background: var(--critical-bg); border-color: var(--critical-border); }
-    .safety-lvl-critical h4 { color: var(--critical); }
     .safety-lvl-unknown { background: var(--banner-stale-bg); border-color: var(--border); }
     .safety-lvl-unknown h4 { color: var(--text-sec); }
 
@@ -870,11 +862,9 @@
           <span id="wind-text-map">--</span>
         </div>
         <div class="map-legend-overlay" id="map-legend">
-          <div class="legend-row"><span class="legend-dot" style="background:#7f1d1d"></span><span data-i18n="legend.blast20psi">20 PSI blast</span></div>
           <div class="legend-row"><span class="legend-dot" style="background:#dc2626"></span><span data-i18n="legend.moderate">Moderate damage</span></div>
           <div class="legend-row"><span class="legend-dot" style="background:#ea580c"></span><span data-i18n="legend.light">Light injury</span></div>
           <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span><span data-i18n="legend.evac">Evac zone</span></div>
-          <div class="legend-row"><span class="legend-dot" style="background:#a855f7"></span><span data-i18n="legend.plume">Plume (wind)</span></div>
           <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span><span data-i18n="legend.shelter">Shelter</span></div>
         </div>
       </div>
@@ -948,9 +938,8 @@
               <div class="info-section-title" data-i18n="info.method.title">Methodology &amp; trust</div>
               <div class="methodology-body">
                 <p data-i18n-html="info.method.pipeline"><strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.</p>
-                <p data-i18n-html="info.method.wind"><strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Plume direction is estimated from wind bearing + cone model -- not atmospheric dispersion modeling.</p>
-                <p data-i18n-html="info.method.blast"><strong>Blast zones:</strong> Radii estimated from BLEVE overpressure scaling for ~7,000 gal MMA (~100 tonnes TNT-equivalent). Visual scale matches the OCFA/OC Register published map. Not authoritative for legal purposes.</p>
-                <p data-i18n-html="info.method.checker"><strong>Safety checker:</strong> Uses ray-casting (point-in-polygon) for evac zone, haversine distance for blast zones, bearing math for plume cone intersection. Geocoding via OpenStreetMap Nominatim.</p>
+                <p data-i18n-html="info.method.wind"><strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Shown as current local wind conditions.</p>
+                <p data-i18n-html="info.method.checker"><strong>Safety checker:</strong> Geocodes the entered address via OpenStreetMap Nominatim, then tests whether the point falls inside the area officials have described as evacuated (point-in-polygon). Defers to the official evacuation checker for authoritative orders.</p>
                 <p data-i18n-html="info.method.eval"><strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests (writer logic, schema validation, safety checker math, geocoder behavior) and LLM-as-judge rubrics for design and data quality. All design decisions are logged in <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> with rationale and rubric scores.</p>
                 <p data-i18n-html="info.method.disclaimer"><strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.</p>
               </div>
@@ -1075,15 +1064,12 @@ const STRINGS = {
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
   // Takeover
   // Map legend + tooltips
-  "legend.blast20psi": { en: "20 PSI blast", vi: "Vùng nổ 20 PSI" },
   "legend.moderate": { en: "Moderate damage", vi: "Thiệt hại trung bình" },
   "legend.light": { en: "Light injury", vi: "Thương tích nhẹ" },
   "legend.evac": { en: "Evac zone", vi: "Khu sơ tán" },
-  "legend.plume": { en: "Plume (wind)", vi: "Vệt khí (gió)" },
   "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn" },
   "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán" },
   "map.tooltip.you": { en: "You", vi: "Bạn" },
-  "map.tooltip.plume": { en: "Plume — wind {speed} mph from {dir}", vi: "Vệt khí — gió {speed} mph từ hướng {dir}" },
   // News
   "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức" },
   "news.coverage": { en: "Coverage", vi: "Báo chí đưa tin" },
@@ -1153,16 +1139,12 @@ const STRINGS = {
     vi: "<strong>Quy trình dữ liệu:</strong> Tình trạng được cập nhật 30 phút một lần qua các nguồn web đã xác minh (kênh chính thức của cơ quan, trang web thành phố, hãng tin). Mỗi thông tin được đối chiếu với nhiều nguồn trước khi đăng."
   },
   "info.method.wind": {
-    en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Plume direction is estimated from wind bearing + cone model -- not atmospheric dispersion modeling.",
-    vi: "<strong>Dữ liệu gió:</strong> Quan sát trực tiếp từ trạm NOAA KFUL (Sân bay Fullerton Municipal), cập nhật 60 giây một lần. Hướng vệt khí được ước tính từ hướng gió + mô hình hình nón — không phải mô hình phát tán khí quyển."
-  },
-  "info.method.blast": {
-    en: "<strong>Blast zones:</strong> Radii estimated from BLEVE overpressure scaling for ~7,000 gal MMA (~100 tonnes TNT-equivalent). Visual scale matches the OCFA/OC Register published map. Not authoritative for legal purposes.",
-    vi: "<strong>Vùng nổ:</strong> Bán kính ước tính từ thang đo áp suất BLEVE cho ~7.000 gallon MMA (~100 tấn tương đương TNT). Tỷ lệ trực quan khớp với bản đồ do OCFA/OC Register công bố. Không có giá trị pháp lý."
+    en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Shown as current local wind conditions.",
+    vi: "<strong>Dữ liệu gió:</strong> Quan sát trực tiếp từ trạm NOAA KFUL (Sân bay Fullerton Municipal), cập nhật 60 giây một lần. Hiển thị điều kiện gió địa phương hiện tại."
   },
   "info.method.checker": {
-    en: "<strong>Safety checker:</strong> Uses ray-casting (point-in-polygon) for evac zone, haversine distance for blast zones, bearing math for plume cone intersection. Geocoding via OpenStreetMap Nominatim.",
-    vi: "<strong>Bộ kiểm tra:</strong> Dùng ray-casting (điểm-trong-đa-giác) cho khu sơ tán, khoảng cách haversine cho vùng nổ, phép tính hướng cho giao vùng vệt khí. Định vị qua OpenStreetMap Nominatim."
+    en: "<strong>Safety checker:</strong> Geocodes the entered address via OpenStreetMap Nominatim, then tests whether the point falls inside the area officials have described as evacuated (point-in-polygon). Defers to the official evacuation checker for authoritative orders.",
+    vi: "<strong>Bộ kiểm tra:</strong> Định vị địa chỉ qua OpenStreetMap Nominatim, sau đó kiểm tra xem điểm có nằm trong khu vực được cơ quan chức năng mô tả là cần sơ tán hay không (điểm-trong-đa-giác). Dẫn đến bộ kiểm tra sơ tán chính thức để có lệnh có thẩm quyền."
   },
   "info.method.eval": {
     en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests (writer logic, schema validation, safety checker math, geocoder behavior) and LLM-as-judge rubrics for design and data quality. All design decisions are logged in <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> with rationale and rubric scores.',
