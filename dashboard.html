@@ -239,6 +239,17 @@
     .safety-strip-sep { color: var(--text-muted); }
     .safety-strip-terms { margin-left: auto; }
 
+    /* ===== AI DISCLOSURE ===== */
+    .ai-disclosure {
+      flex-shrink: 0;
+      padding: 4px 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
     /* ===== NEWS unified feed ===== */
     .feed-item { padding: 10px 12px; border-bottom: 1px solid var(--border); display: block; color: inherit; text-decoration: none; }
     .feed-item-official { cursor: default; }
@@ -842,6 +853,8 @@
       <a class="safety-strip-terms" href="terms.html" data-i18n="safety.strip.terms">Full terms &amp; disclaimer</a>
     </div>
 
+    <div class="ai-disclosure" data-i18n="disclosure.ai">Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels.</div>
+
     <div class="stats-strip">
       <div class="stat">
         <svg class="wind-arrow-sm" id="wind-arrow" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
@@ -1051,6 +1064,7 @@ const STRINGS = {
   "safety.strip.info": { en: "Informational only — not official. In an emergency, call 911." },
   "safety.strip.official": { en: "Official source:" },
   "safety.strip.terms": { en: "Full terms & disclaimer" },
+  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels." },
   "info.about.title": { en: "Who made this" },
   "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
   "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA." },
