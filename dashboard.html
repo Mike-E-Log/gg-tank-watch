@@ -988,6 +988,7 @@ const STRINGS = {
   "check.loading": { en: 'Looking up "{q}"...', vi: 'Đang tìm "{q}"...' },
   "check.error.title": { en: "Could not check", vi: "Không thể kiểm tra" },
   "check.error.suffix": { en: ". Try a more specific address.", vi: ". Hãy thử địa chỉ cụ thể hơn." },
+  "check.error.noResult": { en: "No result in the monitored area for: {q}", vi: "Không tìm thấy kết quả trong khu vực giám sát cho: {q}" },
   // Info panel
   "info.tank.title": { en: "Tank", vi: "Bồn chứa" },
   "info.tank.crack": { en: "Crack observed", vi: "Đã thấy vết nứt" },
@@ -1539,6 +1540,16 @@ function renderSafetyResult(addr, pt, result) {
   map.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
 }
 
+/* Translate known English error messages thrown from geocodeAddress() into
+   the active language. Keeps geocodeAddress() itself untouched (partner's
+   lane); falls through to the original English for unknown errors. */
+function translateErrorMessage(msg) {
+  if (!msg) return msg;
+  var m = msg.match(/^No result in the monitored area for: (.+)$/);
+  if (m) return t("check.error.noResult", { q: m[1] });
+  return msg;
+}
+
 async function checkSafety() {
   var q = $("safety-input").value.trim();
   if (!q) return;
@@ -1555,7 +1566,7 @@ async function checkSafety() {
     renderSafetyResult(addr, addr, result);
   } catch (e) {
     el.className = "safety-result safety-lvl-unknown";
-    el.innerHTML = "<h4>" + t("check.error.title") + "</h4><div style=\"font-size:12px;color:var(--text-sec)\">" + e.message + t("check.error.suffix") + "</div>";
+    el.innerHTML = "<h4>" + t("check.error.title") + "</h4><div style=\"font-size:12px;color:var(--text-sec)\">" + translateErrorMessage(e.message) + t("check.error.suffix") + "</div>";
   } finally {
     btn.disabled = false;
     btn.textContent = t("check.button");
