@@ -21,15 +21,7 @@
       [33.7639, -117.9755],
       [33.7639, -118.0420]
     ],
-    "evac_polygon_note": "Approximate rectangle bounded by Ball Rd (N), Trask Ave (S), Dale St (E), and a western boundary extended to ~Knott Ave to include portions of Stanton, Cypress, and W Anaheim per news reports. Not authoritative — see ggcity.org/emergency for official zones.",
-    "blast_zones_mi": [
-      { "radius": 0.11, "label": "20 PSI overpressure (severe)", "color": "#7f1d1d" },
-      { "radius": 0.31, "label": "Moderate damage",              "color": "#dc2626" },
-      { "radius": 0.93, "label": "Lightweight injury",           "color": "#ea580c" }
-    ],
-    "plume_max_length_mi": 4,
-    "plume_cone_degrees": 30,
-    "weather_station": "KFUL",
+    "evac_polygon_note": "Approximate area that may be affected based on news reports. Not authoritative — confirm your status at ggcity.org/emergency.",
     "anna_location": null,
     "fixed_points": [
       {"label": "Trask & Harbor", "lat": 33.7660, "lon": -117.9202},
@@ -48,8 +40,7 @@
     ],
     "shelters_source_url": "https://ggcity.org/emergency",
     "geocode_bias": "Orange County, CA",
-    "geocode_viewbox": [-118.10, 33.85, -117.85, 33.65],
-    "blast_zone_source_note": "Radii are estimated from BLEVE/overpressure scaling for ~7,000 gal MMA (~100 tonnes TNT-equivalent). Visual scale matches the OCFA / OC Register published map. Not authoritative for legal purposes."
+    "geocode_viewbox": [-118.10, 33.85, -117.85, 33.65]
   },
   "schema_version": 1,
   "notes": "Edit zone_status to 'inside' if your address gets added to the evac zone. Set incident.resolved_iso (in a manual writer run via stdin) once the incident officially ends. The map coordinates are best-effort estimates - the evac polygon is the four-street rectangle and blast radii are generic published estimates, not authoritative. anna_location: [lat, lon] if you want your home marked on the map; null otherwise."
