@@ -2,229 +2,517 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
   <title>GG MMA Tank Dashboard</title>
   <meta http-equiv="refresh" content="600">
+  <meta name="description" content="Real-time situational awareness for the Garden Grove MMA tank emergency. What should I do?">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
   <style>
-    /* ============================
-       Theme — light default, dark toggle. Variables swap based on .theme-dark on <html>.
-       ============================ */
     :root, html.theme-light {
-      --bg: #f5f5f7;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --text: #18181b;
-      --text-dim: #71717a;
-      --border: #e4e4e7;
+      --text: #0f172a;
+      --text-sec: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
       --shadow: 0 1px 2px rgba(0,0,0,0.05);
-      --sev-low: #2563eb;
-      --sev-moderate: #d97706;
-      --sev-high: #dc2626;
-      --sev-critical: #7f1d1d;
-      --good: #16a34a;
-      --bad: #dc2626;
-      --hero-outside-bg: #dcfce7;
-      --hero-inside-bg: #fee2e2;
-      --hero-resolved-bg: #d1fae5;
-      --hero-unknown-bg: var(--surface);
-      --banner-stale-bg: #fef3c7;
-      --banner-offline-bg: #f1f5f9;
-      --banner-breaking-bg: #fee2e2;
+      --accent: #1e40af;
+      --accent-light: #dbeafe;
+      --safe: #059669;
+      --safe-bg: #ecfdf5;
+      --safe-border: #a7f3d0;
+      --moderate: #d97706;
+      --moderate-bg: #fffbeb;
+      --moderate-border: #fde68a;
+      --high: #dc2626;
+      --high-bg: #fef2f2;
+      --high-border: #fecaca;
+      --critical: #7f1d1d;
+      --critical-bg: #fef2f2;
+      --critical-border: #fecaca;
+      --banner-breaking-bg: #fef2f2;
+      --banner-update-bg: #fffbeb;
+      --banner-stale-bg: #f1f5f9;
     }
     html.theme-dark {
-      --bg: #0a0e14;
-      --surface: #151b23;
-      --text: #e6edf3;
-      --text-dim: #8b949e;
-      --border: #30363d;
-      --shadow: 0 1px 2px rgba(0,0,0,0.4);
-      --sev-low: #3b82f6;
-      --sev-moderate: #f59e0b;
-      --sev-high: #ef4444;
-      --sev-critical: #991b1b;
-      --good: #2ea043;
-      --bad: #ef4444;
-      --hero-outside-bg: rgba(46,160,67,0.18);
-      --hero-inside-bg: rgba(239,68,68,0.22);
-      --hero-resolved-bg: rgba(46,160,67,0.25);
-      --hero-unknown-bg: var(--surface);
-      --banner-stale-bg: rgba(245,158,11,0.15);
-      --banner-offline-bg: rgba(139,148,158,0.15);
-      --banner-breaking-bg: rgba(239,68,68,0.22);
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --text: #f1f5f9;
+      --text-sec: #94a3b8;
+      --text-muted: #64748b;
+      --border: #334155;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+      --accent: #3b82f6;
+      --accent-light: rgba(59,130,246,0.15);
+      --safe: #34d399;
+      --safe-bg: rgba(52,211,153,0.12);
+      --safe-border: rgba(52,211,153,0.3);
+      --moderate: #fbbf24;
+      --moderate-bg: rgba(251,191,36,0.1);
+      --moderate-border: rgba(251,191,36,0.3);
+      --high: #f87171;
+      --high-bg: rgba(248,113,113,0.12);
+      --high-border: rgba(248,113,113,0.3);
+      --critical: #fca5a5;
+      --critical-bg: rgba(252,165,165,0.12);
+      --critical-border: rgba(252,165,165,0.3);
+      --banner-breaking-bg: rgba(248,113,113,0.15);
+      --banner-update-bg: rgba(251,191,36,0.1);
+      --banner-stale-bg: rgba(100,116,139,0.15);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
       background: var(--bg);
       color: var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
       font-size: 14px;
       line-height: 1.4;
-      min-height: 100vh;
+      overflow: hidden;
+      height: 100%;
     }
-    .mono { font-family: "IBM Plex Mono", ui-monospace, "JetBrains Mono", "Consolas", monospace; }
+    .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
 
-    .container { max-width: 1400px; margin: 0 auto; padding: 16px; }
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 340px;
-      gap: 16px;
-      align-items: start;
-    }
-    @media (max-width: 1000px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { position: static !important; max-height: none !important; }
-    }
-    .sidebar {
-      position: sticky;
-      top: 16px;
-      max-height: calc(100vh - 32px);
+    /* ===== APP SHELL ===== */
+    .app {
       display: flex;
       flex-direction: column;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      box-shadow: var(--shadow);
+      height: 100dvh;
+      height: 100vh;
+      max-width: 800px;
+      margin: 0 auto;
       overflow: hidden;
     }
-    .sidebar-header {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-dim);
+
+    /* ===== REFRESH BAR ===== */
+    .refresh-bar {
+      height: 2px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .refresh-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 1s linear;
+    }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      min-height: 36px;
+      gap: 8px;
     }
-    .sidebar-list {
-      overflow-y: auto;
-      padding: 4px 0;
-      flex: 1;
+    .topbar-title {
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .sidebar-list .stmt {
-      padding: 12px 14px;
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .topbar-updated {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-sec);
+      padding: 3px 8px;
+      font-size: 11px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* ===== BANNERS ===== */
+    .banners { flex-shrink: 0; }
+    .banner {
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
       border-bottom: 1px solid var(--border);
     }
-    .sidebar-list .stmt:last-child { border-bottom: none; }
-    .sidebar-list .stmt-datetime {
-      font-size: 14px;
+    .banner-breaking {
+      background: var(--banner-breaking-bg);
+      color: var(--high);
+      animation: pulse-bg 1.5s ease-in-out infinite;
+    }
+    .banner-update { background: var(--banner-update-bg); color: var(--moderate); }
+    .banner-stale { background: var(--banner-stale-bg); color: var(--text-sec); cursor: default; }
+    .banner-offline { background: var(--banner-stale-bg); color: var(--text-muted); cursor: default; }
+    .banner-action { font-size: 11px; opacity: 0.7; }
+    @keyframes pulse-bg { 0%,100%{opacity:1} 50%{opacity:0.7} }
+    @media (prefers-reduced-motion: reduce) { .banner-breaking { animation: none; } }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 12px 16px 10px;
+      text-align: center;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-label {
+      font-size: 10px;
       font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.2px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
       margin-bottom: 2px;
+    }
+    .hero-action {
+      font-size: clamp(26px, 7vw, 40px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+    .hero-action.act-safe { color: var(--safe); }
+    .hero-action.act-danger { color: var(--high); }
+    .hero-action.act-unknown { color: var(--text-sec); }
+    .hero-instruction {
+      font-size: 14px;
+      color: var(--text-sec);
+      margin: 2px 0 6px;
+      font-weight: 500;
+    }
+    .hero-context {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .hero-status {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .severity-chip {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+    .sev-low { background: var(--accent); }
+    .sev-moderate { background: var(--moderate); }
+    .sev-high { background: var(--high); }
+    .sev-critical { background: var(--critical); }
+
+    /* ===== STATS STRIP ===== */
+    .stats-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 5px 12px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      flex-shrink: 0;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+      color: var(--text-sec);
+    }
+    .stat-val { font-weight: 600; color: var(--text); }
+    .stat-sep { color: var(--border); margin: 0 2px; }
+    .wind-arrow-sm {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      transition: transform 0.4s ease;
+    }
+
+    /* ===== TAB CONTENT ===== */
+    .tab-content {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .tab-panel {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.12s ease;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tab-panel.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ===== TAB BAR ===== */
+    .tab-bar {
+      display: flex;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .tab-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      padding: 6px 0 4px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: color 0.15s;
+      border-top: 2px solid transparent;
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-top-color: var(--accent);
+    }
+    .tab-btn-icon { font-size: 18px; line-height: 1; }
+    .tab-btn-label { letter-spacing: 0.3px; }
+    .tab-btn .tab-badge {
+      position: absolute;
+      top: 2px;
+      right: calc(50% - 16px);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--high);
+    }
+
+    /* ===== MAP PANEL ===== */
+    #map {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+    }
+    .map-wind-overlay {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 1000;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11px;
+      color: var(--text-sec);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .map-legend-overlay {
+      position: absolute;
+      bottom: 24px;
+      left: 8px;
+      z-index: 1000;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 10px;
+      box-shadow: var(--shadow);
+      max-width: 200px;
+    }
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 1px 0;
+      color: var(--text-sec);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    html.theme-dark .leaflet-control-attribution {
+      background: rgba(30,41,59,0.85) !important;
+      color: var(--text-muted) !important;
+    }
+    html.theme-dark .leaflet-control-attribution a { color: var(--accent) !important; }
+    html.theme-dark .leaflet-control-zoom a {
+      background: var(--surface) !important;
+      color: var(--text) !important;
+      border-color: var(--border) !important;
+    }
+    .leaflet-tooltip.fixed-point-label {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 6px;
+      box-shadow: var(--shadow);
+    }
+    .leaflet-tooltip.fixed-point-label::before { display: none; }
+
+    /* ===== NEWS PANEL ===== */
+    .news-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 10px 12px 4px;
+    }
+    .stmt {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .stmt.is-newest {
+      background: var(--high-bg);
+      border-left: 3px solid var(--high);
+      padding-left: 9px;
+    }
+    .stmt-top {
       display: flex;
       align-items: center;
       gap: 6px;
       flex-wrap: wrap;
+      margin-bottom: 2px;
     }
-    .sidebar-list .stmt-newest-badge {
-      display: inline-block;
+    .stmt-badge {
       font-size: 9px;
       font-weight: 800;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      padding: 1px 6px;
+      padding: 1px 5px;
       border-radius: 3px;
-      background: var(--sev-high);
-      color: white;
-      vertical-align: middle;
+      color: #fff;
     }
-    .sidebar-list .stmt-fresh-badge {
-      display: inline-block;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      padding: 1px 6px;
-      border-radius: 3px;
-      background: var(--sev-moderate);
-      color: white;
-      vertical-align: middle;
-    }
-    .sidebar-list .stmt-agency {
+    .stmt-badge-newest { background: var(--high); }
+    .stmt-badge-recent { background: var(--moderate); }
+    .stmt-time {
       font-size: 12px;
       font-weight: 600;
       color: var(--text);
-      opacity: 0.85;
-      margin-bottom: 6px;
     }
-    .sidebar-list .stmt-text {
+    .stmt-relative {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .stmt-agency {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-sec);
+      margin-bottom: 3px;
+    }
+    .stmt-text {
       font-size: 13px;
-      color: var(--text);
       line-height: 1.45;
+      color: var(--text);
     }
-    .sidebar-list .stmt-source {
+    .stmt-source {
       display: inline-block;
       font-size: 11px;
-      color: var(--sev-low);
-      margin-top: 6px;
+      color: var(--accent);
+      margin-top: 4px;
       text-decoration: none;
     }
-    .sidebar-list .stmt-source:hover { text-decoration: underline; }
-    .sidebar-list .stmt.fresh-highlight {
-      background: var(--banner-stale-bg);
-      transition: background 2s ease-out;
+    .stmt-source:hover { text-decoration: underline; }
+
+    .news-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
     }
-    .sidebar-list .stmt.is-newest {
-      background: linear-gradient(to right, rgba(220,38,38,0.06), transparent 30%);
-      border-left: 3px solid var(--sev-high);
-      padding-left: 11px;
+    .news-item:active { background: var(--bg); }
+    .news-thumb {
+      width: 72px;
+      height: 54px;
+      border-radius: 4px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--border);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .sidebar-list .stmt-relative {
+    .news-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .news-thumb-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .news-thumb-play::after {
+      content: "";
+      border-left: 10px solid white;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+    }
+    .news-thumb.placeholder-video {
+      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><path d="M8 5v14l11-7z"/></svg>') center/30% no-repeat;
+    }
+    .news-thumb.placeholder-article {
+      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><path d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm0 5h16v2H4z"/></svg>') center/24% no-repeat;
+    }
+    .news-meta { flex: 1; min-width: 0; }
+    .news-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .news-sub {
       font-size: 11px;
-      font-weight: 500;
-      color: var(--text-dim);
-      letter-spacing: 0;
+      color: var(--text-muted);
+      margin-top: 2px;
+      display: flex;
+      gap: 6px;
     }
-    .topbar {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 16px;
-    }
-    .topbar .title { font-weight: 600; letter-spacing: 0.3px; }
-    .topbar-right { display: flex; gap: 12px; align-items: center; }
-    .topbar .updated { color: var(--text-dim); font-size: 12px; }
-    .theme-toggle {
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--text); padding: 4px 10px; font-size: 12px;
-      border-radius: 4px; cursor: pointer;
-    }
-    .theme-toggle:hover { border-color: var(--sev-low); color: var(--sev-low); }
 
-    .banner {
-      padding: 12px 16px; margin-bottom: 12px;
-      border: 1px solid var(--border); border-radius: 6px;
-      display: flex; justify-content: space-between; align-items: center;
-      box-shadow: var(--shadow);
-    }
-    .banner-stale { background: var(--banner-stale-bg); border-color: var(--sev-moderate); color: var(--text); }
-    .banner-offline { background: var(--banner-offline-bg); border-color: var(--text-dim); color: var(--text-dim); }
-    .banner-breaking {
-      background: var(--banner-breaking-bg); border-color: var(--sev-high); color: var(--text);
-      animation: pulse-bg 1.5s ease-in-out infinite;
-    }
-    .banner-update {
-      background: var(--banner-stale-bg); border-color: var(--sev-moderate); color: var(--text);
-    }
-    .banner-info-icon {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: rgba(0,0,0,0.15); color: inherit;
-      font-size: 11px; font-weight: 700; font-style: normal;
-      margin-left: 8px; cursor: help; text-decoration: none;
-    }
-    .banner-info-icon:hover { background: rgba(0,0,0,0.25); }
-    .banner-action {
-      font-size: 12px; font-weight: 600;
-      opacity: 0.7; white-space: nowrap;
-      padding-left: 12px;
-    }
-    .banner:hover .banner-action { opacity: 1; text-decoration: underline; }
-
-    /* Evacuation shelters */
-    .shelters-section { margin-bottom: 16px; }
+    /* ===== EVACUATION SHELTERS ===== */
     .shelters-cta {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -235,7 +523,7 @@
       color: var(--text);
       box-shadow: var(--shadow);
     }
-    .shelters-cta a { color: var(--sev-low); text-decoration: none; }
+    .shelters-cta a { color: var(--accent); text-decoration: none; }
     .shelters-cta a:hover { text-decoration: underline; }
     .shelters-grid {
       display: grid;
@@ -250,371 +538,207 @@
       box-shadow: var(--shadow);
       display: flex; flex-direction: column; gap: 4px;
     }
-    .shelter-card .name {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.25;
-    }
-    .shelter-card .city {
-      font-size: 12px;
-      color: var(--text-dim);
-    }
+    .shelter-card .name { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.25; }
+    .shelter-card .city { font-size: 12px; color: var(--text-muted); }
     .shelter-card .address {
-      font-size: 11px;
-      color: var(--text-dim);
-      font-family: ui-monospace, monospace;
-      margin-top: 2px;
+      font-size: 11px; color: var(--text-muted);
+      font-family: "IBM Plex Mono", ui-monospace, monospace; margin-top: 2px;
     }
     .shelter-card .notes-chip {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 3px;
-      background: var(--sev-moderate);
-      color: white;
-      margin-top: 4px;
-      align-self: flex-start;
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; padding: 2px 6px; border-radius: 3px;
+      background: var(--moderate); color: white; margin-top: 4px; align-self: flex-start;
     }
     .shelter-card .directions {
-      font-size: 12px;
-      color: var(--sev-low);
-      text-decoration: none;
-      margin-top: 6px;
-      align-self: flex-start;
+      font-size: 12px; color: var(--accent); text-decoration: none;
+      margin-top: 6px; align-self: flex-start;
     }
     .shelter-card .directions:hover { text-decoration: underline; }
-
     /* Shelter map marker */
     .shelter-icon { background: none !important; border: none !important; }
     .shelter-marker {
-      width: 22px; height: 22px;
-      background: #2563eb;
-      border: 2px solid white;
-      border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; line-height: 1;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      width: 22px; height: 22px; background: #2563eb; border: 2px solid white;
+      border-radius: 4px; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
 
-    /* News videos grid */
-    .videos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .video-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform 0.1s ease-out;
-      text-decoration: none;
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-    }
-    .video-card:hover { transform: translateY(-2px); border-color: var(--sev-low); }
-    .video-thumb {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: var(--border);
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .video-thumb.placeholder-video {
-      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238b949e"><path d="M8 5v14l11-7z"/></svg>') center/30% no-repeat;
-    }
-    .video-thumb.placeholder-article {
-      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238b949e"><path d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm0 5h16v2H4z"/></svg>') center/24% no-repeat;
-    }
-    .video-thumb-outlet-fallback {
-      position: absolute;
-      bottom: 8px; left: 8px;
-      background: rgba(0,0,0,0.6); color: white;
-      padding: 3px 8px; border-radius: 3px;
-      font-size: 11px; font-weight: 600;
-      letter-spacing: 0.3px;
-      max-width: calc(100% - 16px);
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .video-thumb img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .video-play {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.7);
-      display: flex; align-items: center; justify-content: center;
-      pointer-events: none;
-      z-index: 2;
-    }
-    /* Hide play overlay when shown on a placeholder background (no image) — the
-       placeholder's own SVG icon is already centered there. */
-    .video-thumb.placeholder-video .video-play,
-    .video-thumb.placeholder-article .video-play { display: none; }
-    .video-play::after {
-      content: "";
-      border-left: 14px solid white;
-      border-top: 9px solid transparent;
-      border-bottom: 9px solid transparent;
-      margin-left: 4px;
-    }
-    .video-meta {
-      padding: 10px 12px;
-      display: flex; flex-direction: column; gap: 4px;
-    }
-    .video-title {
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.3;
-      color: var(--text);
-    }
-    .video-sub {
-      font-size: 11px;
-      color: var(--text-dim);
-      display: flex; gap: 8px;
-    }
-
-    /* Fixed-point labels on the map need a readable background in both themes */
-    .leaflet-tooltip.fixed-point-label {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 6px;
-      box-shadow: var(--shadow);
-    }
-    .leaflet-tooltip.fixed-point-label::before { display: none; }
-
-    /* Section headers between groups of content */
-    .section-header {
+    /* ===== CHECK PANEL ===== */
+    .check-panel-inner { padding: 16px 12px; }
+    .check-label {
       font-size: 11px;
       font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: 1px;
-      color: var(--text-dim);
-      margin: 20px 0 8px;
-      padding-bottom: 4px;
-      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
     }
-    .section-header:first-of-type { margin-top: 16px; }
-    @keyframes pulse-bg { 0%,100%{opacity:1} 50%{opacity:0.7} }
-    @media (prefers-reduced-motion: reduce) { .banner-breaking { animation: none; } }
-
-    .hero {
-      padding: 16px 20px; margin-bottom: 12px;
-      border-radius: 6px; border: 1px solid var(--border);
-      text-align: center;
-      box-shadow: var(--shadow);
+    .safety-form {
+      display: flex;
+      gap: 8px;
     }
-    .hero-outside { background: var(--hero-outside-bg); border-color: var(--good); }
-    .hero-inside  { background: var(--hero-inside-bg); border-color: var(--sev-high); }
-    .hero-unknown { background: var(--hero-unknown-bg); }
-    .hero-resolved{ background: var(--hero-resolved-bg); border-color: var(--good); }
-    .hero h1 {
-      font-size: clamp(20px, 3.2vw, 32px); font-weight: 700;
-      line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 4px;
-    }
-    .hero h1.outside { color: var(--good); }
-    .hero h1.inside  { color: var(--sev-high); }
-    .hero .sub { color: var(--text-dim); font-size: 13px; }
-    .hero-meta {
-      display: flex; gap: 10px; align-items: center; justify-content: center;
-      margin-top: 8px; flex-wrap: wrap;
-    }
-    .hero-meta .headline-inline {
-      font-size: 13px; color: var(--text); opacity: 0.85;
-    }
-
-    .status-row { display: flex; gap: 12px; align-items: stretch; margin-bottom: 16px; }
-    .severity-chip {
-      padding: 6px 12px; border-radius: 4px;
-      font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 12px;
-      align-self: center; white-space: nowrap;
-    }
-    .sev-low      { background: var(--sev-low); color: white; }
-    .sev-moderate { background: var(--sev-moderate); color: white; }
-    .sev-high     { background: var(--sev-high); color: white; }
-    .sev-critical { background: var(--sev-critical); color: white; }
-    .headline { flex: 1; font-size: 18px; color: var(--text); display: flex; align-items: center; }
-
-    /* Map */
-    .map-section {
-      margin-bottom: 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .map-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .map-header h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); font-weight: 600; }
-    .wind-readout {
-      font-size: 12px; color: var(--text-dim);
-      display: flex; align-items: center; gap: 6px;
-    }
-    .wind-arrow {
-      display: inline-block;
-      width: 14px; height: 14px;
-      transition: transform 0.4s ease;
-    }
-    #map { height: 360px; width: 100%; background: var(--bg); }
-    .legend {
-      padding: 10px 16px;
-      font-size: 11px; color: var(--text-dim);
-      display: flex; flex-wrap: wrap; gap: 12px;
-      border-top: 1px solid var(--border);
-    }
-    .legend-item { display: inline-flex; align-items: center; gap: 4px; }
-    .legend-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; border: 1px solid rgba(0,0,0,0.1); }
-
-    /* Safety check input */
-    .safety-section {
-      margin-bottom: 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      box-shadow: var(--shadow);
-      padding: 12px 16px;
-    }
-    .safety-section h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); font-weight: 600; margin-bottom: 8px; }
-    .safety-form { display: flex; gap: 8px; flex-wrap: wrap; }
     .safety-form input {
-      flex: 1; min-width: 220px;
-      padding: 8px 12px;
-      background: var(--bg); color: var(--text);
-      border: 1px solid var(--border); border-radius: 4px;
-      font-size: 14px; font-family: inherit;
+      flex: 1;
+      padding: 10px 12px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 15px;
+      font-family: inherit;
     }
-    .safety-form input:focus { outline: 2px solid var(--sev-low); outline-offset: -1px; border-color: var(--sev-low); }
+    .safety-form input:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: -1px;
+    }
     .safety-form button {
-      padding: 8px 16px;
-      background: var(--sev-low); color: white;
-      border: none; border-radius: 4px;
-      font-weight: 600; cursor: pointer; font-size: 14px;
+      padding: 10px 14px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
     }
-    .safety-form button:hover { opacity: 0.9; }
-    .safety-form button:disabled { opacity: 0.5; cursor: wait; }
-    .safety-form .hint {
-      width: 100%; font-size: 11px; color: var(--text-dim); margin-top: 4px;
+    .safety-form button:disabled { opacity: 0.5; }
+    .safety-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
     }
     .safety-result {
       margin-top: 12px;
-      padding: 12px 16px;
-      border-radius: 4px;
+      padding: 12px;
+      border-radius: 6px;
       border: 1px solid var(--border);
     }
     .safety-result.hidden { display: none; }
-    .safety-result h4 { font-size: 18px; margin-bottom: 6px; }
+    .safety-result h4 { font-size: 16px; margin-bottom: 4px; }
     .safety-result .verdict-line {
-      display: flex; flex-wrap: wrap; gap: 12px;
-      font-size: 13px; color: var(--text-dim);
-      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--text-sec);
+      margin-bottom: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .safety-result .verdict-line strong { color: var(--text); }
-    .safety-result ul { margin-left: 18px; font-size: 13px; }
+    .safety-result ul { margin-left: 16px; font-size: 12px; }
     .safety-result li { margin: 2px 0; }
-    .safety-lvl-safe     { background: var(--hero-outside-bg);    border-color: var(--good); }
-    .safety-lvl-safe h4  { color: var(--good); }
-    .safety-lvl-elevated { background: var(--banner-stale-bg);    border-color: var(--sev-moderate); }
-    .safety-lvl-elevated h4 { color: var(--sev-moderate); }
-    .safety-lvl-high     { background: var(--hero-inside-bg);     border-color: var(--sev-high); }
-    .safety-lvl-high h4  { color: var(--sev-high); }
-    .safety-lvl-critical { background: var(--hero-inside-bg);     border-color: var(--sev-critical); }
-    .safety-lvl-critical h4 { color: var(--sev-critical); }
-    .safety-lvl-unknown  { background: var(--banner-offline-bg);  border-color: var(--text-dim); }
-    .safety-lvl-unknown h4 { color: var(--text-dim); }
+    .safety-result .view-map-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 12px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .safety-lvl-safe { background: var(--safe-bg); border-color: var(--safe-border); }
+    .safety-lvl-safe h4 { color: var(--safe); }
+    .safety-lvl-elevated { background: var(--moderate-bg); border-color: var(--moderate-border); }
+    .safety-lvl-elevated h4 { color: var(--moderate); }
+    .safety-lvl-high { background: var(--high-bg); border-color: var(--high-border); }
+    .safety-lvl-high h4 { color: var(--high); }
+    .safety-lvl-critical { background: var(--critical-bg); border-color: var(--critical-border); }
+    .safety-lvl-critical h4 { color: var(--critical); }
+    .safety-lvl-unknown { background: var(--banner-stale-bg); border-color: var(--border); }
+    .safety-lvl-unknown h4 { color: var(--text-sec); }
 
-    /* Override Leaflet attribution for dark mode */
-    html.theme-dark .leaflet-control-attribution {
-      background: rgba(21,27,35,0.8) !important;
-      color: var(--text-dim) !important;
-    }
-    html.theme-dark .leaflet-control-attribution a { color: var(--sev-low) !important; }
-    html.theme-dark .leaflet-control-zoom a {
-      background: var(--surface) !important;
-      color: var(--text) !important;
-      border-color: var(--border) !important;
-    }
-
-    .grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 12px; margin-bottom: 16px;
-    }
-    .panel {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 6px; padding: 16px;
-      box-shadow: var(--shadow);
-    }
-    .panel h3 {
-      font-size: 12px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.5px;
-      color: var(--text-dim); margin-bottom: 8px;
-    }
-    .big-number { font-size: 36px; font-weight: 600; }
-    .row {
-      display: flex; justify-content: space-between;
-      padding: 4px 0; border-bottom: 1px solid var(--border);
-    }
-    .row:last-child { border-bottom: none; }
-    .row .k { color: var(--text-dim); }
-    .row .v { color: var(--text); }
-    .yes  { color: var(--good); font-weight: 600; }
-    .no   { color: var(--bad); font-weight: 600; }
-
-    details {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 6px; padding: 12px 16px; margin-bottom: 12px;
-      box-shadow: var(--shadow);
-    }
-    summary { cursor: pointer; color: var(--text-dim); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-    summary:hover { color: var(--text); }
-    .source-list { margin-top: 12px; }
-    .source-list a {
-      color: var(--text); text-decoration: none;
+    /* ===== INFO PANEL ===== */
+    .info-panel-inner { padding: 0 0 24px; }
+    .info-section {
+      padding: 10px 12px;
       border-bottom: 1px solid var(--border);
-      display: block; padding: 6px 0;
     }
-    .source-list a:hover { color: var(--sev-low); border-color: var(--sev-low); }
-
-    .footer {
-      color: var(--text-dim); font-size: 12px; text-align: center;
-      padding-top: 16px; border-top: 1px solid var(--border);
+    .info-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
     }
-    .footer a { color: var(--text-dim); }
-    .footer a:hover { color: var(--sev-low); }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+      font-size: 13px;
+    }
+    .info-row .k { color: var(--text-sec); }
+    .info-row .v { color: var(--text); font-weight: 500; }
+    .info-big { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+    .yes { color: var(--safe); font-weight: 600; }
+    .no { color: var(--high); font-weight: 600; }
 
+    .methodology-section {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .methodology-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+    .methodology-body {
+      font-size: 12px;
+      color: var(--text-sec);
+      line-height: 1.5;
+    }
+    .methodology-body p { margin-bottom: 6px; }
+    .methodology-body a { color: var(--accent); text-decoration: none; }
+    .methodology-body a:hover { text-decoration: underline; }
+    .source-item {
+      display: block;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 12px;
+    }
+    .source-item:last-child { border-bottom: none; }
+    .source-item:hover { color: var(--accent); }
+
+    /* ===== TAKEOVER ===== */
     .takeover {
-      position: fixed; inset: 0;
-      background: rgba(127,29,29,0.97); color: white;
+      position: fixed;
+      inset: 0;
+      background: rgba(127,29,29,0.97);
+      color: white;
       z-index: 9999;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      padding: 32px; text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 32px;
+      text-align: center;
     }
-    .takeover h1 { font-size: clamp(48px, 10vw, 120px); line-height: 1; margin-bottom: 16px; }
-    .takeover p { font-size: 24px; margin-bottom: 32px; max-width: 800px; }
+    .takeover h1 {
+      font-size: clamp(40px, 10vw, 100px);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .takeover p { font-size: 20px; margin-bottom: 32px; max-width: 600px; }
     .takeover button {
-      background: white; color: #7f1d1d;
-      border: none; padding: 16px 32px;
-      font-size: 18px; font-weight: 700;
-      border-radius: 6px; cursor: pointer;
+      background: white;
+      color: #7f1d1d;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
     }
     .takeover.hidden { display: none; }
     .takeover-flash { animation: flash 0.5s ease-in-out infinite alternate; }
@@ -623,152 +747,169 @@
       to   { background: rgba(220,38,38,0.97); }
     }
     @media (prefers-reduced-motion: reduce) { .takeover-flash { animation: none; } }
+
+    /* ===== DESKTOP ===== */
+    @media (min-width: 768px) {
+      .hero-action { font-size: 36px; }
+      .tab-btn { padding: 8px 0 6px; }
+      .tab-btn-icon { font-size: 16px; }
+      .news-item { padding: 12px 16px; }
+      .info-section { padding: 12px 16px; }
+      .check-panel-inner { padding: 20px 16px; }
+    }
   </style>
 </head>
 <body>
   <div id="takeover" class="takeover hidden">
-    <h1>YOU ARE INSIDE THE EVAC ZONE</h1>
+    <h1>LEAVE NOW</h1>
     <p id="takeover-reason">Your zone status just flipped to INSIDE. Evacuate now per OCFA guidance.</p>
     <button onclick="dismissTakeover()">Acknowledged</button>
   </div>
 
-  <div class="container">
-    <div class="topbar">
-      <div class="title mono">GG MMA Tank Dashboard</div>
+  <div class="app">
+    <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
+
+    <header class="topbar">
+      <span class="topbar-title">GG MMA Tank Dashboard</span>
       <div class="topbar-right">
-        <span class="updated" id="updated-text">loading…</span>
-        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+        <span class="topbar-updated" id="updated-text">loading...</span>
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">Dark</button>
       </div>
+    </header>
+
+    <div class="banners" id="banners"></div>
+
+    <section class="hero" id="hero">
+      <div class="hero-label">What should I do?</div>
+      <h1 class="hero-action" id="hero-action">Loading...</h1>
+      <p class="hero-instruction" id="hero-instruction">Waiting for data</p>
+      <div class="hero-context">
+        <span class="severity-chip" id="severity-chip">--</span>
+        <span class="hero-status" id="hero-status">--</span>
+      </div>
+    </section>
+
+    <div class="stats-strip">
+      <div class="stat">
+        <svg class="wind-arrow-sm" id="wind-arrow" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
+        <span class="stat-val mono" id="wind-compact">--</span>
+      </div>
+      <span class="stat-sep">|</span>
+      <div class="stat"><span class="stat-val mono" id="temp-compact">--</span></div>
+      <span class="stat-sep">|</span>
+      <div class="stat"><span class="stat-val mono" id="evac-compact">--</span></div>
+      <span class="stat-sep">|</span>
+      <div class="stat"><span id="refresh-text" class="mono" style="font-size:10px">30s</span></div>
     </div>
 
-    <div id="banners"></div>
-
-    <div class="layout">
-    <div class="main-col">
-
-    <div class="hero" id="hero">
-      <h1 id="hero-headline">Loading…</h1>
-      <div class="sub" id="hero-sub">Waiting for first snapshot</div>
-      <div class="hero-meta">
-        <div class="severity-chip" id="severity-chip">—</div>
-        <span class="headline-inline" id="status-headline">—</span>
-      </div>
-    </div>
-
-    <h2 class="section-header">Map · Wind · Blast zones · Plume</h2>
-
-    <!-- MAP -->
-    <div class="map-section">
-      <div class="map-header">
-        <h3>Live map — evac zone · blast zones · plume · wind</h3>
-        <div class="wind-readout" id="wind-readout">
-          <span>wind:</span>
-          <svg class="wind-arrow" id="wind-arrow" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 1 L13 14 L8 11 L3 14 Z"/>
-          </svg>
-          <span id="wind-text">—</span>
+    <div class="tab-content">
+      <div class="tab-panel active" id="panel-map">
+        <div id="map"></div>
+        <div class="map-wind-overlay" id="map-wind-overlay">
+          <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
+          <span id="wind-text-map">--</span>
+        </div>
+        <div class="map-legend-overlay" id="map-legend">
+          <div class="legend-row"><span class="legend-dot" style="background:#7f1d1d"></span>20 PSI blast</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#dc2626"></span>Moderate damage</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#ea580c"></span>Light injury</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span>Evac zone</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#a855f7"></span>Plume (wind)</div>
+          <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span>Shelter</div>
         </div>
       </div>
-      <div id="map"></div>
-      <div class="legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#7f1d1d"></span>20 PSI blast (0.11 mi)</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#dc2626"></span>Moderate damage (0.31 mi)</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#ea580c"></span>Light injury (0.93 mi)</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6"></span>Evac zone</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#a855f7"></span>Plume (live wind)</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#111;border:2px solid #fff"></span>Tank</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#16a34a;border:2px solid #fff;border-radius:50%"></span>Reference points (safety-colored)</span>
-        <span class="legend-item">🏠 Evacuation shelter</span>
+
+      <div class="tab-panel" id="panel-news">
+        <div class="news-section-label" id="statements-count">0 official statements</div>
+        <div id="statements-list"></div>
+        <div class="news-section-label">Coverage</div>
+        <div id="videos-list"></div>
+      </div>
+
+      <div class="tab-panel" id="panel-check">
+        <div class="check-panel-inner">
+          <div class="check-label">Check an address or intersection</div>
+          <form class="safety-form" onsubmit="event.preventDefault(); checkSafety()">
+            <input id="safety-input" type="text" placeholder="e.g. Magnolia & Talbert" autocomplete="off">
+            <button id="safety-button" type="submit">Check</button>
+          </form>
+          <div class="safety-hint">Geocoded via OpenStreetMap. Defaults to Orange County, CA.</div>
+          <div id="safety-result" class="safety-result hidden"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="panel-info">
+        <div class="info-panel-inner">
+          <div class="info-section">
+            <div class="info-section-title">Tank</div>
+            <div class="info-big mono" id="tank-temp">--</div>
+            <div class="info-row"><span class="k">Crack observed</span><span class="v" id="tank-crack">--</span></div>
+          </div>
+          <div class="info-section">
+            <div class="info-section-title">Evacuation</div>
+            <div class="info-big mono" id="evac-residents">--</div>
+            <div class="info-row"><span class="k">Area</span><span class="v mono" id="evac-area">--</span></div>
+            <div class="info-row"><span class="k">Order lifted</span><span class="v" id="evac-lifted">--</span></div>
+            <div class="info-row"><span class="k">Expanded today</span><span class="v" id="evac-expanded">--</span></div>
+            <div class="info-row"><span class="k">Boundary</span><span class="v" style="font-size:11px;text-align:right;max-width:60%" id="evac-boundary">--</span></div>
+          </div>
+          <div class="info-section">
+            <div class="info-section-title">Evacuation shelters</div>
+            <div class="shelters-cta">
+              &#128719; <strong>Live list at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; the city is the source of truth; the list below is a snapshot.
+            </div>
+            <div id="shelters-grid" class="shelters-grid"></div>
+          </div>
+          <div class="info-section">
+            <div class="info-section-title">Schools closed</div>
+            <div id="schools">--</div>
+          </div>
+          <div class="info-section">
+            <div class="info-section-title">Sources verified</div>
+            <div id="source-list"></div>
+          </div>
+          <div class="methodology-section">
+            <div class="info-section-title">Methodology & trust</div>
+            <div class="methodology-body">
+              <p><strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.</p>
+              <p><strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds. Plume direction is estimated from wind bearing + cone model -- not atmospheric dispersion modeling.</p>
+              <p><strong>Blast zones:</strong> Radii estimated from BLEVE overpressure scaling for ~7,000 gal MMA (~100 tonnes TNT-equivalent). Visual scale matches the OCFA/OC Register published map. Not authoritative for legal purposes.</p>
+              <p><strong>Safety checker:</strong> Uses ray-casting (point-in-polygon) for evac zone, haversine distance for blast zones, bearing math for plume cone intersection. Geocoding via OpenStreetMap Nominatim.</p>
+              <p><strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests (writer logic, schema validation, safety checker math, geocoder behavior) and LLM-as-judge rubrics for design and data quality. All design decisions are logged in <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> with rationale and rubric scores.</p>
+              <p><strong>Disclaimer:</strong> This is a community tool, not an official government resource. Always verify with <a href="https://ggcity.org/emergency" target="_blank">ggcity.org/emergency</a> for authoritative zone status.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <h2 class="section-header">Check an address or intersection</h2>
-
-    <!-- SAFETY CHECK -->
-    <div class="safety-section">
-      <form class="safety-form" onsubmit="event.preventDefault(); checkSafety()">
-        <input id="safety-input" type="text" placeholder="e.g. Magnolia St and Talbert Ave, or 12345 Some St" autocomplete="off">
-        <button id="safety-button" type="submit">Check safety</button>
-        <span class="hint">Geocoded via OpenStreetMap (Nominatim). Orange County is the default search area.</span>
-      </form>
-      <div id="safety-result" class="safety-result hidden"></div>
-    </div>
-
-    <h2 class="section-header">Incident details</h2>
-
-    <div class="grid">
-      <div class="panel">
-        <h3>Tank</h3>
-        <div class="big-number mono" id="tank-temp">—</div>
-        <div class="row"><span class="k">Crack observed</span><span class="v" id="tank-crack">—</span></div>
-      </div>
-
-      <div class="panel">
-        <h3>Evacuation</h3>
-        <div class="big-number mono" id="evac-residents">—</div>
-        <div class="row"><span class="k">Area</span><span class="v mono" id="evac-area">— sq mi</span></div>
-        <div class="row"><span class="k">Order lifted</span><span class="v" id="evac-lifted">—</span></div>
-        <div class="row"><span class="k">Expanded today</span><span class="v" id="evac-expanded">—</span></div>
-        <div class="row"><span class="k">Boundary</span><span class="v mono" style="font-size:11px" id="evac-boundary">—</span></div>
-      </div>
-
-      <div class="panel">
-        <h3>Schools closed</h3>
-        <div id="schools">—</div>
-      </div>
-    </div>
-
-    <h2 class="section-header">Evacuation shelters</h2>
-    <div class="shelters-section">
-      <div class="shelters-cta">
-        🛏️ <strong>Live list at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> — the city is the source of truth; the list below is a snapshot.
-      </div>
-      <div id="shelters-grid" class="shelters-grid"></div>
-    </div>
-
-    <h2 class="section-header">Major news updates</h2>
-
-    <div id="videos-section" class="videos-grid">
-      <div style="grid-column:1/-1;color:var(--text-dim);font-size:13px">No news updates in this snapshot yet. Add them via the writer's <code>videos</code> field (works for both YouTube videos and news article entries).</div>
-    </div>
-
-    <h2 class="section-header">Sources</h2>
-
-    <details>
-      <summary id="sources-summary">Verified from 0 sources</summary>
-      <div class="source-list" id="source-list"></div>
-    </details>
-
-    </div><!-- /.main-col -->
-
-    <aside class="sidebar" id="statements-details">
-      <div class="sidebar-header">
-        <span id="statements-summary">0 official statements</span>
-        <span style="font-weight:400;text-transform:none;letter-spacing:0">newest first</span>
-      </div>
-      <div class="sidebar-list" id="statements-list"></div>
-    </aside>
-
-    </div><!-- /.layout -->
-
-    <div class="footer">
-      <span>Next check: <span id="next-check" class="mono">—</span></span>
-      &nbsp;·&nbsp;
-      <a href="https://ggcity.org/emergency" target="_blank">Check address vs zone</a>
-      &nbsp;·&nbsp;
-      <a href="BRIEF_2026-05-24.md">Full brief</a>
-      &nbsp;·&nbsp;
-      <a href="go_bag.md">Go-bag</a>
-    </div>
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="map" onclick="switchTab('map')">
+        <span class="tab-btn-icon">&#x1F5FA;</span>
+        <span class="tab-btn-label">Map</span>
+      </button>
+      <button class="tab-btn" data-tab="news" onclick="switchTab('news')">
+        <span class="tab-btn-icon">&#x1F4F0;</span>
+        <span class="tab-btn-label">News</span>
+      </button>
+      <button class="tab-btn" data-tab="check" onclick="switchTab('check')">
+        <span class="tab-btn-icon">&#x1F50D;</span>
+        <span class="tab-btn-label">Check</span>
+      </button>
+      <button class="tab-btn" data-tab="info" onclick="switchTab('info')">
+        <span class="tab-btn-icon">&#x2139;</span>
+        <span class="tab-btn-label">Info</span>
+      </button>
+    </nav>
   </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
 <script>
 const REFRESH_MS = 30000;
 const NORMAL_TITLE = "GG MMA Tank Dashboard";
-const BREAKING_TITLE = "🔴 BREAKING — GG MMA Tank";
-const WIND_REFRESH_MS = 5 * 60 * 1000;   // 5 min
-const WIND_CACHE_MS   = 5 * 60 * 1000;
+const BREAKING_TITLE = "\u{1F534} BREAKING — GG MMA Tank";
+const WIND_BASE_MS = 60000;
+const WIND_MAX_MS = 480000;
 
 let lastZoneStatus = null;
 let titleToggle = null;
@@ -782,7 +923,11 @@ let lastWind = null;
 let safetyPin = null;
 let safetyPinBuffer = null;
 let fixedPointMarkers = [];
-let lastSnapshotForChanges = null;
+let windInterval = WIND_BASE_MS;
+let windTimer = null;
+let lastObservationTime = null;
+let refreshCountdown = 30;
+let countdownTimer = null;
 
 function $(id) { return document.getElementById(id); }
 
@@ -790,7 +935,7 @@ function $(id) { return document.getElementById(id); }
 function applyTheme(theme) {
   document.documentElement.classList.toggle("theme-dark", theme === "dark");
   document.documentElement.classList.toggle("theme-light", theme !== "dark");
-  $("theme-toggle").textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+  $("theme-toggle").textContent = theme === "dark" ? "Light" : "Dark";
 }
 function toggleTheme() {
   const cur = document.documentElement.classList.contains("theme-dark") ? "dark" : "light";
@@ -799,16 +944,55 @@ function toggleTheme() {
   applyTheme(next);
 }
 applyTheme(localStorage.getItem("gg-theme") || "light");
+window.toggleTheme = toggleTheme;
+
+/* ============ TABS ============ */
+function switchTab(tabId) {
+  document.querySelectorAll(".tab-panel").forEach(function(p) { p.classList.remove("active"); });
+  document.querySelectorAll(".tab-btn").forEach(function(b) { b.classList.remove("active"); });
+  var panel = $("panel-" + tabId);
+  if (panel) panel.classList.add("active");
+  var btn = document.querySelector('[data-tab="' + tabId + '"]');
+  if (btn) btn.classList.add("active");
+  if (tabId === "map" && map) {
+    setTimeout(function() { map.invalidateSize(); }, 50);
+  }
+  if (tabId === "check") {
+    setTimeout(function() {
+      var input = $("safety-input");
+      if (input) input.focus();
+    }, 100);
+  }
+}
+window.switchTab = switchTab;
+
+/* ============ REFRESH COUNTDOWN ============ */
+function startRefreshCountdown() {
+  refreshCountdown = 30;
+  if (countdownTimer) clearInterval(countdownTimer);
+  countdownTimer = setInterval(function() {
+    refreshCountdown = Math.max(0, refreshCountdown - 1);
+    var bar = $("refresh-bar");
+    if (bar) bar.style.width = ((refreshCountdown / 30) * 100) + "%";
+    var txt = $("refresh-text");
+    if (txt) txt.textContent = refreshCountdown + "s";
+  }, 1000);
+}
 
 /* ============ FORMAT HELPERS ============ */
 function fmtNumber(n) { return (n === null || n === undefined) ? "—" : n.toLocaleString("en-US"); }
+function fmtCompact(n) {
+  if (n === null || n === undefined) return "—";
+  if (n >= 1000) return Math.round(n / 1000) + "K";
+  return String(n);
+}
 function relativeTime(iso) {
   if (!iso) return "—";
-  const then = new Date(iso), now = new Date();
-  const diffMin = Math.floor((now - then) / 60000);
+  var then = new Date(iso), now = new Date();
+  var diffMin = Math.floor((now - then) / 60000);
   if (diffMin < 1) return "just now";
   if (diffMin < 60) return diffMin + " min ago";
-  const diffH = Math.floor(diffMin / 60);
+  var diffH = Math.floor(diffMin / 60);
   if (diffH < 24) return then.toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"});
   return then.toLocaleDateString("en-US", {weekday:"short"}) + " " + then.toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"});
 }
@@ -817,10 +1001,10 @@ function fmtAbsTime(iso) {
 }
 function fmtAbsDateTime(iso) {
   if (!iso) return "—";
-  const d = new Date(iso);
-  const date = d.toLocaleDateString("en-US", {weekday:"short", month:"short", day:"numeric"});
-  const time = d.toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"});
-  return `${date}, ${time}`;
+  var d = new Date(iso);
+  var date = d.toLocaleDateString("en-US", {weekday:"short", month:"short", day:"numeric"});
+  var time = d.toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"});
+  return date + ", " + time;
 }
 function yesNo(v) {
   if (v === true)  return '<span class="yes">yes</span>';
@@ -829,52 +1013,22 @@ function yesNo(v) {
 }
 
 /* ============ BANNERS ============ */
-const BREAKING_EXPLAIN = "Triggered when the writer detects a structural change vs the previous snapshot. URGENT = an evac order toggled, severity bumped, first injuries reported, or incident resolved (pulsing red + beep). UPDATE = a new official statement was published, or the resident-count shifted noticeably (amber, no beep). Auto-clears after 30 min if no fresh trigger. Click the banner to jump to the statements list.";
-
 function setBanners(banners) {
-  $("banners").innerHTML = banners.map(b => {
-    const aria = b.kind==='breaking' ? 'aria-live="assertive"' : '';
-    const clickable = (b.kind==='breaking' || b.kind==='update');
-    const info = clickable
-      ? `<a class="banner-info-icon" title="${BREAKING_EXPLAIN}" aria-label="What does this mean?" onclick="event.stopPropagation()">?</a>`
-      : '';
-    const action = clickable ? '<span class="banner-action">→ See statements</span>' : '';
-    const onclick = clickable ? 'onclick="jumpToStatements()" style="cursor:pointer"' : '';
-    return `<div class="banner banner-${b.kind}" ${aria} ${onclick}>
-       <span><strong>${b.title}</strong> ${b.message||''}${info}</span>
-       ${action}
-     </div>`;
+  $("banners").innerHTML = banners.map(function(b) {
+    var clickable = (b.kind === "breaking" || b.kind === "update");
+    var action = clickable ? '<span class="banner-action">→ News</span>' : '';
+    var onclick = clickable ? 'onclick="switchTab(\'news\')"' : '';
+    return '<div class="banner banner-' + b.kind + '" ' + onclick + '>' +
+      '<span><strong>' + b.title + '</strong> ' + (b.message || '') + '</span>' +
+      action + '</div>';
   }).join("");
 }
-
-function jumpToStatements() {
-  const sidebar = $("statements-details");
-  const list = $("statements-list");
-  if (!sidebar) return;
-  // On wide screens, the sidebar is sticky and always visible — just scroll
-  // its internal list to the top + highlight the newest statement.
-  // On narrow screens, scroll the page to bring the sidebar into view.
-  const isNarrow = window.matchMedia("(max-width: 1000px)").matches;
-  if (isNarrow) {
-    sidebar.scrollIntoView({behavior: "smooth", block: "start"});
-  }
-  if (list) list.scrollTop = 0;
-  sidebar.style.transition = "box-shadow 0.3s";
-  sidebar.style.boxShadow = "0 0 0 3px var(--sev-moderate)";
-  setTimeout(() => { sidebar.style.boxShadow = ""; }, 1500);
-  const firstStmt = list && list.querySelector(".stmt");
-  if (firstStmt) {
-    firstStmt.classList.add("fresh-highlight");
-    setTimeout(() => firstStmt.classList.remove("fresh-highlight"), 2500);
-  }
-}
-window.jumpToStatements = jumpToStatements;
 
 /* ============ TAB TITLE + BEEP ============ */
 function startBreakingTitle() {
   if (titleToggle) return;
-  let on = true;
-  titleToggle = setInterval(() => { document.title = on ? BREAKING_TITLE : NORMAL_TITLE; on = !on; }, 1000);
+  var on = true;
+  titleToggle = setInterval(function() { document.title = on ? BREAKING_TITLE : NORMAL_TITLE; on = !on; }, 1000);
 }
 function stopBreakingTitle() {
   if (titleToggle) { clearInterval(titleToggle); titleToggle = null; }
@@ -883,16 +1037,18 @@ function stopBreakingTitle() {
 function beep() {
   try {
     audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    for (let i = 0; i < 3; i++) {
-      setTimeout(() => {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.frequency.value = 880; osc.type = "square"; gain.gain.value = 0.15;
-        osc.connect(gain).connect(audioCtx.destination);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-      }, i * 350);
+    for (var i = 0; i < 3; i++) {
+      (function(idx) {
+        setTimeout(function() {
+          var osc = audioCtx.createOscillator();
+          var gain = audioCtx.createGain();
+          osc.frequency.value = 880; osc.type = "square"; gain.gain.value = 0.15;
+          osc.connect(gain).connect(audioCtx.destination);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+        }, idx * 350);
+      })(i);
     }
-  } catch (e) { /* silent is acceptable */ }
+  } catch (e) { /* silent */ }
 }
 
 /* ============ TAKEOVER ============ */
@@ -907,64 +1063,54 @@ function dismissTakeover() {
   $("takeover").classList.remove("takeover-flash");
 }
 window.dismissTakeover = dismissTakeover;
-window.toggleTheme = toggleTheme;
 
 /* ============ MAP ============ */
-
-// Bearing math — given a start lat/lon and bearing (deg from N, clockwise)
-// + distance (miles), compute the destination lat/lon. Spherical Earth approx.
 function destPoint(lat, lon, bearingDeg, distMi) {
-  const R = 3958.8; // Earth radius in miles
-  const br = bearingDeg * Math.PI / 180;
-  const φ1 = lat * Math.PI / 180;
-  const λ1 = lon * Math.PI / 180;
-  const dr = distMi / R;
-  const φ2 = Math.asin(Math.sin(φ1) * Math.cos(dr) + Math.cos(φ1) * Math.sin(dr) * Math.cos(br));
-  const λ2 = λ1 + Math.atan2(
-    Math.sin(br) * Math.sin(dr) * Math.cos(φ1),
-    Math.cos(dr) - Math.sin(φ1) * Math.sin(φ2)
+  var R = 3958.8;
+  var br = bearingDeg * Math.PI / 180;
+  var p1 = lat * Math.PI / 180;
+  var l1 = lon * Math.PI / 180;
+  var dr = distMi / R;
+  var p2 = Math.asin(Math.sin(p1) * Math.cos(dr) + Math.cos(p1) * Math.sin(dr) * Math.cos(br));
+  var l2 = l1 + Math.atan2(
+    Math.sin(br) * Math.sin(dr) * Math.cos(p1),
+    Math.cos(dr) - Math.sin(p1) * Math.sin(p2)
   );
-  return [φ2 * 180 / Math.PI, ((λ2 * 180 / Math.PI) + 540) % 360 - 180];
+  return [p2 * 180 / Math.PI, ((l2 * 180 / Math.PI) + 540) % 360 - 180];
 }
 
 function initMap(cfg) {
   if (mapInited) return;
-  const m = cfg.map;
-  const c = [m.facility.lat, m.facility.lon];
-  map = L.map("map", { zoomControl: true, scrollWheelZoom: true }).setView(c, 13);
+  var m = cfg.map;
+  var c = [m.facility.lat, m.facility.lon];
+  map = L.map("map", { zoomControl: true, scrollWheelZoom: true, attributionControl: true }).setView(c, 13);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
+    maxZoom: 19, attribution: '&copy; OpenStreetMap'
   }).addTo(map);
 
-  // Blast zone circles
-  m.blast_zones_mi.forEach(b => {
-    const c = L.circle([m.facility.lat, m.facility.lon], {
-      radius: b.radius * 1609.34, // mi -> meters
-      color: b.color, weight: 2, fillOpacity: 0.10, dashArray: "4 4"
-    }).addTo(map).bindTooltip(`${b.label} (~${b.radius} mi radius)`, {sticky: true});
-    layers.blasts.push(c);
+  m.blast_zones_mi.forEach(function(b) {
+    var circle = L.circle([m.facility.lat, m.facility.lon], {
+      radius: b.radius * 1609.34, color: b.color, weight: 2, fillOpacity: 0.10, dashArray: "4 4"
+    }).addTo(map).bindTooltip(b.label + " (~" + b.radius + " mi)", {sticky: true});
+    layers.blasts.push(circle);
   });
 
-  // Evacuation polygon
   layers.evac = L.polygon(m.evac_polygon, {
     color: "#3b82f6", weight: 2, fillOpacity: 0.12
-  }).addTo(map).bindTooltip("Evacuation zone (per ggcity.org)", {sticky: true});
+  }).addTo(map).bindTooltip("Evacuation zone", {sticky: true});
 
-  // Facility marker
   layers.facility = L.circleMarker([m.facility.lat, m.facility.lon], {
     radius: 8, fillColor: "#111", color: "#fff", weight: 2, fillOpacity: 1
   }).addTo(map).bindTooltip(m.facility.label, {permanent: false, direction: "top"});
 
-  // Anna's location (if set)
   if (m.anna_location && Array.isArray(m.anna_location)) {
     layers.you = L.circleMarker(m.anna_location, {
-      radius: 7, fillColor: "#16a34a", color: "#fff", weight: 2, fillOpacity: 1
+      radius: 7, fillColor: "#059669", color: "#fff", weight: 2, fillOpacity: 1
     }).addTo(map).bindTooltip("You", {permanent: true, direction: "right", offset: [8, 0]});
   }
 
-  // Fixed reference points (rendered with per-point safety color once we know wind)
-  fixedPointMarkers = (m.fixed_points || []).map(fp => {
-    const marker = L.circleMarker([fp.lat, fp.lon], {
+  fixedPointMarkers = (m.fixed_points || []).map(function(fp) {
+    var marker = L.circleMarker([fp.lat, fp.lon], {
       radius: 7, fillColor: "#6366f1", color: "#fff", weight: 2, fillOpacity: 1
     }).addTo(map).bindTooltip(fp.label, {permanent: true, direction: "right", offset: [8, 0], className: "fixed-point-label"});
     marker.__fp = fp;
@@ -972,385 +1118,334 @@ function initMap(cfg) {
   });
 
   // Evacuation shelters (blue square markers, distinct from green ref points)
-  (m.shelters || []).forEach(s => {
-    const icon = L.divIcon({
+  (m.shelters || []).forEach(function(s) {
+    var icon = L.divIcon({
       className: "shelter-icon",
       html: '<div class="shelter-marker">&#127968;</div>',
       iconSize: [22, 22],
-      iconAnchor: [11, 11],
+      iconAnchor: [11, 11]
     });
-    L.marker([s.lat, s.lon], { icon })
-      .addTo(map)
-      .bindTooltip(
-        `<strong>${s.name}</strong><br>${s.city}${s.notes ? `<br><span style="opacity:0.8;font-size:11px">${s.notes}</span>` : ''}`,
-        { direction: "top", offset: [0, -8] }
-      );
+    L.marker([s.lat, s.lon], { icon }).addTo(map).bindTooltip(
+      "<strong>" + s.name + "</strong><br>" + s.city + (s.notes ? '<br><span style="opacity:0.8;font-size:11px">' + s.notes + "</span>" : ""),
+      { direction: "top", offset: [0, -8] }
+    );
   });
 
-  // Fit map to show evac polygon + blast zones + ALL reference pins (incl.
-  // fixed_points, anna_location, and shelters) so nothing gets cut off.
-  const boundsPoints = [
-    ...m.evac_polygon,
+  var boundsPoints = m.evac_polygon.concat([
     [m.facility.lat, m.facility.lon],
-    destPoint(m.facility.lat, m.facility.lon, 0, 1.5),    // 1.5 mi N (cover blast zones)
-    destPoint(m.facility.lat, m.facility.lon, 180, 1.5),  // 1.5 mi S
-    ...(m.fixed_points || []).map(fp => [fp.lat, fp.lon]),
-    ...(m.shelters || []).map(s => [s.lat, s.lon]),
-  ];
+    destPoint(m.facility.lat, m.facility.lon, 0, 1.5),
+    destPoint(m.facility.lat, m.facility.lon, 180, 1.5)
+  ]).concat((m.fixed_points || []).map(function(fp) { return [fp.lat, fp.lon]; }))
+    .concat((m.shelters || []).map(function(s) { return [s.lat, s.lon]; }));
   if (m.anna_location && Array.isArray(m.anna_location)) {
     boundsPoints.push(m.anna_location);
   }
-  map.fitBounds(L.latLngBounds(boundsPoints), { padding: [30, 30] });
-
+  map.fitBounds(L.latLngBounds(boundsPoints), { padding: [20, 20] });
   mapInited = true;
 }
 
 function renderPlume(cfg, wind) {
   if (!map || !cfg || !wind) return;
-  const m = cfg.map;
-  // Wind direction is FROM in NOAA data — plume blows TO the opposite heading
-  const heading = (wind.directionDeg + 180) % 360;
-  const spread = (cfg.map.plume_cone_degrees || 30) / 2;
-  const maxLen = cfg.map.plume_max_length_mi || 4;
-  // Length scales with wind speed (mph). Floor 1 mi, cap maxLen.
-  const lenMi = Math.max(1, Math.min(maxLen, (wind.speedMph || 5) * 0.4));
-
-  const origin = [m.facility.lat, m.facility.lon];
-  const left  = destPoint(origin[0], origin[1], heading - spread, lenMi);
-  const right = destPoint(origin[0], origin[1], heading + spread, lenMi);
-  // Add a few intermediate points for a smoother arc tip
-  const mid   = destPoint(origin[0], origin[1], heading, lenMi * 1.05);
-
+  var m = cfg.map;
+  var heading = (wind.directionDeg + 180) % 360;
+  var spread = (m.plume_cone_degrees || 30) / 2;
+  var maxLen = m.plume_max_length_mi || 4;
+  var lenMi = Math.max(1, Math.min(maxLen, (wind.speedMph || 5) * 0.4));
+  var origin = [m.facility.lat, m.facility.lon];
+  var left = destPoint(origin[0], origin[1], heading - spread, lenMi);
+  var right = destPoint(origin[0], origin[1], heading + spread, lenMi);
+  var mid = destPoint(origin[0], origin[1], heading, lenMi * 1.05);
   if (layers.plume) map.removeLayer(layers.plume);
   layers.plume = L.polygon([origin, left, mid, right], {
     color: "#a855f7", weight: 2, fillColor: "#a855f7", fillOpacity: 0.18, dashArray: "6 6"
   }).addTo(map).bindTooltip(
-    `Estimated plume — wind ${Math.round(wind.speedMph)} mph from ${cardinalFromDeg(wind.directionDeg)} (${Math.round(wind.directionDeg)}°)`,
+    "Plume — wind " + Math.round(wind.speedMph) + " mph from " + cardinalFromDeg(wind.directionDeg),
     {sticky: true}
   );
-
-  // Rotate the wind arrow in the header (arrow points TO wind heading)
-  $("wind-arrow").style.transform = `rotate(${heading}deg)`;
-  $("wind-text").textContent = `${cardinalFromDeg(wind.directionDeg)} → ${cardinalFromDeg(heading)} @ ${Math.round(wind.speedMph)} mph`;
+  var arrowMain = $("wind-arrow");
+  if (arrowMain) arrowMain.style.transform = "rotate(" + heading + "deg)";
+  var arrowMap = $("wind-arrow-map");
+  if (arrowMap) arrowMap.style.transform = "rotate(" + heading + "deg)";
+  var windCompact = cardinalFromDeg(wind.directionDeg) + "→" + cardinalFromDeg(heading) + " " + Math.round(wind.speedMph) + "mph";
+  var el = $("wind-compact");
+  if (el) el.textContent = windCompact;
+  var mapEl = $("wind-text-map");
+  if (mapEl) {
+    var obs = wind.observedAt ? " (obs " + fmtAbsTime(wind.observedAt) + ")" : "";
+    mapEl.textContent = windCompact + obs;
+  }
 }
 
 function cardinalFromDeg(deg) {
-  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  var dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
   return dirs[Math.round(((deg % 360) / 22.5)) % 16];
 }
 
 /* ============ SAFETY CHECK ============ */
-window.checkSafety = checkSafety;
-
 function haversineMi(lat1, lon1, lat2, lon2) {
-  const R = 3958.8;
-  const toRad = d => d * Math.PI / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+  var R = 3958.8;
+  var toRad = function(d) { return d * Math.PI / 180; };
+  var dLat = toRad(lat2 - lat1);
+  var dLon = toRad(lon2 - lon1);
+  var a = Math.pow(Math.sin(dLat/2), 2) + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.pow(Math.sin(dLon/2), 2);
   return 2 * R * Math.asin(Math.sqrt(a));
 }
-
 function bearingDeg(lat1, lon1, lat2, lon2) {
-  const toRad = d => d * Math.PI / 180;
-  const toDeg = r => r * 180 / Math.PI;
-  const φ1 = toRad(lat1), φ2 = toRad(lat2);
-  const Δλ = toRad(lon2 - lon1);
-  const y = Math.sin(Δλ) * Math.cos(φ2);
-  const x = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+  var toRad = function(d) { return d * Math.PI / 180; };
+  var toDeg = function(r) { return r * 180 / Math.PI; };
+  var p1 = toRad(lat1), p2 = toRad(lat2), dL = toRad(lon2 - lon1);
+  var y = Math.sin(dL) * Math.cos(p2);
+  var x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dL);
   return (toDeg(Math.atan2(y, x)) + 360) % 360;
 }
-
 function pointInPolygon(pt, polygon) {
-  // Ray casting; polygon is [[lat,lon], ...]
-  const x = pt[1], y = pt[0]; // lon, lat
-  let inside = false;
-  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    const xi = polygon[i][1], yi = polygon[i][0];
-    const xj = polygon[j][1], yj = polygon[j][0];
-    const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+  var x = pt[1], y = pt[0], inside = false;
+  for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    var xi = polygon[i][1], yi = polygon[i][0];
+    var xj = polygon[j][1], yj = polygon[j][0];
+    var intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
     if (intersect) inside = !inside;
   }
   return inside;
 }
-
 function angleDiff(a, b) {
-  // smallest absolute angle between two bearings (0..180)
-  let d = Math.abs(a - b) % 360;
+  var d = Math.abs(a - b) % 360;
   return d > 180 ? 360 - d : d;
 }
 
 async function geocodeAddress(q, cfg) {
-  // Nominatim: free, no key, CORS-friendly. Strategy: try the user's query with
-  // an "Orange County, CA" bias first. If that returns nothing, retry with a
-  // viewbox bounded to the OC area. "and" → "&" because Nominatim's intersection
-  // lookup is more reliable with the ampersand.
-  const queryRaw = q.replace(/\s+and\s+/i, " & ");
-  const bias = (cfg && cfg.map && cfg.map.geocode_bias) || "Orange County, CA";
-  const viewbox = (cfg && cfg.map && cfg.map.geocode_viewbox);
-  const looksFullAddr = /\b(CA|California|\d{5})\b/i.test(queryRaw);
-  const queryWithBias = looksFullAddr ? queryRaw : `${queryRaw}, ${bias}`;
-
-  // Attempt 1: free-text query with bias appended
-  let url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(queryWithBias)}`;
-  let resp = await fetch(url, { headers: { "Accept-Language": "en" } });
+  var queryRaw = q.replace(/\s+and\s+/i, " & ");
+  var bias = (cfg && cfg.map && cfg.map.geocode_bias) || "Orange County, CA";
+  var viewbox = (cfg && cfg.map && cfg.map.geocode_viewbox);
+  var looksFullAddr = /\b(CA|California|\d{5})\b/i.test(queryRaw);
+  var queryWithBias = looksFullAddr ? queryRaw : queryRaw + ", " + bias;
+  var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(queryWithBias);
+  var resp = await fetch(url, { headers: { "Accept-Language": "en" } });
   if (!resp.ok) throw new Error("Nominatim HTTP " + resp.status);
-  let arr = await resp.json();
-
-  // Attempt 2: viewbox-bounded search using raw query
+  var arr = await resp.json();
   if ((!arr || !arr.length) && viewbox && viewbox.length === 4) {
-    const [w, n, e, s] = viewbox;
-    url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(queryRaw)}&viewbox=${w},${n},${e},${s}&bounded=1`;
+    var w = viewbox[0], n = viewbox[1], e = viewbox[2], s = viewbox[3];
+    url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(queryRaw) + "&viewbox=" + w + "," + n + "," + e + "," + s + "&bounded=1";
     resp = await fetch(url, { headers: { "Accept-Language": "en" } });
     if (resp.ok) arr = await resp.json();
   }
-
-  if (!arr || !arr.length) {
-    throw new Error("No result for: " + queryRaw + ". Try adding a city, or use a full street address.");
-  }
-  return {
-    lat: parseFloat(arr[0].lat),
-    lon: parseFloat(arr[0].lon),
-    displayName: arr[0].display_name,
-  };
+  if (!arr || !arr.length) throw new Error("No result for: " + queryRaw);
+  return { lat: parseFloat(arr[0].lat), lon: parseFloat(arr[0].lon), displayName: arr[0].display_name };
 }
 
 function computeSafety(pt, cfg, wind) {
-  // pt = {lat, lon}, returns { level, headline, factors[], distance_mi, bearing_deg, downwind }
-  const m = cfg.map;
-  const dMi = haversineMi(pt.lat, pt.lon, m.facility.lat, m.facility.lon);
-  const brDeg = bearingDeg(m.facility.lat, m.facility.lon, pt.lat, pt.lon);
-
-  // Plume check: is point within the plume cone?
-  let downwind = false, plumeReach = false;
+  var m = cfg.map;
+  var dMi = haversineMi(pt.lat, pt.lon, m.facility.lat, m.facility.lon);
+  var brDeg = bearingDeg(m.facility.lat, m.facility.lon, pt.lat, pt.lon);
+  var downwind = false, plumeReach = false;
   if (wind) {
-    const plumeHeading = (wind.directionDeg + 180) % 360;
-    const spread = (m.plume_cone_degrees || 30) / 2;
-    const within = angleDiff(brDeg, plumeHeading) <= spread;
-    const maxLen = Math.max(1, Math.min(m.plume_max_length_mi || 4, (wind.speedMph || 5) * 0.4));
+    var plumeHeading = (wind.directionDeg + 180) % 360;
+    var spread = (m.plume_cone_degrees || 30) / 2;
+    var within = angleDiff(brDeg, plumeHeading) <= spread;
+    var maxLen = Math.max(1, Math.min(m.plume_max_length_mi || 4, (wind.speedMph || 5) * 0.4));
     downwind = within;
     plumeReach = within && dMi <= maxLen;
   }
-
-  // Layer checks (most-severe first)
-  const factors = [];
-  const insideEvac = pointInPolygon([pt.lat, pt.lon], m.evac_polygon);
+  var factors = [];
+  var insideEvac = pointInPolygon([pt.lat, pt.lon], m.evac_polygon);
   if (insideEvac) factors.push({ sev: 3, label: "Inside official evacuation zone" });
-
-  // Sort blast zones smallest -> largest
-  const blasts = [...(m.blast_zones_mi || [])].sort((a, b) => a.radius - b.radius);
-  let blastHit = null;
-  for (const b of blasts) {
-    if (dMi <= b.radius) { blastHit = b; break; }
+  var blasts = (m.blast_zones_mi || []).slice().sort(function(a, b) { return a.radius - b.radius; });
+  var blastHit = null;
+  for (var i = 0; i < blasts.length; i++) {
+    if (dMi <= blasts[i].radius) { blastHit = blasts[i]; break; }
   }
   if (blastHit) {
-    const sev = blastHit.radius < 0.2 ? 4 : (blastHit.radius < 0.5 ? 3 : 2);
-    factors.push({ sev, label: `Inside blast zone: ${blastHit.label} (~${blastHit.radius} mi radius)` });
+    var sev = blastHit.radius < 0.2 ? 4 : (blastHit.radius < 0.5 ? 3 : 2);
+    factors.push({ sev: sev, label: "Inside blast zone: " + blastHit.label + " (~" + blastHit.radius + " mi)" });
   }
-
-  if (plumeReach) factors.push({ sev: 2, label: `Inside current chemical plume cone (downwind of tank, wind from ${cardinalFromDeg(wind.directionDeg)})` });
-  else if (downwind) factors.push({ sev: 1, label: `Downwind of tank (beyond plume estimate, ${dMi.toFixed(1)} mi out)` });
-
-  const maxSev = factors.reduce((m, f) => Math.max(m, f.sev), 0);
-
-  let level, headline;
-  if (maxSev >= 4) { level = "critical"; headline = "💥 CRITICAL RISK — within primary blast radius"; }
-  else if (maxSev === 3) { level = "high"; headline = insideEvac ? "🛑 EVACUATE — inside official evac zone" : "⚠️ HIGH RISK — within moderate damage radius"; }
-  else if (maxSev === 2) { level = "elevated"; headline = "⚠️ ELEVATED RISK — within injury radius or active plume"; }
-  else if (maxSev === 1) { level = "elevated"; headline = "🌬️ DOWNWIND — beyond plume estimate but in wind path"; }
-  else { level = "safe"; headline = `✅ LIKELY SAFE — outside all designated zones (${dMi.toFixed(1)} mi from tank)`; }
-
-  return { level, headline, factors, distance_mi: dMi, bearing_deg: brDeg, downwind, plumeReach, insideEvac };
+  if (plumeReach) factors.push({ sev: 2, label: "Inside chemical plume cone (downwind, wind from " + cardinalFromDeg(wind.directionDeg) + ")" });
+  else if (downwind) factors.push({ sev: 1, label: "Downwind of tank (" + dMi.toFixed(1) + " mi out)" });
+  var maxSev = factors.reduce(function(m, f) { return Math.max(m, f.sev); }, 0);
+  var level, headline;
+  if (maxSev >= 4) { level = "critical"; headline = "CRITICAL — within primary blast radius"; }
+  else if (maxSev === 3) { level = "high"; headline = insideEvac ? "EVACUATE — inside official evac zone" : "HIGH RISK — within damage radius"; }
+  else if (maxSev === 2) { level = "elevated"; headline = "ELEVATED — within injury radius or plume"; }
+  else if (maxSev === 1) { level = "elevated"; headline = "DOWNWIND — beyond plume but in wind path"; }
+  else { level = "safe"; headline = "LIKELY SAFE — outside all zones (" + dMi.toFixed(1) + " mi)"; }
+  return { level: level, headline: headline, factors: factors, distance_mi: dMi, bearing_deg: brDeg, downwind: downwind, plumeReach: plumeReach, insideEvac: insideEvac };
 }
 
 function renderSafetyResult(addr, pt, result) {
-  const el = $("safety-result");
+  var el = $("safety-result");
   el.className = "safety-result safety-lvl-" + result.level;
-  const factorsList = result.factors.length
-    ? `<ul>${result.factors.map(f => `<li>${f.label}</li>`).join("")}</ul>`
-    : `<div style="font-size:13px;color:var(--text-dim);margin-top:4px">No risk factors detected at this location.</div>`;
-  el.innerHTML = `
-    <h4>${result.headline}</h4>
-    <div class="verdict-line">
-      <span><strong>Address:</strong> ${addr.displayName}</span>
-      <span><strong>Distance:</strong> ${result.distance_mi.toFixed(2)} mi from tank</span>
-      <span><strong>Bearing:</strong> ${cardinalFromDeg(result.bearing_deg)} (${Math.round(result.bearing_deg)}°)</span>
-    </div>
-    ${factorsList}
-    <div style="font-size:11px;color:var(--text-dim);margin-top:8px">
-      Pin dropped on map. This is an estimate based on the map config — verify with ggcity.org/emergency for official zone status.
-    </div>
-  `;
-
-  // Drop a pin
+  var factorsList = result.factors.length
+    ? "<ul>" + result.factors.map(function(f) { return "<li>" + f.label + "</li>"; }).join("") + "</ul>"
+    : '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">No risk factors at this location.</div>';
+  el.innerHTML =
+    "<h4>" + result.headline + "</h4>" +
+    '<div class="verdict-line">' +
+      "<span><strong>Address:</strong> " + addr.displayName + "</span>" +
+      "<span><strong>Distance:</strong> " + result.distance_mi.toFixed(2) + " mi</span>" +
+      "<span><strong>Bearing:</strong> " + cardinalFromDeg(result.bearing_deg) + " (" + Math.round(result.bearing_deg) + "°)</span>" +
+    "</div>" +
+    factorsList +
+    '<button class="view-map-btn" onclick="switchTab(\'map\')">View on map</button>' +
+    '<div style="font-size:10px;color:var(--text-muted);margin-top:8px">Verify at ggcity.org/emergency for official zone status.</div>';
   if (safetyPin) map.removeLayer(safetyPin);
   if (safetyPinBuffer) map.removeLayer(safetyPinBuffer);
-  const color = ({ safe: "#16a34a", elevated: "#d97706", high: "#dc2626", critical: "#7f1d1d" })[result.level] || "#71717a";
+  var color = ({ safe: "#059669", elevated: "#d97706", high: "#dc2626", critical: "#7f1d1d" })[result.level] || "#94a3b8";
   safetyPin = L.circleMarker([pt.lat, pt.lon], {
     radius: 9, fillColor: color, color: "#fff", weight: 3, fillOpacity: 1
   }).addTo(map).bindTooltip(result.headline, { permanent: true, direction: "top", offset: [0, -10] });
-  // A thin ring so it stands out against the polygon fill
   safetyPinBuffer = L.circleMarker([pt.lat, pt.lon], {
     radius: 13, fillColor: color, color: color, weight: 1, fillOpacity: 0.2
   }).addTo(map);
-
-  // Pan/zoom to fit pin + facility
-  const bounds = L.latLngBounds([[pt.lat, pt.lon], [configCache.map.facility.lat, configCache.map.facility.lon]]);
-  map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
+  var bounds = L.latLngBounds([[pt.lat, pt.lon], [configCache.map.facility.lat, configCache.map.facility.lon]]);
+  map.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
 }
 
 async function checkSafety() {
-  const q = $("safety-input").value.trim();
+  var q = $("safety-input").value.trim();
   if (!q) return;
-  const btn = $("safety-button");
-  const el = $("safety-result");
+  var btn = $("safety-button");
+  var el = $("safety-result");
   btn.disabled = true;
-  btn.textContent = "Checking…";
+  btn.textContent = "...";
   el.className = "safety-result safety-lvl-unknown";
   el.classList.remove("hidden");
-  el.innerHTML = `<h4>Geocoding…</h4><div style="font-size:13px;color:var(--text-dim)">Looking up “${q}” via OpenStreetMap.</div>`;
+  el.innerHTML = '<h4>Looking up "' + q + '"...</h4>';
   try {
-    const addr = await geocodeAddress(q, configCache);
-    const result = computeSafety(addr, configCache, lastWind);
+    var addr = await geocodeAddress(q, configCache);
+    var result = computeSafety(addr, configCache, lastWind);
     renderSafetyResult(addr, addr, result);
   } catch (e) {
     el.className = "safety-result safety-lvl-unknown";
-    el.innerHTML = `<h4>Could not check</h4><div style="font-size:13px;color:var(--text-dim)">${e.message}. Try a more specific address (e.g. add the city + state, or use a full street address).</div>`;
+    el.innerHTML = "<h4>Could not check</h4><div style=\"font-size:12px;color:var(--text-sec)\">" + e.message + ". Try a more specific address.</div>";
   } finally {
     btn.disabled = false;
-    btn.textContent = "Check safety";
+    btn.textContent = "Check";
   }
 }
+window.checkSafety = checkSafety;
 
-/* ============ OG IMAGE FETCH (for article thumbnails) ============ */
-const OG_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
-const ogPending = new Map();
-const ogFailed = new Set();
+/* ============ OG IMAGE FETCH ============ */
+var OG_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+var ogPending = new Map();
+var ogFailed = new Set();
 
 async function fetchOgImage(url) {
-  const cacheKey = "og:" + url;
+  var cacheKey = "og:" + url;
   try {
-    const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+    var cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
     if (cached && (Date.now() - cached.fetchedAt) < OG_CACHE_TTL_MS) return cached.imageUrl;
-  } catch (e) { /* cache parse failed; ignore */ }
+  } catch (e) {}
   if (ogFailed.has(url)) return null;
   if (ogPending.has(url)) return ogPending.get(url);
-  const promise = (async () => {
+  var promise = (async function() {
     try {
-      const apiUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}`;
-      const resp = await fetch(apiUrl, { cache: "force-cache" });
-      if (!resp.ok) throw new Error("microlink HTTP " + resp.status);
-      const data = await resp.json();
-      const imageUrl = (data && data.data && data.data.image && data.data.image.url) || null;
+      var apiUrl = "https://api.microlink.io/?url=" + encodeURIComponent(url);
+      var resp = await fetch(apiUrl, { cache: "force-cache" });
+      if (!resp.ok) throw new Error("microlink " + resp.status);
+      var data = await resp.json();
+      var imageUrl = (data && data.data && data.data.image && data.data.image.url) || null;
       if (imageUrl) {
-        try { localStorage.setItem(cacheKey, JSON.stringify({ imageUrl, fetchedAt: Date.now() })); } catch (e) {}
-      } else {
-        ogFailed.add(url);
-      }
+        try { localStorage.setItem(cacheKey, JSON.stringify({ imageUrl: imageUrl, fetchedAt: Date.now() })); } catch (e) {}
+      } else { ogFailed.add(url); }
       return imageUrl;
-    } catch (e) {
-      ogFailed.add(url);
-      return null;
-    }
+    } catch (e) { ogFailed.add(url); return null; }
   })();
   ogPending.set(url, promise);
-  const result = await promise;
+  var result = await promise;
   ogPending.delete(url);
   return result;
 }
 
 async function hydrateMissingThumbnails() {
-  const cards = document.querySelectorAll(".video-card[data-needs-og='true']");
-  for (const card of cards) {
-    const url = card.dataset.url;
+  var cards = document.querySelectorAll(".news-item[data-needs-og='true']");
+  for (var i = 0; i < cards.length; i++) {
+    var card = cards[i];
+    var url = card.dataset.url;
     if (!url) continue;
-    const imageUrl = await fetchOgImage(url);
+    var imageUrl = await fetchOgImage(url);
     if (!imageUrl) continue;
-    const thumb = card.querySelector(".video-thumb");
+    var thumb = card.querySelector(".news-thumb");
     if (!thumb) continue;
-    const playOverlay = thumb.querySelector(".video-play");
-    const outletChip = thumb.querySelector(".video-thumb-outlet-fallback");
+    var playOverlay = thumb.querySelector(".news-thumb-play");
     thumb.classList.remove("placeholder-video", "placeholder-article");
-    thumb.innerHTML = `<img loading="lazy" src="${imageUrl}" alt="">` +
-      (playOverlay ? playOverlay.outerHTML : '') +
-      (outletChip ? outletChip.outerHTML : '');
+    thumb.innerHTML = '<img loading="lazy" src="' + imageUrl + '" alt="">' +
+      (playOverlay ? playOverlay.outerHTML : '');
     card.dataset.needsOg = "false";
   }
 }
 
-/* ============ WIND ============ */
+/* ============ WIND (ADAPTIVE POLLING) ============ */
 async function fetchWind(stationId) {
-  // Cache for WIND_CACHE_MS
-  const cached = JSON.parse(localStorage.getItem("gg-wind") || "null");
-  if (cached && (Date.now() - cached.fetchedAt) < WIND_CACHE_MS) {
-    return cached.wind;
-  }
   try {
-    const url = `https://api.weather.gov/stations/${stationId}/observations/latest`;
-    const resp = await fetch(url, {headers: {"User-Agent": "GG-Dashboard/1.0"}});
+    var url = "https://api.weather.gov/stations/" + stationId + "/observations/latest";
+    var resp = await fetch(url, {headers: {"User-Agent": "GG-Dashboard/1.0 (emergency-awareness)"}});
     if (!resp.ok) throw new Error("HTTP " + resp.status);
-    const data = await resp.json();
-    const props = data.properties || {};
-    const dirDeg = props.windDirection && props.windDirection.value;
-    const spdKmh = props.windSpeed && props.windSpeed.value;
-    if (dirDeg === null || dirDeg === undefined) throw new Error("no wind direction in obs");
-    const wind = {
+    var data = await resp.json();
+    var props = data.properties || {};
+    var dirDeg = props.windDirection && props.windDirection.value;
+    var spdKmh = props.windSpeed && props.windSpeed.value;
+    if (dirDeg === null || dirDeg === undefined) throw new Error("no wind direction");
+    var observedAt = props.timestamp;
+    lastObservationTime = observedAt;
+    var wind = {
       directionDeg: dirDeg,
       speedMph: spdKmh != null ? spdKmh * 0.621371 : 5,
-      observedAt: props.timestamp,
-      station: stationId,
+      observedAt: observedAt,
+      station: stationId
     };
-    localStorage.setItem("gg-wind", JSON.stringify({wind, fetchedAt: Date.now()}));
+    localStorage.setItem("gg-wind", JSON.stringify({wind: wind, fetchedAt: Date.now()}));
+    windInterval = WIND_BASE_MS;
     return wind;
   } catch (e) {
     console.warn("wind fetch failed:", e);
-    // Fallback: prevailing wind in southern CA is W -> E (270° from); reasonable default.
+    windInterval = Math.min(windInterval * 2, WIND_MAX_MS);
+    var cached = JSON.parse(localStorage.getItem("gg-wind") || "null");
     return cached ? cached.wind : { directionDeg: 270, speedMph: 5, observedAt: null, station: stationId, fallback: true };
   }
 }
 
+function scheduleWindRefresh() {
+  if (windTimer) clearTimeout(windTimer);
+  windTimer = setTimeout(refreshWind, windInterval);
+}
+
 async function refreshWind() {
   if (!configCache) return;
-  const stationId = configCache.map && configCache.map.weather_station || "KFUL";
+  var stationId = (configCache.map && configCache.map.weather_station) || "KFUL";
   lastWind = await fetchWind(stationId);
   renderPlume(configCache, lastWind);
   recolorFixedPoints();
+  scheduleWindRefresh();
 }
 
 function recolorFixedPoints() {
   if (!configCache || !fixedPointMarkers.length) return;
-  fixedPointMarkers.forEach(m => {
-    const fp = m.__fp;
-    const result = computeSafety({lat: fp.lat, lon: fp.lon}, configCache, lastWind);
-    const color = ({safe:"#16a34a", elevated:"#d97706", high:"#dc2626", critical:"#7f1d1d"})[result.level] || "#6366f1";
+  fixedPointMarkers.forEach(function(m) {
+    var fp = m.__fp;
+    var result = computeSafety({lat: fp.lat, lon: fp.lon}, configCache, lastWind);
+    var color = ({safe:"#059669", elevated:"#d97706", high:"#dc2626", critical:"#7f1d1d"})[result.level] || "#6366f1";
     m.setStyle({fillColor: color});
-    m.setTooltipContent(`<strong>${fp.label}</strong><br>${result.headline}<br><span style="font-size:11px;opacity:0.8">${result.distance_mi.toFixed(1)} mi · ${cardinalFromDeg(result.bearing_deg)}</span>`);
-    if (m._tooltip) {
-      m._tooltip.options.opacity = 1;
-      m._tooltip.options.permanent = true;
-    }
+    m.setTooltipContent("<strong>" + fp.label + "</strong><br>" + result.headline + "<br><span style=\"font-size:11px;opacity:0.8\">" + result.distance_mi.toFixed(1) + " mi · " + cardinalFromDeg(result.bearing_deg) + "</span>");
   });
 }
 
 /* ============ MAIN RENDER ============ */
 function render(snap) {
   if (snap.schema_version !== 1) {
-    setBanners([{kind:"stale", title:"Schema changed", message:"Reload this page."}]);
+    setBanners([{kind:"stale", title:"⚠️ Schema changed", message:"Reload this page."}]);
     return;
   }
+  $("updated-text").textContent = relativeTime(snap.last_updated_iso);
 
-  $("updated-text").textContent = "Updated " + relativeTime(snap.last_updated_iso);
-
-  const banners = [];
-  const stale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
+  // Banners
+  var banners = [];
+  var stale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
   if (stale) {
-    const min = Math.floor((new Date() - new Date(snap.last_updated_iso)) / 60000);
-    banners.push({kind:"stale", title:"⚠️ Data is stale", message:`Last update was ${min} min ago. The writer script may have stopped.`});
+    var min = Math.floor((new Date() - new Date(snap.last_updated_iso)) / 60000);
+    banners.push({kind:"stale", title:"⚠️ Stale", message:"Last update " + min + " min ago"});
   }
-  if (!lastFetchOK) banners.push({kind:"offline", title:"Offline", message:"Showing last successful fetch."});
+  if (!lastFetchOK) banners.push({kind:"offline", title:"Offline", message:"Last fetch failed"});
   if (snap.breaking) {
-    // breaking_level: "urgent" (act-now) vs "info" (informational). Fallback to urgent for older snapshots without the field.
-    const level = snap.breaking_level || "urgent";
+    var level = snap.breaking_level || "urgent";
     if (level === "info") {
       banners.push({kind:"update", title:"📢 UPDATE", message: snap.breaking_reason || ""});
       stopBreakingTitle();
@@ -1358,50 +1453,47 @@ function render(snap) {
       banners.push({kind:"breaking", title:"🚨 URGENT", message: snap.breaking_reason || ""});
       startBreakingTitle();
     }
-  } else {
-    stopBreakingTitle();
-  }
+  } else { stopBreakingTitle(); }
   setBanners(banners);
 
-  // Hero zone verdict
-  const you = snap.you || {};
-  const zone = you.zone_status || "unknown";
-  const hero = $("hero");
-  const heroH = $("hero-headline");
-  const heroSub = $("hero-sub");
-  hero.classList.remove("hero-outside", "hero-inside", "hero-unknown", "hero-resolved");
-  heroH.classList.remove("outside", "inside");
+  // Hero — "What should I do?"
+  var you = snap.you || {};
+  var zone = you.zone_status || "unknown";
+  var heroAction = $("hero-action");
+  var heroInstr = $("hero-instruction");
+  var heroStatus = $("hero-status");
+  heroAction.className = "hero-action";
 
   if (snap.incident && snap.incident.resolved_iso) {
-    hero.classList.add("hero-resolved");
-    heroH.textContent = "INCIDENT RESOLVED";
-    heroH.classList.add("outside");
-    heroSub.textContent = "Evacuation lifted " + fmtAbsTime(snap.incident.resolved_iso);
-  } else if (zone === "outside_downwind" || zone === "outside") {
-    hero.classList.add("hero-outside");
-    heroH.textContent = "YOU ARE OUTSIDE THE EVAC ZONE";
-    heroH.classList.add("outside");
-    heroSub.textContent = "Downwind. Shelter-in-place posture. Verify at ggcity.org/emergency.";
+    heroAction.textContent = "ALL CLEAR.";
+    heroAction.classList.add("act-safe");
+    heroInstr.textContent = "Evacuation lifted. Normal activities can resume.";
+    heroStatus.textContent = "Resolved " + fmtAbsTime(snap.incident.resolved_iso);
   } else if (zone === "inside") {
-    hero.classList.add("hero-inside");
-    heroH.textContent = "YOU ARE INSIDE THE EVAC ZONE";
-    heroH.classList.add("inside");
-    heroSub.textContent = "Evacuate per OCFA guidance.";
+    heroAction.textContent = "LEAVE NOW.";
+    heroAction.classList.add("act-danger");
+    heroInstr.textContent = "Evacuate immediately per OCFA guidance. Go upwind.";
+    heroStatus.textContent = "You are INSIDE the evacuation zone";
+  } else if (zone === "outside_downwind" || zone === "outside") {
+    heroAction.textContent = "STAY PUT.";
+    heroAction.classList.add("act-safe");
+    heroInstr.textContent = "Close windows and doors. Stay indoors. Monitor for updates.";
+    heroStatus.textContent = zone === "outside_downwind"
+      ? "Outside evac zone · downwind"
+      : "Outside the evacuation zone";
   } else {
-    hero.classList.add("hero-unknown");
-    heroH.textContent = "ZONE STATUS UNKNOWN";
-    heroSub.textContent = "Check ggcity.org/emergency";
+    heroAction.textContent = "CHECK YOUR STATUS.";
+    heroAction.classList.add("act-unknown");
+    heroInstr.textContent = "Use the Check tab or visit ggcity.org/emergency.";
+    heroStatus.textContent = "Zone status unknown";
   }
 
-  // Zone-flip outside -> inside fires takeover
+  // Zone-flip takeover
   if (lastZoneStatus !== null
       && (lastZoneStatus === "outside_downwind" || lastZoneStatus === "outside")
       && zone === "inside") {
-    showTakeover("Your zone status flipped from OUTSIDE -> INSIDE the evacuation zone.");
+    showTakeover("Your zone status flipped from OUTSIDE → INSIDE the evacuation zone.");
   } else if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
-    // Urgent-only audible beep on fresh urgent breaking
-    // (avoids beeping on initial-load urgent state and on info-level updates)
-    // We compare reason to track "freshness" via dedup
     if (window.__lastUrgentReason !== snap.breaking_reason) {
       beep();
       window.__lastUrgentReason = snap.breaking_reason;
@@ -1412,20 +1504,24 @@ function render(snap) {
   }
   lastZoneStatus = zone;
 
-  // Severity + headline
-  const sev = (snap.incident && snap.incident.severity) || "low";
-  const sevChip = $("severity-chip");
+  // Severity chip
+  var sev = (snap.incident && snap.incident.severity) || "low";
+  var sevChip = $("severity-chip");
   sevChip.className = "severity-chip sev-" + sev;
   sevChip.textContent = sev;
-  $("status-headline").textContent = (snap.incident && snap.incident.status_headline) || "—";
+  $("hero-status").insertAdjacentElement("beforebegin", sevChip);
+  var statusHL = (snap.incident && snap.incident.status_headline) || "";
+  if (statusHL) heroStatus.textContent += " · " + statusHL;
 
-  // Tank
-  const tank = snap.tank || {};
-  $("tank-temp").textContent = (tank.temp_f !== null && tank.temp_f !== undefined) ? tank.temp_f + "°F" : "—";
+  // Stats strip
+  var tank = snap.tank || {};
+  var evac = snap.evacuation || {};
+  $("temp-compact").textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
+  $("evac-compact").textContent = (evac.residents != null) ? fmtCompact(evac.residents) + " evac" : "—";
+
+  // Info tab details
+  $("tank-temp").textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
   $("tank-crack").innerHTML = yesNo(tank.crack_observed);
-
-  // Evac
-  const evac = snap.evacuation || {};
   $("evac-residents").textContent = fmtNumber(evac.residents);
   $("evac-area").textContent = (evac.area_sq_mi || "—") + " sq mi";
   $("evac-lifted").innerHTML = yesNo(evac.lifted);
@@ -1433,133 +1529,131 @@ function render(snap) {
   $("evac-boundary").textContent = evac.boundary_text || "—";
 
   // Schools
-  const schools = snap.schools_closed || [];
+  var schools = snap.schools_closed || [];
   $("schools").innerHTML = schools.length
-    ? schools.map(s => `<div class="row"><span class="v">${s}</span></div>`).join("")
-    : '<span style="color:var(--text-dim)">none reported</span>';
+    ? schools.map(function(s) { return '<div class="info-row"><span class="v">' + s + '</span></div>'; }).join("")
+    : '<span style="color:var(--text-muted);font-size:12px">None reported</span>';
 
   // Sources
-  const sources = snap.sources_checked || [];
-  $("sources-summary").textContent = `Verified from ${sources.length} source${sources.length===1?"":"s"}`;
-  $("source-list").innerHTML = sources.map(s =>
-    `<a href="${s.url}" target="_blank">${s.title || s.url}</a>`
-  ).join("");
+  var sources = snap.sources_checked || [];
+  $("source-list").innerHTML = sources.length
+    ? sources.map(function(s) {
+        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + '</a>';
+      }).join("")
+    : '<span style="color:var(--text-muted);font-size:12px">No sources in this snapshot</span>';
 
-  // Statements — sort newest first, full date+time, render into the sidebar
-  const stmts = (snap.official_statements || []).slice().sort((a, b) => {
-    const ta = a.time_iso ? new Date(a.time_iso).getTime() : 0;
-    const tb = b.time_iso ? new Date(b.time_iso).getTime() : 0;
+  // News tab: statements
+  var stmts = (snap.official_statements || []).slice().sort(function(a, b) {
+    var ta = a.time_iso ? new Date(a.time_iso).getTime() : 0;
+    var tb = b.time_iso ? new Date(b.time_iso).getTime() : 0;
     return tb - ta;
   });
-  $("statements-summary").textContent = `${stmts.length} official statement${stmts.length===1?"":"s"}`;
-  const now = Date.now();
-  const TWO_HOURS = 2 * 60 * 60 * 1000;
-  $("statements-list").innerHTML = stmts.map((s, idx) => {
-    const t = s.time_iso ? new Date(s.time_iso).getTime() : 0;
-    const ageMs = t ? (now - t) : Infinity;
-    const isNewest = idx === 0;
-    const isFresh = !isNewest && ageMs < TWO_HOURS;
-    const badge = isNewest ? '<span class="stmt-newest-badge">Newest</span>'
-                : isFresh   ? '<span class="stmt-fresh-badge">Recent</span>'
-                : '';
-    const relative = t ? `<span class="stmt-relative">(${relativeTime(s.time_iso)})</span>` : '';
-    return `<div class="stmt${isNewest ? ' is-newest' : ''}">
-       <div class="stmt-datetime">${badge}${fmtAbsDateTime(s.time_iso)}${relative}</div>
-       <div class="stmt-agency">${s.agency || "—"}</div>
-       <div class="stmt-text">${s.text || ""}</div>
-       ${s.source_url ? `<a class="stmt-source" href="${s.source_url}" target="_blank">source ↗</a>` : ""}
-     </div>`;
+  $("statements-count").textContent = stmts.length + " official statement" + (stmts.length === 1 ? "" : "s");
+  var now = Date.now();
+  var TWO_HOURS = 2 * 60 * 60 * 1000;
+  $("statements-list").innerHTML = stmts.map(function(s, idx) {
+    var t = s.time_iso ? new Date(s.time_iso).getTime() : 0;
+    var ageMs = t ? (now - t) : Infinity;
+    var isNewest = idx === 0;
+    var isFresh = !isNewest && ageMs < TWO_HOURS;
+    var badge = isNewest ? '<span class="stmt-badge stmt-badge-newest">Newest</span>'
+              : isFresh ? '<span class="stmt-badge stmt-badge-recent">Recent</span>'
+              : '';
+    var relative = t ? '<span class="stmt-relative">(' + relativeTime(s.time_iso) + ')</span>' : '';
+    return '<div class="stmt' + (isNewest ? ' is-newest' : '') + '">' +
+      '<div class="stmt-top">' + badge +
+        '<span class="stmt-time">' + fmtAbsDateTime(s.time_iso) + '</span>' +
+        relative +
+      '</div>' +
+      '<div class="stmt-agency">' + (s.agency || "—") + '</div>' +
+      '<div class="stmt-text">' + (s.text || "") + '</div>' +
+      (s.source_url ? '<a class="stmt-source" href="' + s.source_url + '" target="_blank">source ↗</a>' : "") +
+    '</div>';
   }).join("");
 
-  $("next-check").textContent = fmtAbsTime(snap.next_check_at_iso);
-
-  // News videos
-  const videos = (snap.videos || []).slice().sort((a, b) => {
-    const ta = a.published_iso ? new Date(a.published_iso).getTime() : 0;
-    const tb = b.published_iso ? new Date(b.published_iso).getTime() : 0;
+  // News tab: videos/articles
+  var videos = (snap.videos || []).slice().sort(function(a, b) {
+    var ta = a.published_iso ? new Date(a.published_iso).getTime() : 0;
+    var tb = b.published_iso ? new Date(b.published_iso).getTime() : 0;
     return tb - ta;
   });
-  const vsec = $("videos-section");
-  if (vsec) {
-    if (!videos.length) {
-      vsec.innerHTML = `<div style="grid-column:1/-1;color:var(--text-dim);font-size:13px">No news videos in this snapshot yet.</div>`;
-    } else {
-      vsec.innerHTML = videos.map(v => {
-        const isVideo = !!(v.youtube_id) || v.is_video === true;
-        const hasThumb = !!v.thumbnail_url;
-        const thumbClass = hasThumb ? "" : (isVideo ? "placeholder-video" : "placeholder-article");
-        const needsOg = !hasThumb;
-        const escapedUrl = (v.url || "").replace(/"/g, "&quot;");
-        return `
-        <a class="video-card" href="${v.url}" target="_blank" rel="noopener" data-needs-og="${needsOg}" data-url="${escapedUrl}">
-          <div class="video-thumb ${thumbClass}">
-            ${hasThumb ? `<img loading="lazy" src="${v.thumbnail_url}" alt="${(v.title||'update').replace(/"/g,'&quot;')}">` : ''}
-            ${isVideo ? `<div class="video-play"></div>` : ''}
-            ${!hasThumb && v.outlet ? `<div class="video-thumb-outlet-fallback">${v.outlet}</div>` : ''}
-          </div>
-          <div class="video-meta">
-            <div class="video-title">${v.title || "(untitled)"}</div>
-            <div class="video-sub">
-              <span><strong>${v.outlet || "—"}</strong></span>
-              ${v.published_iso ? `<span>${fmtAbsDateTime(v.published_iso)}</span>` : ""}
-              <span style="color:var(--sev-low)">${isVideo ? '▶ video' : '📰 article'}</span>
-            </div>
-          </div>
-        </a>`;
-      }).join("");
-      // Kick off OG image fetch for any card without a hardcoded thumbnail
-      hydrateMissingThumbnails();
-    }
+  var vlist = $("videos-list");
+  if (!videos.length) {
+    vlist.innerHTML = '<div style="padding:10px 12px;color:var(--text-muted);font-size:12px">No coverage yet.</div>';
+  } else {
+    vlist.innerHTML = videos.map(function(v) {
+      var isVideo = !!(v.youtube_id) || v.is_video === true;
+      var hasThumb = !!v.thumbnail_url;
+      var thumbClass = hasThumb ? "" : (isVideo ? "placeholder-video" : "placeholder-article");
+      var needsOg = !hasThumb;
+      var escapedUrl = (v.url || "").replace(/"/g, "&quot;");
+      return '<a class="news-item" href="' + v.url + '" target="_blank" rel="noopener" data-needs-og="' + needsOg + '" data-url="' + escapedUrl + '">' +
+        '<div class="news-thumb ' + thumbClass + '">' +
+          (hasThumb ? '<img loading="lazy" src="' + v.thumbnail_url + '" alt="">' : '') +
+          (isVideo ? '<div class="news-thumb-play"></div>' : '') +
+        '</div>' +
+        '<div class="news-meta">' +
+          '<div class="news-title">' + (v.title || "(untitled)") + '</div>' +
+          '<div class="news-sub">' +
+            '<strong>' + (v.outlet || "—") + '</strong>' +
+            (v.published_iso ? ' · ' + fmtAbsDateTime(v.published_iso) : '') +
+            ' · ' + (isVideo ? '▶ video' : '📰 article') +
+          '</div>' +
+        '</div>' +
+      '</a>';
+    }).join("");
+    hydrateMissingThumbnails();
   }
 }
 
 /* ============ FETCH ORCHESTRATION ============ */
 function renderShelters(cfg) {
-  const grid = $("shelters-grid");
+  var grid = $("shelters-grid");
   if (!grid) return;
-  const shelters = (cfg && cfg.map && cfg.map.shelters) || [];
+  var shelters = (cfg && cfg.map && cfg.map.shelters) || [];
   if (!shelters.length) {
-    grid.innerHTML = `<div style="grid-column:1/-1;color:var(--text-dim);font-size:13px">No shelters configured. Edit <code>config.json</code> map.shelters.</div>`;
+    grid.innerHTML = '<div style="grid-column:1/-1;color:var(--text-muted);font-size:13px">No shelters configured. Edit <code>config.json</code> map.shelters.</div>';
     return;
   }
-  grid.innerHTML = shelters.map(s => {
-    const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.lat + "," + s.lon)}`;
-    return `<div class="shelter-card">
-      <div class="name">${s.name}</div>
-      <div class="city">${s.city || ""}</div>
-      <div class="address">${s.address || ""}</div>
-      ${s.notes ? `<span class="notes-chip">${s.notes}</span>` : ""}
-      <a class="directions" href="${gmaps}" target="_blank" rel="noopener">Directions ↗</a>
-    </div>`;
+  grid.innerHTML = shelters.map(function(s) {
+    var gmaps = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(s.lat + "," + s.lon);
+    return '<div class="shelter-card">' +
+      '<div class="name">' + s.name + '</div>' +
+      '<div class="city">' + (s.city || "") + '</div>' +
+      '<div class="address">' + (s.address || "") + '</div>' +
+      (s.notes ? '<span class="notes-chip">' + s.notes + '</span>' : "") +
+      '<a class="directions" href="' + gmaps + '" target="_blank" rel="noopener">Directions &#8599;</a>' +
+    '</div>';
   }).join("");
 }
 
 async function loadConfig() {
   try {
-    const resp = await fetch("config.json?t=" + Date.now(), {cache:"no-store"});
+    var resp = await fetch("config.json?t=" + Date.now(), {cache:"no-store"});
     if (!resp.ok) throw new Error("config.json HTTP " + resp.status);
     configCache = await resp.json();
     initMap(configCache);
-    refreshWind();
     renderShelters(configCache);
+    refreshWind();
   } catch (e) {
-    console.warn("config.json load failed:", e);
+    console.warn("config load failed:", e);
   }
 }
 
 async function fetchStatus() {
+  startRefreshCountdown();
   try {
-    const resp = await fetch("status.json?t=" + Date.now(), {cache:"no-store"});
+    var resp = await fetch("status.json?t=" + Date.now(), {cache:"no-store"});
     if (!resp.ok) throw new Error("HTTP " + resp.status);
-    const snap = await resp.json();
+    var snap = await resp.json();
     lastFetchOK = true;
     render(snap);
   } catch (e) {
     lastFetchOK = false;
-    setBanners([{kind:"offline", title:"Offline / file missing", message:"Could not load status.json — " + e.message + ". If you opened this file via file://, use start_dashboard.bat instead."}]);
+    setBanners([{kind:"offline", title:"Offline", message:"Could not load status.json — " + e.message}]);
     if (lastZoneStatus === null) {
-      $("hero-headline").textContent = "Initializing…";
-      $("hero-sub").textContent = "Waiting for first writer run (every 30 min). Or status.json is unreachable.";
+      $("hero-action").textContent = "Loading...";
+      $("hero-instruction").textContent = "Waiting for first data. Auto-retry in 30s.";
     }
   }
 }
@@ -1567,7 +1661,6 @@ async function fetchStatus() {
 /* ============ KICKOFF ============ */
 loadConfig().then(fetchStatus);
 setInterval(fetchStatus, REFRESH_MS);
-setInterval(refreshWind, WIND_REFRESH_MS);
 </script>
 </body>
 </html>
