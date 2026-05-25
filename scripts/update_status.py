@@ -101,6 +101,38 @@ def _host_is_official(host) -> bool:
     return bool(host) and any(host == h or host.endswith("." + h) for h in OFFICIAL_HOSTS)
 
 
+def _parse_iso(val) -> datetime | None:
+    """Parse an ISO 8601 string to an aware UTC datetime; None if malformed."""
+    if not isinstance(val, str):
+        return None
+    try:
+        dt = datetime.fromisoformat(val.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+def validate_dates(facts: dict) -> dict:
+    """Date sanity: drop a malformed or future-dated incident_resolved_iso before
+    it can drive a false all-clear. resolved_iso is the only timestamp that forces
+    a safety state (non-null -> severity "low"), so a parse artifact or hallucinated
+    future time must be suppressed. A small clock-skew tolerance keeps a just-now
+    resolution from being rejected. Only acts on the key when present."""
+    from datetime import timedelta
+    SKEW_MINUTES = 5
+    val = facts.get("incident_resolved_iso")
+    if not val:
+        return facts
+    dt = _parse_iso(val)
+    if dt is None:
+        log_line("WARN", f"date-sanity dropped malformed incident_resolved_iso: {val!r}")
+        facts["incident_resolved_iso"] = None
+    elif dt > datetime.now(timezone.utc) + timedelta(minutes=SKEW_MINUTES):
+        log_line("WARN", f"date-sanity dropped future-dated incident_resolved_iso: {val!r}")
+        facts["incident_resolved_iso"] = None
+    return facts
+
+
 def validate_provenance(facts: dict) -> dict:
     """P0-2: drop fabricated/malformed provenance before it reaches the snapshot.
 
@@ -207,7 +239,12 @@ def load_previous_status() -> dict | None:
 
 
 def read_facts_from_stdin() -> dict:
-    raw = sys.stdin.read().strip()
+    # Decode stdin as UTF-8 explicitly. The facts blob is emitted as UTF-8 by
+    # refresh_local.py / gather_facts.py; a plain sys.stdin.read() would decode
+    # with the process locale (cp1252 on Windows), turning an em-dash into the
+    # `â€"` mojibake the dashboard then has to repair. Reading bytes keeps it
+    # correct regardless of locale.
+    raw = sys.stdin.buffer.read().decode("utf-8").strip()
     if not raw:
         return {}
     try:
@@ -466,6 +503,7 @@ def main() -> int:
     # Safety gates (order matters): strip fabricated provenance first, then judge
     # whether any surviving sources corroborate a danger downgrade.
     facts = validate_provenance(facts)   # P0-2
+    facts = validate_dates(facts)        # date sanity (resolved_iso)
     facts = apply_corroboration_gate(facts)  # P0-1
 
     if not facts:

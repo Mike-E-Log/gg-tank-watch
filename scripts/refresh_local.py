@@ -56,7 +56,7 @@ def gather_via_subscription() -> dict:
         [claude, "-p", PROMPT, "--model", MODEL,
          "--allowedTools", "WebSearch", "--permission-mode", "acceptEdits",
          "--output-format", "json"],
-        capture_output=True, text=True, env=env, cwd=str(REPO),
+        capture_output=True, text=True, encoding="utf-8", env=env, cwd=str(REPO),
     )
     if proc.returncode != 0:
         sys.stderr.write(f"claude -p failed (exit {proc.returncode}):\n{proc.stderr[:1000]}\n")
@@ -80,7 +80,8 @@ def write_status(facts: dict) -> None:
     """Feed facts to the existing writer over stdin (avoids PowerShell pipe corruption)."""
     subprocess.run(
         [sys.executable, str(HERE / "update_status.py")],
-        input=json.dumps(facts, ensure_ascii=False), text=True, check=True, cwd=str(REPO),
+        input=json.dumps(facts, ensure_ascii=False), text=True, encoding="utf-8",
+        check=True, cwd=str(REPO),
     )
 
 
