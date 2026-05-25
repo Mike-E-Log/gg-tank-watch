@@ -281,7 +281,12 @@
       background: rgba(0,0,0,0.7);
       display: flex; align-items: center; justify-content: center;
       pointer-events: none;
+      z-index: 2;
     }
+    /* Hide play overlay when shown on a placeholder background (no image) — the
+       placeholder's own SVG icon is already centered there. */
+    .video-thumb.placeholder-video .video-play,
+    .video-thumb.placeholder-article .video-play { display: none; }
     .video-play::after {
       content: "";
       border-left: 14px solid white;
@@ -1109,6 +1114,62 @@ async function checkSafety() {
   }
 }
 
+/* ============ OG IMAGE FETCH (for article thumbnails) ============ */
+const OG_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const ogPending = new Map();
+const ogFailed = new Set();
+
+async function fetchOgImage(url) {
+  const cacheKey = "og:" + url;
+  try {
+    const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+    if (cached && (Date.now() - cached.fetchedAt) < OG_CACHE_TTL_MS) return cached.imageUrl;
+  } catch (e) { /* cache parse failed; ignore */ }
+  if (ogFailed.has(url)) return null;
+  if (ogPending.has(url)) return ogPending.get(url);
+  const promise = (async () => {
+    try {
+      const apiUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}`;
+      const resp = await fetch(apiUrl, { cache: "force-cache" });
+      if (!resp.ok) throw new Error("microlink HTTP " + resp.status);
+      const data = await resp.json();
+      const imageUrl = (data && data.data && data.data.image && data.data.image.url) || null;
+      if (imageUrl) {
+        try { localStorage.setItem(cacheKey, JSON.stringify({ imageUrl, fetchedAt: Date.now() })); } catch (e) {}
+      } else {
+        ogFailed.add(url);
+      }
+      return imageUrl;
+    } catch (e) {
+      ogFailed.add(url);
+      return null;
+    }
+  })();
+  ogPending.set(url, promise);
+  const result = await promise;
+  ogPending.delete(url);
+  return result;
+}
+
+async function hydrateMissingThumbnails() {
+  const cards = document.querySelectorAll(".video-card[data-needs-og='true']");
+  for (const card of cards) {
+    const url = card.dataset.url;
+    if (!url) continue;
+    const imageUrl = await fetchOgImage(url);
+    if (!imageUrl) continue;
+    const thumb = card.querySelector(".video-thumb");
+    if (!thumb) continue;
+    const playOverlay = thumb.querySelector(".video-play");
+    const outletChip = thumb.querySelector(".video-thumb-outlet-fallback");
+    thumb.classList.remove("placeholder-video", "placeholder-article");
+    thumb.innerHTML = `<img loading="lazy" src="${imageUrl}" alt="">` +
+      (playOverlay ? playOverlay.outerHTML : '') +
+      (outletChip ? outletChip.outerHTML : '');
+    card.dataset.needsOg = "false";
+  }
+}
+
 /* ============ WIND ============ */
 async function fetchWind(stationId) {
   // Cache for WIND_CACHE_MS
@@ -1319,11 +1380,13 @@ function render(snap) {
         const isVideo = !!(v.youtube_id) || v.is_video === true;
         const hasThumb = !!v.thumbnail_url;
         const thumbClass = hasThumb ? "" : (isVideo ? "placeholder-video" : "placeholder-article");
+        const needsOg = !hasThumb;
+        const escapedUrl = (v.url || "").replace(/"/g, "&quot;");
         return `
-        <a class="video-card" href="${v.url}" target="_blank" rel="noopener">
+        <a class="video-card" href="${v.url}" target="_blank" rel="noopener" data-needs-og="${needsOg}" data-url="${escapedUrl}">
           <div class="video-thumb ${thumbClass}">
             ${hasThumb ? `<img loading="lazy" src="${v.thumbnail_url}" alt="${(v.title||'update').replace(/"/g,'&quot;')}">` : ''}
-            ${isVideo && hasThumb ? `<div class="video-play"></div>` : ''}
+            ${isVideo ? `<div class="video-play"></div>` : ''}
             ${!hasThumb && v.outlet ? `<div class="video-thumb-outlet-fallback">${v.outlet}</div>` : ''}
           </div>
           <div class="video-meta">
@@ -1336,6 +1399,8 @@ function render(snap) {
           </div>
         </a>`;
       }).join("");
+      // Kick off OG image fetch for any card without a hardcoded thumbnail
+      hydrateMissingThumbnails();
     }
   }
 }
