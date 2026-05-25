@@ -2,6 +2,23 @@
 
 All notable changes to the GG MMA Tank Dashboard. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.7] — 2026-05-25 (trust/safety on-page — PR-A)
+
+Pre-distribution trust and liability hardening from `docs/LEGAL.md` (minimum-bar checklist) and `docs/DISTRIBUTION.md` §5. The dashboard now sells its own unofficial, informational-only posture on first glance and points to the city as the source of truth on every screen.
+
+### Added
+- **Persistent "UNOFFICIAL" pill** in the topbar next to the title — never dismissable, with a "volunteer-made, not an official government source" tooltip.
+- **Persistent safety strip** below the hero, visible across all tabs (Map/News/Check/Info): "Informational only — not official. In an emergency, call 911." plus a first-class official-source block (ggcity.org/emergency · 911 · 714-628-7085 · OCFA) and a link to the full terms.
+- **"Who made this" block** at the top of the Info tab: built-by-volunteers line, full non-affiliation notice, no-data-collection statement, and a link to the terms page.
+- **New `terms.html`** — standalone Terms & disclaimer page carrying the draft ToU (not-official/not-affiliated, informational-only, no-warranty, verify-official-sources, §1668-aware liability limit, third-party content, report-an-error, privacy, changes), an on-page banner, official sources, and OSM/Leaflet attribution.
+
+### Changed
+- **Address-check verdict wording audit** (highest-risk per LEGAL R1/R2, DISTRIBUTION §3): the "outside all zones" verdict no longer says "LIKELY SAFE" / "CÓ KHẢ NĂNG AN TOÀN" (dropped the banned safety promise) — now "OUTSIDE MAPPED ZONES" / "NGOÀI CÁC VÙNG TRÊN BẢN ĐỒ". "inside official evac zone" → "inside the city's evacuation zone" (keeps attribution to the authority, drops the "official" adjective).
+- **Check-result disclaimer** strengthened to "Estimate only — not official. Verify at ggcity.org/emergency; in an emergency, call 911."
+
+### Notes
+- New user-facing strings are English-only and fall back to English under VI until Anna verifies them (G1 translation gate). The minimal VI redactions in changed verdict strings also need Anna's sign-off. Final wording remains attorney-review-gated per `docs/LEGAL.md` (🔴).
+
 ## [v0.6] — 2026-05-25 (post-portfolio iteration)
 
 ### Added

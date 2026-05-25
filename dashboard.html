@@ -110,6 +110,12 @@
       min-height: 36px;
       gap: 8px;
     }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
     .topbar-title {
       font-weight: 700;
       font-size: 13px;
@@ -117,6 +123,19 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .unofficial-pill {
+      flex-shrink: 0;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--text-sec);
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      cursor: help;
     }
     .topbar-right {
       display: flex;
@@ -163,6 +182,30 @@
     .banner-action { font-size: 11px; opacity: 0.7; }
     @keyframes pulse-bg { 0%,100%{opacity:1} 50%{opacity:0.7} }
     @media (prefers-reduced-motion: reduce) { .banner-breaking { animation: none; } }
+
+    /* ===== SAFETY STRIP (persistent disclaimer + official source) ===== */
+    .safety-strip {
+      flex-shrink: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 3px 10px;
+      padding: 7px 12px;
+      font-size: 11.5px;
+      line-height: 1.35;
+      background: var(--banner-update-bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .safety-strip-info { font-weight: 700; color: var(--text); }
+    .safety-strip-official { color: var(--text-sec); }
+    .safety-strip-official a, .safety-strip-terms {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .safety-strip-official a:hover, .safety-strip-terms:hover { text-decoration: underline; }
+    .safety-strip-sep { color: var(--text-muted); }
+    .safety-strip-terms { margin-left: auto; }
 
     /* ===== HERO ===== */
     .hero {
@@ -770,7 +813,10 @@
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
     <header class="topbar">
-      <span class="topbar-title">GG MMA Tank Dashboard</span>
+      <div class="topbar-left">
+        <span class="topbar-title">GG MMA Tank Dashboard</span>
+        <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
+      </div>
       <div class="topbar-right">
         <span class="topbar-updated" id="updated-text" data-i18n="updated.loading">loading...</span>
         <button class="theme-toggle" id="lang-toggle" onclick="toggleLang()" title="Tiếng Việt / English">VI</button>
@@ -789,6 +835,18 @@
         <span class="hero-status" id="hero-status">--</span>
       </div>
     </section>
+
+    <div class="safety-strip" role="note">
+      <span class="safety-strip-info" data-i18n="safety.strip.info">Informational only — not official. In an emergency, call 911.</span>
+      <span class="safety-strip-official">
+        <span data-i18n="safety.strip.official">Official source:</span>
+        <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>
+        <span class="safety-strip-sep">·</span><a href="tel:911">911</a>
+        <span class="safety-strip-sep">·</span><a href="tel:+17146287085">714-628-7085</a>
+        <span class="safety-strip-sep">·</span>OCFA
+      </span>
+      <a class="safety-strip-terms" href="terms.html" data-i18n="safety.strip.terms">Full terms &amp; disclaimer</a>
+    </div>
 
     <div class="stats-strip">
       <div class="stat">
@@ -841,6 +899,14 @@
 
       <div class="tab-panel" id="panel-info">
         <div class="info-panel-inner">
+          <div class="info-section">
+            <div class="info-section-title" data-i18n="info.about.title">Who made this</div>
+            <div class="methodology-body">
+              <p data-i18n="info.about.body">Built by two local volunteers, Mike &amp; Anna, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
+              <p data-i18n="info.about.official">For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.</p>
+              <p><a href="terms.html" data-i18n="info.about.termslink">Read the full Terms &amp; disclaimer</a></p>
+            </div>
+          </div>
           <div class="info-section">
             <div class="info-section-title" data-i18n="info.tank.title">Tank</div>
             <div class="info-big mono" id="tank-temp">--</div>
@@ -922,6 +988,16 @@ const STRINGS = {
   "theme.dark": { en: "Dark", vi: "Tối" },
   "theme.light": { en: "Light", vi: "Sáng" },
   "updated.loading": { en: "loading...", vi: "đang tải..." },
+  // Trust / safety (PR-A) — new EN strings; VI falls back to EN until Anna verifies (G1 gate)
+  "topbar.unofficial": { en: "UNOFFICIAL" },
+  "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
+  "safety.strip.info": { en: "Informational only — not official. In an emergency, call 911." },
+  "safety.strip.official": { en: "Official source:" },
+  "safety.strip.terms": { en: "Full terms & disclaimer" },
+  "info.about.title": { en: "Who made this" },
+  "info.about.body": { en: "Built by two local volunteers, Mike & Anna, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
+  "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA." },
+  "info.about.termslink": { en: "Read the full Terms & disclaimer" },
   // Hero (safety verdicts)
   "hero.label": { en: "What should I do?", vi: "Tôi nên làm gì?" },
   "hero.loading": { en: "Loading...", vi: "Đang tải..." },
@@ -970,12 +1046,12 @@ const STRINGS = {
   "check.button": { en: "Check", vi: "Kiểm tra" },
   "check.hint": { en: "Geocoded via OpenStreetMap. Defaults to Orange County, CA.", vi: "Định vị qua OpenStreetMap. Mặc định Orange County, CA." },
   "check.verdict.critical": { en: "CRITICAL — within primary blast radius", vi: "NGUY CẤP — trong bán kính nổ chính" },
-  "check.verdict.evacuate": { en: "EVACUATE — inside official evac zone", vi: "SƠ TÁN — trong khu sơ tán chính thức" },
+  "check.verdict.evacuate": { en: "EVACUATE — inside the city's evacuation zone", vi: "SƠ TÁN — trong khu sơ tán của thành phố" },
   "check.verdict.highrisk": { en: "HIGH RISK — within damage radius", vi: "NGUY CƠ CAO — trong bán kính thiệt hại" },
   "check.verdict.elevated": { en: "ELEVATED — within injury radius or plume", vi: "MỨC ĐỘ NÂNG CAO — trong bán kính thương tích hoặc vệt khí" },
   "check.verdict.downwind": { en: "DOWNWIND — beyond plume but in wind path", vi: "CUỐI HƯỚNG GIÓ — ngoài vệt khí nhưng trong đường gió" },
-  "check.verdict.likelysafe": { en: "LIKELY SAFE — outside all zones ({mi} mi)", vi: "CÓ KHẢ NĂNG AN TOÀN — ngoài tất cả các khu vực ({mi} mi)" },
-  "check.factor.inside_evac": { en: "Inside official evacuation zone", vi: "Trong khu sơ tán chính thức" },
+  "check.verdict.likelysafe": { en: "OUTSIDE MAPPED ZONES — {mi} mi away", vi: "NGOÀI CÁC VÙNG TRÊN BẢN ĐỒ — cách {mi} mi" },
+  "check.factor.inside_evac": { en: "Inside the city's evacuation zone", vi: "Trong khu sơ tán của thành phố" },
   "check.factor.blast": { en: "Inside blast zone: {label} (~{r} mi)", vi: "Trong vùng nổ: {label} (~{r} mi)" },
   "check.factor.plume": { en: "Inside chemical plume cone (downwind, wind from {dir})", vi: "Trong vùng vệt khí hóa chất (cuối hướng gió, gió từ {dir})" },
   "check.factor.downwind": { en: "Downwind of tank ({mi} mi out)", vi: "Cuối hướng gió so với bồn chứa ({mi} mi)" },
@@ -984,7 +1060,7 @@ const STRINGS = {
   "check.field.bearing": { en: "Bearing:", vi: "Hướng:" },
   "check.noFactors": { en: "No risk factors at this location.", vi: "Không có yếu tố rủi ro tại vị trí này." },
   "check.viewMap": { en: "View on map", vi: "Xem trên bản đồ" },
-  "check.disclaimer": { en: "Verify at ggcity.org/emergency for official zone status.", vi: "Xác minh tại ggcity.org/emergency để biết tình trạng khu vực chính thức." },
+  "check.disclaimer": { en: "Estimate only — not official. Verify at ggcity.org/emergency; in an emergency, call 911.", vi: "Chỉ là ước tính — không chính thức. Xác minh tại ggcity.org/emergency; trong trường hợp khẩn cấp, gọi 911." },
   "check.loading": { en: 'Looking up "{q}"...', vi: 'Đang tìm "{q}"...' },
   "check.error.title": { en: "Could not check", vi: "Không thể kiểm tra" },
   "check.error.suffix": { en: ". Try a more specific address.", vi: ". Hãy thử địa chỉ cụ thể hơn." },
@@ -1036,8 +1112,8 @@ const STRINGS = {
     vi: '<strong>Đánh giá:</strong> Dashboard này có <a href="eval/">bộ kiểm thử</a> gồm các kiểm thử hành vi (logic ghi dữ liệu, xác thực schema, toán kiểm tra an toàn, hành vi định vị) và các rubric LLM-as-judge cho thiết kế và chất lượng dữ liệu. Mọi quyết định thiết kế được ghi trong <a href="DESIGN_LOG.md">DESIGN_LOG.md</a> với lý do và điểm rubric.'
   },
   "info.method.disclaimer": {
-    en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. Always verify with <a href="https://ggcity.org/emergency" target="_blank">ggcity.org/emergency</a> for authoritative zone status.',
-    vi: '<strong>Tuyên bố miễn trừ:</strong> Đây là công cụ cộng đồng, không phải nguồn chính thức của chính phủ. Luôn xác minh tại <a href="https://ggcity.org/emergency" target="_blank">ggcity.org/emergency</a> để biết tình trạng khu vực có thẩm quyền.'
+    en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.',
+    vi: '<strong>Tuyên bố miễn trừ:</strong> Đây là công cụ cộng đồng, không phải nguồn chính thức của chính phủ. Mọi nội dung chỉ để tham khảo và có thể không chính xác hoặc lỗi thời. Luôn xác minh tại <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; trong trường hợp khẩn cấp, gọi 911. Xem <a href="terms.html">Điều khoản &amp; miễn trừ</a> đầy đủ.'
   },
   // Banners
   "banner.schema.title": { en: "⚠️ Schema changed", vi: "⚠️ Đã thay đổi cấu trúc" },
@@ -1087,6 +1163,9 @@ function applyLang() {
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach(function(el) {
     el.setAttribute("placeholder", t(el.getAttribute("data-i18n-placeholder")));
+  });
+  document.querySelectorAll("[data-i18n-title]").forEach(function(el) {
+    el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
   });
   var langBtn = document.getElementById("lang-toggle");
   if (langBtn) langBtn.textContent = currentLang === "en" ? "VI" : "EN";
