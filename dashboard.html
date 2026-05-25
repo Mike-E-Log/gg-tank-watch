@@ -80,8 +80,8 @@
     .app {
       display: flex;
       flex-direction: column;
-      height: 100dvh;
-      height: 100vh;
+      height: 100vh;  /* fallback for browsers without dvh */
+      height: 100dvh; /* wins where supported: tracks mobile browser chrome so the bottom tab bar stays visible */
       max-width: 800px;
       margin: 0 auto;
       overflow: hidden;
