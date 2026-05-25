@@ -994,7 +994,7 @@
     </div>
 
     <div class="tab-content">
-      <div class="tab-panel active" id="panel-map">
+      <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
         <div id="map"></div>
         <div class="map-wind-overlay" id="map-wind-overlay">
           <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
@@ -1006,13 +1006,13 @@
         </div>
       </div>
 
-      <div class="tab-panel" id="panel-news">
+      <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
         <div id="news-situation" class="news-situation" hidden></div>
         <div class="news-section-label" id="news-count" data-i18n="news.feed.title">News &amp; updates</div>
         <div id="news-feed"></div>
       </div>
 
-      <div class="tab-panel" id="panel-check">
+      <div class="tab-panel" id="panel-check" role="tabpanel" aria-labelledby="tab-check">
         <div class="check-panel-inner">
           <div class="check-label" data-i18n="check.label">Check an address or intersection</div>
           <form class="safety-form" onsubmit="event.preventDefault(); checkSafety()">
@@ -1024,7 +1024,7 @@
         </div>
       </div>
 
-      <div class="tab-panel" id="panel-info">
+      <div class="tab-panel" id="panel-info" role="tabpanel" aria-labelledby="tab-info">
         <div class="info-panel-inner">
 
           <!-- 1. Incident status (Tank + Evacuation merged) -->
@@ -1124,20 +1124,20 @@
       </div>
     </div>
 
-    <nav class="tab-bar">
-      <button class="tab-btn active" data-tab="map" onclick="switchTab('map')">
+    <nav class="tab-bar" role="tablist" aria-label="Dashboard sections">
+      <button class="tab-btn active" role="tab" id="tab-map" aria-selected="true" aria-controls="panel-map" data-tab="map" onclick="switchTab('map')">
         <span class="tab-btn-icon">&#x1F5FA;</span>
         <span class="tab-btn-label" data-i18n="tab.map">Map</span>
       </button>
-      <button class="tab-btn" data-tab="news" onclick="switchTab('news')">
+      <button class="tab-btn" role="tab" id="tab-news" aria-selected="false" aria-controls="panel-news" data-tab="news" onclick="switchTab('news')">
         <span class="tab-btn-icon">&#x1F4F0;</span>
         <span class="tab-btn-label" data-i18n="tab.news">News</span>
       </button>
-      <button class="tab-btn" data-tab="check" onclick="switchTab('check')">
+      <button class="tab-btn" role="tab" id="tab-check" aria-selected="false" aria-controls="panel-check" data-tab="check" onclick="switchTab('check')">
         <span class="tab-btn-icon">&#x1F50D;</span>
         <span class="tab-btn-label" data-i18n="tab.check">Check</span>
       </button>
-      <button class="tab-btn" data-tab="info" onclick="switchTab('info')">
+      <button class="tab-btn" role="tab" id="tab-info" aria-selected="false" aria-controls="panel-info" data-tab="info" onclick="switchTab('info')">
         <span class="tab-btn-icon">&#x2139;</span>
         <span class="tab-btn-label" data-i18n="tab.info">Info</span>
       </button>
@@ -1516,11 +1516,17 @@ window.toggleTheme = toggleTheme;
 /* ============ TABS ============ */
 function switchTab(tabId) {
   document.querySelectorAll(".tab-panel").forEach(function(p) { p.classList.remove("active"); });
-  document.querySelectorAll(".tab-btn").forEach(function(b) { b.classList.remove("active"); });
+  document.querySelectorAll(".tab-btn").forEach(function(b) {
+    b.classList.remove("active");
+    b.setAttribute("aria-selected", "false");
+  });
   var panel = $("panel-" + tabId);
   if (panel) panel.classList.add("active");
-  var btn = document.querySelector('[data-tab="' + tabId + '"]');
-  if (btn) btn.classList.add("active");
+  var tab = $("tab-" + tabId);
+  if (tab) {
+    tab.classList.add("active");
+    tab.setAttribute("aria-selected", "true");
+  }
   if (tabId === "map" && map) {
     setTimeout(function() { map.invalidateSize(); }, 50);
   }
