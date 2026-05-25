@@ -2,6 +2,18 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.10] — 2026-05-25 (data-quality hardening + freshness UI)
+
+### Added
+- **Date-sanity validation** — the writer now drops a malformed or future-dated `incident_resolved_iso` before it can drive a false "all-clear". A hallucinated or mis-parsed resolve time can no longer flip the incident to "resolved".
+
+### Fixed
+- **Mojibake at the source** — the writer reads its facts from stdin as explicit UTF-8, and the local refresh pipeline forces UTF-8 on its subprocess boundaries, so em-dashes and degree signs can no longer be double-encoded (`â€"`, `Â°`) on a non-UTF-8 (Windows cp1252) locale. This closes the root cause noted in v0.9; the client-side repair stays as a backstop.
+- **Inconsistent clock format** — the topbar time was 12-hour in English but 24-hour in Vietnamese (the same instant showing as "12:59 AM" vs "0:59"). Time now renders 12-hour across all languages.
+
+### Changed
+- **Clearer stale indicator** — when data is stale the topbar shows a single "⚠ Stale · last updated {time}" instead of the confusing doubled "⚠ ⟳ ~20 min · {time}". The "~20 min" refresh cadence no longer shows when nothing is actually refreshing.
+
 ## [v0.9] — 2026-05-25 (post-redesign polish + liability)
 
 ### Changed
