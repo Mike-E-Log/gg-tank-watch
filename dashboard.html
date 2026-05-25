@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>GG Tank Watch</title>
   <meta http-equiv="refresh" content="600">
   <meta name="description" content="GG Tank Watch — unofficial, volunteer-built situational awareness for the Garden Grove chemical-tank emergency. Always verify with ggcity.org/emergency.">
@@ -893,7 +893,7 @@
             <button id="safety-button" type="submit" data-i18n="check.button">Check</button>
           </form>
           <div class="safety-hint" data-i18n="check.hint">Geocoded via OpenStreetMap. Defaults to Orange County, CA.</div>
-          <div id="safety-result" class="safety-result hidden"></div>
+          <div id="safety-result" class="safety-result hidden" role="status" aria-live="polite" aria-atomic="true"></div>
         </div>
       </div>
 
