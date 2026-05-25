@@ -337,6 +337,72 @@
       color: var(--text-sec);
       margin: 0;
     }
+    .hero-check {
+      margin-top: 8px;
+      display: flex;
+      gap: 6px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-check input {
+      flex: 1;
+      padding: 8px 10px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      min-width: 0;
+    }
+    .hero-check input:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: -1px;
+    }
+    .hero-check button {
+      padding: 8px 12px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .hero-check button:disabled { opacity: 0.5; }
+    .hero-verdict {
+      margin-top: 6px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+    }
+    .hero-verdict.active { display: block; }
+    .hero-verdict-inside {
+      background: var(--high-bg);
+      border: 1px solid var(--high-border);
+      color: var(--high);
+    }
+    .hero-verdict-outside {
+      background: var(--safe-bg);
+      border: 1px solid var(--safe-border);
+      color: var(--safe);
+    }
+    .hero-verdict-loading {
+      background: var(--banner-stale-bg);
+      border: 1px solid var(--border);
+      color: var(--text-sec);
+    }
+    .hero-verdict-error {
+      background: var(--banner-stale-bg);
+      border: 1px solid var(--border);
+      color: var(--text-sec);
+    }
     .severity-chip {
       display: inline-block;
       padding: 2px 8px;
@@ -871,6 +937,11 @@
         <span class="severity-chip" id="severity-chip">--</span>
       </div>
       <p class="hero-summary" id="hero-summary" data-i18n="hero.summary.loading">Loading current status…</p>
+      <form class="hero-check" onsubmit="event.preventDefault(); heroCheckSafety()">
+        <input id="hero-check-input" type="text" placeholder="Check your address" data-i18n-placeholder="hero.check.placeholder" autocomplete="off">
+        <button id="hero-check-btn" type="submit" data-i18n="hero.check.button">Check</button>
+      </form>
+      <div class="hero-verdict" id="hero-verdict" role="status" aria-live="polite"></div>
     </section>
 
     <div class="safety-strip" role="note">
@@ -1135,6 +1206,12 @@ const STRINGS = {
   "hero.lead": { en: "Active chemical-tank emergency in Garden Grove.", vi: "Tình trạng khẩn cấp bồn chứa hóa chất đang diễn ra tại Garden Grove.", es: "Emergencia activa de tanque químico en Garden Grove." },
   "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders.", vi: "Sự cố bồn chứa hóa chất đang diễn ra tại Garden Grove. Hãy tuân theo lệnh của cơ quan chức năng.", es: "Incidente activo de tanque químico en Garden Grove. Siga las órdenes oficiales." },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest.", vi: "Sự cố đã được giải quyết. Xem ggcity.org/emergency để biết thông tin mới nhất.", es: "Incidente resuelto. Consulte ggcity.org/emergency para la información más reciente." },
+  "hero.check.placeholder": { en: "Check your address", vi: "Kiểm tra địa chỉ của bạn", es: "Verifique su dirección" },
+  "hero.check.button": { en: "Check", vi: "Kiểm tra", es: "Verificar" },
+  "hero.verdict.inside": { en: "⚠ This address appears inside the evacuation area. Confirm at ggcity.org/emergency", vi: "⚠ Địa chỉ này có vẻ nằm trong khu vực sơ tán. Xác nhận tại ggcity.org/emergency", es: "⚠ Esta dirección parece estar dentro del área de evacuación. Confirme en ggcity.org/emergency" },
+  "hero.verdict.outside": { en: "✓ Outside current evacuation zone — confirm at ggcity.org/emergency", vi: "✓ Ngoài khu vực sơ tán hiện tại — xác nhận tại ggcity.org/emergency", es: "✓ Fuera de la zona de evacuación actual — confirme en ggcity.org/emergency" },
+  "hero.verdict.loading": { en: "Checking…", vi: "Đang kiểm tra…", es: "Verificando…" },
+  "hero.verdict.error": { en: "Could not check — try a more specific address", vi: "Không thể kiểm tra — hãy thử địa chỉ cụ thể hơn", es: "No se pudo verificar — intente con una dirección más específica" },
   // Takeover
   // Map legend + tooltips
   "legend.evac": { en: "Evac zone", vi: "Khu sơ tán", es: "Zona de evacuación" },
@@ -1784,6 +1861,47 @@ async function checkSafety() {
 }
 window.checkSafety = checkSafety;
 
+/* ============ HERO CHECK (compact, reuses geocode + verdict) ============ */
+async function heroCheckSafety() {
+  var q = $("hero-check-input").value.trim();
+  if (!q) return;
+  var btn = $("hero-check-btn");
+  var el = $("hero-verdict");
+  btn.disabled = true;
+  el.className = "hero-verdict hero-verdict-loading active";
+  el.textContent = t("hero.verdict.loading");
+  try {
+    var addr = await geocodeAddress(q, configCache);
+    var result = computeSafety(addr, configCache);
+    var inside = result.insideEvac;
+    el.className = "hero-verdict active " + (inside ? "hero-verdict-inside" : "hero-verdict-outside");
+    el.textContent = inside ? t("hero.verdict.inside") : t("hero.verdict.outside");
+    try { localStorage.setItem("gg-hero-check", JSON.stringify({ q: q, inside: inside, at: Date.now() })); } catch (e) {}
+    $("safety-input").value = q;
+    renderSafetyResult(addr, addr, result);
+  } catch (e) {
+    el.className = "hero-verdict hero-verdict-error active";
+    el.textContent = t("hero.verdict.error");
+  } finally {
+    btn.disabled = false;
+  }
+}
+window.heroCheckSafety = heroCheckSafety;
+
+function restoreHeroCheck() {
+  try {
+    var raw = localStorage.getItem("gg-hero-check");
+    if (!raw) return;
+    var obj = JSON.parse(raw);
+    if (!obj || !obj.q) return;
+    if ((Date.now() - obj.at) > 24 * 60 * 60 * 1000) return;
+    $("hero-check-input").value = obj.q;
+    var el = $("hero-verdict");
+    el.className = "hero-verdict active " + (obj.inside ? "hero-verdict-inside" : "hero-verdict-outside");
+    el.textContent = obj.inside ? t("hero.verdict.inside") : t("hero.verdict.outside");
+  } catch (e) {}
+}
+
 /* ============ OG IMAGE FETCH ============ */
 var OG_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 var ogPending = new Map();
@@ -2129,6 +2247,7 @@ async function fetchStatus() {
 
 /* ============ KICKOFF ============ */
 applyLang();
+restoreHeroCheck();
 loadConfig().then(fetchStatus);
 setInterval(fetchStatus, REFRESH_MS);
 </script>

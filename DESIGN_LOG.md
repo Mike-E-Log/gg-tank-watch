@@ -49,6 +49,7 @@ Each decision has:
 | D-026 | 2026-05-25 | News panel: generalize to videos + articles, Microlink OG fetch | Active | 8.7 |
 | D-027 | 2026-05-25 | Writer fix: partial facts must not recompute severity | Active | 9.3 |
 | D-028 | 2026-05-25 | PR workflow: feature branches + GitHub PRs for non-trivial changes | Active | TBD |
+| D-029 | 2026-05-25 | Hero address check: move safety checker into always-visible hero | Active | 8.7 |
 
 ---
 
@@ -423,6 +424,24 @@ Each decision has:
 - **Principles applied:** P3 pragmatic (right tool per phase), P5 explicit.
 - **Rubric:** TBD — too new to score retrospectively.
 - **Lesson:** Process maturity isn't a single switch. Build phase ≠ portfolio phase ≠ team phase. Pick the lightest workflow that meets the current phase's quality bar.
+
+## D-029: Hero address check — move safety checker into always-visible hero
+
+- **Date:** 2026-05-25
+- **Status:** Active.
+- **Context:** Three converging lenses identified the same friction point. The address-safety checker — the most personal feature ("am I safe?") — was buried in the Check tab, requiring users to discover and navigate to it. During the conduit-strategy rework, office-hours analysis confirmed the problem from safety, marketing, and builder perspectives simultaneously.
+- **Decision:** Move the address-check widget into the always-visible hero section so it's the first interactive element a user encounters. Keep the Check tab as an expanded detail view (full zone explanation, methodology notes, source links). Tabbed architecture preserved for secondary content.
+- **Alternatives:**
+  - **A) Keep tabs as-is (rejected):** hides the most personal feature behind navigation. A frightened, limited-English-speaking elder shouldn't need to discover a tab to learn if their home is safe.
+  - **B) Single scroll page removing all tabs (rejected):** scroll fatigue on mobile; overwhelming for the billboard-test audience. Loses the technical sophistication signal for the portfolio.
+  - **C) Hybrid with collapsible sections (rejected):** collapsibles have their own discoverability problem — users don't know what's inside until they click. Same failure mode as tabs, just repackaged.
+  - **D) Keep tabs + hero check (chosen):** smallest change that addresses the core safety concern. Answers the user's primary question ("am I safe?") with zero navigation friction while preserving the tabbed architecture for secondary information depth.
+- **Principles applied:** P1 completeness (primary user need answered without navigation), P5 explicit (the answer is visible, not hidden), P3 pragmatic (minimal structural change).
+- **Rubric:**
+  - Correctness: 9 (directly solves the "hidden primary feature" problem)
+  - Maintainability: 8 (hero section grows slightly; tab remains as detail view — clean separation)
+  - User-fit: 9 (conduit mission = answer with minimum friction; three independent lenses converged)
+- **Lesson:** When safety, marketing, and builder instincts all point at the same answer, the decision is load-bearing — not a coincidence. The "coolest version answers before you ask" framing is the same thing as "conduit with minimum friction" and "billboard test for a frightened elder." Convergence across lenses = high-confidence signal.
 
 ---
 
