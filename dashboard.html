@@ -885,14 +885,19 @@ function initMap(cfg) {
     return marker;
   });
 
-  // Fit map to show evac + blast zones
-  const allBounds = L.latLngBounds([
+  // Fit map to show evac polygon + blast zones + ALL reference pins (incl.
+  // fixed_points and anna_location) so nothing gets cut off below the viewport.
+  const boundsPoints = [
     ...m.evac_polygon,
     [m.facility.lat, m.facility.lon],
-    destPoint(m.facility.lat, m.facility.lon, 0, 1.5),
-    destPoint(m.facility.lat, m.facility.lon, 180, 1.5)
-  ]);
-  map.fitBounds(allBounds, { padding: [20, 20] });
+    destPoint(m.facility.lat, m.facility.lon, 0, 1.5),    // 1.5 mi N (cover blast zones)
+    destPoint(m.facility.lat, m.facility.lon, 180, 1.5),  // 1.5 mi S
+    ...(m.fixed_points || []).map(fp => [fp.lat, fp.lon]),
+  ];
+  if (m.anna_location && Array.isArray(m.anna_location)) {
+    boundsPoints.push(m.anna_location);
+  }
+  map.fitBounds(L.latLngBounds(boundsPoints), { padding: [30, 30] });
 
   mapInited = true;
 }
