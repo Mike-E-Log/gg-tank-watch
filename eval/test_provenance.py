@@ -157,7 +157,7 @@ def test_resolved_requires_two_sources():
         "sources_checked": GOOD_SOURCES,
     })
     honored = (snap2["incident"]["severity"] == "low"
-               and snap2["incident"].get("resolved_iso") == "2026-05-26T12:00:00Z")
+               and snap2["incident"].get("resolved_iso") == "2026-05-24T12:00:00Z")
 
     return {
         "passed": suppressed and honored,
