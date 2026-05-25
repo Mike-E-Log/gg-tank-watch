@@ -170,7 +170,21 @@
     }
     .toggle-icon { width: 17px; height: 17px; display: block; }
     .flag { width: 16px; height: 11px; border-radius: 1px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15); display: block; }
-    #theme-toggle { padding: 3px 6px; }
+    #theme-toggle {
+      padding: 3px 6px;
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #lang-toggle {
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
     .lang-picker { position: relative; display: inline-flex; }
     .lang-menu {
       position: absolute; top: calc(100% + 4px); right: 0; z-index: 1500;
@@ -361,16 +375,17 @@
       outline-offset: -1px;
     }
     .hero-check button {
-      padding: 8px 12px;
+      padding: 10px 16px;
       background: var(--accent);
       color: white;
       border: none;
       border-radius: 6px;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 14px;
       font-family: inherit;
       cursor: pointer;
       white-space: nowrap;
+      min-height: 44px;
     }
     .hero-check button:disabled { opacity: 0.5; }
     .hero-verdict {
@@ -483,8 +498,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1px;
-      padding: 6px 0 4px;
+      gap: 2px;
+      padding: 10px 0 8px;
       background: none;
       border: none;
       color: var(--text-muted);
@@ -494,6 +509,7 @@
       cursor: pointer;
       transition: color 0.15s;
       border-top: 2px solid transparent;
+      min-height: 48px;
     }
     .tab-btn.active {
       color: var(--accent);
@@ -789,7 +805,7 @@
       outline-offset: -1px;
     }
     .safety-form button {
-      padding: 10px 14px;
+      padding: 12px 16px;
       background: var(--accent);
       color: white;
       border: none;
@@ -799,6 +815,7 @@
       font-family: inherit;
       cursor: pointer;
       white-space: nowrap;
+      min-height: 44px;
     }
     .safety-form button:disabled { opacity: 0.5; }
     .safety-hint {
