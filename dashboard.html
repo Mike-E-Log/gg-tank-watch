@@ -239,6 +239,38 @@
     .safety-strip-sep { color: var(--text-muted); }
     .safety-strip-terms { margin-left: auto; }
 
+    /* ===== OFFICIAL SOURCES PANEL ===== */
+    .official-sources-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin: 0 0 8px;
+      line-height: 1.4;
+    }
+    .official-links { display: flex; flex-direction: column; gap: 6px; }
+    .official-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      font-size: 13px;
+    }
+    .official-link:hover { border-color: var(--accent); }
+    .official-link-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #16a34a;
+      background: #16a34a1a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
     /* ===== AI DISCLOSURE ===== */
     .ai-disclosure {
       flex-shrink: 0;
@@ -928,7 +960,31 @@
             <div id="shelters-grid" class="shelters-grid"></div>
           </div>
 
-          <!-- 3. Closures -->
+          <!-- 3. Official sources -->
+          <div class="info-group-title" data-i18n="info.group.official">Official sources</div>
+          <div class="info-section official-sources-panel">
+            <p class="official-sources-note" data-i18n="info.official.note">No single source should be your only one. Subscribe to official alerts and check multiple channels.</p>
+            <div class="official-links">
+              <a class="official-link" href="https://ggcity.org/emergency" target="_blank" rel="noopener">
+                <span class="official-link-label" data-i18n="info.official.city">City of Garden Grove emergency page</span>
+                <span class="official-link-tag">Official</span>
+              </a>
+              <a class="official-link" href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener">
+                <span class="official-link-label" data-i18n="info.official.zonehaven">Genasys / Zonehaven zone lookup</span>
+                <span class="official-link-tag">Official</span>
+              </a>
+              <a class="official-link" href="https://member.everbridge.net/892807736729480/login" target="_blank" rel="noopener">
+                <span class="official-link-label" data-i18n="info.official.alert">AlertOC sign-up (official county alerts)</span>
+                <span class="official-link-tag">Official</span>
+              </a>
+              <a class="official-link" href="https://www.airnow.gov/?city=Garden%20Grove&state=CA" target="_blank" rel="noopener">
+                <span class="official-link-label" data-i18n="info.official.airnow">EPA AirNow air quality</span>
+                <span class="official-link-tag">Official</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- 4. Closures (renumbered from 3) -->
           <div class="info-group-title" data-i18n="info.group.closures">Closures</div>
           <div class="info-section">
             <div class="info-section-title" data-i18n="info.schools.title">Schools closed</div>
@@ -1091,6 +1147,12 @@ const STRINGS = {
   "news.type.video": { en: "▶ Video" },
   "info.group.status": { en: "Incident status" },
   "info.group.wheretogo": { en: "Where to go" },
+  "info.group.official": { en: "Official sources" },
+  "info.official.note": { en: "No single source should be your only one. Subscribe to official alerts and check multiple channels." },
+  "info.official.city": { en: "City of Garden Grove emergency page" },
+  "info.official.zonehaven": { en: "Genasys / Zonehaven zone lookup" },
+  "info.official.alert": { en: "AlertOC sign-up (official county alerts)" },
+  "info.official.airnow": { en: "EPA AirNow air quality" },
   "info.group.closures": { en: "Closures" },
   "info.roads.title": { en: "Road closures" },
   "info.roads.defer": { en: 'Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.' },
