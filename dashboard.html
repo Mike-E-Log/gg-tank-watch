@@ -936,6 +936,51 @@
     .source-item:hover { color: var(--accent); }
     .source-time { color: var(--text-muted); font-size: 11px; margin-left: 4px; }
 
+    /* ===== SON MAI CULTURAL ELEMENTS ===== */
+    .lotus-divider {
+      display: flex;
+      justify-content: center;
+      padding: 8px 0;
+    }
+    .lotus-divider::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 50% 50% 0 0;
+      border-bottom: none;
+    }
+    .app::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: repeating-linear-gradient(
+        180deg,
+        transparent 0px,
+        transparent 40px,
+        var(--border) 40px,
+        transparent 41px
+      );
+      opacity: 0.04;
+    }
+    .app.severity-high::before,
+    .app.severity-critical::before {
+      opacity: 0;
+    }
+    .feed-item {
+      border-top: 2px solid transparent;
+      border-image: linear-gradient(90deg, var(--accent), transparent) 1;
+    }
+    .unofficial-pill {
+      background: var(--gold);
+    }
+    .ai-disclosure {
+      color: var(--gold);
+    }
+
     /* ===== DESKTOP ===== */
     @media (min-width: 768px) {
       .hero-action { font-size: 36px; }
@@ -1060,6 +1105,8 @@
             <div class="info-row"><span class="k" data-i18n="info.evac.boundary">Boundary</span><span class="v" style="font-size:11px;text-align:right;max-width:60%" id="evac-boundary">--</span></div>
           </div>
 
+          <div class="lotus-divider"></div>
+
           <!-- 2. Where to go -->
           <div class="info-group-title" data-i18n="info.group.wheretogo">Where to go</div>
           <div class="info-section">
@@ -1069,6 +1116,8 @@
             </div>
             <div id="shelters-grid" class="shelters-grid"></div>
           </div>
+
+          <div class="lotus-divider"></div>
 
           <!-- 3. Official sources -->
           <div class="info-group-title" data-i18n="info.group.official">Official sources</div>
@@ -1093,6 +1142,8 @@
               </a>
             </div>
           </div>
+
+          <div class="lotus-divider"></div>
 
           <!-- 4. Closures (renumbered from 3) -->
           <div class="info-group-title" data-i18n="info.group.closures">Closures</div>
@@ -2119,6 +2170,11 @@ function render(snap) {
   var sevChip = $("severity-chip");
   sevChip.className = "severity-chip sev-" + sev;
   sevChip.textContent = sev;
+
+  var appEl = document.querySelector('.app');
+  appEl.className = 'app';
+  if (sev === 'high') appEl.classList.add('severity-high');
+  if (sev === 'critical') appEl.classList.add('severity-critical');
 
   // Stats strip
   var tank = snap.tank || {};
