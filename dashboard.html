@@ -223,6 +223,83 @@
     }
     .banner:hover .banner-action { opacity: 1; text-decoration: underline; }
 
+    /* Evacuation shelters */
+    .shelters-section { margin-bottom: 16px; }
+    .shelters-cta {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+    .shelters-cta a { color: var(--sev-low); text-decoration: none; }
+    .shelters-cta a:hover { text-decoration: underline; }
+    .shelters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .shelter-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .shelter-card .name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+    .shelter-card .city {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .shelter-card .address {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-family: ui-monospace, monospace;
+      margin-top: 2px;
+    }
+    .shelter-card .notes-chip {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: var(--sev-moderate);
+      color: white;
+      margin-top: 4px;
+      align-self: flex-start;
+    }
+    .shelter-card .directions {
+      font-size: 12px;
+      color: var(--sev-low);
+      text-decoration: none;
+      margin-top: 6px;
+      align-self: flex-start;
+    }
+    .shelter-card .directions:hover { text-decoration: underline; }
+
+    /* Shelter map marker */
+    .shelter-icon { background: none !important; border: none !important; }
+    .shelter-marker {
+      width: 22px; height: 22px;
+      background: #2563eb;
+      border: 2px solid white;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; line-height: 1;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
     /* News videos grid */
     .videos-grid {
       display: grid;
@@ -601,6 +678,7 @@
         <span class="legend-item"><span class="legend-swatch" style="background:#a855f7"></span>Plume (live wind)</span>
         <span class="legend-item"><span class="legend-swatch" style="background:#111;border:2px solid #fff"></span>Tank</span>
         <span class="legend-item"><span class="legend-swatch" style="background:#16a34a;border:2px solid #fff;border-radius:50%"></span>Reference points (safety-colored)</span>
+        <span class="legend-item">🏠 Evacuation shelter</span>
       </div>
     </div>
 
@@ -638,6 +716,14 @@
         <h3>Schools closed</h3>
         <div id="schools">—</div>
       </div>
+    </div>
+
+    <h2 class="section-header">Evacuation shelters</h2>
+    <div class="shelters-section">
+      <div class="shelters-cta">
+        🛏️ <strong>Live list at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> — the city is the source of truth; the list below is a snapshot.
+      </div>
+      <div id="shelters-grid" class="shelters-grid"></div>
     </div>
 
     <h2 class="section-header">Major news updates</h2>
@@ -885,14 +971,31 @@ function initMap(cfg) {
     return marker;
   });
 
+  // Evacuation shelters (blue square markers, distinct from green ref points)
+  (m.shelters || []).forEach(s => {
+    const icon = L.divIcon({
+      className: "shelter-icon",
+      html: '<div class="shelter-marker">&#127968;</div>',
+      iconSize: [22, 22],
+      iconAnchor: [11, 11],
+    });
+    L.marker([s.lat, s.lon], { icon })
+      .addTo(map)
+      .bindTooltip(
+        `<strong>${s.name}</strong><br>${s.city}${s.notes ? `<br><span style="opacity:0.8;font-size:11px">${s.notes}</span>` : ''}`,
+        { direction: "top", offset: [0, -8] }
+      );
+  });
+
   // Fit map to show evac polygon + blast zones + ALL reference pins (incl.
-  // fixed_points and anna_location) so nothing gets cut off below the viewport.
+  // fixed_points, anna_location, and shelters) so nothing gets cut off.
   const boundsPoints = [
     ...m.evac_polygon,
     [m.facility.lat, m.facility.lon],
     destPoint(m.facility.lat, m.facility.lon, 0, 1.5),    // 1.5 mi N (cover blast zones)
     destPoint(m.facility.lat, m.facility.lon, 180, 1.5),  // 1.5 mi S
     ...(m.fixed_points || []).map(fp => [fp.lat, fp.lon]),
+    ...(m.shelters || []).map(s => [s.lat, s.lon]),
   ];
   if (m.anna_location && Array.isArray(m.anna_location)) {
     boundsPoints.push(m.anna_location);
@@ -1411,6 +1514,26 @@ function render(snap) {
 }
 
 /* ============ FETCH ORCHESTRATION ============ */
+function renderShelters(cfg) {
+  const grid = $("shelters-grid");
+  if (!grid) return;
+  const shelters = (cfg && cfg.map && cfg.map.shelters) || [];
+  if (!shelters.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;color:var(--text-dim);font-size:13px">No shelters configured. Edit <code>config.json</code> map.shelters.</div>`;
+    return;
+  }
+  grid.innerHTML = shelters.map(s => {
+    const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.lat + "," + s.lon)}`;
+    return `<div class="shelter-card">
+      <div class="name">${s.name}</div>
+      <div class="city">${s.city || ""}</div>
+      <div class="address">${s.address || ""}</div>
+      ${s.notes ? `<span class="notes-chip">${s.notes}</span>` : ""}
+      <a class="directions" href="${gmaps}" target="_blank" rel="noopener">Directions ↗</a>
+    </div>`;
+  }).join("");
+}
+
 async function loadConfig() {
   try {
     const resp = await fetch("config.json?t=" + Date.now(), {cache:"no-store"});
@@ -1418,6 +1541,7 @@ async function loadConfig() {
     configCache = await resp.json();
     initMap(configCache);
     refreshWind();
+    renderShelters(configCache);
   } catch (e) {
     console.warn("config.json load failed:", e);
   }
