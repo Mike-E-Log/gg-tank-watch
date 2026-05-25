@@ -18,6 +18,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Seed status.json (writer dogfood + schema-test fixture)
+        # status.json is gitignored (runtime artifact). The schema tests need
+        # a real snapshot to validate against, so produce one by running the
+        # writer with sample facts. Also doubles as a smoke test that the
+        # writer itself imports + runs end-to-end on a fresh checkout.
+        run: |
+          echo '{"tank_temp_f":100,"tank_crack_observed":true,"evacuation_residents":50000,"evacuation_lifted":false,"evacuation_expanded":false,"evacuation_area_sq_mi":9,"evacuation_boundary_text":"CI sample","status_headline":"CI seed","injuries":0,"official_statements":[{"agency":"CI","time_iso":"2026-05-25T00:00:00Z","text":"CI seed statement","source_url":"https://example.invalid/"}],"sources_checked":[{"url":"https://example.invalid/","title":"CI","fetched_iso":"2026-05-25T00:00:00Z"}],"schools_closed":["CI"]}' | python scripts/update_status.py
+
       - name: Run eval suite (skip integration; no internet contract in CI)
         run: |
           python eval/run_all.py --skip integration
