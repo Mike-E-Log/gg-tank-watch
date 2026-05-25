@@ -9,21 +9,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#1e40af">
+  <meta name="theme-color" content="#0e6f5e">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
   <style>
     :root, html.theme-light {
-      --bg: #f8fafc;
+      --bg: #faf8f5;
       --surface: #ffffff;
-      --text: #0f172a;
-      --text-sec: #475569;
-      --text-muted: #94a3b8;
-      --border: #e2e8f0;
-      --shadow: 0 1px 2px rgba(0,0,0,0.05);
-      --accent: #1e40af;
-      --accent-light: #dbeafe;
+      --text: #1a1612;
+      --text-sec: #5c5347;
+      --text-muted: #8a8279;
+      --border: #e5e0d8;
+      --shadow: 0 1px 2px rgba(26,22,18,0.06);
+      --accent: #0e6f5e;
+      --accent-light: #e0f2ee;
+      --gold: #9e7c29;
+      --gold-light: #f7f0e0;
       --safe: #059669;
       --safe-bg: #ecfdf5;
       --safe-border: #a7f3d0;
@@ -37,19 +39,21 @@
       --critical-bg: #fef2f2;
       --critical-border: #fecaca;
       --banner-breaking-bg: #fef2f2;
-      --banner-update-bg: #fffbeb;
-      --banner-stale-bg: #f1f5f9;
+      --banner-update-bg: #fdf6e8;
+      --banner-stale-bg: #f3f0eb;
     }
     html.theme-dark {
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --text: #f1f5f9;
-      --text-sec: #94a3b8;
-      --text-muted: #64748b;
-      --border: #334155;
-      --shadow: 0 1px 3px rgba(0,0,0,0.4);
-      --accent: #3b82f6;
-      --accent-light: rgba(59,130,246,0.15);
+      --bg: #121110;
+      --surface: #1e1c19;
+      --text: #f0ece6;
+      --text-sec: #a39a8e;
+      --text-muted: #6e665c;
+      --border: #302c27;
+      --shadow: 0 1px 3px rgba(0,0,0,0.5);
+      --accent: #4ecdb4;
+      --accent-light: rgba(78,205,180,0.12);
+      --gold: #d4b05c;
+      --gold-light: rgba(212,176,92,0.1);
       --safe: #34d399;
       --safe-bg: rgba(52,211,153,0.12);
       --safe-border: rgba(52,211,153,0.3);
@@ -63,8 +67,8 @@
       --critical-bg: rgba(252,165,165,0.12);
       --critical-border: rgba(252,165,165,0.3);
       --banner-breaking-bg: rgba(248,113,113,0.15);
-      --banner-update-bg: rgba(251,191,36,0.1);
-      --banner-stale-bg: rgba(100,116,139,0.15);
+      --banner-update-bg: rgba(212,176,92,0.08);
+      --banner-stale-bg: rgba(110,102,92,0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
