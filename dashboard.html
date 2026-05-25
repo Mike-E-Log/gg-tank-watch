@@ -968,12 +968,13 @@ window.switchTab = switchTab;
 
 /* ============ REFRESH COUNTDOWN ============ */
 function startRefreshCountdown() {
-  refreshCountdown = 30;
+  var total = Math.round(REFRESH_MS / 1000);
+  refreshCountdown = total;
   if (countdownTimer) clearInterval(countdownTimer);
   countdownTimer = setInterval(function() {
     refreshCountdown = Math.max(0, refreshCountdown - 1);
     var bar = $("refresh-bar");
-    if (bar) bar.style.width = ((refreshCountdown / 30) * 100) + "%";
+    if (bar) bar.style.width = ((refreshCountdown / total) * 100) + "%";
     var txt = $("refresh-text");
     if (txt) txt.textContent = refreshCountdown + "s";
   }, 1000);
