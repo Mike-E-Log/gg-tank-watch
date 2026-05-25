@@ -1,0 +1,65 @@
+name: update-status
+
+# DORMANT (2026-05-25) — the "no machine required" cloud path, kept for later.
+# A headless GitHub Actions runner can only use a METERED ANTHROPIC_API_KEY
+# (no OAuth subscription), so for now we refresh LOCALLY on subscription credits
+# via scripts/refresh_local.py with the contributor's machine left on. See
+# docs/DATA_SYNC.md.
+#
+# To switch to this metered cloud cron later: uncomment the `schedule:` trigger
+# below. The ANTHROPIC_API_KEY repo secret is already set, so re-enabling the
+# schedule is the only change needed. workflow_dispatch stays enabled so this
+# can still be run manually on demand.
+
+on:
+  # schedule:
+  #   # Every ~20 min; lags 5-15 min, under the dashboard's 30-min stale threshold.
+  #   - cron: "*/20 * * * *"   # <-- uncomment to activate the metered cloud path
+  workflow_dispatch: {}
+
+# Never run two refreshers at once (they'd race on the status.json commit).
+concurrency:
+  group: update-status
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install anthropic
+
+      # If this step fails (API error / unparseable output), the job stops here:
+      # no write, no commit, status.json keeps its old timestamp and the
+      # dashboard's staleness banner correctly fires. Better than stamping a
+      # fresh time onto stale data.
+      - name: Gather facts (Anthropic web search)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/gather_facts.py > facts.json
+
+      - name: Write status.json
+        run: python scripts/update_status.py < facts.json
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name  "gg-tank-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- status.json; then
+            echo "status.json unchanged; nothing to commit"
+          else
+            git add status.json
+            git commit -m "chore(data): refresh status.json [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push
+          fi

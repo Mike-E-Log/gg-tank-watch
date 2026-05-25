@@ -1,0 +1,19 @@
+# Deploy only what the static dashboard needs at runtime:
+#   dashboard.html, config.json, status.json, vercel.json
+# Everything below is excluded from the upload.
+.git
+.github
+.gstack
+.claude
+C--Users-redacted-OneDrive-Desktop-GG-tank-updates
+eval
+scripts
+docs
+data
+__pycache__
+*.md
+LICENSE
+*.bat
+.env
+.env.*
+m_dashboard.html
