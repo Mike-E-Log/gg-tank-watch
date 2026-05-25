@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
   <title>GG Tank Watch</title>
   <meta http-equiv="refresh" content="600">
-  <meta name="description" content="Real-time situational awareness for the Garden Grove MMA tank emergency. What should I do?">
+  <meta name="description" content="GG Tank Watch — unofficial, volunteer-built situational awareness for the Garden Grove chemical-tank emergency. Always verify with ggcity.org/emergency.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -769,46 +769,6 @@
     .source-item:last-child { border-bottom: none; }
     .source-item:hover { color: var(--accent); }
 
-    /* ===== TAKEOVER ===== */
-    .takeover {
-      position: fixed;
-      inset: 0;
-      background: rgba(127,29,29,0.97);
-      color: white;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 32px;
-      text-align: center;
-    }
-    .takeover h1 {
-      font-size: clamp(40px, 10vw, 100px);
-      font-weight: 800;
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-    .takeover p { font-size: 20px; margin-bottom: 32px; max-width: 600px; }
-    .takeover button {
-      background: white;
-      color: #7f1d1d;
-      border: none;
-      padding: 14px 28px;
-      font-size: 16px;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .takeover.hidden { display: none; }
-    .takeover-flash { animation: flash 0.5s ease-in-out infinite alternate; }
-    @keyframes flash {
-      from { background: rgba(127,29,29,0.97); }
-      to   { background: rgba(220,38,38,0.97); }
-    }
-    @media (prefers-reduced-motion: reduce) { .takeover-flash { animation: none; } }
-
     /* ===== DESKTOP ===== */
     @media (min-width: 768px) {
       .hero-action { font-size: 36px; }
@@ -821,12 +781,6 @@
   </style>
 </head>
 <body>
-  <div id="takeover" class="takeover hidden">
-    <h1 data-i18n="takeover.h1">LEAVE NOW</h1>
-    <p id="takeover-reason" data-i18n="takeover.reason.default">Your zone status just flipped to INSIDE. Evacuate now per OCFA guidance.</p>
-    <button onclick="dismissTakeover()" data-i18n="takeover.button">Acknowledged</button>
-  </div>
-
   <div class="app">
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
@@ -1037,10 +991,6 @@ const STRINGS = {
   "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders." },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
   // Takeover
-  "takeover.h1": { en: "LEAVE NOW", vi: "RỜI ĐI NGAY" },
-  "takeover.reason.flip": { en: "Your zone status flipped from OUTSIDE → INSIDE the evacuation zone.", vi: "Tình trạng khu vực của bạn đã chuyển từ NGOÀI → TRONG khu sơ tán." },
-  "takeover.reason.default": { en: "Your zone status just flipped to INSIDE. Evacuate now per OCFA guidance.", vi: "Tình trạng khu vực của bạn vừa chuyển sang TRONG khu sơ tán. Sơ tán ngay theo hướng dẫn của OCFA." },
-  "takeover.button": { en: "Acknowledged", vi: "Đã hiểu" },
   // Map legend + tooltips
   "legend.blast20psi": { en: "20 PSI blast", vi: "Vùng nổ 20 PSI" },
   "legend.moderate": { en: "Moderate damage", vi: "Thiệt hại trung bình" },
@@ -1400,18 +1350,6 @@ function beep() {
   } catch (e) { /* silent */ }
 }
 
-/* ============ TAKEOVER ============ */
-function showTakeover(reason) {
-  $("takeover-reason").textContent = reason;
-  $("takeover").classList.remove("hidden");
-  $("takeover").classList.add("takeover-flash");
-  beep();
-}
-function dismissTakeover() {
-  $("takeover").classList.add("hidden");
-  $("takeover").classList.remove("takeover-flash");
-}
-window.dismissTakeover = dismissTakeover;
 
 /* ============ MAP ============ */
 function destPoint(lat, lon, bearingDeg, distMi) {
@@ -1872,12 +1810,8 @@ function render(snap) {
     heroSummary.textContent = headline || t("hero.summary.default");
   }
 
-  // Zone-flip takeover
-  if (lastZoneStatus !== null
-      && (lastZoneStatus === "outside_downwind" || lastZoneStatus === "outside")
-      && zone === "inside") {
-    showTakeover(t("takeover.reason.flip"));
-  } else if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
+  // Urgent breaking alert (sound only; no directive modal)
+  if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
     if (window.__lastUrgentReason !== snap.breaking_reason) {
       beep();
       window.__lastUrgentReason = snap.breaking_reason;
