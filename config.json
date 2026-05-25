@@ -43,5 +43,5 @@
     "geocode_viewbox": [-118.10, 33.85, -117.85, 33.65]
   },
   "schema_version": 1,
-  "notes": "Edit zone_status to 'inside' if your address gets added to the evac zone. Set incident.resolved_iso (in a manual writer run via stdin) once the incident officially ends. The map coordinates are best-effort estimates - the evac polygon is the four-street rectangle and blast radii are generic published estimates, not authoritative. anna_location: [lat, lon] if you want your home marked on the map; null otherwise."
+  "notes": "Edit zone_status to 'inside' if your address gets added to the evac zone. Set incident.resolved_iso (in a manual writer run via stdin) once the incident officially ends. The map coordinates are best-effort estimates - the evac polygon is the four-street rectangle. anna_location: [lat, lon] if you want your home marked on the map; null otherwise."
 }

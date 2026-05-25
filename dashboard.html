@@ -862,8 +862,6 @@
           <span id="wind-text-map">--</span>
         </div>
         <div class="map-legend-overlay" id="map-legend">
-          <div class="legend-row"><span class="legend-dot" style="background:#dc2626"></span><span data-i18n="legend.moderate">Moderate damage</span></div>
-          <div class="legend-row"><span class="legend-dot" style="background:#ea580c"></span><span data-i18n="legend.light">Light injury</span></div>
           <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span><span data-i18n="legend.evac">Evac zone</span></div>
           <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span><span data-i18n="legend.shelter">Shelter</span></div>
         </div>
@@ -1064,8 +1062,6 @@ const STRINGS = {
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
   // Takeover
   // Map legend + tooltips
-  "legend.moderate": { en: "Moderate damage", vi: "Thiệt hại trung bình" },
-  "legend.light": { en: "Light injury", vi: "Thương tích nhẹ" },
   "legend.evac": { en: "Evac zone", vi: "Khu sơ tán" },
   "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn" },
   "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán" },
@@ -1101,9 +1097,7 @@ const STRINGS = {
   "check.field.address": { en: "Address:", vi: "Địa chỉ:" },
   "check.field.distance": { en: "Distance:", vi: "Khoảng cách:" },
   "check.field.bearing": { en: "Bearing:", vi: "Hướng:" },
-  "check.noFactors": { en: "No risk factors at this location.", vi: "Không có yếu tố rủi ro tại vị trí này." },
   "check.viewMap": { en: "View on map", vi: "Xem trên bản đồ" },
-  "check.disclaimer": { en: "Estimate only — not official. Verify at ggcity.org/emergency; in an emergency, call 911.", vi: "Chỉ là ước tính — không chính thức. Xác minh tại ggcity.org/emergency; trong trường hợp khẩn cấp, gọi 911." },
   "check.loading": { en: 'Looking up "{q}"...', vi: 'Đang tìm "{q}"...' },
   "check.error.title": { en: "Could not check", vi: "Không thể kiểm tra" },
   "check.error.suffix": { en: ". Try a more specific address.", vi: ". Hãy thử địa chỉ cụ thể hơn." },
@@ -1579,11 +1573,6 @@ function pointInPolygon(pt, polygon) {
   }
   return inside;
 }
-function angleDiff(a, b) {
-  var d = Math.abs(a - b) % 360;
-  return d > 180 ? 360 - d : d;
-}
-
 var GEOCODE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days, per OSM caching policy
 function geocodeCacheGet(key) {
   try {
