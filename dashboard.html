@@ -831,7 +831,7 @@
         <div class="check-panel-inner">
           <div class="check-label" data-i18n="check.label">Check an address or intersection</div>
           <form class="safety-form" onsubmit="event.preventDefault(); checkSafety()">
-            <input id="safety-input" type="text" placeholder="e.g. Magnolia & Talbert" data-i18n-placeholder="check.placeholder" autocomplete="off">
+            <input id="safety-input" type="text" placeholder="e.g. 12500 Western Ave, Garden Grove" data-i18n-placeholder="check.placeholder" autocomplete="off">
             <button id="safety-button" type="submit" data-i18n="check.button">Check</button>
           </form>
           <div class="safety-hint" data-i18n="check.hint">Geocoded via OpenStreetMap. Defaults to Orange County, CA.</div>
@@ -966,7 +966,7 @@ const STRINGS = {
   "news.media.article": { en: "📰 article", vi: "📰 bài báo" },
   // Check panel (safety verdicts — highest stakes)
   "check.label": { en: "Check an address or intersection", vi: "Kiểm tra địa chỉ hoặc giao lộ" },
-  "check.placeholder": { en: "e.g. Magnolia & Talbert", vi: "ví dụ: Magnolia & Talbert" },
+  "check.placeholder": { en: "e.g. 12500 Western Ave, Garden Grove", vi: "ví dụ: 12500 Western Ave, Garden Grove" },
   "check.button": { en: "Check", vi: "Kiểm tra" },
   "check.hint": { en: "Geocoded via OpenStreetMap. Defaults to Orange County, CA.", vi: "Định vị qua OpenStreetMap. Mặc định Orange County, CA." },
   "check.verdict.critical": { en: "CRITICAL — within primary blast radius", vi: "NGUY CẤP — trong bán kính nổ chính" },
@@ -1446,18 +1446,30 @@ async function geocodeAddress(q, cfg) {
   var viewbox = (cfg && cfg.map && cfg.map.geocode_viewbox);
   var looksFullAddr = /\b(CA|California|\d{5})\b/i.test(queryRaw);
   var queryWithBias = looksFullAddr ? queryRaw : queryRaw + ", " + bias;
-  var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(queryWithBias);
-  var resp = await fetch(url, { headers: { "Accept-Language": "en" } });
-  if (!resp.ok) throw new Error("Nominatim HTTP " + resp.status);
-  var arr = await resp.json();
-  if ((!arr || !arr.length) && viewbox && viewbox.length === 4) {
-    var w = viewbox[0], n = viewbox[1], e = viewbox[2], s = viewbox[3];
-    url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(queryRaw) + "&viewbox=" + w + "," + n + "," + e + "," + s + "&bounded=1";
-    resp = await fetch(url, { headers: { "Accept-Language": "en" } });
-    if (resp.ok) arr = await resp.json();
+  async function nominatim(qstr, vb) {
+    var u = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(qstr);
+    if (vb && vb.length === 4) u += "&viewbox=" + vb[0] + "," + vb[1] + "," + vb[2] + "," + vb[3] + "&bounded=1";
+    var r = await fetch(u, { headers: { "Accept-Language": "en" } });
+    if (!r.ok) throw new Error("Nominatim HTTP " + r.status);
+    return await r.json();
   }
-  if (!arr || !arr.length) throw new Error("No result for: " + queryRaw);
-  return { lat: parseFloat(arr[0].lat), lon: parseFloat(arr[0].lon), displayName: arr[0].display_name };
+  var arr = await nominatim(queryWithBias);
+  var hit = (arr && arr.length) ? arr[0] : null;
+  // Keep results within the monitored region: if the bias query missed or landed
+  // outside the incident viewbox, re-query bounded and discard the out-of-region
+  // hit, so a far same-named match (e.g. a "Western Ave" in another county) can't
+  // resolve to a confident verdict for the wrong place. In-region ambiguity stays
+  // visible because renderSafetyResult always shows the matched address + distance.
+  if (viewbox && viewbox.length === 4) {
+    var w = viewbox[0], n = viewbox[1], e = viewbox[2], s = viewbox[3];
+    var inBox = hit && parseFloat(hit.lon) >= w && parseFloat(hit.lon) <= e && parseFloat(hit.lat) >= s && parseFloat(hit.lat) <= n;
+    if (!inBox) {
+      var bArr = await nominatim(queryRaw, viewbox);
+      hit = (bArr && bArr.length) ? bArr[0] : null;
+    }
+  }
+  if (!hit) throw new Error("No result in the monitored area for: " + queryRaw);
+  return { lat: parseFloat(hit.lat), lon: parseFloat(hit.lon), displayName: hit.display_name };
 }
 
 function computeSafety(pt, cfg, wind) {
