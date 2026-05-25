@@ -1034,6 +1034,7 @@ const STRINGS = {
   "theme.light": { en: "Light", vi: "Sáng" },
   "updated.loading": { en: "loading...", vi: "đang tải..." },
   "updated.freshness": { en: "⟳ ~20 min · {t}" },
+  "updated.stale": { en: "⚠ Stale · last updated {t}" },
   "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}." },
   // Trust / safety (PR-A) — new EN strings; VI falls back to EN until Anna verifies (G1 gate)
   "topbar.unofficial": { en: "UNOFFICIAL" },
@@ -1337,6 +1338,11 @@ function fmtCompact(n) {
   if (n >= 1000) return Math.round(n / 1000) + "K";
   return String(n);
 }
+// Pin a 12-hour clock explicitly so the displayed time format doesn't vary with
+// the active language (toLocaleTimeString defaults to the locale's convention —
+// 12h under some, 24h under others — which made the same instant render as both
+// "12:59 AM" and "0:59"). Locale still localizes the AM/PM wording.
+var TIME_OPTS = {hour:"numeric", minute:"2-digit", hour12:true};
 function relativeTime(iso) {
   if (!iso) return "—";
   var then = new Date(iso), now = new Date();
@@ -1344,17 +1350,17 @@ function relativeTime(iso) {
   if (diffMin < 1) return t("time.justNow");
   if (diffMin < 60) return t("time.minAgo", { n: diffMin });
   var diffH = Math.floor(diffMin / 60);
-  if (diffH < 24) return then.toLocaleTimeString(currentLocale(), {hour:"numeric", minute:"2-digit"});
-  return then.toLocaleDateString(currentLocale(), {weekday:"short"}) + " " + then.toLocaleTimeString(currentLocale(), {hour:"numeric", minute:"2-digit"});
+  if (diffH < 24) return then.toLocaleTimeString(currentLocale(), TIME_OPTS);
+  return then.toLocaleDateString(currentLocale(), {weekday:"short"}) + " " + then.toLocaleTimeString(currentLocale(), TIME_OPTS);
 }
 function fmtAbsTime(iso) {
-  return iso ? new Date(iso).toLocaleTimeString(currentLocale(), {hour:"numeric", minute:"2-digit"}) : "—";
+  return iso ? new Date(iso).toLocaleTimeString(currentLocale(), TIME_OPTS) : "—";
 }
 function fmtAbsDateTime(iso) {
   if (!iso) return "—";
   var d = new Date(iso);
   var date = d.toLocaleDateString(currentLocale(), {weekday:"short", month:"short", day:"numeric"});
-  var time = d.toLocaleTimeString(currentLocale(), {hour:"numeric", minute:"2-digit"});
+  var time = d.toLocaleTimeString(currentLocale(), TIME_OPTS);
   return date + ", " + time;
 }
 function yesNo(v) {
@@ -1837,7 +1843,7 @@ function render(snap) {
   var updEl = $("updated-text");
   var isStale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
   var rel = relativeTime(snap.last_updated_iso);
-  updEl.textContent = (isStale ? "⚠ " : "") + t("updated.freshness", { t: rel });
+  updEl.textContent = t(isStale ? "updated.stale" : "updated.freshness", { t: rel });
   updEl.title = t("updated.title", { t: rel });
   updEl.classList.toggle("stale", !!isStale);
 
