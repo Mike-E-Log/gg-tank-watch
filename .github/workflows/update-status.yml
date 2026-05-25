@@ -1,0 +1,61 @@
+name: update-status
+
+# Keeps status.json fresh with ZERO dependency on any contributor's computer.
+# Runs on GitHub's hosted runners, gathers current incident facts via the
+# Anthropic web-search tool, runs the existing writer, and commits the refreshed
+# status.json. Vercel auto-deploys on the push. Every refresh = one git commit,
+# which is the data's audit trail.
+
+on:
+  schedule:
+    # Every ~20 min. GitHub cron is best-effort and can lag 5-15 min; 20 min
+    # gives headroom under the dashboard's 30-min staleness threshold.
+    - cron: "*/20 * * * *"
+  workflow_dispatch: {}
+
+# Never run two refreshers at once (they'd race on the status.json commit).
+concurrency:
+  group: update-status
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install anthropic
+
+      # If this step fails (API error / unparseable output), the job stops here:
+      # no write, no commit, status.json keeps its old timestamp and the
+      # dashboard's staleness banner correctly fires. Better than stamping a
+      # fresh time onto stale data.
+      - name: Gather facts (Anthropic web search)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/gather_facts.py > facts.json
+
+      - name: Write status.json
+        run: python scripts/update_status.py < facts.json
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name  "gg-tank-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- status.json; then
+            echo "status.json unchanged; nothing to commit"
+          else
+            git add status.json
+            git commit -m "chore(data): refresh status.json [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push
+          fi
