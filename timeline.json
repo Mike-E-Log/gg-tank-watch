@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-26T15:30:00Z",
+  "generated_at": "2026-05-26T16:10:52Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -649,6 +649,17 @@
       "source_url": "https://ggcity.org/emergency",
       "source_name": "City of Garden Grove",
       "category": "government_action"
+    },
+    {
+      "id": "evt-20260526-006",
+      "timestamp_utc": "2026-05-27T01:00:00Z",
+      "timestamp_local": "2026-05-26T18:00:00-07:00",
+      "day": 6,
+      "title": "7 arrests during evacuation; millions of gallons of water used to cool tank",
+      "description": "At the Day 6 evening press conference, Garden Grove Police Chief Amir El-Farra reports 7 total arrests since the incident began: 1 for looting and 6 for prowling; DA's office to prosecute to fullest extent. OCFA Incident Commander Craig Covey reveals scale of cooling operations: a deluge system plus a ground monitor flowing 1,250 gallons per minute for five consecutive days — totaling millions of gallons of water used.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19172203/",
+      "source_name": "ABC7 LA",
+      "category": "official_statement"
     }
   ]
 }
