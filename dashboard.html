@@ -1546,7 +1546,6 @@ var WIND_MAX_MS = 480000;
 var STRINGS = {
   "tab.map": { en: "Map", vi: "Bản đồ", es: "Mapa" },
   "tab.news": { en: "News", vi: "Tin tức", es: "Noticias" },
-  "tab.check": { en: "Check", vi: "Kiểm tra", es: "Verificar" },
   "tab.info": { en: "Info", vi: "Thông tin", es: "Información" },
   "theme.dark": { en: "Dark", vi: "Tối", es: "Oscuro" },
   "theme.light": { en: "Light", vi: "Sáng", es: "Claro" },
@@ -1571,15 +1570,8 @@ var STRINGS = {
   "hero.lead": { en: "Active chemical-tank emergency in Garden Grove.", vi: "Tình trạng khẩn cấp bồn chứa hóa chất đang diễn ra tại Garden Grove.", es: "Emergencia activa de tanque químico en Garden Grove." },
   "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders.", vi: "Sự cố bồn chứa hóa chất đang diễn ra tại Garden Grove. Hãy tuân theo lệnh của cơ quan chức năng.", es: "Incidente activo de tanque químico en Garden Grove. Siga las órdenes oficiales." },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest.", vi: "Sự cố đã được giải quyết. Xem ggcity.org/emergency để biết thông tin mới nhất.", es: "Incidente resuelto. Consulte ggcity.org/emergency para la información más reciente." },
-  "hero.check.label": { en: "Check your address", vi: "Kiểm tra địa chỉ của bạn", es: "Verifique su dirección" },
-  "hero.check.placeholder": { en: "Enter address", vi: "Nhập địa chỉ", es: "Ingrese dirección" },
-  "hero.check.button": { en: "Check", vi: "Kiểm tra", es: "Verificar" },
   "hero.res.label": { en: "residents in evacuation zone", vi: "cư dân trong vùng sơ tán", es: "residentes en zona de evacuación" },
   "hero.whatchanged": { en: "What changed", vi: "Diễn biến", es: "Qué cambió" },
-  "hero.verdict.inside": { en: "⚠ This address appears inside the evacuation area. Confirm at ggcity.org/emergency", vi: "⚠ Địa chỉ này có vẻ nằm trong khu vực sơ tán. Xác nhận tại ggcity.org/emergency", es: "⚠ Esta dirección parece estar dentro del área de evacuación. Confirme en ggcity.org/emergency" },
-  "hero.verdict.outside": { en: "✓ Outside current evacuation zone — confirm at ggcity.org/emergency", vi: "✓ Ngoài khu vực sơ tán hiện tại — xác nhận tại ggcity.org/emergency", es: "✓ Fuera de la zona de evacuación actual — confirme en ggcity.org/emergency" },
-  "hero.verdict.loading": { en: "Checking…", vi: "Đang kiểm tra…", es: "Verificando…" },
-  "hero.verdict.error": { en: "Could not check — try a more specific address", vi: "Không thể kiểm tra — hãy thử địa chỉ cụ thể hơn", es: "No se pudo verificar — intente con una dirección más específica" },
   "legend.evac": { en: "Evac zone", vi: "Khu sơ tán", es: "Zona de evacuación" },
   "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn", es: "Refugio" },
   "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán", es: "Zona de evacuación" },
@@ -1670,23 +1662,6 @@ var STRINGS = {
   "resources.call": { en: "Call", vi: "Gọi" /* G1 placeholder */, es: "Llamar" },
   "resources.visit": { en: "Visit", vi: "Truy cập" /* G1 placeholder */, es: "Visitar" },
   "filter.all": { en: "All", vi: "Tất cả" /* G1 placeholder */, es: "Todos" },
-  /* ===== CHECK TAB i18n ===== */
-  "check.prompt": { en: "Check an address or intersection", vi: "Kiểm tra địa chỉ hoặc giao lộ" },
-  "check.sub": { en: "Pins your address on the map and gives an unofficial verdict.", vi: "Ghim địa chỉ của bạn trên bản đồ và đưa ra phán đoán không chính thức." },
-  "check.placeholder": { en: "e.g. Magnolia & Talbert", vi: "ví dụ: Magnolia & Talbert" },
-  "check.useLocation": { en: "Use my location", vi: "Dùng vị trí của tôi" },
-  "check.btn": { en: "Check", vi: "Kiểm tra" },
-  "check.lastChecked": { en: "Last checked", vi: "Kiểm tra gần nhất" },
-  "check.recent": { en: "Recent", vi: "Gần đây" },
-  "check.fromTank": { en: "from tank", vi: "từ bồn" },
-  "check.viewOnMap": { en: "View on map", vi: "Xem trên bản đồ" },
-  "check.loading": { en: "Checking…", vi: "Đang kiểm tra…" },
-  "check.error": { en: "Could not check — try a more specific address", vi: "Không thể kiểm tra — hãy thử địa chỉ cụ thể hơn" },
-  "verdict.inside": { en: "INSIDE OFFICIAL EVAC ZONE", vi: "TRONG VÙNG SƠ TÁN CHÍNH THỨC" },
-  "verdict.blast20": { en: "BLAST RING — 20 PSI OVERPRESSURE", vi: "VÒNG NỔ — ÁP SUẤT 20 PSI" },
-  "verdict.blastMod": { en: "BLAST RING — MODERATE DAMAGE", vi: "VÒNG NỔ — THIỆT HẠI VỪA" },
-  "verdict.outside": { en: "OUTSIDE MAPPED ZONES", vi: "NGOÀI CÁC VÙNG TRÊN BẢN ĐỒ" },
-  "verdict.note": { en: "Estimate only — not official. Verify at ggcity.org/emergency; in an emergency, call 911.", vi: "Chỉ là ước tính — không chính thức. Kiểm tra tại ggcity.org/emergency; khẩn cấp gọi 911." },
   /* ===== NEWS TAB i18n ===== */
   "news.filter.all": { en: "All", vi: "Tất cả" },
   "news.filter.official": { en: "Official", vi: "Chính thức" },
@@ -1825,7 +1800,6 @@ function setLang(lang) {
   applyLang();
   if (lastSnap) render(lastSnap);
   if (configCache) { renderInfoTab(); renderResources(); renderInfoShelters(); if (lastSnap) updateInfoData(lastSnap); }
-  renderCheckRecent();
   renderNewsFilterChips();
   if (timelineData) renderTimeline();
   if (configCache && fixedPointMarkers.length) recolorFixedPoints();
@@ -1833,12 +1807,6 @@ function setLang(lang) {
 currentLang = detectLang();
 window.toggleLangMenu = toggleLangMenu;
 document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeLangMenu(); });
-
-function translateSafetyResult(r) {
-  if (!r) return r;
-  var message = r.insideEvac ? t("hero.verdict.inside") : t("hero.verdict.outside");
-  return { insideEvac: r.insideEvac, message: message, distance_mi: r.distance_mi, bearing_deg: r.bearing_deg };
-}
 
 var lastSnap = null;
 var lastZoneStatus = null;
@@ -1850,8 +1818,6 @@ var map = null;
 var layers = { evac: null, facility: null, you: null };
 var configCache = null;
 var lastWind = null;
-var safetyPin = null;
-var safetyPinBuffer = null;
 var fixedPointMarkers = [];
 var windInterval = WIND_BASE_MS;
 var windTimer = null;
@@ -2131,271 +2097,8 @@ function pointInPolygon(pt, polygon) {
   }
   return inside;
 }
-var GEOCODE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-function geocodeCacheGet(key) {
-  try {
-    var raw = localStorage.getItem("gg-geocode-" + key);
-    if (!raw) return null;
-    var obj = JSON.parse(raw);
-    if (!obj || (Date.now() - obj.at) > GEOCODE_TTL_MS) return null;
-    return obj.val;
-  } catch (e) { return null; }
-}
-function geocodeCacheSet(key, val) {
-  try { localStorage.setItem("gg-geocode-" + key, JSON.stringify({ at: Date.now(), val: val })); } catch (e) {}
-}
-
-async function geocodeAddress(q, cfg) {
-  var queryRaw = q.replace(/\s+and\s+/i, " & ");
-  var cacheKey = queryRaw.trim().toLowerCase();
-  var cached = geocodeCacheGet(cacheKey);
-  if (cached) return cached;
-  var bias = (cfg && cfg.map && cfg.map.geocode_bias) || "Orange County, CA";
-  var viewbox = (cfg && cfg.map && cfg.map.geocode_viewbox);
-  var looksFullAddr = /\b(CA|California|\d{5})\b/i.test(queryRaw);
-  var queryWithBias = looksFullAddr ? queryRaw : queryRaw + ", " + bias;
-  async function nominatim(qstr, vb) {
-    var u = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(qstr);
-    if (vb && vb.length === 4) u += "&viewbox=" + vb[0] + "," + vb[1] + "," + vb[2] + "," + vb[3] + "&bounded=1";
-    var r = await fetch(u, { headers: { "Accept-Language": "en", "User-Agent": "GG-Dashboard/1.0 (emergency-awareness)" } });
-    if (!r.ok) throw new Error("Nominatim HTTP " + r.status);
-    return await r.json();
-  }
-  var arr = await nominatim(queryWithBias);
-  var hit = (arr && arr.length) ? arr[0] : null;
-  if (viewbox && viewbox.length === 4) {
-    var w = viewbox[0], n = viewbox[1], e = viewbox[2], s = viewbox[3];
-    var inBox = hit && parseFloat(hit.lon) >= w && parseFloat(hit.lon) <= e && parseFloat(hit.lat) >= s && parseFloat(hit.lat) <= n;
-    if (!inBox) {
-      var bArr = await nominatim(queryRaw, viewbox);
-      hit = (bArr && bArr.length) ? bArr[0] : null;
-    }
-  }
-  if (!hit) throw new Error("No result in the monitored area for: " + queryRaw);
-  var result = { lat: parseFloat(hit.lat), lon: parseFloat(hit.lon), displayName: hit.display_name };
-  geocodeCacheSet(cacheKey, result);
-  return result;
-}
-
-function computeSafety(pt, cfg) {
-  var m = cfg.map;
-  var dMi = haversineMi(pt.lat, pt.lon, m.facility.lat, m.facility.lon);
-  var brDeg = bearingDeg(m.facility.lat, m.facility.lon, pt.lat, pt.lon);
-  var insideEvac = pointInPolygon([pt.lat, pt.lon], m.evac_polygon);
-  return { insideEvac: insideEvac, distance_mi: dMi, bearing_deg: brDeg };
-}
-
-function renderSafetyResult(addr, pt, result) {
-  var tr = translateSafetyResult(result);
-  var checkerUrl = (configCache && configCache.incident && configCache.incident.address_checker_url) || "https://ggcity.org/emergency";
-  var tabTarget = "switchTab('map')";
-  var html =
-    '<div style="font-size:13px;margin-bottom:8px">' + tr.message + '</div>' +
-    '<div class="verdict-line" style="font-size:12px;color:var(--sa-text-2);display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px">' +
-      "<span><strong>Address:</strong> " + addr.displayName + "</span>" +
-      "<span><strong>Distance:</strong> " + tr.distance_mi.toFixed(2) + " mi</span>" +
-      "<span><strong>Bearing:</strong> " + cardinalFromDeg(tr.bearing_deg) + " (" + Math.round(tr.bearing_deg) + "°)</span>" +
-    "</div>" +
-    '<a href="' + checkerUrl + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:6px 12px;background:var(--sa-celadon);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;font-family:inherit">' + checkerUrl + ' ↗</a>' +
-    '<button onclick="' + tabTarget + '" style="margin-left:8px;padding:6px 12px;background:var(--sa-celadon);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">View on map</button>';
-  if (safetyPin) map.removeLayer(safetyPin);
-  if (safetyPinBuffer) map.removeLayer(safetyPinBuffer);
-  var color = "#3b82f6";
-  safetyPin = L.circleMarker([pt.lat, pt.lon], {
-    radius: 9, fillColor: color, color: "#fff", weight: 3, fillOpacity: 1
-  }).addTo(map).bindTooltip(addr.displayName, { permanent: true, direction: "top", offset: [0, -10] });
-  safetyPinBuffer = L.circleMarker([pt.lat, pt.lon], {
-    radius: 13, fillColor: color, color: color, weight: 1, fillOpacity: 0.2
-  }).addTo(map);
-  var bounds = L.latLngBounds([[pt.lat, pt.lon], [configCache.map.facility.lat, configCache.map.facility.lon]]);
-  map.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
-  return html;
-}
-
-function translateErrorMessage(msg) {
-  if (!msg) return msg;
-  var m = msg.match(/^No result in the monitored area for: (.+)$/);
-  if (m) return "No result in the monitored area for: " + m[1];
-  return msg;
-}
-
-/* ============ CHECK TAB ============ */
 var activeNewsFilter = "all";
 var lastFeed = [];
-
-function getCheckHistory() {
-  try {
-    var raw = localStorage.getItem("gg-check-history");
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) { return []; }
-}
-
-function saveCheckHistory(entry) {
-  var history = getCheckHistory();
-  // Remove duplicate queries
-  history = history.filter(function(h) { return h.query.toLowerCase() !== entry.query.toLowerCase(); });
-  history.unshift(entry);
-  if (history.length > 10) history = history.slice(0, 10);
-  try { localStorage.setItem("gg-check-history", JSON.stringify(history)); } catch (e) {}
-}
-
-function verdictFromResult(result) {
-  if (result.insideEvac) return { key: "verdict.inside", sev: "critical" };
-  if (result.distance_mi < 0.11) return { key: "verdict.blast20", sev: "high" };
-  if (result.distance_mi < 0.31) return { key: "verdict.blastMod", sev: "moderate" };
-  return { key: "verdict.outside", sev: "safe" };
-}
-
-function renderCheckVerdict(query, addr, result) {
-  var v = verdictFromResult(result);
-  var area = $("check-verdict-area");
-  if (!area) return;
-  var emptyState = $("check-empty-state");
-  if (emptyState) emptyState.style.display = "none";
-
-  var html = '<div class="check-verdict-card sev-' + v.sev + '">' +
-    '<div class="check-verdict-header">' + t("check.lastChecked") + '</div>' +
-    '<div class="check-verdict-addr">' + (addr.displayName || query) + '</div>' +
-    '<div class="check-verdict-label sa-sev-' + (v.sev === "safe" ? "low" : v.sev) + '">' + t(v.key) + '</div>' +
-    '<div class="check-verdict-distance">' +
-      '<span class="check-verdict-miles">' + result.distance_mi.toFixed(2) + '</span>' +
-      '<span class="check-verdict-unit">mi ' + t("check.fromTank") + '</span>' +
-    '</div>' +
-    '<div class="check-verdict-note">' + t("verdict.note") + '</div>' +
-  '</div>' +
-  '<button type="button" class="check-view-map-btn" onclick="switchTab(\'map\')">' + t("check.viewOnMap") + '</button>';
-
-  // Replace existing verdict or append
-  var existingCard = area.querySelector(".check-verdict-card");
-  var existingBtn = area.querySelector(".check-view-map-btn");
-  if (existingCard) existingCard.remove();
-  if (existingBtn) existingBtn.remove();
-  area.insertAdjacentHTML("beforeend", html);
-
-  // Also update the hero inline verdict
-  var heroVerdict = $("hero-inline-verdict");
-  if (heroVerdict) {
-    var sevColor = v.sev === "critical" ? "var(--sa-critical)"
-                 : v.sev === "high" ? "var(--sa-high)"
-                 : v.sev === "moderate" ? "var(--sa-moderate)"
-                 : "var(--sa-safe)";
-    heroVerdict.style.color = sevColor;
-    heroVerdict.textContent = t(v.key) + " · " + result.distance_mi.toFixed(2) + " mi from tank";
-    heroVerdict.className = "hero-check-verdict active";
-  }
-}
-
-function renderCheckRecent() {
-  var list = $("check-recent-list");
-  if (!list) return;
-  var history = getCheckHistory();
-  if (!history.length) {
-    list.innerHTML = '';
-    return;
-  }
-  list.innerHTML = history.map(function(h) {
-    var sevClass = h.verdict === "verdict.inside" ? "sev-critical"
-                 : h.verdict === "verdict.blast20" ? "sev-high"
-                 : h.verdict === "verdict.blastMod" ? "sev-moderate"
-                 : "sev-safe";
-    var timeStr = h.timestamp ? relativeTime(new Date(h.timestamp).toISOString()) : "";
-    return '<button type="button" class="check-recent-item" onclick="rerunCheck(\'' + h.query.replace(/'/g, "\\'") + '\')">' +
-      '<span class="check-recent-dot ' + sevClass + '"></span>' +
-      '<span class="check-recent-addr">' + h.query + '</span>' +
-      '<span class="check-recent-time">' + timeStr + '</span>' +
-    '</button>';
-  }).join("");
-}
-
-async function checkTabAddress(queryOverride) {
-  var inputEl = $("check-tab-input");
-  var q = queryOverride || (inputEl ? inputEl.value.trim() : "");
-  if (!q) return;
-  if (inputEl) inputEl.value = q;
-  var btn = $("check-tab-btn");
-  if (btn) btn.disabled = true;
-
-  // Show loading state in verdict area
-  var area = $("check-verdict-area");
-  var emptyState = $("check-empty-state");
-  if (emptyState) emptyState.style.display = "none";
-  var existingCard = area ? area.querySelector(".check-verdict-card") : null;
-  var existingBtn = area ? area.querySelector(".check-view-map-btn") : null;
-  if (existingCard) existingCard.remove();
-  if (existingBtn) existingBtn.remove();
-  if (area) area.insertAdjacentHTML("beforeend", '<div class="check-verdict-card" style="text-align:center;padding:24px;color:var(--sa-text-3)">' + t("check.loading") + '</div>');
-
-  try {
-    var addr = await geocodeAddress(q, configCache);
-    var result = computeSafety(addr, configCache);
-    var v = verdictFromResult(result);
-
-    // Save to history
-    saveCheckHistory({
-      query: q,
-      verdict: v.key,
-      miles: result.distance_mi,
-      timestamp: Date.now()
-    });
-
-    // Render verdict card
-    renderCheckVerdict(q, addr, result);
-
-    // Place pin on map (reuse existing renderSafetyResult)
-    renderSafetyResult(addr, addr, result);
-
-    // Also update hero check localStorage for cross-tab consistency
-    try { localStorage.setItem("gg-hero-check", JSON.stringify({ q: q, inside: result.insideEvac, at: Date.now() })); } catch (e) {}
-
-    // Refresh recent list
-    renderCheckRecent();
-  } catch (e) {
-    var loadingCard = area ? area.querySelector(".check-verdict-card") : null;
-    if (loadingCard) loadingCard.remove();
-    if (area) area.insertAdjacentHTML("beforeend", '<div class="check-verdict-card" style="text-align:center;padding:24px;color:var(--sa-high)">' + t("check.error") + '</div>');
-  } finally {
-    if (btn) btn.disabled = false;
-  }
-}
-window.checkTabAddress = checkTabAddress;
-
-function rerunCheck(query) {
-  checkTabAddress(query);
-}
-window.rerunCheck = rerunCheck;
-
-async function checkTabUseLocation() {
-  if (!navigator.geolocation) return;
-  var btn = $("check-tab-btn");
-  if (btn) btn.disabled = true;
-  navigator.geolocation.getCurrentPosition(
-    function(pos) {
-      var lat = pos.coords.latitude;
-      var lon = pos.coords.longitude;
-      if (!configCache) return;
-      var result = computeSafety({lat: lat, lon: lon}, configCache);
-      var v = verdictFromResult(result);
-      var addr = {lat: lat, lon: lon, displayName: lat.toFixed(5) + ", " + lon.toFixed(5)};
-
-      saveCheckHistory({
-        query: addr.displayName,
-        verdict: v.key,
-        miles: result.distance_mi,
-        timestamp: Date.now()
-      });
-
-      renderCheckVerdict(addr.displayName, addr, result);
-      renderSafetyResult(addr, addr, result);
-      renderCheckRecent();
-      if (btn) btn.disabled = false;
-    },
-    function() {
-      if (btn) btn.disabled = false;
-    },
-    { enableHighAccuracy: true, timeout: 8000 }
-  );
-}
-window.checkTabUseLocation = checkTabUseLocation;
 
 /* ============ NEWS FILTER ============ */
 function setNewsFilter(filter) {
@@ -2708,11 +2411,13 @@ async function refreshWind() {
 
 function recolorFixedPoints() {
   if (!configCache || !fixedPointMarkers.length) return;
+  var fac = configCache.map.facility;
   fixedPointMarkers.forEach(function(m) {
     var fp = m.__fp;
-    var result = computeSafety({lat: fp.lat, lon: fp.lon}, configCache);
+    var dMi = haversineMi(fp.lat, fp.lon, fac.lat, fac.lon);
+    var brDeg = bearingDeg(fac.lat, fac.lon, fp.lat, fp.lon);
     m.setStyle({fillColor: "#6366f1"});
-    m.setTooltipContent("<strong>" + fp.label + "</strong><br><span style=\"font-size:11px;opacity:0.8\">" + result.distance_mi.toFixed(1) + " mi · " + cardinalFromDeg(result.bearing_deg) + "</span>");
+    m.setTooltipContent("<strong>" + fp.label + "</strong><br><span style=\"font-size:11px;opacity:0.8\">" + dMi.toFixed(1) + " mi · " + cardinalFromDeg(brDeg) + "</span>");
   });
 }
 
@@ -3081,7 +2786,6 @@ async function loadConfig() {
     renderInfoTab();
     renderResources();
     renderInfoShelters();
-    renderCheckRecent();
     refreshWind();
   } catch (e) {
     console.warn("config load failed:", e);
@@ -3102,31 +2806,8 @@ async function fetchStatus() {
   }
 }
 
-function restoreHeroInlineCheck() {
-  try {
-    var history = getCheckHistory();
-    if (!history.length) return;
-    var last = history[0];
-    if (!last || !last.query) return;
-    var inputEl = $("hero-inline-input");
-    if (inputEl) inputEl.value = last.query;
-    var heroVerdict = $("hero-inline-verdict");
-    if (heroVerdict && last.verdict) {
-      var sevColor = last.verdict === "verdict.inside" ? "var(--sa-critical)"
-                   : last.verdict === "verdict.blast20" ? "var(--sa-high)"
-                   : last.verdict === "verdict.blastMod" ? "var(--sa-moderate)"
-                   : "var(--sa-safe)";
-      heroVerdict.style.color = sevColor;
-      var milesText = last.miles != null ? " · " + last.miles.toFixed(2) + " mi from tank" : "";
-      heroVerdict.textContent = t(last.verdict) + milesText;
-      heroVerdict.className = "hero-check-verdict active";
-    }
-  } catch (e) {}
-}
-
 /* ============ KICKOFF ============ */
 applyLang();
-restoreHeroInlineCheck();
 loadConfig().then(function() {
   fetchStatus();
   loadTimeline();
