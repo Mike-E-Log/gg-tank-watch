@@ -15,66 +15,54 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
   <style>
     :root, html.theme-light {
-      --bg: #faf8f5;
-      --surface: #ffffff;
-      --text: #1a1612;
-      --text-sec: #5c5347;
-      --text-muted: #8a8279;
-      --border: #e5e0d8;
-      --shadow: 0 1px 2px rgba(26,22,18,0.06);
-      --accent: #0e6f5e;
-      --accent-light: #e0f2ee;
-      --gold: #9e7c29;
-      --gold-light: #f7f0e0;
-      --safe: #059669;
-      --safe-bg: #ecfdf5;
-      --safe-border: #a7f3d0;
-      --moderate: #d97706;
-      --moderate-bg: #fffbeb;
-      --moderate-border: #fde68a;
-      --high: #dc2626;
-      --high-bg: #fef2f2;
-      --high-border: #fecaca;
-      --critical: #7f1d1d;
-      --critical-bg: #fef2f2;
-      --critical-border: #fecaca;
-      --banner-breaking-bg: #fef2f2;
-      --banner-update-bg: #fdf6e8;
-      --banner-stale-bg: #f3f0eb;
+      --sa-bg:        #faf8f5;
+      --sa-surface:   #ffffff;
+      --sa-surface-2: #f3efe7;
+      --sa-text:      #1a1612;
+      --sa-text-2:    #5c5347;
+      --sa-text-3:    #8a8279;
+      --sa-celadon:   #0e6f5e;
+      --sa-celadon-2: #d8eae5;
+      --sa-celadon-3: rgba(14, 111, 94, 0.12);
+      --sa-gold:      #9e7c29;
+      --sa-gold-2:    #efe4c5;
+      --sa-safe:      #059669;
+      --sa-moderate:  #d97706;
+      --sa-high:      #dc2626;
+      --sa-critical:  #7f1d1d;
+      --sa-high-soft: rgba(220, 38, 38, 0.10);
+      --sa-border:    rgba(26, 22, 18, 0.08);
+      --sa-border-2:  rgba(26, 22, 18, 0.16);
+      --sa-shadow-sm: 0 1px 2px rgba(26, 22, 18, 0.05);
+      --sa-shadow:    0 2px 12px rgba(26, 22, 18, 0.06), 0 1px 2px rgba(26, 22, 18, 0.04);
     }
     html.theme-dark {
-      --bg: #121110;
-      --surface: #1e1c19;
-      --text: #f0ece6;
-      --text-sec: #a39a8e;
-      --text-muted: #6e665c;
-      --border: #302c27;
-      --shadow: 0 1px 3px rgba(0,0,0,0.5);
-      --accent: #4ecdb4;
-      --accent-light: rgba(78,205,180,0.12);
-      --gold: #d4b05c;
-      --gold-light: rgba(212,176,92,0.1);
-      --safe: #34d399;
-      --safe-bg: rgba(52,211,153,0.12);
-      --safe-border: rgba(52,211,153,0.3);
-      --moderate: #fbbf24;
-      --moderate-bg: rgba(251,191,36,0.1);
-      --moderate-border: rgba(251,191,36,0.3);
-      --high: #f87171;
-      --high-bg: rgba(248,113,113,0.12);
-      --high-border: rgba(248,113,113,0.3);
-      --critical: #fca5a5;
-      --critical-bg: rgba(252,165,165,0.12);
-      --critical-border: rgba(252,165,165,0.3);
-      --banner-breaking-bg: rgba(248,113,113,0.15);
-      --banner-update-bg: rgba(212,176,92,0.08);
-      --banner-stale-bg: rgba(110,102,92,0.12);
+      --sa-bg:        #121110;
+      --sa-surface:   #1e1c19;
+      --sa-surface-2: #28241e;
+      --sa-text:      #f0ece6;
+      --sa-text-2:    #a39a8e;
+      --sa-text-3:    #6e665c;
+      --sa-celadon:   #4ecdb4;
+      --sa-celadon-2: #1f3a35;
+      --sa-celadon-3: rgba(78, 205, 180, 0.14);
+      --sa-gold:      #d4b05c;
+      --sa-gold-2:    #3a2f17;
+      --sa-safe:      #10b981;
+      --sa-moderate:  #f59e0b;
+      --sa-high:      #ef4444;
+      --sa-critical:  #b91c1c;
+      --sa-high-soft: rgba(239, 68, 68, 0.14);
+      --sa-border:    rgba(240, 236, 230, 0.10);
+      --sa-border-2:  rgba(240, 236, 230, 0.20);
+      --sa-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+      --sa-shadow:    0 2px 14px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
-      background: var(--bg);
-      color: var(--text);
+      background: var(--sa-bg);
+      color: var(--sa-text);
       font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
       font-size: 14px;
       line-height: 1.4;
@@ -82,17 +70,23 @@
       height: 100%;
     }
     .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+    .sa-mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-feature-settings: "zero", "cv11"; font-variant-numeric: tabular-nums; }
+    .sa-sev-low      { color: var(--sa-safe); }
+    .sa-sev-moderate { color: var(--sa-moderate); }
+    .sa-sev-high     { color: var(--sa-high); }
+    .sa-sev-critical { color: var(--sa-critical); }
+    .sa-sev-resolved { color: var(--sa-celadon); }
 
     /* ===== VIETNAMESE TYPOGRAPHY ===== */
     html[lang="vi"] {
       font-family: "Be Vietnam Pro", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
       line-height: 1.5;
     }
-    html[lang="vi"] .topbar-title,
-    html[lang="vi"] .hero-severity-label {
+    html[lang="vi"] .topbar-wordmark,
+    html[lang="vi"] .hero-split-left-header {
       font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
     }
-    html[lang="vi"] .topbar-title {
+    html[lang="vi"] .topbar-wordmark {
       letter-spacing: 0.3px;
     }
 
@@ -103,7 +97,7 @@
       left: 8px;
       z-index: 9999;
       padding: 8px 16px;
-      background: var(--accent);
+      background: var(--sa-celadon);
       color: #fff;
       font-weight: 700;
       font-size: 14px;
@@ -117,7 +111,7 @@
 
     /* ===== FOCUS STYLES ===== */
     :focus-visible {
-      outline: 2px solid var(--accent);
+      outline: 2px solid var(--sa-celadon);
       outline-offset: 2px;
     }
     input:focus-visible {
@@ -138,88 +132,115 @@
     /* ===== REFRESH BAR ===== */
     .refresh-bar {
       height: 2px;
-      background: var(--border);
+      background: var(--sa-border);
       flex-shrink: 0;
     }
     .refresh-bar-fill {
       height: 100%;
-      background: var(--accent);
+      background: var(--sa-celadon);
       transition: width 1s linear;
     }
 
     /* ===== TOPBAR ===== */
     .topbar {
+      position: relative;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 6px 12px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      min-height: 36px;
       gap: 8px;
-    }
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 7px;
+      padding: 10px 14px;
+      background: var(--sa-surface);
+      border-bottom: 1px solid var(--sa-border);
       flex-shrink: 0;
-    }
-    .topbar-title {
-      font-weight: 700;
+      min-height: 56px;
       font-size: 13px;
-      letter-spacing: -0.2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    }
+    @media (min-width: 768px) {
+      .topbar { gap: 14px; padding: 10px 22px; }
     }
     .unofficial-pill {
-      flex-shrink: 0;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      color: #fff;
-      background: var(--gold);
-      padding: 2px 6px;
-      border-radius: 4px;
-      white-space: nowrap;
-      cursor: help;
-    }
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 1 1 auto;
-      min-width: 0;
-      justify-content: flex-end;
-    }
-    .topbar-updated {
-      font-size: 10px;
-      color: var(--text-muted);
-      white-space: nowrap;
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .topbar-updated.stale { color: var(--high); font-weight: 700; }
-    .theme-toggle {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-sec);
-      padding: 3px 8px;
-      font-size: 11px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: inherit;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      line-height: 1;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: var(--sa-gold-2);
+      border: 1px solid var(--sa-gold);
+      color: var(--sa-gold);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      cursor: help;
+      flex: 0 0 auto;
     }
-    .toggle-icon { width: 17px; height: 17px; display: block; }
+    .unofficial-pill-dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sa-gold);
+    }
+    .topbar-wordmark {
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      color: var(--sa-text);
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    @media (min-width: 768px) {
+      .topbar-wordmark { font-size: 16.5px; }
+    }
+    .topbar-wordmark-tank { color: var(--sa-celadon); }
+    .topbar-spacer { flex: 1 1 auto; }
+    .topbar-freshness {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex: 0 0 auto;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      color: var(--sa-text-2);
+      white-space: nowrap;
+    }
+    @media (min-width: 768px) {
+      .topbar-freshness { font-size: 11.5px; }
+    }
+    .topbar-freshness.stale { color: var(--sa-high); font-weight: 700; }
+    .freshness-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sa-safe);
+      animation: sa-pulse 2.4s ease-out infinite;
+    }
+    .freshness-dot.sev-moderate { background: var(--sa-moderate); }
+    .freshness-dot.sev-high { background: var(--sa-high); }
+    .freshness-dot.sev-critical { background: var(--sa-critical); }
+    .freshness-dot.sev-resolved { background: var(--sa-celadon); }
+    .topbar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: transparent;
+      border: 1px solid var(--sa-border-2);
+      color: var(--sa-text-2);
+      border-radius: 6px;
+      padding: 6px 9px;
+      cursor: pointer;
+      font-family: inherit;
+      flex: 0 0 auto;
+      transition: all .15s;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .topbar-btn:hover { border-color: var(--sa-celadon); }
+    .toggle-icon { width: 14px; height: 14px; display: block; }
     .flag { width: 16px; height: 11px; border-radius: 1px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15); display: block; }
     #theme-toggle {
-      padding: 3px 6px;
+      padding: 6px 7px;
       min-width: 44px;
       min-height: 44px;
       display: inline-flex;
@@ -236,22 +257,22 @@
     .lang-picker { position: relative; display: inline-flex; }
     .lang-menu {
       position: absolute; top: calc(100% + 4px); right: 0; z-index: 1500;
-      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+      background: var(--sa-surface); border: 1px solid var(--sa-border); border-radius: 6px;
       padding: 4px; min-width: 132px; box-shadow: 0 6px 20px rgba(0,0,0,0.22); display: none;
     }
     .lang-menu.open { display: block; }
     .lang-menu button {
       display: flex; align-items: center; gap: 8px; width: 100%;
-      background: none; border: none; color: var(--text); font-family: inherit;
+      background: none; border: none; color: var(--sa-text); font-family: inherit;
       font-size: 13px; padding: 8px; border-radius: 4px; cursor: pointer; text-align: left;
     }
-    .lang-menu button:hover, .lang-menu button:focus { background: var(--bg); }
+    .lang-menu button:hover, .lang-menu button:focus { background: var(--sa-bg); }
     .lang-menu button[aria-current="true"] { font-weight: 700; }
-    .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--banner-update-bg); }
-    .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-sec); margin-bottom: 3px; }
-    .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--text); margin: 0; }
-    .info-roads-defer { font-size: 12px; color: var(--text-sec); line-height: 1.45; }
-    .info-roads-defer a { color: var(--accent); }
+    .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); background: var(--sa-gold-2); }
+    .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2); margin-bottom: 3px; }
+    .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--sa-text); margin: 0; }
+    .info-roads-defer { font-size: 12px; color: var(--sa-text-2); line-height: 1.45; }
+    .info-roads-defer a { color: var(--sa-celadon); }
 
     /* ===== BANNERS ===== */
     .banners { flex-shrink: 0; }
@@ -263,17 +284,41 @@
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--sa-border);
     }
     .banner-breaking {
-      background: var(--banner-breaking-bg);
-      color: var(--high);
+      background: var(--sa-high-soft);
+      color: var(--sa-high);
       animation: pulse-bg 1.5s ease-in-out infinite;
     }
-    .banner-update { background: var(--banner-update-bg); color: var(--moderate); }
-    .banner-stale { background: var(--banner-stale-bg); color: var(--text-sec); cursor: default; }
-    .banner-offline { background: var(--banner-stale-bg); color: var(--text-muted); cursor: default; }
-    .banner-action { font-size: 11px; opacity: 0.7; }
+    .banner-update { background: var(--sa-celadon-3); color: var(--sa-text); }
+    .banner-urgent { background: var(--sa-high-soft); color: var(--sa-text); }
+    .banner-pill {
+      display: inline-block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: #fff;
+      margin-right: 8px;
+    }
+    .banner-pill-update { background: var(--sa-celadon); }
+    .banner-pill-urgent { background: var(--sa-high); }
+    .banner-dismiss {
+      background: transparent;
+      border: 0;
+      color: var(--sa-text-2);
+      cursor: pointer;
+      padding: 2px 6px;
+      font-size: 14px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .banner-stale { background: var(--sa-surface-2); color: var(--sa-text-2); cursor: default; }
+    .banner-offline { background: var(--sa-surface-2); color: var(--sa-text-3); cursor: default; }
+    /* .banner-action removed — replaced by banner-pill + banner-dismiss */
     @keyframes pulse-bg { 0%,100%{opacity:1} 50%{opacity:0.7} }
     @media (prefers-reduced-motion: reduce) {
       .banner-breaking { animation: none; }
@@ -285,30 +330,66 @@
     .safety-strip {
       flex-shrink: 0;
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 3px 10px;
-      padding: 7px 12px;
-      font-size: 11.5px;
+      flex-direction: column;
+      gap: 6px;
+      padding: 8px 14px;
+      font-size: 11px;
       line-height: 1.35;
-      background: var(--banner-update-bg);
-      border-bottom: 1px solid var(--border);
+      background: var(--sa-surface-2);
+      border-top: 1px solid var(--sa-border);
+      border-bottom: 1px solid var(--sa-border);
+      color: var(--sa-text-2);
     }
-    .safety-strip-info { font-weight: 700; color: var(--text); }
-    .safety-strip-official { color: var(--text-sec); }
-    .safety-strip-official a, .safety-strip-terms {
-      color: var(--accent);
-      font-weight: 600;
+    @media (min-width: 600px) {
+      .safety-strip {
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 22px;
+        font-size: 11.5px;
+        white-space: nowrap;
+      }
+    }
+    .safety-strip-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .safety-strip-info { font-weight: 600; color: var(--sa-text); flex: 1 1 auto; min-width: 0; }
+    .safety-strip-sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+    }
+    @media (min-width: 600px) {
+      .safety-strip-sources { font-size: 11px; }
+    }
+    .safety-strip-sources a {
+      color: var(--sa-celadon);
       text-decoration: none;
+      white-space: nowrap;
     }
-    .safety-strip-official a:hover, .safety-strip-terms:hover { text-decoration: underline; }
-    .safety-strip-sep { color: var(--text-muted); }
-    .safety-strip-terms { margin-left: auto; }
+    .safety-strip-sources a:hover { text-decoration: underline; }
+    .safety-strip-sep { color: var(--sa-text-3); }
+    .safety-strip-terms {
+      color: var(--sa-text-3);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-size: 10.5px;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    @media (min-width: 600px) {
+      .safety-strip-terms { margin-left: auto; font-size: 11px; }
+    }
 
     /* ===== OFFICIAL SOURCES PANEL ===== */
     .official-sources-note {
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
       margin: 0 0 8px;
       line-height: 1.4;
     }
@@ -319,14 +400,14 @@
       justify-content: space-between;
       padding: 8px 10px;
       border-radius: 6px;
-      background: var(--bg);
-      border: 1px solid var(--border);
+      background: var(--sa-bg);
+      border: 1px solid var(--sa-border);
       text-decoration: none;
-      color: var(--text);
+      color: var(--sa-text);
       font-size: 13px;
       min-height: 48px;
     }
-    .official-link:hover { border-color: var(--accent); }
+    .official-link:hover { border-color: var(--sa-celadon); }
     .official-link-tag {
       font-size: 10px;
       font-weight: 700;
@@ -338,182 +419,173 @@
       flex-shrink: 0;
     }
 
-    /* ===== AI DISCLOSURE ===== */
-    .ai-disclosure {
-      flex-shrink: 0;
-      padding: 4px 12px;
-      font-size: 11px;
-      color: var(--gold);
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      text-align: center;
-    }
+
 
     /* ===== NEWS unified feed ===== */
-    .feed-item { padding: 10px 12px; border-bottom: 1px solid var(--border); display: block; color: inherit; text-decoration: none; border-top: 2px solid transparent; border-image: linear-gradient(90deg, var(--accent), transparent) 1; }
+    .feed-item { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); display: block; color: inherit; text-decoration: none; border-top: 2px solid transparent; border-image: linear-gradient(90deg, var(--sa-celadon), transparent) 1; }
     .feed-item-official { cursor: default; }
     a.feed-item { display: flex; gap: 10px; }
-    .feed-meta { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
+    .feed-meta { font-size: 11px; color: var(--sa-text-3); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
     .feed-chip { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
-    .feed-chip-official { background: var(--accent-light); color: var(--accent); }
-    .feed-chip-article  { background: var(--banner-update-bg); color: var(--moderate); }
-    .feed-chip-video    { background: var(--high-bg); color: var(--high); }
-    .feed-text { font-size: 13px; line-height: 1.4; color: var(--text); margin: 2px 0 4px; }
-    .feed-source { font-size: 11px; color: var(--accent); text-decoration: none; }
+    .feed-chip-official { background: var(--sa-celadon-3); color: var(--sa-celadon); }
+    .feed-chip-article  { background: var(--sa-gold-2); color: var(--sa-moderate); }
+    .feed-chip-video    { background: var(--sa-high-soft); color: var(--sa-high); }
+    .feed-text { font-size: 13px; line-height: 1.4; color: var(--sa-text); margin: 2px 0 4px; }
+    .feed-source { font-size: 11px; color: var(--sa-celadon); text-decoration: none; }
     .feed-source:hover { text-decoration: underline; }
 
     /* ===== INFO collapsible groups ===== */
-    .info-fold { border-bottom: 1px solid var(--border); }
+    .info-fold { border-bottom: 1px solid var(--sa-border); }
     .info-fold > summary {
       cursor: pointer; padding: 12px 16px; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-sec);
+      letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2);
       list-style: none;
     }
     .info-fold > summary::-webkit-details-marker { display: none; }
-    .info-fold > summary::after { content: " \25B8"; color: var(--text-muted); }
+    .info-fold > summary::after { content: " \25B8"; color: var(--sa-text-3); }
     .info-fold[open] > summary::after { content: " \25BE"; }
     .info-group-title {
       padding: 12px 16px 0; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-      text-transform: uppercase; color: var(--text-sec);
+      text-transform: uppercase; color: var(--sa-text-2);
     }
 
-    /* ===== HERO (neutral status) ===== */
-    .hero {
-      padding: 8px 16px 8px;
-      text-align: center;
+    /* ===== HERO SPLIT-PANEL ===== */
+    .hero-split {
+      display: flex;
+      flex-direction: column;
+      background: var(--sa-bg);
       flex-shrink: 0;
-      border-bottom: 1px solid var(--border);
     }
-    .hero-severity {
+    @media (min-width: 600px) {
+      .hero-split { flex-direction: row; }
+    }
+    .hero-split-left {
+      flex: 0 0 auto;
+      padding: 18px 14px 14px;
+      background: var(--sa-surface);
+      border-bottom: 1px solid var(--sa-border);
+      position: relative;
+    }
+    @media (min-width: 600px) {
+      .hero-split-left {
+        flex: 0 0 38%;
+        padding: 22px 24px;
+        border-right: 1px solid var(--sa-border);
+        border-bottom: none;
+      }
+    }
+    .hero-split-left-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 4px;
-    }
-    .hero-severity-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--text-sec);
-    }
-    .hero-summary {
-      font-size: 13px;
-      line-height: 1.4;
-      color: var(--text-sec);
-      margin: 0;
-    }
-    .hero-check {
-      margin-top: 8px;
-      display: flex;
-      gap: 6px;
-      max-width: 420px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .hero-check-label {
-      display: block;
-      font-size: 11px;
+      color: var(--sa-text-3);
       font-weight: 600;
-      color: var(--text-sec);
-      text-align: left;
-      margin-bottom: 4px;
     }
-    .hero-check input {
+    .hero-split-left-header-line {
       flex: 1;
-      padding: 10px 12px;
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 16px;
-      font-family: inherit;
-      min-width: 0;
-      min-height: 48px;
+      height: 1px;
+      background: var(--sa-border);
     }
-    .hero-check button {
-      padding: 10px 16px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 14px;
-      font-family: inherit;
-      cursor: pointer;
-      white-space: nowrap;
-      min-height: 48px;
+    .hero-severity-word {
+      font-weight: 800;
+      font-size: 36px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
     }
-    .hero-check button:disabled { opacity: 0.5; }
-    .hero-verdict {
-      margin-top: 6px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 12px;
+    @media (min-width: 600px) {
+      .hero-severity-word { font-size: 40px; }
+    }
+    .hero-res-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .hero-res-count {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 26px;
       font-weight: 600;
-      text-align: center;
-      display: none;
+      color: var(--sa-text);
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
     }
-    .hero-verdict.active { display: block; }
-    .hero-verdict-inside {
-      background: var(--high-bg);
-      border: 1px solid var(--high-border);
-      color: var(--high);
+    @media (min-width: 600px) {
+      .hero-res-count { font-size: 28px; }
     }
-    .hero-verdict-outside {
-      background: var(--safe-bg);
-      border: 1px solid var(--safe-border);
-      color: var(--safe);
+    .hero-res-label {
+      font-size: 12px;
+      color: var(--sa-text-2);
     }
-    .hero-verdict-loading {
-      background: var(--banner-stale-bg);
-      border: 1px solid var(--border);
-      color: var(--text-sec);
+    .hero-split-right {
+      flex: 1 1 auto;
+      padding: 14px 14px 18px;
+      min-width: 0;
     }
-    .hero-verdict-error {
-      background: var(--banner-stale-bg);
-      border: 1px solid var(--border);
-      color: var(--text-sec);
+    @media (min-width: 600px) {
+      .hero-split-right { padding: 22px 24px; }
     }
-    .severity-chip {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: 700;
+    .hero-split-right-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #fff;
+      color: var(--sa-text-3);
+      font-weight: 600;
+      flex-wrap: wrap;
     }
-    .sev-low { background: var(--accent); }
-    .sev-moderate { background: var(--moderate); }
-    .sev-high { background: var(--high); }
-    .sev-critical { background: var(--critical); }
-
-    /* ===== STATS STRIP ===== */
-    .stats-strip {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      padding: 5px 12px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      font-size: 11px;
-      flex-shrink: 0;
-      flex-wrap: nowrap;
-      overflow-x: auto;
+    .hero-split-right-header-line {
+      flex: 1 1 20px;
+      min-width: 20px;
+      height: 1px;
+      background: var(--sa-border);
     }
-    .stat {
-      display: flex;
-      align-items: center;
-      gap: 3px;
+    .hero-day-counter {
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--sa-text-3);
+      text-transform: none;
+      letter-spacing: 0.04em;
+      font-weight: 500;
       white-space: nowrap;
-      color: var(--text-sec);
     }
-    .stat-val { font-weight: 600; color: var(--text); }
-    .stat-sep { color: var(--border); margin: 0 2px; }
+    .hero-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13.5px;
+      color: var(--sa-text);
+      line-height: 1.45;
+      padding: 8px 0;
+    }
+    @media (min-width: 600px) {
+      .hero-bullet { font-size: 14.5px; }
+    }
+    .hero-bullet + .hero-bullet {
+      border-top: 1px dashed var(--sa-border);
+    }
+    .hero-bullet-dash {
+      flex: 0 0 18px;
+      margin-top: 9px;
+      width: 18px;
+      height: 2px;
+      border-radius: 1px;
+      background: var(--sa-celadon);
+    }
+    .hero-bullet-dash.primary {
+      /* colored by severity via inline style */
+    }
+    .hero-bullet-text {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
     .wind-arrow-sm {
       display: inline-block;
       width: 10px;
@@ -523,7 +595,7 @@
 
     /* ===== DATA FLASH MICRO-INTERACTION ===== */
     @keyframes data-flash-anim {
-      0% { background-color: var(--accent-light); }
+      0% { background-color: var(--sa-celadon-3); }
       100% { background-color: transparent; }
     }
     .data-flash {
@@ -552,66 +624,103 @@
       pointer-events: auto;
     }
 
-    /* ===== TAB BAR ===== */
+    /* ===== TAB BAR (mobile bottom, desktop top) ===== */
     .tab-bar {
       display: flex;
-      border-top: 1px solid var(--border);
-      background: var(--surface);
+      gap: 0;
+      background: var(--sa-surface);
+      border-top: 1px solid var(--sa-border);
+      padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
       flex-shrink: 0;
-      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
     .tab-btn {
-      flex: 1;
+      flex: 1 1 0;
+      background: transparent;
+      border: 0;
+      padding: 8px 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--sa-text-2);
+      position: relative;
+      transition: color .15s;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 2px;
-      padding: 10px 0 8px;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 10px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: color 0.15s;
-      border-top: 2px solid transparent;
       min-height: 48px;
     }
     .tab-btn.active {
-      color: var(--accent);
-      border-top-color: var(--accent);
+      font-weight: 700;
+      color: var(--sa-celadon);
     }
-    .tab-btn-icon { font-size: 18px; line-height: 1; }
-    .tab-btn-label { letter-spacing: 0.3px; }
-    .tab-btn .tab-badge {
-      position: absolute;
-      top: 2px;
-      right: calc(50% - 16px);
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--high);
+    .tab-btn-glyph {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      font-weight: 700;
+      opacity: 0.7;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: var(--sa-text-3);
+    }
+    .tab-btn.active .tab-btn-glyph {
+      background: var(--sa-celadon);
+      color: var(--sa-surface);
+      opacity: 1;
+    }
+    .tab-btn-label { letter-spacing: 0.3px; font-size: 10px; }
+    @media (min-width: 600px) {
+      .tab-bar {
+        border-top: none;
+        border-bottom: 1px solid var(--sa-border);
+        padding: 0 14px;
+        order: -1;
+      }
+      .tab-btn {
+        flex-direction: row;
+        gap: 8px;
+        padding: 14px 8px;
+        font-size: 13.5px;
+      }
+      .tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 10%;
+        right: 10%;
+        height: 2px;
+        background: var(--sa-celadon);
+        border-radius: 1px;
+      }
+      .tab-btn-glyph { display: none; }
+      .tab-btn-label { font-size: 13.5px; }
     }
 
     /* ===== MAP PANEL ===== */
-    #map, #map-desktop {
+    #map {
       width: 100%;
       height: 100%;
-      background: var(--bg);
+      background: var(--sa-bg);
     }
     .map-wind-overlay {
       position: absolute;
       top: 8px;
       right: 8px;
       z-index: 1000;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
       border-radius: 6px;
       padding: 6px 10px;
       font-size: 11px;
-      color: var(--text-sec);
-      box-shadow: var(--shadow);
+      color: var(--sa-text-2);
+      box-shadow: var(--sa-shadow);
       display: flex;
       align-items: center;
       gap: 4px;
@@ -621,12 +730,12 @@
       bottom: 24px;
       left: 8px;
       z-index: 1000;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
       border-radius: 6px;
       padding: 6px 10px;
       font-size: 10px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--sa-shadow);
       max-width: 200px;
     }
     .legend-row {
@@ -634,7 +743,7 @@
       align-items: center;
       gap: 5px;
       padding: 1px 0;
-      color: var(--text-sec);
+      color: var(--sa-text-2);
     }
     .legend-dot {
       width: 10px;
@@ -644,23 +753,23 @@
       border: 1px solid rgba(0,0,0,0.1);
     }
     html.theme-dark .leaflet-control-attribution {
-      background: rgba(30,41,59,0.85) !important;
-      color: var(--text-muted) !important;
+      background: var(--sa-surface) !important;
+      color: var(--sa-text-3) !important;
     }
-    html.theme-dark .leaflet-control-attribution a { color: var(--accent) !important; }
+    html.theme-dark .leaflet-control-attribution a { color: var(--sa-celadon) !important; }
     html.theme-dark .leaflet-control-zoom a {
-      background: var(--surface) !important;
-      color: var(--text) !important;
-      border-color: var(--border) !important;
+      background: var(--sa-surface) !important;
+      color: var(--sa-text) !important;
+      border-color: var(--sa-border) !important;
     }
     .leaflet-tooltip.fixed-point-label {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
+      background: var(--sa-surface);
+      color: var(--sa-text);
+      border: 1px solid var(--sa-border);
       font-size: 11px;
       font-weight: 600;
       padding: 2px 6px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--sa-shadow);
     }
     .leaflet-tooltip.fixed-point-label::before { display: none; }
 
@@ -670,16 +779,16 @@
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
       padding: 10px 12px 4px;
     }
     .stmt {
       padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--sa-border);
     }
     .stmt.is-newest {
-      background: var(--high-bg);
-      border-left: 3px solid var(--high);
+      background: var(--sa-high-soft);
+      border-left: 3px solid var(--sa-high);
       padding-left: 9px;
     }
     .stmt-top {
@@ -698,32 +807,32 @@
       border-radius: 3px;
       color: #fff;
     }
-    .stmt-badge-newest { background: var(--high); }
-    .stmt-badge-recent { background: var(--moderate); }
+    .stmt-badge-newest { background: var(--sa-high); }
+    .stmt-badge-recent { background: var(--sa-moderate); }
     .stmt-time {
       font-size: 12px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--sa-text);
     }
     .stmt-relative {
       font-size: 11px;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
     }
     .stmt-agency {
       font-size: 11px;
       font-weight: 600;
-      color: var(--text-sec);
+      color: var(--sa-text-2);
       margin-bottom: 3px;
     }
     .stmt-text {
       font-size: 13px;
       line-height: 1.45;
-      color: var(--text);
+      color: var(--sa-text);
     }
     .stmt-source {
       display: inline-block;
       font-size: 11px;
-      color: var(--accent);
+      color: var(--sa-celadon);
       margin-top: 4px;
       text-decoration: none;
     }
@@ -733,18 +842,18 @@
       display: flex;
       gap: 10px;
       padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--sa-border);
       text-decoration: none;
-      color: var(--text);
+      color: var(--sa-text);
     }
-    .news-item:active { background: var(--bg); }
+    .news-item:active { background: var(--sa-bg); }
     .news-thumb {
       width: 72px;
       height: 54px;
       border-radius: 4px;
       overflow: hidden;
       flex-shrink: 0;
-      background: var(--border);
+      background: var(--sa-border);
       position: relative;
       display: flex;
       align-items: center;
@@ -770,10 +879,10 @@
       filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
     }
     .news-thumb.placeholder-video {
-      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><path d="M8 5v14l11-7z"/></svg>') center/30% no-repeat;
+      background: var(--sa-border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><path d="M8 5v14l11-7z"/></svg>') center/30% no-repeat;
     }
     .news-thumb.placeholder-article {
-      background: var(--border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><path d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm0 5h16v2H4z"/></svg>') center/24% no-repeat;
+      background: var(--sa-border) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><path d="M4 4h16v2H4zm0 5h16v2H4zm0 5h10v2H4zm0 5h16v2H4z"/></svg>') center/24% no-repeat;
     }
     .news-meta { flex: 1; min-width: 0; }
     .news-title {
@@ -787,7 +896,7 @@
     }
     .news-sub {
       font-size: 11px;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
       margin-top: 2px;
       display: flex;
       gap: 6px;
@@ -805,11 +914,11 @@
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
     }
     .timeline-count {
       font-size: 11px;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
     }
     .filter-chips {
       display: flex;
@@ -826,31 +935,31 @@
       border-radius: 16px;
       font-size: 11px;
       font-weight: 600;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-sec);
+      border: 1px solid var(--sa-border);
+      background: var(--sa-surface);
+      color: var(--sa-text-2);
       cursor: pointer;
       white-space: nowrap;
       min-height: 32px;
       font-family: inherit;
       transition: background 0.15s, border-color 0.15s;
     }
-    .filter-chip:hover { border-color: var(--accent); }
+    .filter-chip:hover { border-color: var(--sa-celadon); }
     .filter-chip.active {
-      background: var(--accent);
+      background: var(--sa-celadon);
       color: #fff;
-      border-color: var(--accent);
+      border-color: var(--sa-celadon);
     }
     .filter-divider {
       width: 1px;
-      background: var(--border);
+      background: var(--sa-border);
       flex-shrink: 0;
       align-self: stretch;
       margin: 4px 2px;
     }
     .timeline-event {
       padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--sa-border);
     }
     .timeline-event-header {
       display: flex;
@@ -861,7 +970,7 @@
     }
     .timeline-event-time {
       font-size: 11px;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
       font-family: "IBM Plex Mono", ui-monospace, monospace;
       font-variant-numeric: tabular-nums;
     }
@@ -872,24 +981,24 @@
       border-radius: 3px;
       text-transform: uppercase;
       letter-spacing: 0.3px;
-      background: var(--accent-light);
-      color: var(--accent);
+      background: var(--sa-celadon-3);
+      color: var(--sa-celadon);
     }
     .timeline-event-title {
       font-size: 13px;
       font-weight: 600;
       line-height: 1.35;
-      color: var(--text);
+      color: var(--sa-text);
     }
     .timeline-event-desc {
       font-size: 12px;
       line-height: 1.4;
-      color: var(--text-sec);
+      color: var(--sa-text-2);
       margin-top: 3px;
     }
     .timeline-event-source {
       font-size: 11px;
-      color: var(--accent);
+      color: var(--sa-celadon);
       text-decoration: none;
       margin-top: 4px;
       display: inline-block;
@@ -898,22 +1007,22 @@
     .timeline-empty {
       padding: 24px 12px;
       text-align: center;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
       font-size: 13px;
     }
 
     /* ===== EVACUATION SHELTERS ===== */
     .shelters-cta {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
       border-radius: 6px;
       padding: 10px 14px;
       margin-bottom: 12px;
       font-size: 13px;
-      color: var(--text);
-      box-shadow: var(--shadow);
+      color: var(--sa-text);
+      box-shadow: var(--sa-shadow);
     }
-    .shelters-cta a { color: var(--accent); text-decoration: none; }
+    .shelters-cta a { color: var(--sa-celadon); text-decoration: none; }
     .shelters-cta a:hover { text-decoration: underline; }
     .shelters-grid {
       display: grid;
@@ -921,26 +1030,26 @@
       gap: 10px;
     }
     .shelter-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
       border-radius: 6px;
       padding: 12px 14px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--sa-shadow);
       display: flex; flex-direction: column; gap: 4px;
     }
-    .shelter-card .name { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.25; }
-    .shelter-card .city { font-size: 12px; color: var(--text-muted); }
+    .shelter-card .name { font-size: 14px; font-weight: 700; color: var(--sa-text); line-height: 1.25; }
+    .shelter-card .city { font-size: 12px; color: var(--sa-text-3); }
     .shelter-card .address {
-      font-size: 11px; color: var(--text-muted);
+      font-size: 11px; color: var(--sa-text-3);
       font-family: "IBM Plex Mono", ui-monospace, monospace; margin-top: 2px;
     }
     .shelter-card .notes-chip {
       display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
       text-transform: uppercase; padding: 2px 6px; border-radius: 3px;
-      background: var(--moderate); color: white; margin-top: 4px; align-self: flex-start;
+      background: var(--sa-moderate); color: white; margin-top: 4px; align-self: flex-start;
     }
     .shelter-card .directions {
-      font-size: 12px; color: var(--accent); text-decoration: none;
+      font-size: 12px; color: var(--sa-celadon); text-decoration: none;
       margin-top: 6px; align-self: flex-start;
       min-height: 44px; display: inline-flex; align-items: center;
     }
@@ -954,18 +1063,18 @@
 
     /* ===== COMMUNITY RESOURCES ===== */
     .community-resource-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
       border-radius: 6px;
       padding: 12px 14px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--sa-shadow);
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
-    .community-resource-card .cr-title { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.25; }
-    .community-resource-card .cr-title-vi { font-size: 12px; color: var(--text-muted); font-style: italic; }
-    .community-resource-card .cr-desc { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
+    .community-resource-card .cr-title { font-size: 14px; font-weight: 700; color: var(--sa-text); line-height: 1.25; }
+    .community-resource-card .cr-title-vi { font-size: 12px; color: var(--sa-text-3); font-style: italic; }
+    .community-resource-card .cr-desc { font-size: 12px; color: var(--sa-text-2); line-height: 1.4; }
     .community-resource-card .cr-actions { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
     .community-resource-card .cr-action {
       display: inline-flex;
@@ -979,15 +1088,15 @@
       min-height: 44px;
     }
     .cr-action-phone {
-      background: var(--accent);
+      background: var(--sa-celadon);
       color: #fff;
     }
     .cr-action-url {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--accent);
+      background: var(--sa-bg);
+      border: 1px solid var(--sa-border);
+      color: var(--sa-celadon);
     }
-    .cr-action-url:hover { border-color: var(--accent); }
+    .cr-action-url:hover { border-color: var(--sa-celadon); }
     .cr-cat-chip {
       font-size: 9px;
       font-weight: 700;
@@ -997,10 +1106,10 @@
       letter-spacing: 0.3px;
       align-self: flex-start;
     }
-    .cr-cat-government { background: var(--accent-light); color: var(--accent); }
-    .cr-cat-safety { background: var(--moderate-bg); color: var(--moderate); }
+    .cr-cat-government { background: var(--sa-celadon-3); color: var(--sa-celadon); }
+    .cr-cat-safety { background: var(--sa-gold-2); color: var(--sa-moderate); }
     .cr-cat-shelter { background: #dbeafe; color: #2563eb; }
-    .cr-cat-community { background: var(--gold-light); color: var(--gold); }
+    .cr-cat-community { background: var(--sa-gold-2); color: var(--sa-gold); }
 
     /* ===== RESOURCES TAB ===== */
     .resources-section { padding: 10px 12px; }
@@ -1009,7 +1118,7 @@
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
       margin-bottom: 8px;
     }
     .resources-grid {
@@ -1022,37 +1131,37 @@
     .about-panel-inner { padding: 0 0 24px; }
     .about-section {
       padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--sa-border);
     }
     .about-section-title {
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
       margin-bottom: 6px;
     }
     .about-body {
       font-size: 12px;
-      color: var(--text-sec);
+      color: var(--sa-text-2);
       line-height: 1.5;
     }
     .about-body p { margin-bottom: 6px; }
-    .about-body a { color: var(--accent); text-decoration: none; }
+    .about-body a { color: var(--sa-celadon); text-decoration: none; }
     .about-body a:hover { text-decoration: underline; }
 
     /* ===== INFO PANEL (incident status data rows) ===== */
     .info-panel-inner { padding: 0 0 24px; }
     .info-section {
       padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--sa-border);
     }
     .info-section-title {
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--sa-text-3);
       margin-bottom: 6px;
     }
     .info-row {
@@ -1061,23 +1170,23 @@
       padding: 3px 0;
       font-size: 13px;
     }
-    .info-row .k { color: var(--text-sec); }
-    .info-row .v { color: var(--text); font-weight: 500; }
+    .info-row .k { color: var(--sa-text-2); }
+    .info-row .v { color: var(--sa-text); font-weight: 500; }
     .info-big { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
-    .yes { color: var(--safe); font-weight: 600; }
-    .no { color: var(--high); font-weight: 600; }
+    .yes { color: var(--sa-safe); font-weight: 600; }
+    .no { color: var(--sa-high); font-weight: 600; }
 
     .source-item {
       display: block;
       padding: 5px 0;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
+      border-bottom: 1px solid var(--sa-border);
+      color: var(--sa-text);
       text-decoration: none;
       font-size: 12px;
     }
     .source-item:last-child { border-bottom: none; }
-    .source-item:hover { color: var(--accent); }
-    .source-time { color: var(--text-muted); font-size: 11px; margin-left: 4px; }
+    .source-item:hover { color: var(--sa-celadon); }
+    .source-time { color: var(--sa-text-3); font-size: 11px; margin-left: 4px; }
 
     /* ===== SON MAI CULTURAL ELEMENTS ===== */
     .lotus-divider {
@@ -1090,33 +1199,528 @@
       display: block;
       width: 24px;
       height: 12px;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid var(--sa-border);
       border-radius: 50% 50% 0 0;
       border-bottom: none;
     }
-    .app::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      background: repeating-linear-gradient(
-        180deg,
-        transparent 0px,
-        transparent 40px,
-        var(--border) 40px,
-        transparent 41px
-      );
-      opacity: 0.04;
+    .sa-wave-bg {
+      background-image:
+        radial-gradient(ellipse 1200px 60px at 50% 0%, var(--sa-celadon-3), transparent 70%),
+        repeating-linear-gradient(0deg, transparent 0px, transparent 22px, rgba(14, 111, 94, 0.035) 22px, rgba(14, 111, 94, 0.035) 23px);
     }
-    .app.severity-high::before,
-    .app.severity-critical::before {
-      opacity: 0;
+    .severity-high .sa-wave-bg,
+    .severity-critical .sa-wave-bg {
+      background-image: none;
     }
+
+    /* ===== CHECK TAB ===== */
+    .check-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-height: 100%;
+    }
+    @media (min-width: 600px) {
+      .check-layout {
+        flex-direction: row;
+      }
+    }
+    .check-left {
+      padding: 16px 14px;
+    }
+    @media (min-width: 600px) {
+      .check-left {
+        flex: 0 0 44%;
+        padding: 20px 22px;
+        border-right: 1px solid var(--sa-border);
+      }
+    }
+    .check-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--sa-text);
+      margin-bottom: 4px;
+    }
+    .check-subtitle {
+      font-size: 12px;
+      color: var(--sa-text-2);
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .check-input-group {
+      display: flex;
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .check-input-group:focus-within {
+      border-color: var(--sa-celadon);
+    }
+    .check-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--sa-text);
+      outline: none;
+      min-width: 0;
+    }
+    .check-input::placeholder {
+      color: var(--sa-text-3);
+    }
+    .check-submit-btn {
+      flex: 0 0 auto;
+      background: var(--sa-celadon);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+    .check-submit-btn:hover { opacity: 0.9; }
+    .check-submit-btn:disabled { opacity: 0.5; cursor: default; }
+    .check-location-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px dashed var(--sa-border-2);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sa-text-2);
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 16px;
+      transition: border-color 0.15s;
+    }
+    .check-location-btn:hover { border-color: var(--sa-celadon); color: var(--sa-celadon); }
+    .check-location-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sa-celadon);
+      box-shadow: 0 0 0 2px var(--sa-celadon-3);
+    }
+    .check-recent-header {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sa-text-3);
+      margin-bottom: 6px;
+    }
+    .check-recent-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .check-recent-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 4px;
+      border-bottom: 1px solid var(--sa-border);
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--sa-text);
+      background: none;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      font-family: inherit;
+      width: 100%;
+      text-align: left;
+      transition: background 0.1s;
+    }
+    .check-recent-item:hover { background: var(--sa-bg); }
+    .check-recent-item:last-child { border-bottom: none; }
+    .check-recent-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .check-recent-dot.sev-safe { background: var(--sa-safe); }
+    .check-recent-dot.sev-critical { background: var(--sa-critical); }
+    .check-recent-dot.sev-high { background: var(--sa-high); }
+    .check-recent-dot.sev-moderate { background: var(--sa-moderate); }
+    .check-recent-addr {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .check-recent-time {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 10px;
+      color: var(--sa-text-3);
+      flex-shrink: 0;
+    }
+    .check-right {
+      padding: 16px 14px;
+      border-top: 1px solid var(--sa-border);
+    }
+    @media (min-width: 600px) {
+      .check-right {
+        flex: 1 1 auto;
+        padding: 20px 22px;
+        border-top: none;
+      }
+    }
+    .check-verdict-card {
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
+      border-radius: 8px;
+      padding: 16px;
+      border-left: 4px solid var(--sa-text-3);
+    }
+    .check-verdict-card.sev-safe { border-left-color: var(--sa-safe); }
+    .check-verdict-card.sev-critical { border-left-color: var(--sa-critical); }
+    .check-verdict-card.sev-high { border-left-color: var(--sa-high); }
+    .check-verdict-card.sev-moderate { border-left-color: var(--sa-moderate); }
+    .check-verdict-header {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sa-text-3);
+      margin-bottom: 8px;
+    }
+    .check-verdict-addr {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--sa-text);
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+    .check-verdict-label {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .check-verdict-distance {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .check-verdict-miles {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--sa-text);
+    }
+    .check-verdict-unit {
+      font-size: 13px;
+      color: var(--sa-text-2);
+    }
+    .check-verdict-note {
+      border-top: 1px dashed var(--sa-border);
+      padding-top: 10px;
+      font-size: 11px;
+      color: var(--sa-text-3);
+      line-height: 1.4;
+    }
+    .check-verdict-note a {
+      color: var(--sa-celadon);
+      text-decoration: none;
+    }
+    .check-verdict-note a:hover { text-decoration: underline; }
+    .check-view-map-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 12px;
+      padding: 8px 14px;
+      background: transparent;
+      border: 1px solid var(--sa-celadon);
+      border-radius: 6px;
+      color: var(--sa-celadon);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .check-view-map-btn:hover { background: var(--sa-celadon-3); }
+    .check-empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--sa-text-3);
+      font-size: 13px;
+    }
+
+    /* ===== NEWS FILTER CHIPS ===== */
+    .news-filter-chips {
+      display: flex;
+      gap: 6px;
+      padding: 8px 12px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+    .news-filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--sa-border);
+      background: var(--sa-surface);
+      color: var(--sa-text-2);
+      cursor: pointer;
+      white-space: nowrap;
+      min-height: 32px;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .news-filter-chip:hover { border-color: var(--sa-celadon); }
+    .news-filter-chip.active {
+      background: var(--sa-celadon);
+      color: #fff;
+      border-color: var(--sa-celadon);
+    }
+    .news-filter-count {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 10px;
+      opacity: 0.7;
+    }
+
+    /* ===== UPDATED FEED CARDS ===== */
+    .feed-card {
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
+      border-radius: 8px;
+      margin: 6px 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .feed-card.is-newest {
+      border-left: 3px solid var(--sa-high);
+    }
+    .feed-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .feed-card-badge {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .feed-card-badge-official { background: var(--sa-celadon); color: #fff; }
+    .feed-card-badge-article { background: var(--sa-surface-2); color: var(--sa-text-2); }
+    .feed-card-badge-video { background: var(--sa-gold-2); color: var(--sa-gold); }
+    .feed-card-pill {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 8px;
+      letter-spacing: 0.03em;
+    }
+    .feed-card-pill-newest {
+      border: 1px solid var(--sa-high);
+      color: var(--sa-high);
+    }
+    .feed-card-pill-recent {
+      border: 1px solid var(--sa-moderate);
+      color: var(--sa-moderate);
+    }
+    .feed-card-time {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--sa-text-3);
+    }
+    .feed-card-text {
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--sa-text);
+    }
+    .feed-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--sa-text);
+    }
+    .feed-card-source {
+      font-size: 11px;
+      color: var(--sa-celadon);
+      text-decoration: none;
+      margin-top: 2px;
+    }
+    .feed-card-source:hover { text-decoration: underline; }
+    .feed-card-video-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--sa-text-3);
+    }
+
+    /* ===== INFO TAB (redesigned) ===== */
+    .info-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding-bottom: 24px;
+    }
+    @media (min-width: 600px) {
+      .info-layout {
+        flex-direction: row;
+      }
+    }
+    .info-col-left {
+      padding: 0;
+    }
+    @media (min-width: 600px) {
+      .info-col-left {
+        flex: 0 0 50%;
+        border-right: 1px solid var(--sa-border);
+      }
+    }
+    .info-col-right {
+      padding: 0;
+    }
+    @media (min-width: 600px) {
+      .info-col-right {
+        flex: 1 1 auto;
+      }
+    }
+    .info-kv-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 14px;
+      border-bottom: 1px dashed var(--sa-border);
+      font-size: 13px;
+    }
+    .info-kv-key { color: var(--sa-text-2); }
+    .info-kv-val { color: var(--sa-text); font-weight: 600; text-align: right; max-width: 55%; }
+    .info-shelter-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--sa-border);
+    }
+    .info-shelter-icon {
+      width: 20px;
+      height: 20px;
+      background: #2563eb;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 12px;
+      color: #fff;
+    }
+    .info-shelter-details {
+      flex: 1;
+      min-width: 0;
+    }
+    .info-shelter-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--sa-text);
+    }
+    .info-shelter-meta {
+      font-size: 11px;
+      color: var(--sa-text-3);
+    }
+    .info-shelter-dir {
+      font-size: 11px;
+      color: var(--sa-celadon);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .info-shelter-dir:hover { text-decoration: underline; }
+    .info-schools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 0 14px 10px;
+    }
+    .info-school-card {
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--sa-text);
+    }
+    .info-seal {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: 1.5px solid var(--sa-gold);
+      border-radius: 6px;
+      background: var(--sa-gold-2);
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--sa-gold);
+      margin: 8px 0;
+    }
+    .info-who-body {
+      font-size: 12px;
+      color: var(--sa-text-2);
+      line-height: 1.5;
+      padding: 0 14px;
+    }
+    .info-who-body p { margin-bottom: 6px; }
+    .info-sources-toggle {
+      cursor: pointer;
+      padding: 12px 14px;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sa-text-3);
+      border-bottom: 1px solid var(--sa-border);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .info-sources-toggle::-webkit-details-marker { display: none; }
+    .info-sources-toggle::after { content: " \25B8"; color: var(--sa-text-3); font-size: 9px; }
+    details[open] > .info-sources-toggle::after { content: " \25BE"; }
 
     /* ===== LOADING SKELETON ===== */
     .skeleton {
-      background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%);
+      background: linear-gradient(90deg, var(--sa-border) 25%, var(--sa-bg) 50%, var(--sa-border) 75%);
       background-size: 200% 100%;
       animation: skeleton-shimmer 1.5s ease-in-out infinite;
       border-radius: 4px;
@@ -1127,107 +1731,13 @@
       100% { background-position: -200% 0; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .skeleton { animation: none; background: var(--border); }
+      .skeleton { animation: none; background: var(--sa-border); }
     }
 
-    /* Desktop-only container: hidden on mobile, shown at 1024px+ */
-    .desktop-body { display: none; }
 
-    /* ===== DESKTOP HYBRID LAYOUT (1024px+) ===== */
-    @media (min-width: 1024px) {
-      html, body { overflow: hidden; height: 100vh; }
-      .app {
-        max-width: none;
-        flex-direction: column;
-        height: 100vh;
-      }
-      .desktop-body {
-        display: flex;
-        flex: 1;
-        min-height: 0;
-        overflow: hidden;
-      }
-      .desktop-map-panel {
-        flex: 0 0 55%;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        border-right: 1px solid var(--border);
-      }
-      .desktop-map-panel #panel-map-desktop {
-        position: relative;
-        flex: 1;
-        opacity: 1;
-        pointer-events: auto;
-        overflow: hidden;
-      }
-      .desktop-sidebar {
-        flex: 0 0 45%;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-        overflow: hidden;
-      }
-      .desktop-sidebar .hero {
-        flex-shrink: 0;
-      }
-      .desktop-sidebar .sidebar-tabs {
-        display: flex;
-        border-bottom: 1px solid var(--border);
-        background: var(--surface);
-        flex-shrink: 0;
-      }
-      .desktop-sidebar .sidebar-tab-btn {
-        flex: 1;
-        padding: 10px 0;
-        background: none;
-        border: none;
-        border-bottom: 2px solid transparent;
-        color: var(--text-muted);
-        font-size: 12px;
-        font-weight: 600;
-        font-family: inherit;
-        cursor: pointer;
-        transition: color 0.15s;
-        min-height: 44px;
-      }
-      .desktop-sidebar .sidebar-tab-btn.active {
-        color: var(--accent);
-        border-bottom-color: var(--accent);
-      }
-      .desktop-sidebar .sidebar-content {
-        flex: 1;
-        position: relative;
-        min-height: 0;
-        overflow: hidden;
-      }
-      .desktop-sidebar .sidebar-panel {
-        position: absolute;
-        inset: 0;
-        overflow-y: auto;
-        overflow-x: hidden;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.15s ease;
-      }
-      .desktop-sidebar .sidebar-panel.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-      /* Hide the mobile tab bar on desktop */
-      .tab-bar { display: none; }
-      /* Hide the mobile tab-content wrapper — desktop uses its own layout */
-      .tab-content { display: none; }
-      /* Stats strip gets more room */
-      .stats-strip { gap: 12px; padding: 6px 24px; justify-content: center; }
-      .stat-sep { margin: 0 6px; }
-    }
 
-    /* ===== TABLET (768-1023) ===== */
-    @media (min-width: 768px) and (max-width: 1023px) {
-      .hero-action { font-size: 36px; }
-      .tab-btn { padding: 8px 0 6px; }
-      .tab-btn-icon { font-size: 16px; }
+    /* ===== TABLET ===== */
+    @media (min-width: 768px) {
       .news-item { padding: 12px 16px; }
       .info-section { padding: 12px 16px; }
       .resources-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1237,13 +1747,11 @@
     @media print {
       html, body { overflow: visible; height: auto; }
       .app { max-width: none; height: auto; overflow: visible; }
-      .app::before { display: none; }
-      .tab-bar, .tab-content, .desktop-body { display: none !important; }
-      .refresh-bar, .banners, .theme-toggle, #lang-toggle, .lang-picker,
-      .hero-check, .hero-verdict, .stats-strip, .map-wind-overlay,
-      .map-legend-overlay, .skip-link { display: none !important; }
+      .sa-wave-bg { background-image: none; }
+      .tab-bar, .tab-content { display: none !important; }
+      .refresh-bar, .banners, .topbar-btn, .lang-picker,
+      .map-wind-overlay, .map-legend-overlay, .skip-link { display: none !important; }
       .safety-strip { background: none; border: 1px solid #ccc; }
-      .ai-disclosure { color: #333; background: none; border: 1px solid #ccc; font-weight: 700; }
       .print-only { display: block !important; }
       .print-content {
         display: block !important;
@@ -1275,117 +1783,78 @@
       * { color-adjust: exact; -webkit-print-color-adjust: exact; }
     }
     .print-only { display: none; }
+    @keyframes sa-pulse {
+      0%   { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
+      70%  { box-shadow: 0 0 0 6px transparent; opacity: 0.6; }
+      100% { box-shadow: 0 0 0 0 transparent; opacity: 1; }
+    }
+    @keyframes sa-fade-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  <div class="app">
+  <div class="app sa-wave-bg">
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
     <header class="topbar">
-      <div class="topbar-left">
-        <span class="topbar-title">GG Tank Watch</span>
-        <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
+      <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source"><span class="unofficial-pill-dot"></span>UNOFFICIAL</span>
+      <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
+      <span class="topbar-spacer"></span>
+      <span class="topbar-freshness" id="updated-text"><span class="freshness-dot" id="freshness-dot"></span><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
+      <div class="lang-picker" id="lang-picker">
+        <button class="topbar-btn" id="lang-toggle" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" title="Language / Ng&#xF4;n ng&#x1EEF;">VI</button>
+        <div class="lang-menu" id="lang-menu" role="menu"></div>
       </div>
-      <div class="topbar-right">
-        <span class="topbar-updated" id="updated-text" data-i18n="updated.loading">loading...</span>
-        <div class="lang-picker" id="lang-picker">
-          <button class="theme-toggle" id="lang-toggle" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" title="Language / Ng&#xF4;n ng&#x1EEF;">VI</button>
-          <div class="lang-menu" id="lang-menu" role="menu"></div>
-        </div>
-        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle theme">&#x1F319;</button>
-      </div>
+      <button class="topbar-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle theme">&#x1F319;</button>
     </header>
 
     <div class="banners" id="banners"></div>
 
-    <section class="hero" id="hero">
-      <div class="hero-severity">
-        <span class="hero-severity-label" data-i18n="hero.severity.label">Incident severity:</span>
-        <span class="severity-chip" id="severity-chip">--</span>
+    <section class="hero-split" id="hero">
+      <div class="hero-split-left" id="hero-severity-border" style="border-top: 3px solid var(--sa-safe)">
+        <div class="hero-split-left-header">
+          <span data-i18n="hero.severity.label">Incident severity</span>
+          <span class="hero-split-left-header-line"></span>
+        </div>
+        <div class="hero-severity-word sa-sev-low" id="hero-severity-word">LOW</div>
+        <div class="hero-res-row">
+          <span class="hero-res-count" id="hero-res-count">--</span>
+          <span class="hero-res-label" data-i18n="hero.res.label">residents in evacuation zone</span>
+        </div>
       </div>
-      <p class="hero-summary" id="hero-summary" data-i18n="hero.summary.loading">Loading current status&#x2026;</p>
-      <form class="hero-check" onsubmit="event.preventDefault(); heroCheckSafety()">
-        <label for="hero-check-input" class="hero-check-label" data-i18n="hero.check.label">Check your address</label>
-        <input id="hero-check-input" type="text" placeholder="Enter address" data-i18n-placeholder="hero.check.placeholder" autocomplete="off">
-        <button id="hero-check-btn" type="submit" data-i18n="hero.check.button">Check</button>
-      </form>
-      <div class="hero-verdict" id="hero-verdict" role="status" aria-live="polite"></div>
+      <div class="hero-split-right">
+        <div class="hero-split-right-header">
+          <span data-i18n="hero.whatchanged">What changed</span>
+          <span class="hero-split-right-header-line"></span>
+          <span class="hero-day-counter" id="hero-day-counter">--</span>
+        </div>
+        <div id="hero-bullets"></div>
+      </div>
     </section>
 
     <div class="safety-strip" role="note">
-      <span class="safety-strip-info" data-i18n="safety.strip.info">Informational only &#x2014; not official. In an emergency, call 911.</span>
-      <span class="safety-strip-official">
-        <span data-i18n="safety.strip.official">Official source:</span>
+      <div class="safety-strip-row">
+        <span class="safety-strip-info" data-i18n="safety.strip.info">Informational only &#x2014; not official. In an emergency, call 911.</span>
+        <a class="safety-strip-terms" href="terms.html" data-i18n="safety.strip.terms">Full terms</a>
+      </div>
+      <div class="safety-strip-sources">
         <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>
-        <span class="safety-strip-sep">&#xB7;</span><a href="tel:911">911</a>
-        <span class="safety-strip-sep">&#xB7;</span><a href="tel:+17146287085">714-628-7085</a>
-        <span class="safety-strip-sep">&#xB7;</span>OCFA
-      </span>
-      <a class="safety-strip-terms" href="terms.html" data-i18n="safety.strip.terms">Full terms &amp; disclaimer</a>
-    </div>
-
-    <div class="ai-disclosure" data-i18n="disclosure.ai">Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels.</div>
-
-    <div class="stats-strip">
-      <div class="stat">
-        <svg class="wind-arrow-sm" id="wind-arrow" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
-        <span class="stat-val mono" id="wind-compact">--</span>
-      </div>
-      <span class="stat-sep">|</span>
-      <div class="stat"><span class="stat-val mono" id="temp-compact">--</span></div>
-      <span class="stat-sep">|</span>
-      <div class="stat" id="aqi-stat" style="display:none"><span class="stat-val mono" id="aqi-compact">--</span></div>
-      <span class="stat-sep" id="aqi-sep" style="display:none">|</span>
-      <div class="stat"><span class="stat-val mono" id="evac-compact">--</span></div>
-      <span class="stat-sep">|</span>
-      <div class="stat"><span id="refresh-text" class="mono" style="font-size:10px">30s</span></div>
-    </div>
-
-    <!-- ===== DESKTOP HYBRID LAYOUT (visible only at 1024px+) ===== -->
-    <div class="desktop-body">
-      <div class="desktop-map-panel">
-        <div class="tab-panel active" id="panel-map-desktop" role="tabpanel" aria-label="Map">
-          <div id="map-desktop"></div>
-          <div class="map-wind-overlay" id="map-wind-overlay-desktop">
-            <svg class="wind-arrow-sm" id="wind-arrow-map-desktop" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
-            <span id="wind-text-map-desktop">--</span>
-          </div>
-          <div class="map-legend-overlay" id="map-legend-desktop">
-            <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span><span data-i18n="legend.evac">Evac zone</span></div>
-            <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span><span data-i18n="legend.shelter">Shelter</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="desktop-sidebar">
-        <nav class="sidebar-tabs" role="tablist" aria-label="Sidebar sections">
-          <button class="sidebar-tab-btn active" role="tab" id="stab-updates" aria-selected="true" aria-controls="spanel-updates" onclick="switchSidebarTab('updates')" data-i18n="tab.updates">Updates</button>
-          <button class="sidebar-tab-btn" role="tab" id="stab-resources" aria-selected="false" aria-controls="spanel-resources" onclick="switchSidebarTab('resources')" data-i18n="tab.resources">Resources</button>
-          <button class="sidebar-tab-btn" role="tab" id="stab-about" aria-selected="false" aria-controls="spanel-about" onclick="switchSidebarTab('about')" data-i18n="tab.about">About</button>
-        </nav>
-        <div class="sidebar-content" id="main-content-desktop">
-          <div class="sidebar-panel active" id="spanel-updates" role="tabpanel" aria-labelledby="stab-updates">
-            <div id="desktop-news-situation" class="news-situation" hidden></div>
-            <div class="news-section-label" id="desktop-news-count" data-i18n="news.feed.title">News &amp; updates</div>
-            <div id="desktop-news-feed"></div>
-            <div class="timeline-header">
-              <span class="timeline-title" data-i18n="timeline.title">Incident timeline</span>
-              <span class="timeline-count mono" id="desktop-timeline-count"></span>
-            </div>
-            <div class="filter-chips" id="desktop-filter-chips"></div>
-            <div id="desktop-timeline-feed"></div>
-          </div>
-          <div class="sidebar-panel" id="spanel-resources" role="tabpanel" aria-labelledby="stab-resources">
-            <div id="desktop-resources-content"></div>
-          </div>
-          <div class="sidebar-panel" id="spanel-about" role="tabpanel" aria-labelledby="stab-about">
-            <div id="desktop-about-content"></div>
-          </div>
-        </div>
+        <span class="safety-strip-sep">&#xB7;</span>
+        <a href="tel:911">911</a>
+        <span class="safety-strip-sep">&#xB7;</span>
+        <a href="tel:+17146287085">714-628-7085</a>
+        <span class="safety-strip-sep">&#xB7;</span>
+        <span>OCFA</span>
       </div>
     </div>
 
-    <!-- ===== MOBILE TAB CONTENT (visible below 1024px) ===== -->
+
+
+
+    <!-- ===== TAB CONTENT ===== -->
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
         <div id="map"></div>
@@ -1399,43 +1868,66 @@
         </div>
       </div>
 
-      <div class="tab-panel" id="panel-updates" role="tabpanel" aria-labelledby="tab-updates">
+      <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
         <div id="news-situation" class="news-situation" hidden></div>
-        <div class="news-section-label" id="news-count" data-i18n="news.feed.title">News &amp; updates</div>
+        <div class="news-filter-chips" id="news-filter-chips"></div>
         <div id="news-feed"></div>
         <div class="timeline-header">
           <span class="timeline-title" data-i18n="timeline.title">Incident timeline</span>
-          <span class="timeline-count mono" id="timeline-count"></span>
+          <span class="timeline-count sa-mono" id="timeline-count"></span>
         </div>
         <div class="filter-chips" id="filter-chips"></div>
         <div id="timeline-feed"></div>
       </div>
 
-      <div class="tab-panel" id="panel-resources" role="tabpanel" aria-labelledby="tab-resources">
-        <div id="resources-content"></div>
+      <div class="tab-panel" id="panel-check" role="tabpanel" aria-labelledby="tab-check">
+        <div class="check-layout">
+          <div class="check-left">
+            <div class="check-header" data-i18n="check.prompt">Check an address or intersection</div>
+            <div class="check-subtitle" data-i18n="check.sub">Pins your address on the map and gives an unofficial verdict.</div>
+            <form id="check-tab-form" onsubmit="event.preventDefault(); checkTabAddress();">
+              <div class="check-input-group">
+                <input type="text" class="check-input" id="check-tab-input" data-i18n-placeholder="check.placeholder" placeholder="e.g. Magnolia &amp; Talbert" autocomplete="off">
+                <button type="submit" class="check-submit-btn" id="check-tab-btn" data-i18n="check.btn">Check</button>
+              </div>
+            </form>
+            <button type="button" class="check-location-btn" onclick="checkTabUseLocation()">
+              <span class="check-location-dot"></span>
+              <span data-i18n="check.useLocation">Use my location</span>
+            </button>
+            <div class="check-recent-header" data-i18n="check.recent">Recent</div>
+            <div class="check-recent-list" id="check-recent-list"></div>
+          </div>
+          <div class="check-right" id="check-verdict-area">
+            <div class="check-empty-state" id="check-empty-state">
+              <div style="font-size:24px;margin-bottom:8px;opacity:0.3">&#x1F4CD;</div>
+              <span data-i18n="check.prompt">Check an address or intersection</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="tab-panel" id="panel-about" role="tabpanel" aria-labelledby="tab-about">
-        <div id="about-content"></div>
+      <div class="tab-panel" id="panel-info" role="tabpanel" aria-labelledby="tab-info">
+        <div id="info-content"></div>
       </div>
     </main>
 
     <nav class="tab-bar" role="tablist" aria-label="Dashboard sections">
       <button class="tab-btn active" role="tab" id="tab-map" aria-selected="true" aria-controls="panel-map" data-tab="map" onclick="switchTab('map')">
-        <span class="tab-btn-icon">&#x1F5FA;</span>
+        <span class="tab-btn-glyph" aria-hidden="true">M</span>
         <span class="tab-btn-label" data-i18n="tab.map">Map</span>
       </button>
-      <button class="tab-btn" role="tab" id="tab-updates" aria-selected="false" aria-controls="panel-updates" data-tab="updates" onclick="switchTab('updates')">
-        <span class="tab-btn-icon">&#x1F4F0;</span>
-        <span class="tab-btn-label" data-i18n="tab.updates">Updates</span>
+      <button class="tab-btn" role="tab" id="tab-news" aria-selected="false" aria-controls="panel-news" data-tab="news" onclick="switchTab('news')">
+        <span class="tab-btn-glyph" aria-hidden="true">N</span>
+        <span class="tab-btn-label" data-i18n="tab.news">News</span>
       </button>
-      <button class="tab-btn" role="tab" id="tab-resources" aria-selected="false" aria-controls="panel-resources" data-tab="resources" onclick="switchTab('resources')">
-        <span class="tab-btn-icon">&#x1F91D;</span>
-        <span class="tab-btn-label" data-i18n="tab.resources">Resources</span>
+      <button class="tab-btn" role="tab" id="tab-check" aria-selected="false" aria-controls="panel-check" data-tab="check" onclick="switchTab('check')">
+        <span class="tab-btn-glyph" aria-hidden="true">C</span>
+        <span class="tab-btn-label" data-i18n="tab.check">Check</span>
       </button>
-      <button class="tab-btn" role="tab" id="tab-about" aria-selected="false" aria-controls="panel-about" data-tab="about" onclick="switchTab('about')">
-        <span class="tab-btn-icon">&#x2139;</span>
-        <span class="tab-btn-label" data-i18n="tab.about">About</span>
+      <button class="tab-btn" role="tab" id="tab-info" aria-selected="false" aria-controls="panel-info" data-tab="info" onclick="switchTab('info')">
+        <span class="tab-btn-glyph" aria-hidden="true">I</span>
+        <span class="tab-btn-label" data-i18n="tab.info">Info</span>
       </button>
     </nav>
   </div>
@@ -1472,9 +1964,9 @@ var WIND_MAX_MS = 480000;
 /* ============ I18N (EN / VI) ============ */
 var STRINGS = {
   "tab.map": { en: "Map", vi: "Bản đồ", es: "Mapa" },
-  "tab.updates": { en: "Updates", vi: "Cập nhật", es: "Actualizaciones" },
-  "tab.resources": { en: "Resources", vi: "Tài nguyên", es: "Recursos" },
-  "tab.about": { en: "About", vi: "Giới thiệu", es: "Acerca de" },
+  "tab.news": { en: "News", vi: "Tin tức", es: "Noticias" },
+  "tab.check": { en: "Check", vi: "Kiểm tra", es: "Verificar" },
+  "tab.info": { en: "Info", vi: "Thông tin", es: "Información" },
   "theme.dark": { en: "Dark", vi: "Tối", es: "Oscuro" },
   "theme.light": { en: "Light", vi: "Sáng", es: "Claro" },
   "updated.loading": { en: "loading...", vi: "đang tải...", es: "cargando..." },
@@ -1495,6 +1987,8 @@ var STRINGS = {
   "hero.check.label": { en: "Check your address", vi: "Kiểm tra địa chỉ của bạn", es: "Verifique su dirección" },
   "hero.check.placeholder": { en: "Enter address", vi: "Nhập địa chỉ", es: "Ingrese dirección" },
   "hero.check.button": { en: "Check", vi: "Kiểm tra", es: "Verificar" },
+  "hero.res.label": { en: "residents in evacuation zone", vi: "cư dân trong vùng sơ tán", es: "residentes en zona de evacuación" },
+  "hero.whatchanged": { en: "What changed", vi: "Diễn biến", es: "Qué cambió" },
   "hero.verdict.inside": { en: "⚠ This address appears inside the evacuation area. Confirm at ggcity.org/emergency", vi: "⚠ Địa chỉ này có vẻ nằm trong khu vực sơ tán. Xác nhận tại ggcity.org/emergency", es: "⚠ Esta dirección parece estar dentro del área de evacuación. Confirme en ggcity.org/emergency" },
   "hero.verdict.outside": { en: "✓ Outside current evacuation zone — confirm at ggcity.org/emergency", vi: "✓ Ngoài khu vực sơ tán hiện tại — xác nhận tại ggcity.org/emergency", es: "✓ Fuera de la zona de evacuación actual — confirme en ggcity.org/emergency" },
   "hero.verdict.loading": { en: "Checking…", vi: "Đang kiểm tra…", es: "Verificando…" },
@@ -1574,7 +2068,7 @@ var STRINGS = {
   "banner.offline.detail": { en: "Could not load status.json — {err}", vi: "Không thể tải status.json — {err}", es: "No se pudo cargar status.json — {err}" },
   "banner.update.title": { en: "📢 UPDATE", vi: "📢 CẬP NHẬT", es: "📢 ACTUALIZACIÓN" },
   "banner.urgent.title": { en: "🚨 URGENT", vi: "🚨 KHẨN CẤP", es: "🚨 URGENTE" },
-  "banner.action.updates": { en: "→ Updates", vi: "→ Cập nhật", es: "→ Actualizaciones" },
+  "banner.action.updates": { en: "→ News", vi: "→ Tin tức", es: "→ Noticias" },
   "time.justNow": { en: "just now", vi: "vừa xong", es: "ahora mismo" },
   "time.minAgo": { en: "{n} min ago", vi: "{n} phút trước", es: "hace {n} min" },
   "loading.firstData": { en: "Waiting for first data. Auto-retry in 30s.", vi: "Đang đợi dữ liệu đầu tiên. Tự động thử lại sau 30 giây.", es: "Esperando los primeros datos. Reintento automático en 30s." },
@@ -1588,7 +2082,51 @@ var STRINGS = {
   "resources.community": { en: "Community", vi: "Cộng đồng" /* G1 placeholder */, es: "Comunidad" },
   "resources.call": { en: "Call", vi: "Gọi" /* G1 placeholder */, es: "Llamar" },
   "resources.visit": { en: "Visit", vi: "Truy cập" /* G1 placeholder */, es: "Visitar" },
-  "filter.all": { en: "All", vi: "Tất cả" /* G1 placeholder */, es: "Todos" }
+  "filter.all": { en: "All", vi: "Tất cả" /* G1 placeholder */, es: "Todos" },
+  /* ===== CHECK TAB i18n ===== */
+  "check.prompt": { en: "Check an address or intersection", vi: "Kiểm tra địa chỉ hoặc giao lộ" },
+  "check.sub": { en: "Pins your address on the map and gives an unofficial verdict.", vi: "Ghim địa chỉ của bạn trên bản đồ và đưa ra phán đoán không chính thức." },
+  "check.placeholder": { en: "e.g. Magnolia & Talbert", vi: "ví dụ: Magnolia & Talbert" },
+  "check.useLocation": { en: "Use my location", vi: "Dùng vị trí của tôi" },
+  "check.btn": { en: "Check", vi: "Kiểm tra" },
+  "check.lastChecked": { en: "Last checked", vi: "Kiểm tra gần nhất" },
+  "check.recent": { en: "Recent", vi: "Gần đây" },
+  "check.fromTank": { en: "from tank", vi: "từ bồn" },
+  "check.viewOnMap": { en: "View on map", vi: "Xem trên bản đồ" },
+  "check.loading": { en: "Checking…", vi: "Đang kiểm tra…" },
+  "check.error": { en: "Could not check — try a more specific address", vi: "Không thể kiểm tra — hãy thử địa chỉ cụ thể hơn" },
+  "verdict.inside": { en: "INSIDE OFFICIAL EVAC ZONE", vi: "TRONG VÙNG SƠ TÁN CHÍNH THỨC" },
+  "verdict.blast20": { en: "BLAST RING — 20 PSI OVERPRESSURE", vi: "VÒNG NỔ — ÁP SUẤT 20 PSI" },
+  "verdict.blastMod": { en: "BLAST RING — MODERATE DAMAGE", vi: "VÒNG NỔ — THIỆT HẠI VỪA" },
+  "verdict.outside": { en: "OUTSIDE MAPPED ZONES", vi: "NGOÀI CÁC VÙNG TRÊN BẢN ĐỒ" },
+  "verdict.note": { en: "Estimate only — not official. Verify at ggcity.org/emergency; in an emergency, call 911.", vi: "Chỉ là ước tính — không chính thức. Kiểm tra tại ggcity.org/emergency; khẩn cấp gọi 911." },
+  /* ===== NEWS TAB i18n ===== */
+  "news.filter.all": { en: "All", vi: "Tất cả" },
+  "news.filter.official": { en: "Official", vi: "Chính thức" },
+  "news.filter.articles": { en: "Articles", vi: "Báo chí" },
+  "news.filter.videos": { en: "Videos", vi: "Video" },
+  "news.badge.official": { en: "OFFICIAL", vi: "CHÍNH THỨC" },
+  "news.badge.article": { en: "ARTICLE", vi: "BÁO CHÍ" },
+  "news.badge.video": { en: "VIDEO", vi: "VIDEO" },
+  "news.currentSituation": { en: "Current situation", vi: "Tình hình hiện tại" },
+  /* ===== INFO TAB i18n ===== */
+  "info.tankCrack": { en: "Crack observed", vi: "Có vết nứt" },
+  "info.tankCrackY": { en: "Yes — relieving pressure", vi: "Có — đang giải áp" },
+  "info.tankTemp": { en: "Tank temperature", vi: "Nhiệt độ bồn" },
+  "info.tankTempV": { en: "Stabilizing", vi: "Đang ổn định" },
+  "info.evacResidents": { en: "Residents in zone", vi: "Cư dân trong vùng" },
+  "info.evacBoundary": { en: "Boundary", vi: "Ranh giới" },
+  "info.whereToGo": { en: "Where to go · nearest shelters", vi: "Nơi đến · trú ẩn gần nhất" },
+  "info.allShelters": { en: "All 9 shelters", vi: "Toàn bộ 9 nơi" },
+  "info.liveList": { en: "Live list at ggcity.org/emergency", vi: "Danh sách trực tiếp tại ggcity.org/emergency" },
+  "info.directions": { en: "Directions ↗", vi: "Chỉ đường ↗" },
+  "info.rvOnly": { en: "RV only", vi: "Chỉ RV" },
+  "info.schoolsClosed": { en: "School closures", vi: "Trường đóng cửa" },
+  "info.allSchools": { en: "See all 12", vi: "Xem tất cả 12" },
+  "info.whoMade": { en: "Who made this", vi: "Ai làm trang này" },
+  "info.builtBy": { en: "Built by volunteers Mike & Nancy. Not affiliated with OCFA, City of Garden Grove, or any agency. We collect no data.", vi: "Mike và Nancy thực hiện. Không liên kết với OCFA, Garden Grove hay cơ quan nào. Chúng tôi không thu thập dữ liệu." },
+  "info.unofficial.seal": { en: "INFORMATIONAL · UNOFFICIAL", vi: "THAM KHẢO · KHÔNG CHÍNH THỨC" },
+  "info.sourcesH": { en: "Sources & methodology", vi: "Nguồn & phương pháp" }
 };
 
 var LANGS = [
@@ -1648,13 +2186,18 @@ function applyLang() {
     var isDark = document.documentElement.classList.contains("theme-dark");
     themeBtn.innerHTML = isDark ? ICON_SUN : ICON_MOON;
   }
+  // Re-render hero if we have data
+  if (lastSnap) {
+    var sev = (lastSnap.incident && lastSnap.incident.severity) || "low";
+    renderHeroSplit(sev, lastSnap);
+  }
 }
 function renderLangPicker() {
   var btn = document.getElementById("lang-toggle");
   var menu = document.getElementById("lang-menu");
   if (!btn || !menu) return;
   var cur = langByCode(currentLang);
-  btn.innerHTML = cur.flag + "<span>" + cur.label + "</span>";
+  btn.innerHTML = '<span style="font-size:14px;line-height:1">' + cur.flag + '</span><span>' + (currentLang === "vi" ? "Vi\u1EC7t" : "Eng") + '</span>';
   var ready = readyLangs();
   btn.style.display = ready.length > 1 ? "" : "none";
   menu.innerHTML = ready.map(function(l) {
@@ -1695,7 +2238,9 @@ function setLang(lang) {
   try { localStorage.setItem("gg-lang", currentLang); } catch (e) {}
   applyLang();
   if (lastSnap) render(lastSnap);
-  if (configCache) { renderShelters(configCache); renderResources(); renderAbout(); }
+  if (configCache) { renderResources(); renderAbout(); renderInfoTab(); renderInfoShelters(); if (lastSnap) updateInfoData(lastSnap); }
+  renderCheckRecent();
+  renderNewsFilterChips();
   if (timelineData) renderTimeline();
   if (configCache && fixedPointMarkers.length) recolorFixedPoints();
 }
@@ -1729,29 +2274,14 @@ var refreshCountdown = 30;
 var countdownTimer = null;
 var timelineData = null;
 var activeFilters = { days: [], categories: [] };
-var isDesktop = false;
-
 function $(id) { return document.getElementById(id); }
-
-function checkDesktop() {
-  isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-}
-checkDesktop();
-window.addEventListener("resize", function() {
-  var was = isDesktop;
-  checkDesktop();
-  if (was !== isDesktop) {
-    if (map) {
-      setTimeout(function() { map.invalidateSize(); }, 100);
-    }
-  }
-});
 
 /* ============ THEME ============ */
 function applyTheme(theme) {
   document.documentElement.classList.toggle("theme-dark", theme === "dark");
   document.documentElement.classList.toggle("theme-light", theme !== "dark");
-  $("theme-toggle").innerHTML = theme === "dark" ? ICON_SUN : ICON_MOON;
+  var btn = $("theme-toggle");
+  if (btn) btn.innerHTML = theme === "dark" ? ICON_SUN : ICON_MOON;
 }
 function toggleTheme() {
   var cur = document.documentElement.classList.contains("theme-dark") ? "dark" : "light";
@@ -1762,7 +2292,7 @@ function toggleTheme() {
 applyTheme(localStorage.getItem("gg-theme") || "light");
 window.toggleTheme = toggleTheme;
 
-/* ============ TABS (MOBILE) ============ */
+/* ============ TABS ============ */
 function switchTab(tabId) {
   document.querySelectorAll(".tab-content > .tab-panel").forEach(function(p) { p.classList.remove("active"); });
   document.querySelectorAll(".tab-bar .tab-btn").forEach(function(b) {
@@ -1781,23 +2311,6 @@ function switchTab(tabId) {
   }
 }
 window.switchTab = switchTab;
-
-/* ============ SIDEBAR TABS (DESKTOP) ============ */
-function switchSidebarTab(tabId) {
-  document.querySelectorAll(".sidebar-panel").forEach(function(p) { p.classList.remove("active"); });
-  document.querySelectorAll(".sidebar-tab-btn").forEach(function(b) {
-    b.classList.remove("active");
-    b.setAttribute("aria-selected", "false");
-  });
-  var panel = $("spanel-" + tabId);
-  if (panel) panel.classList.add("active");
-  var tab = $("stab-" + tabId);
-  if (tab) {
-    tab.classList.add("active");
-    tab.setAttribute("aria-selected", "true");
-  }
-}
-window.switchSidebarTab = switchSidebarTab;
 
 /* ============ REFRESH COUNTDOWN ============ */
 function startRefreshCountdown() {
@@ -1859,14 +2372,25 @@ window.ackUpdate = ackUpdate;
 function setBanners(banners) {
   $("banners").innerHTML = banners.map(function(b) {
     var clickable = (b.kind === "breaking" || b.kind === "update");
-    var action = clickable ? '<span class="banner-action">' + t("banner.action.updates") + '</span>' : '';
-    var tabTarget = isDesktop ? "switchSidebarTab('updates')" : "switchTab('updates')";
-    var onclick = b.kind === "update"
-      ? 'onclick="ackUpdate(\'' + (b.sig || '') + '\'); ' + tabTarget + '; this.remove()"'
-      : (clickable ? 'onclick="' + tabTarget + '"' : '');
-    return '<div class="banner banner-' + b.kind + '" ' + onclick + '>' +
+    var tabTarget = "switchTab('news')";
+    if (b.kind === "update" || b.kind === "breaking") {
+      var isUrgent = b.kind === "breaking";
+      var bannerClass = isUrgent ? "banner-urgent" : "banner-update";
+      var pillClass = isUrgent ? "banner-pill-urgent" : "banner-pill-update";
+      var pillLabel = isUrgent ? t("banner.urgent.title").replace(/[^\w\s]/g, "").trim() : t("banner.update.title").replace(/[^\w\s]/g, "").trim();
+      var dismissAction = isUrgent
+        ? ''
+        : ' onclick="event.stopPropagation(); ackUpdate(\'' + (b.sig || '') + '\'); this.closest(\'.banner\').remove()"';
+      var bannerOnclick = 'onclick="' + tabTarget + '"';
+      return '<div class="banner ' + bannerClass + '" ' + bannerOnclick + ' style="display:flex;align-items:center;gap:10px;padding:8px 22px;font-size:12.5px;animation:sa-fade-in .25s ease-out">' +
+        '<span class="banner-pill ' + pillClass + '">' + pillLabel + '</span>' +
+        '<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (b.message || '') + '</span>' +
+        (isUrgent ? '' : '<button class="banner-dismiss" aria-label="Dismiss"' + dismissAction + '>&times;</button>') +
+      '</div>';
+    }
+    return '<div class="banner banner-' + b.kind + '">' +
       '<span><strong>' + b.title + '</strong> ' + (b.message || '') + '</span>' +
-      action + '</div>';
+    '</div>';
   }).join("");
 }
 
@@ -1913,8 +2437,7 @@ function initMap(cfg) {
   if (mapInited) return;
   var m = cfg.map;
   var c = [m.facility.lat, m.facility.lon];
-  var mapContainer = isDesktop ? "map-desktop" : "map";
-  var el = $(mapContainer);
+  var el = $("map");
   if (!el) return;
   map = L.map(el, { zoomControl: true, scrollWheelZoom: true, attributionControl: true }).setView(c, 13);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -1972,14 +2495,14 @@ function initMap(cfg) {
 function updateWindDisplay(wind) {
   if (!wind) return;
   var heading = (wind.directionDeg + 180) % 360;
-  ["wind-arrow", "wind-arrow-map", "wind-arrow-map-desktop"].forEach(function(id) {
+  ["wind-arrow", "wind-arrow-map"].forEach(function(id) {
     var el = $(id);
     if (el) el.style.transform = "rotate(" + heading + "deg)";
   });
   var windCompact = cardinalFromDeg(wind.directionDeg) + "→" + cardinalFromDeg(heading) + " " + Math.round(wind.speedMph) + "mph";
   var el = $("wind-compact");
   if (el) el.textContent = windCompact;
-  ["wind-text-map", "wind-text-map-desktop"].forEach(function(id) {
+  ["wind-text-map"].forEach(function(id) {
     var mapEl = $(id);
     if (mapEl) {
       var obs = wind.observedAt ? " (obs " + fmtAbsTime(wind.observedAt) + ")" : "";
@@ -2077,16 +2600,16 @@ function computeSafety(pt, cfg) {
 function renderSafetyResult(addr, pt, result) {
   var tr = translateSafetyResult(result);
   var checkerUrl = (configCache && configCache.incident && configCache.incident.address_checker_url) || "https://ggcity.org/emergency";
-  var tabTarget = isDesktop ? "switchSidebarTab('updates')" : "switchTab('map')";
+  var tabTarget = "switchTab('map')";
   var html =
     '<div style="font-size:13px;margin-bottom:8px">' + tr.message + '</div>' +
-    '<div class="verdict-line" style="font-size:12px;color:var(--text-sec);display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px">' +
+    '<div class="verdict-line" style="font-size:12px;color:var(--sa-text-2);display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px">' +
       "<span><strong>Address:</strong> " + addr.displayName + "</span>" +
       "<span><strong>Distance:</strong> " + tr.distance_mi.toFixed(2) + " mi</span>" +
       "<span><strong>Bearing:</strong> " + cardinalFromDeg(tr.bearing_deg) + " (" + Math.round(tr.bearing_deg) + "°)</span>" +
     "</div>" +
-    '<a href="' + checkerUrl + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;font-family:inherit">' + checkerUrl + ' ↗</a>' +
-    '<button onclick="' + tabTarget + '" style="margin-left:8px;padding:6px 12px;background:var(--accent);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">View on map</button>';
+    '<a href="' + checkerUrl + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:6px 12px;background:var(--sa-celadon);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;font-family:inherit">' + checkerUrl + ' ↗</a>' +
+    '<button onclick="' + tabTarget + '" style="margin-left:8px;padding:6px 12px;background:var(--sa-celadon);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">View on map</button>';
   if (safetyPin) map.removeLayer(safetyPin);
   if (safetyPinBuffer) map.removeLayer(safetyPinBuffer);
   var color = "#3b82f6";
@@ -2110,26 +2633,25 @@ function translateErrorMessage(msg) {
 
 /* ============ HERO CHECK ============ */
 async function heroCheckSafety() {
-  var q = $("hero-check-input").value.trim();
+  var inputEl = $("hero-check-input");
+  if (!inputEl) return;
+  var q = inputEl.value.trim();
   if (!q) return;
   var btn = $("hero-check-btn");
   var el = $("hero-verdict");
-  btn.disabled = true;
-  el.className = "hero-verdict hero-verdict-loading active";
-  el.textContent = t("hero.verdict.loading");
+  if (btn) btn.disabled = true;
+  if (el) { el.className = "hero-verdict hero-verdict-loading active"; el.textContent = t("hero.verdict.loading"); }
   try {
     var addr = await geocodeAddress(q, configCache);
     var result = computeSafety(addr, configCache);
     var inside = result.insideEvac;
-    el.className = "hero-verdict active " + (inside ? "hero-verdict-inside" : "hero-verdict-outside");
-    el.textContent = inside ? t("hero.verdict.inside") : t("hero.verdict.outside");
+    if (el) { el.className = "hero-verdict active " + (inside ? "hero-verdict-inside" : "hero-verdict-outside"); el.textContent = inside ? t("hero.verdict.inside") : t("hero.verdict.outside"); }
     try { localStorage.setItem("gg-hero-check", JSON.stringify({ q: q, inside: inside, at: Date.now() })); } catch (e) {}
     renderSafetyResult(addr, addr, result);
   } catch (e) {
-    el.className = "hero-verdict hero-verdict-error active";
-    el.textContent = t("hero.verdict.error");
+    if (el) { el.className = "hero-verdict hero-verdict-error active"; el.textContent = t("hero.verdict.error"); }
   } finally {
-    btn.disabled = false;
+    if (btn) btn.disabled = false;
   }
 }
 window.heroCheckSafety = heroCheckSafety;
@@ -2141,11 +2663,392 @@ function restoreHeroCheck() {
     var obj = JSON.parse(raw);
     if (!obj || !obj.q) return;
     if ((Date.now() - obj.at) > 24 * 60 * 60 * 1000) return;
-    $("hero-check-input").value = obj.q;
+    var inputEl = $("hero-check-input");
+    if (inputEl) inputEl.value = obj.q;
     var el = $("hero-verdict");
-    el.className = "hero-verdict active " + (obj.inside ? "hero-verdict-inside" : "hero-verdict-outside");
-    el.textContent = obj.inside ? t("hero.verdict.inside") : t("hero.verdict.outside");
+    if (el) {
+      el.className = "hero-verdict active " + (obj.inside ? "hero-verdict-inside" : "hero-verdict-outside");
+      el.textContent = obj.inside ? t("hero.verdict.inside") : t("hero.verdict.outside");
+    }
   } catch (e) {}
+}
+
+/* ============ CHECK TAB ============ */
+var activeNewsFilter = "all";
+var lastFeed = [];
+
+function getCheckHistory() {
+  try {
+    var raw = localStorage.getItem("gg-check-history");
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+
+function saveCheckHistory(entry) {
+  var history = getCheckHistory();
+  // Remove duplicate queries
+  history = history.filter(function(h) { return h.query.toLowerCase() !== entry.query.toLowerCase(); });
+  history.unshift(entry);
+  if (history.length > 10) history = history.slice(0, 10);
+  try { localStorage.setItem("gg-check-history", JSON.stringify(history)); } catch (e) {}
+}
+
+function verdictFromResult(result) {
+  if (result.insideEvac) return { key: "verdict.inside", sev: "critical" };
+  if (result.distance_mi < 0.11) return { key: "verdict.blast20", sev: "high" };
+  if (result.distance_mi < 0.31) return { key: "verdict.blastMod", sev: "moderate" };
+  return { key: "verdict.outside", sev: "safe" };
+}
+
+function renderCheckVerdict(query, addr, result) {
+  var v = verdictFromResult(result);
+  var area = $("check-verdict-area");
+  if (!area) return;
+  var emptyState = $("check-empty-state");
+  if (emptyState) emptyState.style.display = "none";
+
+  var html = '<div class="check-verdict-card sev-' + v.sev + '">' +
+    '<div class="check-verdict-header">' + t("check.lastChecked") + '</div>' +
+    '<div class="check-verdict-addr">' + (addr.displayName || query) + '</div>' +
+    '<div class="check-verdict-label sa-sev-' + (v.sev === "safe" ? "low" : v.sev) + '">' + t(v.key) + '</div>' +
+    '<div class="check-verdict-distance">' +
+      '<span class="check-verdict-miles">' + result.distance_mi.toFixed(2) + '</span>' +
+      '<span class="check-verdict-unit">mi ' + t("check.fromTank") + '</span>' +
+    '</div>' +
+    '<div class="check-verdict-note">' + t("verdict.note") + '</div>' +
+  '</div>' +
+  '<button type="button" class="check-view-map-btn" onclick="switchTab(\'map\')">' + t("check.viewOnMap") + '</button>';
+
+  // Replace existing verdict or append
+  var existingCard = area.querySelector(".check-verdict-card");
+  var existingBtn = area.querySelector(".check-view-map-btn");
+  if (existingCard) existingCard.remove();
+  if (existingBtn) existingBtn.remove();
+  area.insertAdjacentHTML("beforeend", html);
+}
+
+function renderCheckRecent() {
+  var list = $("check-recent-list");
+  if (!list) return;
+  var history = getCheckHistory();
+  if (!history.length) {
+    list.innerHTML = '';
+    return;
+  }
+  list.innerHTML = history.map(function(h) {
+    var sevClass = h.verdict === "verdict.inside" ? "sev-critical"
+                 : h.verdict === "verdict.blast20" ? "sev-high"
+                 : h.verdict === "verdict.blastMod" ? "sev-moderate"
+                 : "sev-safe";
+    var timeStr = h.timestamp ? relativeTime(new Date(h.timestamp).toISOString()) : "";
+    return '<button type="button" class="check-recent-item" onclick="rerunCheck(\'' + h.query.replace(/'/g, "\\'") + '\')">' +
+      '<span class="check-recent-dot ' + sevClass + '"></span>' +
+      '<span class="check-recent-addr">' + h.query + '</span>' +
+      '<span class="check-recent-time">' + timeStr + '</span>' +
+    '</button>';
+  }).join("");
+}
+
+async function checkTabAddress(queryOverride) {
+  var inputEl = $("check-tab-input");
+  var q = queryOverride || (inputEl ? inputEl.value.trim() : "");
+  if (!q) return;
+  if (inputEl) inputEl.value = q;
+  var btn = $("check-tab-btn");
+  if (btn) btn.disabled = true;
+
+  // Show loading state in verdict area
+  var area = $("check-verdict-area");
+  var emptyState = $("check-empty-state");
+  if (emptyState) emptyState.style.display = "none";
+  var existingCard = area ? area.querySelector(".check-verdict-card") : null;
+  var existingBtn = area ? area.querySelector(".check-view-map-btn") : null;
+  if (existingCard) existingCard.remove();
+  if (existingBtn) existingBtn.remove();
+  if (area) area.insertAdjacentHTML("beforeend", '<div class="check-verdict-card" style="text-align:center;padding:24px;color:var(--sa-text-3)">' + t("check.loading") + '</div>');
+
+  try {
+    var addr = await geocodeAddress(q, configCache);
+    var result = computeSafety(addr, configCache);
+    var v = verdictFromResult(result);
+
+    // Save to history
+    saveCheckHistory({
+      query: q,
+      verdict: v.key,
+      miles: result.distance_mi,
+      timestamp: Date.now()
+    });
+
+    // Render verdict card
+    renderCheckVerdict(q, addr, result);
+
+    // Place pin on map (reuse existing renderSafetyResult)
+    renderSafetyResult(addr, addr, result);
+
+    // Also update hero check localStorage for cross-tab consistency
+    try { localStorage.setItem("gg-hero-check", JSON.stringify({ q: q, inside: result.insideEvac, at: Date.now() })); } catch (e) {}
+
+    // Refresh recent list
+    renderCheckRecent();
+  } catch (e) {
+    var loadingCard = area ? area.querySelector(".check-verdict-card") : null;
+    if (loadingCard) loadingCard.remove();
+    if (area) area.insertAdjacentHTML("beforeend", '<div class="check-verdict-card" style="text-align:center;padding:24px;color:var(--sa-high)">' + t("check.error") + '</div>');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+window.checkTabAddress = checkTabAddress;
+
+function rerunCheck(query) {
+  checkTabAddress(query);
+}
+window.rerunCheck = rerunCheck;
+
+async function checkTabUseLocation() {
+  if (!navigator.geolocation) return;
+  var btn = $("check-tab-btn");
+  if (btn) btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      var lat = pos.coords.latitude;
+      var lon = pos.coords.longitude;
+      if (!configCache) return;
+      var result = computeSafety({lat: lat, lon: lon}, configCache);
+      var v = verdictFromResult(result);
+      var addr = {lat: lat, lon: lon, displayName: lat.toFixed(5) + ", " + lon.toFixed(5)};
+
+      saveCheckHistory({
+        query: addr.displayName,
+        verdict: v.key,
+        miles: result.distance_mi,
+        timestamp: Date.now()
+      });
+
+      renderCheckVerdict(addr.displayName, addr, result);
+      renderSafetyResult(addr, addr, result);
+      renderCheckRecent();
+      if (btn) btn.disabled = false;
+    },
+    function() {
+      if (btn) btn.disabled = false;
+    },
+    { enableHighAccuracy: true, timeout: 8000 }
+  );
+}
+window.checkTabUseLocation = checkTabUseLocation;
+
+/* ============ NEWS FILTER ============ */
+function setNewsFilter(filter) {
+  activeNewsFilter = filter;
+  renderNewsFilterChips();
+  renderFilteredFeed();
+}
+window.setNewsFilter = setNewsFilter;
+
+function renderNewsFilterChips() {
+  var container = $("news-filter-chips");
+  if (!container) return;
+  var counts = { all: lastFeed.length, official: 0, article: 0, video: 0 };
+  lastFeed.forEach(function(it) {
+    if (it.type === "official") counts.official++;
+    else if (it.type === "video") counts.video++;
+    else counts.article++;
+  });
+  var filters = [
+    { key: "all", label: t("news.filter.all"), count: counts.all },
+    { key: "official", label: t("news.filter.official"), count: counts.official },
+    { key: "article", label: t("news.filter.articles"), count: counts.article },
+    { key: "video", label: t("news.filter.videos"), count: counts.video }
+  ];
+  container.innerHTML = filters.map(function(f) {
+    var cls = f.key === activeNewsFilter ? "news-filter-chip active" : "news-filter-chip";
+    return '<button type="button" class="' + cls + '" onclick="setNewsFilter(\'' + f.key + '\')">' +
+      '<span>' + f.label + '</span>' +
+      '<span class="news-filter-count">' + f.count + '</span>' +
+    '</button>';
+  }).join("");
+}
+
+function renderFilteredFeed() {
+  var filtered = activeNewsFilter === "all" ? lastFeed : lastFeed.filter(function(it) {
+    return it.type === activeNewsFilter;
+  });
+  var newsFeedEl = $("news-feed");
+  if (newsFeedEl) newsFeedEl.innerHTML = buildFeedCardsHtml(filtered);
+  hydrateMissingThumbnails();
+}
+
+function buildFeedCardsHtml(feed) {
+  if (!feed.length) {
+    return '<div style="padding:16px 12px;color:var(--sa-text-3);font-size:12px;text-align:center">' + t("news.empty") + '</div>';
+  }
+  var now = Date.now();
+  return feed.map(function(it, idx) {
+    var badgeClass = it.type === "official" ? "feed-card-badge-official"
+                   : it.type === "video" ? "feed-card-badge-video"
+                   : "feed-card-badge-article";
+    var badgeLabel = it.type === "official" ? t("news.badge.official")
+                   : it.type === "video" ? t("news.badge.video")
+                   : t("news.badge.article");
+    var when = it.when ? relativeTime(it.when) : "";
+    var isNewest = idx === 0;
+    var whenMs = it.when ? (now - new Date(it.when).getTime()) : Infinity;
+    var isRecent = !isNewest && whenMs < 120 * 60 * 1000;
+    var newestClass = isNewest ? " is-newest" : "";
+
+    var pillHtml = "";
+    if (isNewest) pillHtml = '<span class="feed-card-pill feed-card-pill-newest">' + t("news.badge.newest") + '</span>';
+    else if (isRecent) pillHtml = '<span class="feed-card-pill feed-card-pill-recent">' + t("news.badge.recent") + '</span>';
+
+    var meta = '<div class="feed-card-meta">' +
+      '<span class="feed-card-badge ' + badgeClass + '">' + badgeLabel + '</span>' +
+      pillHtml +
+      '<span class="feed-card-time">' + when + '</span>' +
+    '</div>';
+
+    if (it.type === "official") {
+      return '<div class="feed-card' + newestClass + '">' + meta +
+        '<div class="feed-card-text">' + it.text + '</div>' +
+        '<span style="font-size:11px;color:var(--sa-text-3);font-weight:600">' + it.source + '</span>' +
+        (it.url ? '<a class="feed-card-source" href="' + it.url + '" target="_blank" rel="noopener">' + t("news.source") + '</a>' : '') +
+      '</div>';
+    }
+
+    var escapedUrl = (it.url || "").replace(/"/g, "&quot;");
+    return '<a class="feed-card' + newestClass + '" href="' + it.url + '" target="_blank" rel="noopener" style="text-decoration:none;display:block" data-needs-og="' + (!it.thumb) + '" data-url="' + escapedUrl + '">' + meta +
+      '<div class="feed-card-title">' + (it.title || t("news.untitled")) + '</div>' +
+      '<span style="font-size:11px;color:var(--sa-text-3)">' + it.source + '</span>' +
+      (it.isVideo ? '<div class="feed-card-video-info">&#9654; ' + t("news.media.video") + '</div>' : '') +
+    '</a>';
+  }).join("");
+}
+
+/* ============ INFO TAB (redesigned) ============ */
+function renderInfoTab() {
+  var el = $("info-content");
+  if (!el) return;
+  var html = '<div class="info-layout">';
+
+  // Left column
+  html += '<div class="info-col-left">';
+
+  // Incident status section
+  html += '<div class="info-section"><div class="info-section-title">' + t("info.group.status") + '</div></div>';
+  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankCrack") + '</span><span class="info-kv-val" id="info-crack-val">--</span></div>';
+  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankTemp") + '</span><span class="info-kv-val sa-mono" id="info-temp-val">--</span></div>';
+  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacResidents") + '</span><span class="info-kv-val sa-mono" id="info-residents-val">--</span></div>';
+  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val" id="info-boundary-val" style="font-size:11px;max-width:55%;text-align:right">--</span></div>';
+
+  // Shelters section
+  html += '<div class="info-section" style="margin-top:4px"><div class="info-section-title">' + t("info.whereToGo") + '</div></div>';
+  html += '<div id="info-shelter-list"></div>';
+  html += '<div style="padding:6px 14px">';
+  html += '<a href="https://ggcity.org/emergency" target="_blank" rel="noopener" style="font-size:11px;color:var(--sa-celadon);text-decoration:none">' + t("info.liveList") + ' ↗</a>';
+  html += '</div>';
+
+  html += '</div>'; // end left col
+
+  // Right column
+  html += '<div class="info-col-right">';
+
+  // School closures
+  html += '<div class="info-section"><div class="info-section-title">' + t("info.schoolsClosed") + '</div></div>';
+  html += '<div class="info-schools-grid" id="info-schools-grid"></div>';
+
+  // Who made this
+  html += '<div class="info-section"><div class="info-section-title">' + t("info.whoMade") + '</div></div>';
+  html += '<div class="info-who-body">';
+  html += '<p>' + t("info.builtBy") + '</p>';
+  html += '<div class="info-seal">' + t("info.unofficial.seal") + '</div>';
+  html += '<p style="font-size:11px;color:var(--sa-text-3);line-height:1.4">' + t("disclosure.ai") + '</p>';
+  html += '</div>';
+
+  // Sources (collapsed)
+  html += '<details>';
+  html += '<summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>';
+  html += '<div class="info-who-body" style="padding-bottom:12px">';
+  html += '<p>' + t("info.method.pipeline") + '</p>';
+  html += '<p>' + t("info.method.wind") + '</p>';
+  html += '<p>' + t("info.method.checker") + '</p>';
+  html += '<p>' + t("info.method.eval") + '</p>';
+  html += '<p>' + t("info.method.disclaimer") + '</p>';
+  html += '</div>';
+  html += '<div id="info-source-list" style="padding:0 14px 12px"></div>';
+  html += '</details>';
+
+  html += '</div>'; // end right col
+  html += '</div>'; // end layout
+
+  el.innerHTML = html;
+}
+
+function updateInfoData(snap) {
+  var tank = snap.tank || {};
+  var evac = snap.evacuation || {};
+
+  var crackEl = $("info-crack-val");
+  if (crackEl) crackEl.innerHTML = tank.crack_observed ? '<span class="yes">' + t("info.tankCrackY") + '</span>' : "—";
+
+  var tempEl = $("info-temp-val");
+  if (tempEl) tempEl.textContent = (tank.temp_f != null) ? tank.temp_f + "°F · " + t("info.tankTempV") : "—";
+
+  var resEl = $("info-residents-val");
+  if (resEl) resEl.textContent = fmtNumber(evac.residents);
+
+  var boundEl = $("info-boundary-val");
+  if (boundEl) boundEl.textContent = evac.boundary_text || "—";
+
+  // Schools
+  var schoolsGrid = $("info-schools-grid");
+  var schools = snap.schools_closed || [];
+  if (schoolsGrid) {
+    if (schools.length) {
+      schoolsGrid.innerHTML = schools.map(function(s) {
+        return '<div class="info-school-card">' + s + '</div>';
+      }).join("");
+    } else {
+      schoolsGrid.innerHTML = '<div style="grid-column:1/-1;color:var(--sa-text-3);font-size:12px;padding:4px 0">' + t("info.schools.none") + '</div>';
+    }
+  }
+
+  // Sources
+  var sourceList = $("info-source-list");
+  var sources = snap.sources_checked || [];
+  if (sourceList) {
+    if (sources.length) {
+      sourceList.innerHTML = sources.map(function(s) {
+        var checked = s.fetched_iso ? ' <span class="source-time">' + t("info.sources.checked") + ' ' + relativeTime(s.fetched_iso) + '</span>' : '';
+        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + checked + '</a>';
+      }).join("");
+    } else {
+      sourceList.innerHTML = '<span style="color:var(--sa-text-3);font-size:12px">' + t("info.sources.empty") + '</span>';
+    }
+  }
+}
+
+function renderInfoShelters() {
+  var list = $("info-shelter-list");
+  if (!list) return;
+  var shelters = (configCache && configCache.map && configCache.map.shelters) || [];
+  var top5 = shelters.slice(0, 5);
+  if (!top5.length) {
+    list.innerHTML = '<div style="padding:8px 14px;color:var(--sa-text-3);font-size:12px">' + t("info.shelters.empty") + '</div>';
+    return;
+  }
+  list.innerHTML = top5.map(function(s) {
+    var gmaps = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(s.lat + "," + s.lon);
+    var notesHtml = s.notes ? ' · <span style="color:var(--sa-moderate);font-weight:600">' + s.notes + '</span>' : '';
+    return '<div class="info-shelter-row">' +
+      '<div class="info-shelter-icon">&#127968;</div>' +
+      '<div class="info-shelter-details">' +
+        '<div class="info-shelter-name">' + s.name + '</div>' +
+        '<div class="info-shelter-meta">' + (s.city || '') + notesHtml + '</div>' +
+      '</div>' +
+      '<a class="info-shelter-dir" href="' + gmaps + '" target="_blank" rel="noopener">' + t("info.directions") + '</a>' +
+    '</div>';
+  }).join("");
 }
 
 /* ============ OG IMAGE FETCH ============ */
@@ -2181,7 +3084,7 @@ async function fetchOgImage(url) {
 }
 
 async function hydrateMissingThumbnails() {
-  var cards = document.querySelectorAll(".news-item[data-needs-og='true']");
+  var cards = document.querySelectorAll("[data-needs-og='true']");
   for (var i = 0; i < cards.length; i++) {
     var card = cards[i];
     var url = card.dataset.url;
@@ -2335,8 +3238,6 @@ function renderTimelineEvents(feedId, countId) {
 function renderTimeline() {
   renderFilterChips("filter-chips");
   renderTimelineEvents("timeline-feed", "timeline-count");
-  renderFilterChips("desktop-filter-chips");
-  renderTimelineEvents("desktop-timeline-feed", "desktop-timeline-count");
 }
 
 async function loadTimeline() {
@@ -2402,11 +3303,11 @@ function renderResources() {
   '</div>';
   html += '</div>';
 
-  $("resources-content").innerHTML = html;
-  $("desktop-resources-content").innerHTML = html;
-  renderResourceShelters("resources-shelters-grid");
-  var desktopShelterGrids = document.querySelectorAll("#desktop-resources-content .shelters-grid");
-  desktopShelterGrids.forEach(function(g) { renderResourceSheltersInto(g); });
+  var rcEl = $("resources-content");
+  if (rcEl) {
+    rcEl.innerHTML = html;
+    renderResourceShelters("resources-shelters-grid");
+  }
 }
 
 function renderResourceShelters(gridId) {
@@ -2417,7 +3318,7 @@ function renderResourceShelters(gridId) {
 function renderResourceSheltersInto(grid) {
   var shelters = (configCache && configCache.map && configCache.map.shelters) || [];
   if (!shelters.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;color:var(--text-muted);font-size:13px">' + t("info.shelters.empty") + '</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;color:var(--sa-text-3);font-size:13px">' + t("info.shelters.empty") + '</div>';
     return;
   }
   grid.innerHTML = shelters.map(function(s) {
@@ -2493,8 +3394,8 @@ function renderAbout() {
 
   html += '</div>';
 
-  $("about-content").innerHTML = html;
-  $("desktop-about-content").innerHTML = html;
+  var acEl = $("about-content");
+  if (acEl) acEl.innerHTML = html;
 }
 
 function updateAboutData(snap) {
@@ -2525,7 +3426,7 @@ function updateAboutData(snap) {
   document.querySelectorAll("[id='about-schools']").forEach(function(el) {
     el.innerHTML = schools.length
       ? schools.map(function(s) { return '<div class="info-row"><span class="v">' + s + '</span></div>'; }).join("")
-      : '<span style="color:var(--text-muted);font-size:12px">' + t("info.schools.none") + '</span>';
+      : '<span style="color:var(--sa-text-3);font-size:12px">' + t("info.schools.none") + '</span>';
   });
   var sources = snap.sources_checked || [];
   document.querySelectorAll("[id='about-source-list']").forEach(function(el) {
@@ -2534,7 +3435,7 @@ function updateAboutData(snap) {
           var checked = s.fetched_iso ? ' <span class="source-time">' + t("info.sources.checked") + ' ' + relativeTime(s.fetched_iso) + '</span>' : '';
           return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + checked + '</a>';
         }).join("")
-      : '<span style="color:var(--text-muted);font-size:12px">' + t("info.sources.empty") + '</span>';
+      : '<span style="color:var(--sa-text-3);font-size:12px">' + t("info.sources.empty") + '</span>';
   });
 }
 
@@ -2562,6 +3463,144 @@ function renderPrintContent(snap) {
   $("print-content").innerHTML = html;
 }
 
+/* ============ HERO SPLIT-PANEL RENDER ============ */
+var HERO_BULLETS = {
+  en: {
+    high: [
+      "BLEVE explosion threat eliminated",
+      "Evacuation zone reduced 50,000 \u2192 16,000",
+      "Tank temperature stabilizing \u00B7 smaller blast risk remains"
+    ],
+    critical: [
+      "Tank overheating \u00B7 relief valve failed",
+      "~50,000 residents under evacuation order",
+      "OCFA: tank \u201Cwill fail\u201D by spill or explosion"
+    ],
+    moderate: [
+      "Tank cooling continues \u00B7 pressure relieved",
+      "16,000 residents remain in reduced zone",
+      "No contamination detected in atmosphere"
+    ],
+    low: [
+      "Tank cooling sustained \u00B7 damage assessment ongoing",
+      "Reduced zone holding \u00B7 returns processed",
+      "OCFA monitoring with continuous AQ sampling"
+    ],
+    resolved: [
+      "Evacuation order lifted (OCFA, all zones)",
+      "No injuries \u00B7 no contamination reported",
+      "OC DA investigation ongoing"
+    ]
+  },
+  vi: {
+    high: [
+      "Lo\u1EA1i b\u1ECF nguy c\u01A1 n\u1ED5 BLEVE",
+      "V\u00F9ng s\u01A1 t\u00E1n gi\u1EA3m 50.000 \u2192 16.000",
+      "Nhi\u1EC7t \u0111\u1ED9 b\u1ED3n \u1ED5n \u0111\u1ECBnh \u00B7 c\u00F2n nguy c\u01A1 n\u1ED5 nh\u1ECF"
+    ],
+    critical: [
+      "B\u1ED3n qu\u00E1 nhi\u1EC7t \u00B7 van an to\u00E0n h\u1ECFng",
+      "~50.000 c\u01B0 d\u00E2n \u0111\u01B0\u1EE3c l\u1EC7nh s\u01A1 t\u00E1n",
+      "OCFA: b\u1ED3n \u201Cs\u1EBD h\u1ECFng\u201D b\u1EB1ng r\u00F2 r\u1EC9 ho\u1EB7c n\u1ED5"
+    ],
+    moderate: [
+      "Ti\u1EBFp t\u1EE5c l\u00E0m m\u00E1t \u00B7 \u00E1p su\u1EA5t \u0111\u00E3 gi\u1EA3m",
+      "16.000 c\u01B0 d\u00E2n c\u00F2n trong v\u00F9ng",
+      "Kh\u00F4ng ph\u00E1t hi\u1EC7n \u00F4 nhi\u1EC5m kh\u00F4ng kh\u00ED"
+    ],
+    low: [
+      "L\u00E0m m\u00E1t \u1ED5n \u0111\u1ECBnh \u00B7 \u0111\u00E1nh gi\u00E1 thi\u1EC7t h\u1EA1i",
+      "V\u00F9ng gi\u1EA3m \u1ED5n \u0111\u1ECBnh \u00B7 x\u1EED l\u00FD h\u1ED3i c\u01B0",
+      "OCFA gi\u00E1m s\u00E1t li\u00EAn t\u1EE5c"
+    ],
+    resolved: [
+      "OCFA d\u1EE1 b\u1ECF l\u1EC7nh s\u01A1 t\u00E1n",
+      "Kh\u00F4ng th\u01B0\u01A1ng vong \u00B7 kh\u00F4ng \u00F4 nhi\u1EC5m",
+      "Bi\u1EC7n l\u00FD Qu\u1EADn ti\u1EBFp t\u1EE5c \u0111i\u1EC1u tra"
+    ]
+  }
+};
+
+var SEVERITY_WORDS = {
+  en: { low: "LOW", moderate: "MODERATE", high: "HIGH", critical: "CRITICAL", resolved: "RESOLVED" },
+  vi: { low: "TH\u1EA4P", moderate: "TRUNG B\u00CCNH", high: "CAO", critical: "NGUY K\u1ECACH", resolved: "\u0110\u00C3 K\u1EBET TH\u00DAC" }
+};
+
+var SEVERITY_RES_COUNTS = {
+  low: "5,000", moderate: "16,000", high: "16,000", critical: "50,000", resolved: "0"
+};
+
+var SEV_COLOR_VARS = {
+  low: "var(--sa-safe)", moderate: "var(--sa-moderate)", high: "var(--sa-high)",
+  critical: "var(--sa-critical)", resolved: "var(--sa-celadon)"
+};
+
+function renderHeroSplit(sev, snap) {
+  var lang = currentLang === "vi" ? "vi" : "en";
+  var words = SEVERITY_WORDS[lang] || SEVERITY_WORDS.en;
+  var bullets = (HERO_BULLETS[lang] || HERO_BULLETS.en)[sev] || HERO_BULLETS.en.low;
+  var resCount = SEVERITY_RES_COUNTS[sev] || "--";
+  var sevColor = SEV_COLOR_VARS[sev] || SEV_COLOR_VARS.low;
+  var sevClass = "sa-sev-" + sev;
+
+  // Update severity word
+  var sevWord = $("hero-severity-word");
+  if (sevWord) {
+    sevWord.textContent = words[sev] || sev.toUpperCase();
+    sevWord.className = "hero-severity-word " + sevClass;
+  }
+
+  // Update border color
+  var border = $("hero-severity-border");
+  if (border) border.style.borderTopColor = sevColor;
+
+  // Update resident count
+  var evac = (snap && snap.evacuation) || {};
+  var count = $("hero-res-count");
+  if (count) count.textContent = evac.residents != null ? fmtNumber(evac.residents) : resCount;
+
+  // Update day counter
+  var dayCounter = $("hero-day-counter");
+  if (dayCounter) {
+    var incident = (snap && snap.incident) || {};
+    if (incident.day_count) {
+      var dayLabel = lang === "vi" ? "Ng\u00E0y th\u1EE9 " + incident.day_count : "Day " + incident.day_count;
+      dayCounter.textContent = dayLabel;
+    }
+  }
+
+  // Update bullets
+  var bulletsEl = $("hero-bullets");
+  if (bulletsEl) {
+    bulletsEl.innerHTML = bullets.map(function(b, i) {
+      var dashStyle = i === 0 ? 'background:' + sevColor : '';
+      var dashClass = i === 0 ? 'hero-bullet-dash primary' : 'hero-bullet-dash';
+      return '<div class="hero-bullet">' +
+        '<span class="' + dashClass + '" aria-hidden="true" style="' + dashStyle + '"></span>' +
+        '<span class="hero-bullet-text">' + b + '</span>' +
+      '</div>';
+    }).join("");
+  }
+
+  // Update freshness dot severity class
+  var dot = $("freshness-dot");
+  if (dot) {
+    dot.className = "freshness-dot";
+    if (sev === "moderate") dot.classList.add("sev-moderate");
+    else if (sev === "high") dot.classList.add("sev-high");
+    else if (sev === "critical") dot.classList.add("sev-critical");
+    else if (sev === "resolved") dot.classList.add("sev-resolved");
+  }
+
+  // Update app severity class for wave pattern suppression
+  var appEl = document.querySelector('.app');
+  if (appEl) {
+    appEl.className = 'app sa-wave-bg';
+    if (sev === 'high') appEl.classList.add('severity-high');
+    if (sev === 'critical') appEl.classList.add('severity-critical');
+  }
+}
+
 /* ============ MAIN RENDER ============ */
 function render(snap) {
   snap = deepFix(snap);
@@ -2571,11 +3610,14 @@ function render(snap) {
     return;
   }
   var updEl = $("updated-text");
+  var freshLabel = $("freshness-label");
   var isStale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
   var rel = relativeTime(snap.last_updated_iso);
-  updEl.textContent = t(isStale ? "updated.stale" : "updated.freshness", { t: rel });
-  updEl.title = t("updated.title", { t: rel });
-  updEl.classList.toggle("stale", !!isStale);
+  if (freshLabel) freshLabel.textContent = t(isStale ? "updated.stale" : "updated.freshness", { t: rel });
+  if (updEl) {
+    updEl.title = t("updated.title", { t: rel });
+    updEl.classList.toggle("stale", !!isStale);
+  }
 
   var banners = [];
   if (!lastFetchOK) banners.push({kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.msg")});
@@ -2600,13 +3642,7 @@ function render(snap) {
 
   var you = snap.you || {};
   var zone = you.zone_status || "unknown";
-  var heroSummary = $("hero-summary");
   var resolved = !!(snap.incident && snap.incident.resolved_iso);
-  if (resolved) {
-    heroSummary.textContent = t("hero.summary.resolved");
-  } else {
-    heroSummary.textContent = t("hero.lead");
-  }
 
   if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
     if (window.__lastUrgentReason !== snap.breaking_reason) {
@@ -2620,28 +3656,15 @@ function render(snap) {
   lastZoneStatus = zone;
 
   var sev = (snap.incident && snap.incident.severity) || "low";
-  var sevChip = $("severity-chip");
-  sevChip.className = "severity-chip sev-" + sev;
-  sevChip.textContent = sev;
+  renderHeroSplit(sev, snap);
 
-  var appEl = document.querySelector('.app');
-  appEl.className = 'app';
-  if (sev === 'high') appEl.classList.add('severity-high');
-  if (sev === 'critical') appEl.classList.add('severity-critical');
+
 
   var tank = snap.tank || {};
   var evac = snap.evacuation || {};
-  $("temp-compact").textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
-  $("evac-compact").textContent = (evac.residents != null) ? fmtCompact(evac.residents) + " evac" : "—";
-  var aq = snap.air_quality;
-  if (aq && aq.aqi != null) {
-    $("aqi-compact").textContent = "AQI " + aq.aqi + " · " + (aq.category || "");
-    $("aqi-compact").title = (aq.source || "EPA AirNow") + " · " + relativeTime(aq.fetched_iso);
-    $("aqi-stat").style.display = "";
-    $("aqi-sep").style.display = "";
-  }
 
   updateAboutData(snap);
+  updateInfoData(snap);
 
   var feed = [];
   (snap.official_statements || []).forEach(function(s) {
@@ -2657,17 +3680,13 @@ function render(snap) {
     return tb - ta;
   });
 
-  var feedHtml = buildFeedHtml(feed, snap);
-
-  ["news-feed", "desktop-news-feed"].forEach(function(id) {
-    var el = $(id);
-    if (el) el.innerHTML = feedHtml;
-  });
+  lastFeed = feed;
+  renderNewsFilterChips();
+  renderFilteredFeed();
 
   var sitText = (snap.incident && snap.incident.status_headline) || "";
-  ["news-situation", "desktop-news-situation"].forEach(function(id) {
-    var sitEl = $(id);
-    if (!sitEl) return;
+  var sitEl = $("news-situation");
+  if (sitEl) {
     if (sitText && !(snap.incident && snap.incident.resolved_iso)) {
       sitEl.innerHTML = '<div class="news-situation-label"></div><p class="news-situation-text"></p>';
       sitEl.querySelector(".news-situation-label").textContent = t("news.situation.label");
@@ -2677,12 +3696,7 @@ function render(snap) {
       sitEl.hidden = true;
       sitEl.innerHTML = "";
     }
-  });
-
-  ["news-count", "desktop-news-count"].forEach(function(id) {
-    var el = $(id);
-    if (el) el.textContent = t("news.feed.title");
-  });
+  }
 
   hydrateMissingThumbnails();
   renderPrintContent(snap);
@@ -2690,7 +3704,7 @@ function render(snap) {
 
 function buildFeedHtml(feed, snap) {
   if (!feed.length) {
-    return '<div style="padding:10px 12px;color:var(--text-muted);font-size:12px">' + t("news.empty") + '</div>';
+    return '<div style="padding:10px 12px;color:var(--sa-text-3);font-size:12px">' + t("news.empty") + '</div>';
   }
   return feed.map(function(it) {
     var chip = it.type === "official" ? '<span class="feed-chip feed-chip-official">' + t("news.type.official") + '</span>'
@@ -2730,6 +3744,9 @@ async function loadConfig() {
     initMap(configCache);
     renderResources();
     renderAbout();
+    renderInfoTab();
+    renderInfoShelters();
+    renderCheckRecent();
     refreshWind();
   } catch (e) {
     console.warn("config load failed:", e);
@@ -2747,9 +3764,6 @@ async function fetchStatus() {
   } catch (e) {
     lastFetchOK = false;
     setBanners([{kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.detail", { err: e.message })}]);
-    if (lastZoneStatus === null) {
-      $("hero-summary").textContent = t("hero.summary.loading");
-    }
   }
 }
 
