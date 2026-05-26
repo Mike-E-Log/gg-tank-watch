@@ -2314,7 +2314,7 @@ function setLang(lang) {
   try { localStorage.setItem("gg-lang", currentLang); } catch (e) {}
   applyLang();
   if (lastSnap) render(lastSnap);
-  if (configCache) { renderResources(); renderInfoTab(); renderInfoShelters(); if (lastSnap) updateInfoData(lastSnap); }
+  if (configCache) { renderInfoTab(); renderResources(); renderInfoShelters(); if (lastSnap) updateInfoData(lastSnap); }
   renderCheckRecent();
   renderNewsFilterChips();
   if (timelineData) renderTimeline();
@@ -3686,8 +3686,8 @@ async function loadConfig() {
     if (!resp.ok) throw new Error("config.json HTTP " + resp.status);
     configCache = await resp.json();
     initMap(configCache);
-    renderResources();
     renderInfoTab();
+    renderResources();
     renderInfoShelters();
     renderCheckRecent();
     refreshWind();
