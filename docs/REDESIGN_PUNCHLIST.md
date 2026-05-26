@@ -26,6 +26,6 @@ or implies safety. Per-address verdicts stay in the Check tab where they are hed
 ## Carried-over gates (NOT in PR-B — flagged so they are not lost)
 
 - **Takeover modal "LEAVE NOW"** (`dashboard.html` `showTakeover`/`#takeover`): a full-screen directive that fires on zone-flip-to-inside. Same liability class as the hero "STAY PUT". PR-B leaves it untouched; **decide separately** whether to keep it, neutralize the wording ("The city's evacuation zone now includes your saved location — see ggcity.org/emergency"), or remove it.
-- **VI sign-off (Anna, G1 gate):** every new/changed user-facing string from PR-B (hero, News labels, severity label, group headings) is English-only with EN fallback until Anna verifies. No machine-translated Vietnamese ships.
+- **VI sign-off (Nancy, G1 gate):** every new/changed user-facing string from PR-B (hero, News labels, severity label, group headings) is English-only with EN fallback until Nancy verifies. No machine-translated Vietnamese ships.
 - **Attorney review (🔴 LEGAL):** final hero/severity wording, the address-tool output, and the terms ToU are attorney-review-gated before distribution. PR-B is the conservative pass.
 - **Error-report contact:** terms §7 is worded to not promise a channel that is not live yet; a real, monitored channel is still needed.

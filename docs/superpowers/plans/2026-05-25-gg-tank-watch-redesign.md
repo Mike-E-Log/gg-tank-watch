@@ -10,7 +10,7 @@
 
 **Liability lens (binding, from `docs/LEGAL.md` R1/R2 + `docs/DISTRIBUTION.md` §3):** the UI never issues directives ("STAY PUT", "LEAVE NOW") or implies safety. It states facts, labels severity, and points to ggcity.org/emergency + 911. Per-address verdicts stay in the Check tab where they are hedged.
 
-**Translation gate (from PR-A pattern):** new user-facing strings are English-only; `t()` falls back to `entry.en` when `vi` is missing (`dashboard.html:1084`), so VI users see English until Anna verifies (G1 gate). Minimal VI redactions to existing strings also need Anna's sign-off. Do not machine-translate Vietnamese.
+**Translation gate (from PR-A pattern):** new user-facing strings are English-only; `t()` falls back to `entry.en` when `vi` is missing (`dashboard.html:1084`), so VI users see English until Nancy verifies (G1 gate). Minimal VI redactions to existing strings also need Nancy's sign-off. Do not machine-translate Vietnamese.
 
 ---
 
@@ -347,7 +347,7 @@ In `STRINGS`, find the hero block (the keys `hero.label`, `hero.loading`, `hero.
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
 ```
 
-VI: omitted intentionally — falls back to EN until Anna verifies (G1). The takeover keys (`takeover.*`) are still used by the takeover modal — leave them.
+VI: omitted intentionally — falls back to EN until Nancy verifies (G1). The takeover keys (`takeover.*`) are still used by the takeover modal — leave them.
 
 - [ ] **Step 4: Replace the hero render block**
 
@@ -842,7 +842,7 @@ Replace the entire contents of `<div class="info-panel-inner"> … </div>` (the 
             <summary data-i18n="info.about.title">Who made this</summary>
             <div class="info-section">
               <div class="methodology-body">
-                <p data-i18n="info.about.body">Built by two local volunteers, Mike &amp; Anna, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
+                <p data-i18n="info.about.body">Built by two local volunteers, Mike &amp; Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.</p>
                 <p data-i18n="info.about.official">For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.</p>
                 <p><a href="terms.html" data-i18n="info.about.termslink">Read the full Terms &amp; disclaimer</a></p>
               </div>
@@ -1087,7 +1087,7 @@ Insert above the `## [v0.7]` heading in `CHANGELOG.md`:
 - **Geocode result caching** (localStorage, 7-day TTL) to satisfy the OSM Nominatim caching policy.
 
 ### Notes
-- New user-facing strings are English-only with EN fallback under VI until Anna verifies (G1 gate). Final hero/severity wording remains attorney-review-gated per `docs/LEGAL.md`. The takeover modal's "LEAVE NOW" directive is flagged for a separate liability decision in `docs/REDESIGN_PUNCHLIST.md`.
+- New user-facing strings are English-only with EN fallback under VI until Nancy verifies (G1 gate). Final hero/severity wording remains attorney-review-gated per `docs/LEGAL.md`. The takeover modal's "LEAVE NOW" directive is flagged for a separate liability decision in `docs/REDESIGN_PUNCHLIST.md`.
 ```
 
 - [ ] **Step 2: Commit**

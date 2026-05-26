@@ -1,20 +1,20 @@
 # SPEC — Garden Grove MMA Tank Live Dashboard
 
-**Owner:** Anna (***REDACTED***)
+**Owner:** Nancy (***REDACTED***)
 **Created:** 2026-05-24
 **Status:** v0 pivot locked in (post-/autoplan Phase 1 CEO review)
-**Context:** See `BRIEF_2026-05-24.md` and `~/.claude/projects/.../memory/project_gg_mma_tank_emergency.md` — there's an active multi-day MMA tank emergency in Garden Grove. Anna is a downwind-adjacent resident sheltering in place and wants glanceable situational awareness without re-reading the news.
+**Context:** See `BRIEF_2026-05-24.md` and `~/.claude/projects/.../memory/project_gg_mma_tank_emergency.md` — there's an active multi-day MMA tank emergency in Garden Grove. Nancy is a downwind-adjacent resident sheltering in place and wants glanceable situational awareness without re-reading the news.
 
 ---
 
 ## v0 PIVOT (2026-05-24, post-CEO review)
 
-**The pivot:** push-first, dashboard-secondary. CEO subagent's F1 + F2 + F11 findings showed the original dashboard-first framing solves the wrong problem — Anna needs to be reached when she ISN'T looking, not given more to look at. Existing battle-tested apps cover ~80% of the real alert path; the custom code is layered safety net + glance dashboard.
+**The pivot:** push-first, dashboard-secondary. CEO subagent's F1 + F2 + F11 findings showed the original dashboard-first framing solves the wrong problem — Nancy needs to be reached when she ISN'T looking, not given more to look at. Existing battle-tested apps cover ~80% of the real alert path; the custom code is layered safety net + glance dashboard.
 
 ### v0 architecture (4-hour budget)
 
 ```
-Phone (Anna's setup, ~30 min)              Laptop (CC build, ~2.5 hr)
+Phone (Nancy's setup, ~30 min)              Laptop (CC build, ~2.5 hr)
 ─────────────────────────                  ────────────────────────
 [Ready OC app]                             update_status.py ──┐
 [Genasys EVAC app]   ← official channels                       ├─► status.json
@@ -47,9 +47,9 @@ Phone (Anna's setup, ~30 min)              Laptop (CC build, ~2.5 hr)
 
 - `update_status.py` — Python 3, runs from /loop every 30 min, writes status.json + posts ntfy on breaking
 - `dashboard.html` — vanilla JS, polls status.json every 30s, renders 4 panels (hero, tank, evac, sources)
-- `apps-checklist.md` — phone setup instructions for Anna (Ready OC + Genasys + AirNow + ntfy)
+- `apps-checklist.md` — phone setup instructions for Nancy (Ready OC + Genasys + AirNow + ntfy)
 - `go_bag.md` — printable checklist, NOT embedded in dashboard
-- `config.json` — ntfy topic name, Anna's zone status, dashboard refresh interval
+- `config.json` — ntfy topic name, Nancy's zone status, dashboard refresh interval
 - `README.md` — what each file does, how to run
 - Logs (`updates.log`, `breaking_events.jsonl`) — kept in OneDrive project folder
 
@@ -120,7 +120,7 @@ OneDrive\Desktop\GG-tank-updates\
    ```
    Walked top-to-bottom; first match wins.
 
-6. **Random ntfy topic (Eng E5):** `setup` step generates a 32-char URL-safe random string and writes to `config.json` under `ntfy_topic`. Anna subscribes to `ntfy.sh/<that-string>`.
+6. **Random ntfy topic (Eng E5):** `setup` step generates a 32-char URL-safe random string and writes to `config.json` under `ntfy_topic`. Nancy subscribes to `ntfy.sh/<that-string>`.
 
 ### Design specifications (auto-spec'd from review)
 
@@ -142,25 +142,25 @@ OneDrive\Desktop\GG-tank-updates\
 - **Schema version:** field stays at `1`; dashboard.html shows "schema changed, refresh page" banner if mismatch. No migration code.
 - **Concurrent writers:** skip PID lockfile (P2 accept). `os.replace()` retry handles the rare race.
 
-### Confirmed premises (post-CEO gate, Anna 2026-05-24)
+### Confirmed premises (post-CEO gate, Nancy 2026-05-24)
 
 1. Primary risk = missing a material change while NOT actively monitoring.
-2. Anna will install Ready OC + Genasys EVAC + AirNow + ntfy on phone (~30 min).
+2. Nancy will install Ready OC + Genasys EVAC + AirNow + ntfy on phone (~30 min).
 3. Dashboard is SECONDARY to the official + push channels.
 4. Logs kept in OneDrive project folder, NOT throwaway.
 5. Build budget **6–8 hours for v0** (post-Eng-review recalibration).
 6. Apps installed/tested FIRST; if they cover 80%, decide whether to continue with the custom code at all.
 
-### Final taste decisions (post-Design+Eng gate, Anna 2026-05-24)
+### Final taste decisions (post-Design+Eng gate, Nancy 2026-05-24)
 
 - **Zone-flip outside→inside moment:** full-screen red modal + Web Audio API beep. Can't be ignored. One-click dismiss. (Design D2)
 - **Distance to boundary:** DROP. Link to ggcity.org address checker instead. No coords required. (Design D1 follow-up)
 - **Writer-down ntfy alert:** ADD to v0. `try/except` wrapping all of `update_status.py`; on any uncaught exception, last-ditch ntfy POST `"⚠️ WRITER DOWN — dashboard data is now stale"`. (Eng E6)
 - **Real budget:** accept 6–8 hr build for complete v0. (Eng E8)
 
-### v0.1 SCOPE CUT — desktop-only (Anna 2026-05-24, post-build)
+### v0.1 SCOPE CUT — desktop-only (Nancy 2026-05-24, post-build)
 
-Anna scratched the entire mobile / phone path after the v0 build was complete. New direction: **single live desktop dashboard app. No phone, no push, no apps.**
+Nancy scratched the entire mobile / phone path after the v0 build was complete. New direction: **single live desktop dashboard app. No phone, no push, no apps.**
 
 **Removed:**
 - ntfy push pipeline (POST on breaking, writer-down alert, ASCII-safe header helper)
@@ -185,12 +185,12 @@ Anna scratched the entire mobile / phone path after the v0 build was complete. N
 
 | Phase | Subagent | Codex | Outcome |
 |---|---|---|---|
-| 1 CEO | run | unavailable | 11 findings (3 critical/high triggered user challenge) — Anna pivoted to push-first |
+| 1 CEO | run | unavailable | 11 findings (3 critical/high triggered user challenge) — Nancy pivoted to push-first |
 | 2 Design | run | unavailable | 6 findings, composite 3.9/10 → all auto-fixed in SPEC |
-| 3 Eng | run | unavailable | 10 findings, composite 6.5/10 → 3 P1 auto-fixed, 1 taste deferred to Anna (Writer-down: add) |
-| 4 DX | skipped | n/a | No developer-facing scope (Anna is sole user) |
+| 3 Eng | run | unavailable | 10 findings, composite 6.5/10 → 3 P1 auto-fixed, 1 taste deferred to Nancy (Writer-down: add) |
+| 4 DX | skipped | n/a | No developer-facing scope (Nancy is sole user) |
 
-**16 auto-decisions** logged in this section. **4 taste decisions** approved by Anna. **1 user challenge** (CEO pivot) accepted.
+**16 auto-decisions** logged in this section. **4 taste decisions** approved by Nancy. **1 user challenge** (CEO pivot) accepted.
 
 **Status: APPROVED FOR BUILD.**
 
@@ -202,7 +202,7 @@ Anna scratched the entire mobile / phone path after the v0 build was complete. N
 
 ## 1. Problem
 
-Anna is monitoring an evolving, multi-day chemical incident. Current state lives in three places:
+Nancy is monitoring an evolving, multi-day chemical incident. Current state lives in three places:
 - The /loop job in an open Claude Code session (text deltas, in-terminal)
 - A cloud routine (hourly text deltas, in routine logs)
 - News sites she has to manually check
@@ -211,7 +211,7 @@ She needs **one glanceable view** that shows the current state of the incident a
 
 ## 2. Premises
 
-- Audience is one person (Anna). No auth needed; no multi-tenant.
+- Audience is one person (Nancy). No auth needed; no multi-tenant.
 - Viewing devices: Windows laptop (primary), phone (browser; secondary). Layout must be readable on both without app install.
 - Lifetime: days, not months. This dashboard ships, runs through the incident, then gets archived. **Throwaway is acceptable.**
 - The user already has Claude Code running locally with /loop active, and a cloud routine running hourly. Either can be the data writer.
@@ -296,7 +296,7 @@ WebSearch / WebFetch  ──writes──>  status.json  ──reads──>  dash
   - **Hero:** incident name, status headline, severity color band.
   - **Tank panel:** temp (big number), trend arrow, crack-observed flag.
   - **Evac panel:** residents, sq mi, boundary, lifted/expanded flags.
-  - **You panel:** Anna's current zone status (read from JSON; one-tap edit on the page writes back via download-the-edited-JSON pattern — out of scope for v1, just display).
+  - **You panel:** Nancy's current zone status (read from JSON; one-tap edit on the page writes back via download-the-edited-JSON pattern — out of scope for v1, just display).
   - **Official statements:** newest 3, with timestamp + agency + source link.
   - **Footer:** "Last updated 2 min ago" (computed client-side from `last_updated_iso`); "Next check at 3:07 PM"; link to full brief.
 - **Staleness banner:** if `now > stale_after_iso`, red banner: "Data is stale — last update >30 min ago. Check the writer."
@@ -341,7 +341,7 @@ The dashboard updates on **three independent triggers**, OR-merged:
 | Scheduled heartbeat | /loop job `cf846055` runs `update_status.py` | every 30 min | Existing |
 | Cloud cron | cloud routine `trig_017YEJ4zkKeeXswyXPWz3yFw` | hourly | Existing; produces own delta + status snapshot |
 | Breaking-news poller | new local /loop job runs `check_breaking.py` | every 5 min | NEW — needs second loop job |
-| Manual | Anna runs `python update_status.py` | on demand | "F5" equivalent |
+| Manual | Nancy runs `python update_status.py` | on demand | "F5" equivalent |
 
 All three writer invocations target the same `status.json`. Atomic rename + filesystem locking handle concurrent writes (vanishingly unlikely at these cadences).
 
@@ -372,7 +372,7 @@ All three writer invocations target the same `status.json`. Atomic rename + file
 
 **Out of scope (v1):**
 - Map rendering of evacuation zone.
-- Push notifications (Anna already has /loop text deltas).
+- Push notifications (Nancy already has /loop text deltas).
 - Editing the JSON from the dashboard.
 - Historical timeline / charts.
 - Multi-incident support.
@@ -380,10 +380,10 @@ All three writer invocations target the same `status.json`. Atomic rename + file
 
 ## 10. Success criteria
 
-- Anna opens `dashboard.html` in her browser, sees current incident state at a glance, and can leave the tab open. The page auto-refreshes; she never has to F5.
+- Nancy opens `dashboard.html` in her browser, sees current incident state at a glance, and can leave the tab open. The page auto-refreshes; she never has to F5.
 - Within 30 min of any of the source sites publishing a material change, that change appears on the dashboard (assuming /loop fired).
 - If the writer is broken for >30 min, the staleness banner fires and she can tell at a glance the data is stale.
-- Anna's verdict on first open: "yes, this is what I wanted."
+- Nancy's verdict on first open: "yes, this is what I wanted."
 
 ## 11. Review decisions (2026-05-24, post-/autoplan)
 
@@ -398,20 +398,20 @@ All three writer invocations target the same `status.json`. Atomic rename + file
 | 5 | Breaking-news poller cadence | **5 min** with 5-min debounce after a hit | P3 pragmatic |
 | 6 | Sentinel keyword set | **Expanded:** `explod|explosion|breach|all clear|evacuation lifted|evacuation expanded|fatal|injured|injury|killed|tank failure|neutralization complete|shelter in place expanded` | P1 completeness |
 | 7 | Where to run the breaking poller | **Second /loop job** (`update_status` stays on the 30-min job; `check_breaking` on a new 5-min job) | P3 pragmatic |
-| 8 | Live AQI for Anna's zip | **Add.** Pull from EPA AirNow API. Surfaces in the "You" panel. | P1 completeness |
+| 8 | Live AQI for Nancy's zip | **Add.** Pull from EPA AirNow API. Surfaces in the "You" panel. | P1 completeness |
 
 ### Critical risk → fix folded in
 
 **Risk:** OneDrive's sync client can grab `status.json` mid-rename, causing locks or half-written copies.
-**Fix:** Both writer output and the HTML/JSON live at `%LOCALAPPDATA%\gg-dashboard\` (NOT inside OneDrive). Source files (this SPEC, brief, README) stay in OneDrive; runtime artifacts move out. A desktop shortcut on Anna's desktop points at `%LOCALAPPDATA%\gg-dashboard\dashboard.html`.
+**Fix:** Both writer output and the HTML/JSON live at `%LOCALAPPDATA%\gg-dashboard\` (NOT inside OneDrive). Source files (this SPEC, brief, README) stay in OneDrive; runtime artifacts move out. A desktop shortcut on Nancy's desktop points at `%LOCALAPPDATA%\gg-dashboard\dashboard.html`.
 
-### Taste decisions (Anna's calls)
+### Taste decisions (Nancy's calls)
 
-| Decision | Anna's call | Implementation |
+| Decision | Nancy's call | Implementation |
 |---|---|---|
 | Push notifications on breaking | **Add Windows toast** | `notify.py` using `win10toast` or stdlib `windows.ui.notifications`; called by `update_status.py` when `breaking: true` flips on |
 | Go-bag checklist | **Collapsed accordion** | Static HTML/JS accordion in dashboard footer; content from `go_bag.md` (one-time write) |
-| Evacuation-zone map | **Static SVG** with the 4-street boundary + pin for Anna's address | One-time SVG generated from boundary coords; pin position read from `config.json` (Anna fills in her address coordinates once) |
+| Evacuation-zone map | **Static SVG** with the 4-street boundary + pin for Nancy's address | One-time SVG generated from boundary coords; pin position read from `config.json` (Nancy fills in her address coordinates once) |
 | Historical timeline | **Add minimal horizontal strip** | Reads `breaking_events.jsonl`; renders as a horizontal scrollable strip above the official-statements panel |
 
 ### Updated file manifest
@@ -423,7 +423,7 @@ All three writer invocations target the same `status.json`. Atomic rename + file
 ├── status.json.tmp       # transient
 ├── breaking_events.jsonl # append-only breaking-change log
 ├── updates.log           # append-only writer activity log
-├── config.json           # Anna's address coordinates, zip for AQI, etc.
+├── config.json           # Nancy's address coordinates, zip for AQI, etc.
 ├── go_bag.md             # static go-bag content
 └── zone.svg              # static evacuation-zone map
 
@@ -443,6 +443,6 @@ OneDrive\Desktop\GG-tank-updates\
 
 - Should the writer be Python or PowerShell? (Python is more portable across the cloud routine and the local loop; PowerShell is Windows-native and avoids an extra dependency. Default pick: **Python**, because the cloud routine runs in a Linux sandbox.)
 - Auto-refresh interval (30 s vs 60 s vs 5 min)? Tradeoff: tab CPU vs perceived liveness.
-- Should the cloud routine write to the same `status.json`? It runs in a Linux sandbox without access to Anna's OneDrive folder. **Likely answer:** cloud routine produces its own JSON-shaped output in the routine log; only the *local* writer touches `status.json`. Cloud is the redundancy / off-session safety net.
+- Should the cloud routine write to the same `status.json`? It runs in a Linux sandbox without access to Nancy's OneDrive folder. **Likely answer:** cloud routine produces its own JSON-shaped output in the routine log; only the *local* writer touches `status.json`. Cloud is the redundancy / off-session safety net.
 - Should the dashboard also show a "what to do if you have to evacuate" go-bag checklist? Adds value for her actual situation but feels like scope creep — flag for /autoplan.
 - Where does `dashboard.html` open from — `file://` direct, OneDrive web, or quick local server? Default: `file://` works; document the `python -m http.server` fallback if `fetch` is blocked.
