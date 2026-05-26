@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-26T19:10:36Z",
+  "generated_at": "2026-05-26T22:12:44Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -634,30 +634,19 @@
       "timestamp_local": "2026-05-26T13:00:00-07:00",
       "day": 6,
       "title": "McGovern: worst-case scenario resolved, but incident not over",
-      "description": "OCFA Interim Chief McGovern at Monday afternoon press conference: \"The most catastrophic and worst-case scenario has been mitigated and resolved, but it's not over yet.\" No injuries to civilians or firefighters throughout the incident.",
+      "description": "OCFA Interim Chief McGovern at Monday afternoon press conference: \"The most catastrophic and worst-case scenario has been mitigated and resolved, but it's not over yet.\" No injuries to civilians or firefighters throughout the incident. OCFA Incident Commander Covey: \"The liquid potential in the tank [has been] greatly reduced, as it has been hardened.\"",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
       "category": "official_statement"
     },
     {
-      "id": "evt-20260526-005",
-      "timestamp_utc": "2026-05-27T00:30:00Z",
-      "timestamp_local": "2026-05-26T17:30:00-07:00",
-      "day": 6,
-      "title": "Garden Grove City Council holds special meeting on tank crisis",
-      "description": "City of Garden Grove holds special City Council meeting focused on the incident, the city's response, and the latest information available.",
-      "source_url": "https://ggcity.org/emergency",
-      "source_name": "City of Garden Grove",
-      "category": "government_action"
-    },
-    {
       "id": "evt-20260526-006",
-      "timestamp_utc": "2026-05-27T01:00:00Z",
-      "timestamp_local": "2026-05-26T18:00:00-07:00",
+      "timestamp_utc": "2026-05-26T22:00:00Z",
+      "timestamp_local": "2026-05-26T15:00:00-07:00",
       "day": 6,
       "title": "7 arrests during evacuation; millions of gallons of water used to cool tank",
       "description": "At the Day 6 evening press conference, Garden Grove Police Chief Amir El-Farra reports 7 total arrests since the incident began: 1 for looting and 6 for prowling; DA's office to prosecute to fullest extent. OCFA Incident Commander Craig Covey reveals scale of cooling operations: a deluge system plus a ground monitor flowing 1,250 gallons per minute for five consecutive days — totaling millions of gallons of water used.",
-      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19172203/",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
       "category": "official_statement"
     },
@@ -671,6 +660,28 @@
       "source_url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-evacuation-update/",
       "source_name": "KTLA",
       "category": "tank_status"
+    },
+    {
+      "id": "evt-20260526-008",
+      "timestamp_utc": "2026-05-26T22:00:00Z",
+      "timestamp_local": "2026-05-26T15:00:00-07:00",
+      "day": 6,
+      "title": "Crews begin transferring MMA from third unaffected tank into neutralizing-agent tank",
+      "description": "Officials announce crews are moving product from the third, unaffected GKN Aerospace tank into a second tank that already contains a neutralizing agent — creating the conditions to eventually neutralize and isolate the MMA from the compromised primary tank. The primary tank's seized valves continue to prevent direct offloading of its contents.",
+      "source_url": "https://www.nbclosangeles.com/news/local/toxic-chemical-tank-garden-grove-orange-county/3894971/",
+      "source_name": "NBC LA",
+      "category": "tank_status"
+    },
+    {
+      "id": "evt-20260526-005",
+      "timestamp_utc": "2026-05-27T00:30:00Z",
+      "timestamp_local": "2026-05-26T17:30:00-07:00",
+      "day": 6,
+      "title": "Garden Grove City Council holds special meeting on tank crisis",
+      "description": "City of Garden Grove holds special City Council meeting focused on the incident, the city's response, and the latest information available.",
+      "source_url": "https://ggcity.org/emergency",
+      "source_name": "City of Garden Grove",
+      "category": "government_action"
     }
   ]
 }
