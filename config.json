@@ -35,9 +35,7 @@
       {"name": "John F. Kennedy High School", "city": "La Palma", "address": "8281 Walker St, La Palma, CA 90623", "lat": 33.8421, "lon": -118.0372, "notes": "All evacuees"},
       {"name": "OC Fair & Event Center", "city": "Costa Mesa", "address": "88 Fair Dr, Costa Mesa, CA 92626", "lat": 33.6664, "lon": -117.9015, "notes": "RV evacuees only (~100 spaces)"}
     ],
-    "shelters_source_url": "https://ggcity.org/emergency",
-    "geocode_bias": "Orange County, CA",
-    "geocode_viewbox": [-118.10, 33.85, -117.85, 33.65]
+    "shelters_source_url": "https://ggcity.org/emergency"
   },
   "community_resources": [
     {
