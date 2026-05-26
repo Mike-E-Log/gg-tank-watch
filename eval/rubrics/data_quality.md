@@ -77,7 +77,7 @@ Output strict JSON only.
 
 For a held-out gold-standard set, capture 5-10 ticks where:
 - The raw snippets are saved verbatim
-- A human (Anna) reviews the extraction and corrects any errors → produces a "gold" facts JSON
+- A human (Nancy) reviews the extraction and corrects any errors → produces a "gold" facts JSON
 - The judge scores the actual extraction against the gold
 
 Over time, regressions in extraction quality become visible: composite score drops, hallucinations rise, missed facts cluster around a specific field.

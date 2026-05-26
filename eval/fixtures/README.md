@@ -16,4 +16,4 @@ This directory is for held-out gold-standard data used by the eval suite. Add fi
 
 ## Why this isn't seeded yet
 
-The project is days old. Real gold-standard data accumulates as the writer runs over time and Anna reviews extractions. Seeding fake fixtures now would just create noise.
+The project is days old. Real gold-standard data accumulates as the writer runs over time and Nancy reviews extractions. Seeding fake fixtures now would just create noise.

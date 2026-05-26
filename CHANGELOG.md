@@ -45,7 +45,7 @@ All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://
 - **Geocode result caching** (localStorage, 7-day TTL) to satisfy the OSM Nominatim caching policy.
 
 ### Notes
-- New user-facing strings are English-only with EN fallback under VI until Anna verifies (G1 gate). Final hero/severity wording remains attorney-review-gated per `docs/LEGAL.md`. The takeover modal's "LEAVE NOW" directive is flagged for a separate liability decision in `docs/REDESIGN_PUNCHLIST.md`. A pre-existing em-dash mojibake in `status.json` `boundary_text` (Info → Evacuation → Boundary) is a data-pipeline issue for the DATA_QUALITY lane, not this PR.
+- New user-facing strings are English-only with EN fallback under VI until Nancy verifies (G1 gate). Final hero/severity wording remains attorney-review-gated per `docs/LEGAL.md`. The takeover modal's "LEAVE NOW" directive is flagged for a separate liability decision in `docs/REDESIGN_PUNCHLIST.md`. A pre-existing em-dash mojibake in `status.json` `boundary_text` (Info → Evacuation → Boundary) is a data-pipeline issue for the DATA_QUALITY lane, not this PR.
 
 ## [v0.7] — 2026-05-25 (trust/safety on-page — PR-A)
 
@@ -62,7 +62,7 @@ Pre-distribution trust and liability hardening from `docs/LEGAL.md` (minimum-bar
 - **Check-result disclaimer** strengthened to "Estimate only — not official. Verify at ggcity.org/emergency; in an emergency, call 911."
 
 ### Notes
-- New user-facing strings are English-only and fall back to English under VI until Anna verifies them (G1 translation gate). The minimal VI redactions in changed verdict strings also need Anna's sign-off. Final wording remains attorney-review-gated per `docs/LEGAL.md` (🔴).
+- New user-facing strings are English-only and fall back to English under VI until Nancy verifies them (G1 translation gate). The minimal VI redactions in changed verdict strings also need Nancy's sign-off. Final wording remains attorney-review-gated per `docs/LEGAL.md` (🔴).
 
 ## [v0.6] — 2026-05-25 (post-portfolio iteration)
 
@@ -93,7 +93,7 @@ Pre-distribution trust and liability hardening from `docs/LEGAL.md` (minimum-bar
 - **Hardcoded ABC7 article thumbnails** weren't loading (likely CDN hotlink restrictions) — removed; replaced by Microlink OG fetch.
 
 ### Repo
-- Initial push to **github.com/AnnaThyme/gg-tank-dashboard** (private).
+- Initial push to a private repository.
 - 8 commits on `main` before this PR. GH Actions workflow runs eval suite on every push.
 
 ## [v0.5] — 2026-05-24 (portfolio cut)

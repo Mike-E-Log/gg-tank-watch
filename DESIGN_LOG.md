@@ -14,7 +14,7 @@ Each decision has:
 - **Rubric score** — retrospective grading on three axes, 1–10:
   - **Correctness:** does it solve the actual problem?
   - **Maintainability:** would another engineer understand + extend it?
-  - **User-fit:** did Anna (the actual user) accept it?
+  - **User-fit:** did Nancy (the actual user) accept it?
 - **Lesson** — what to remember next time
 
 ## Decision summary table
@@ -57,7 +57,7 @@ Each decision has:
 
 - **Date:** 2026-05-24
 - **Status:** Superseded by [D-009](#d-009) within 90 minutes of accepting it.
-- **Context:** Initial SPEC framed this as a "live dashboard" Anna would glance at. CEO subagent challenged hard: the real failure mode isn't "I want to look but can't" — it's "I'm asleep / showering / driving when the evac expands and don't see it."
+- **Context:** Initial SPEC framed this as a "live dashboard" Nancy would glance at. CEO subagent challenged hard: the real failure mode isn't "I want to look but can't" — it's "I'm asleep / showering / driving when the evac expands and don't see it."
 - **Decision:** Build push notifications (ntfy.sh) as the **primary** alert path; dashboard becomes secondary.
 - **Alternatives:**
   - **Dashboard-first (rejected):** fails the asleep/away-from-screen scenario.
@@ -129,7 +129,7 @@ Each decision has:
 - **Status:** Rejected.
 - **Context:** Original SPEC envisioned the hourly cloud routine as a redundant writer of `status.json`.
 - **Decision:** Cloud routine produces text deltas in its own log and does NOT write `status.json`. Local `/loop` is the sole writer.
-- **Why:** The cloud routine runs in a Linux sandbox with no access to Anna's OneDrive folder. Architecturally impossible.
+- **Why:** The cloud routine runs in a Linux sandbox with no access to Nancy's OneDrive folder. Architecturally impossible.
 - **Alternatives:**
   - **Push from cloud to a public endpoint (rejected):** infrastructure for one user.
   - **Cloud writes to a git repo, local pulls (rejected):** churn, complexity.
@@ -203,7 +203,7 @@ Each decision has:
 - **Decision:** Hero `clamp(20px, 3.2vw, 32px)`. Padding tightened. Severity chip + status headline merged into the hero (was a separate row).
 - **Principles applied:** P3 pragmatic.
 - **Rubric:** Correctness 9 · Maintainability 10 · User-fit 8.
-- **Lesson:** "Make the hero huge" is conventional UX advice but Anna's screen real estate matters — the map + sidebar are the dominant artifacts, the hero just needs to be unmistakable.
+- **Lesson:** "Make the hero huge" is conventional UX advice but Nancy's screen real estate matters — the map + sidebar are the dominant artifacts, the hero just needs to be unmistakable.
 
 ## D-013: Evac polygon: extend west to ~Knott Ave
 
