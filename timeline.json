@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-25T22:00:00Z",
+  "generated_at": "2026-05-26T15:30:00Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -594,6 +594,61 @@
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19163312/",
       "source_name": "ABC7 LA",
       "category": "air_quality"
+    },
+    {
+      "id": "evt-20260526-001",
+      "timestamp_utc": "2026-05-26T01:00:00Z",
+      "timestamp_local": "2026-05-25T18:00:00-07:00",
+      "day": 5,
+      "title": "Evacuation zone reduced 65%; 34,000 residents can return home",
+      "description": "Evacuation zone reduced from ~50,000 to ~16,000 residents. New boundaries: Orangewood Ave (north), Dale St (east), Knott St (west), Garden Grove Blvd (south). Approximately 65% of impacted residents can return home.",
+      "source_url": "https://www.nbclosangeles.com/news/local/toxic-chemical-tank-garden-grove-orange-county/3894971/",
+      "source_name": "NBC LA",
+      "category": "evacuation"
+    },
+    {
+      "id": "evt-20260526-002",
+      "timestamp_utc": "2026-05-26T04:00:00Z",
+      "timestamp_local": "2026-05-25T21:00:00-07:00",
+      "day": 5,
+      "title": "Overnight operation removes tank insulation to improve cooling",
+      "description": "Firefighters removed weather protection and insulation from the outside of the tank overnight to help water cooling be more efficient at reducing temperature.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "source_name": "ABC7 LA",
+      "category": "tank_status"
+    },
+    {
+      "id": "evt-20260526-003",
+      "timestamp_utc": "2026-05-26T14:00:00Z",
+      "timestamp_local": "2026-05-26T07:00:00-07:00",
+      "day": 6,
+      "title": "OCFA confirms no threat of catastrophic explosion; tank stabilizing",
+      "description": "OCFA confirms there is no longer a threat of a catastrophic explosion. Tank temperature continuing to decrease. Ongoing atmospheric monitoring confirms no chemicals leaking from the crack.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "source_name": "ABC7 LA",
+      "category": "official_statement"
+    },
+    {
+      "id": "evt-20260526-004",
+      "timestamp_utc": "2026-05-26T20:00:00Z",
+      "timestamp_local": "2026-05-26T13:00:00-07:00",
+      "day": 6,
+      "title": "McGovern: worst-case scenario resolved, but incident not over",
+      "description": "OCFA Interim Chief McGovern at Monday afternoon press conference: \"The most catastrophic and worst-case scenario has been mitigated and resolved, but it's not over yet.\" No injuries to civilians or firefighters throughout the incident.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "source_name": "ABC7 LA",
+      "category": "official_statement"
+    },
+    {
+      "id": "evt-20260526-005",
+      "timestamp_utc": "2026-05-27T00:30:00Z",
+      "timestamp_local": "2026-05-26T17:30:00-07:00",
+      "day": 6,
+      "title": "Garden Grove City Council holds special meeting on tank crisis",
+      "description": "City of Garden Grove holds special City Council meeting focused on the incident, the city's response, and the latest information available.",
+      "source_url": "https://ggcity.org/emergency",
+      "source_name": "City of Garden Grove",
+      "category": "government_action"
     }
   ]
 }
