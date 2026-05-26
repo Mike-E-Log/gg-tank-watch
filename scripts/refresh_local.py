@@ -40,6 +40,19 @@ from gather_facts import PROMPT, extract_json  # noqa: E402  (reuse the one prom
 
 MODEL = os.environ.get("CLAUDE_MODEL", "sonnet")
 REPO = HERE.parent
+HEALTHCHECK_URL = os.environ.get("HEALTHCHECK_URL", "")
+
+
+def ping_healthcheck(status: str = "") -> None:
+    """Ping healthchecks.io on successful refresh. Silent on failure."""
+    if not HEALTHCHECK_URL:
+        return
+    import urllib.request
+    url = HEALTHCHECK_URL if not status else f"{HEALTHCHECK_URL}/{status}"
+    try:
+        urllib.request.urlopen(url, timeout=10)
+    except Exception:
+        pass
 
 
 def gather_via_subscription() -> dict:
@@ -116,8 +129,10 @@ def main() -> int:
     write_status(facts)
     if args.dry_run:
         print("dry-run: status.json written, git skipped")
+        ping_healthcheck()
         return 0
     commit_and_push()
+    ping_healthcheck()
     return 0
 
 
