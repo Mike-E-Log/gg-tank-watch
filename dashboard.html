@@ -71,19 +71,14 @@
     }
     .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
     .sa-mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-feature-settings: "zero", "cv11"; font-variant-numeric: tabular-nums; }
-    .sa-sev-low      { color: var(--sa-safe); }
-    .sa-sev-moderate { color: var(--sa-moderate); }
-    .sa-sev-high     { color: var(--sa-high); }
-    .sa-sev-critical { color: var(--sa-critical); }
-    .sa-sev-resolved { color: var(--sa-celadon); }
+
 
     /* ===== VIETNAMESE TYPOGRAPHY ===== */
     html[lang="vi"] {
       font-family: "Be Vietnam Pro", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
       line-height: 1.5;
     }
-    html[lang="vi"] .topbar-wordmark,
-    html[lang="vi"] .hero-split-left-header {
+    html[lang="vi"] .topbar-wordmark {
       font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
     }
     html[lang="vi"] .topbar-wordmark {
@@ -457,142 +452,12 @@
       text-transform: uppercase; color: var(--sa-text-2);
     }
 
-    /* ===== HERO SPLIT-PANEL ===== */
-    .hero-split {
-      display: flex;
-      flex-direction: column;
-      background: var(--sa-bg);
-      flex-shrink: 0;
-    }
-    @media (min-width: 600px) {
-      .hero-split { flex-direction: row; }
-    }
-    .hero-split-left {
-      flex: 0 0 auto;
-      padding: 18px 14px 14px;
-      background: var(--sa-surface);
-      border-bottom: 1px solid var(--sa-border);
-      position: relative;
-    }
-    @media (min-width: 600px) {
-      .hero-split-left {
-        flex: 0 0 38%;
-        padding: 22px 24px;
-        border-right: 1px solid var(--sa-border);
-        border-bottom: none;
-      }
-    }
-    .hero-split-left-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 14px;
-      font-size: 10.5px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--sa-text-3);
-      font-weight: 600;
-    }
-    .hero-split-left-header-line {
-      flex: 1;
-      height: 1px;
-      background: var(--sa-border);
-    }
-    .hero-severity-word {
-      font-weight: 800;
-      font-size: 36px;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-    @media (min-width: 600px) {
-      .hero-severity-word { font-size: 40px; }
-    }
-    .hero-res-row {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    .hero-res-count {
-      font-family: "IBM Plex Mono", ui-monospace, monospace;
-      font-size: 26px;
-      font-weight: 600;
-      color: var(--sa-text);
-      letter-spacing: -0.01em;
-      font-variant-numeric: tabular-nums;
-    }
-    @media (min-width: 600px) {
-      .hero-res-count { font-size: 28px; }
-    }
-    .hero-res-label {
-      font-size: 12px;
-      color: var(--sa-text-2);
-    }
-    .hero-split-right {
-      flex: 1 1 auto;
-      padding: 14px 14px 18px;
-      min-width: 0;
-    }
-    @media (min-width: 600px) {
-      .hero-split-right { padding: 22px 24px; }
-    }
-    .hero-split-right-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 14px;
-      font-size: 10.5px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--sa-text-3);
-      font-weight: 600;
-      flex-wrap: wrap;
-    }
-    .hero-split-right-header-line {
-      flex: 1 1 20px;
-      min-width: 20px;
-      height: 1px;
-      background: var(--sa-border);
-    }
-    .hero-day-counter {
-      font-family: "IBM Plex Mono", monospace;
-      color: var(--sa-text-3);
-      text-transform: none;
-      letter-spacing: 0.04em;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    .hero-bullet {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 13.5px;
-      color: var(--sa-text);
-      line-height: 1.45;
-      padding: 8px 0;
-    }
-    @media (min-width: 600px) {
-      .hero-bullet { font-size: 14.5px; }
-    }
-    .hero-bullet + .hero-bullet {
-      border-top: 1px dashed var(--sa-border);
-    }
-    .hero-bullet-dash {
-      flex: 0 0 18px;
-      margin-top: 9px;
-      width: 18px;
-      height: 2px;
-      border-radius: 1px;
-      background: var(--sa-celadon);
-    }
-    .hero-bullet-dash.primary {
-      /* colored by severity via inline style */
-    }
-    .hero-bullet-text {
-      flex: 1 1 auto;
-      min-width: 0;
-    }
+    /* ===== HERO STATUS BOARD ===== */
+    .hero-status { padding: 12px 16px; border-bottom: 1px solid var(--sa-border); }
+    .hero-status-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
+    .hero-status-item { display: flex; flex-direction: column; gap: 2px; min-width: 80px; }
+    .hero-status-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--sa-text-3); font-family: "IBM Plex Mono", monospace; }
+    .hero-status-value { font-size: 18px; font-weight: 700; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; color: var(--sa-text); }
 
     .wind-arrow-sm {
       display: inline-block;
@@ -1559,28 +1424,23 @@
 
     <div class="banners" id="banners" aria-live="assertive" aria-atomic="false"></div>
 
-    <section class="hero-split" id="hero">
-      <div class="hero-split-left" id="hero-severity-border" style="border-top: 3px solid var(--sa-safe)">
-        <div class="hero-split-left-header">
-          <span data-i18n="hero.severity.label">Incident severity</span>
-          <span class="hero-split-left-header-line"></span>
+    <section class="hero-status" id="hero">
+      <div class="hero-status-row">
+        <div class="hero-status-item">
+          <span class="hero-status-label" data-i18n="hero.status.evacuation">Evacuation</span>
+          <span class="hero-status-value" id="hero-evac-status">--</span>
         </div>
-        <div class="hero-severity-word sa-sev-low" id="hero-severity-word">LOW</div>
-        <div class="hero-res-row">
-          <span class="hero-res-count" id="hero-res-count"><span class="skeleton" style="width:60px;height:24px"></span></span>
-          <span class="hero-res-label" data-i18n="hero.res.label">residents in evacuation zone</span>
+        <div class="hero-status-item">
+          <span class="hero-status-label" data-i18n="hero.status.residents">Residents affected</span>
+          <span class="hero-status-value" id="hero-res-count">--</span>
         </div>
-      </div>
-      <div class="hero-split-right">
-        <div class="hero-split-right-header">
-          <span data-i18n="hero.whatchanged">What changed</span>
-          <span class="hero-split-right-header-line"></span>
-          <span class="hero-day-counter" id="hero-day-counter"><span class="skeleton" style="width:120px;height:14px"></span></span>
+        <div class="hero-status-item">
+          <span class="hero-status-label" data-i18n="hero.status.tankTemp">Tank temp</span>
+          <span class="hero-status-value" id="hero-tank-temp">--</span>
         </div>
-        <div id="hero-bullets">
-          <div style="padding:8px 0"><span class="skeleton" style="width:100%;height:14px"></span></div>
-          <div style="padding:8px 0"><span class="skeleton" style="width:90%;height:14px"></span></div>
-          <div style="padding:8px 0"><span class="skeleton" style="width:95%;height:14px"></span></div>
+        <div class="hero-status-item">
+          <span class="hero-status-label" data-i18n="hero.status.day">Day</span>
+          <span class="hero-status-value" id="hero-day-counter">--</span>
         </div>
       </div>
     </section>
@@ -1701,6 +1561,12 @@ var STRINGS = {
   "safety.strip.terms": { en: "Full terms & disclaimer", vi: "Điều khoản & miễn trừ đầy đủ", es: "Términos y descargo de responsabilidad completos" },
   "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels.", vi: "Các tóm tắt trên trang này được tổng hợp với sự hỗ trợ của AI từ các nguồn chính thức và tin tức, sau đó được kiểm tra bởi người thật. Luôn xác nhận thông tin an toàn sinh mạng với các kênh chính thức.", es: "Los resúmenes en esta página se compilan con asistencia de IA a partir de fuentes oficiales y de noticias, luego son verificados por una persona. Siempre confirme la información de seguridad con los canales oficiales." },
   "hero.severity.label": { en: "Incident severity:", vi: "Mức độ nghiêm trọng:", es: "Gravedad del incidente:" },
+  "hero.status.evacuation": { en: "Evacuation", vi: "Sơ tán", es: "Evacuación" },
+  "hero.status.residents": { en: "Residents affected", vi: "Cư dân bị ảnh hưởng", es: "Residentes afectados" },
+  "hero.status.tankTemp": { en: "Tank temp", vi: "Nhiệt độ bồn", es: "Temp. tanque" },
+  "hero.status.day": { en: "Day", vi: "Ngày", es: "Día" },
+  "hero.status.active": { en: "Active", vi: "Đang diễn ra", es: "Activa" },
+  "hero.status.lifted": { en: "Lifted", vi: "Đã dỡ bỏ", es: "Levantada" },
   "hero.summary.loading": { en: "Loading current status…", vi: "Đang tải tình trạng hiện tại…", es: "Cargando estado actual…" },
   "hero.lead": { en: "Active chemical-tank emergency in Garden Grove.", vi: "Tình trạng khẩn cấp bồn chứa hóa chất đang diễn ra tại Garden Grove.", es: "Emergencia activa de tanque químico en Garden Grove." },
   "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders.", vi: "Sự cố bồn chứa hóa chất đang diễn ra tại Garden Grove. Hãy tuân theo lệnh của cơ quan chức năng.", es: "Incidente activo de tanque químico en Garden Grove. Siga las órdenes oficiales." },
@@ -1909,8 +1775,7 @@ function applyLang() {
   }
   // Re-render hero if we have data
   if (lastSnap) {
-    var sev = (lastSnap.incident && lastSnap.incident.severity) || "low";
-    renderHeroSplit(sev, lastSnap);
+    renderHeroStatus(lastSnap);
   }
 }
 function renderLangPicker() {
@@ -3053,142 +2918,25 @@ function renderPrintContent(snap) {
   $("print-content").innerHTML = html;
 }
 
-/* ============ HERO SPLIT-PANEL RENDER ============ */
-var HERO_BULLETS = {
-  en: {
-    high: [
-      "BLEVE explosion threat eliminated",
-      "Evacuation zone reduced 50,000 \u2192 16,000",
-      "Tank temperature stabilizing \u00B7 smaller blast risk remains"
-    ],
-    critical: [
-      "Tank overheating \u00B7 relief valve failed",
-      "~50,000 residents under evacuation order",
-      "OCFA: tank \u201Cwill fail\u201D by spill or explosion"
-    ],
-    moderate: [
-      "Tank cooling continues \u00B7 pressure relieved",
-      "16,000 residents remain in reduced zone",
-      "No contamination detected in atmosphere"
-    ],
-    low: [
-      "Tank cooling sustained \u00B7 damage assessment ongoing",
-      "Reduced zone holding \u00B7 returns processed",
-      "OCFA monitoring with continuous AQ sampling"
-    ],
-    resolved: [
-      "Evacuation order lifted (OCFA, all zones)",
-      "No injuries \u00B7 no contamination reported",
-      "OC DA investigation ongoing"
-    ]
-  },
-  vi: {
-    high: [
-      "Lo\u1EA1i b\u1ECF nguy c\u01A1 n\u1ED5 BLEVE",
-      "V\u00F9ng s\u01A1 t\u00E1n gi\u1EA3m 50.000 \u2192 16.000",
-      "Nhi\u1EC7t \u0111\u1ED9 b\u1ED3n \u1ED5n \u0111\u1ECBnh \u00B7 c\u00F2n nguy c\u01A1 n\u1ED5 nh\u1ECF"
-    ],
-    critical: [
-      "B\u1ED3n qu\u00E1 nhi\u1EC7t \u00B7 van an to\u00E0n h\u1ECFng",
-      "~50.000 c\u01B0 d\u00E2n \u0111\u01B0\u1EE3c l\u1EC7nh s\u01A1 t\u00E1n",
-      "OCFA: b\u1ED3n \u201Cs\u1EBD h\u1ECFng\u201D b\u1EB1ng r\u00F2 r\u1EC9 ho\u1EB7c n\u1ED5"
-    ],
-    moderate: [
-      "Ti\u1EBFp t\u1EE5c l\u00E0m m\u00E1t \u00B7 \u00E1p su\u1EA5t \u0111\u00E3 gi\u1EA3m",
-      "16.000 c\u01B0 d\u00E2n c\u00F2n trong v\u00F9ng",
-      "Kh\u00F4ng ph\u00E1t hi\u1EC7n \u00F4 nhi\u1EC5m kh\u00F4ng kh\u00ED"
-    ],
-    low: [
-      "L\u00E0m m\u00E1t \u1ED5n \u0111\u1ECBnh \u00B7 \u0111\u00E1nh gi\u00E1 thi\u1EC7t h\u1EA1i",
-      "V\u00F9ng gi\u1EA3m \u1ED5n \u0111\u1ECBnh \u00B7 x\u1EED l\u00FD h\u1ED3i c\u01B0",
-      "OCFA gi\u00E1m s\u00E1t li\u00EAn t\u1EE5c"
-    ],
-    resolved: [
-      "OCFA d\u1EE1 b\u1ECF l\u1EC7nh s\u01A1 t\u00E1n",
-      "Kh\u00F4ng th\u01B0\u01A1ng vong \u00B7 kh\u00F4ng \u00F4 nhi\u1EC5m",
-      "Bi\u1EC7n l\u00FD Qu\u1EADn ti\u1EBFp t\u1EE5c \u0111i\u1EC1u tra"
-    ]
-  }
-};
-
-var SEVERITY_WORDS = {
-  en: { low: "LOW", moderate: "MODERATE", high: "HIGH", critical: "CRITICAL", resolved: "RESOLVED" },
-  vi: { low: "TH\u1EA4P", moderate: "TRUNG B\u00CCNH", high: "CAO", critical: "NGUY K\u1ECACH", resolved: "\u0110\u00C3 K\u1EBET TH\u00DAC" }
-};
-
-var SEVERITY_RES_COUNTS = {
-  low: "5,000", moderate: "16,000", high: "16,000", critical: "50,000", resolved: "0"
-};
-
-var SEV_COLOR_VARS = {
-  low: "var(--sa-safe)", moderate: "var(--sa-moderate)", high: "var(--sa-high)",
-  critical: "var(--sa-critical)", resolved: "var(--sa-celadon)"
-};
-
-function renderHeroSplit(sev, snap) {
-  var lang = currentLang === "vi" ? "vi" : "en";
-  var words = SEVERITY_WORDS[lang] || SEVERITY_WORDS.en;
-  var bullets = (HERO_BULLETS[lang] || HERO_BULLETS.en)[sev] || HERO_BULLETS.en.low;
-  var resCount = SEVERITY_RES_COUNTS[sev] || "--";
-  var sevColor = SEV_COLOR_VARS[sev] || SEV_COLOR_VARS.low;
-  var sevClass = "sa-sev-" + sev;
-
-  // Update severity word
-  var sevWord = $("hero-severity-word");
-  if (sevWord) {
-    sevWord.textContent = words[sev] || sev.toUpperCase();
-    sevWord.className = "hero-severity-word " + sevClass;
-  }
-
-  // Update border color
-  var border = $("hero-severity-border");
-  if (border) border.style.borderTopColor = sevColor;
-
-  // Update resident count
+/* ============ HERO STATUS RENDER ============ */
+function renderHeroStatus(snap) {
   var evac = (snap && snap.evacuation) || {};
+  var tank = (snap && snap.tank) || {};
+  var incident = (snap && snap.incident) || {};
+
+  var evacStatus = $("hero-evac-status");
+  if (evacStatus) {
+    evacStatus.textContent = evac.lifted ? (t("hero.status.lifted") || "Lifted") : (t("hero.status.active") || "Active");
+  }
+
   var count = $("hero-res-count");
-  if (count) count.textContent = evac.residents != null ? fmtNumber(evac.residents) : resCount;
+  if (count) count.textContent = evac.residents != null ? fmtNumber(evac.residents) : "--";
 
-  // Update day counter
+  var temp = $("hero-tank-temp");
+  if (temp) temp.textContent = tank.temp_f != null ? tank.temp_f + "\u00B0F" : "--";
+
   var dayCounter = $("hero-day-counter");
-  if (dayCounter) {
-    var incident = (snap && snap.incident) || {};
-    if (incident.day_count) {
-      var dayLabel = lang === "vi" ? "Ng\u00E0y th\u1EE9 " + incident.day_count : "Day " + incident.day_count;
-      dayCounter.textContent = dayLabel;
-    }
-  }
-
-  // Update bullets
-  var bulletsEl = $("hero-bullets");
-  if (bulletsEl) {
-    bulletsEl.innerHTML = bullets.map(function(b, i) {
-      var dashStyle = i === 0 ? 'background:' + sevColor : '';
-      var dashClass = i === 0 ? 'hero-bullet-dash primary' : 'hero-bullet-dash';
-      return '<div class="hero-bullet">' +
-        '<span class="' + dashClass + '" aria-hidden="true" style="' + dashStyle + '"></span>' +
-        '<span class="hero-bullet-text">' + b + '</span>' +
-      '</div>';
-    }).join("");
-  }
-
-  // Update freshness dot severity class
-  var dot = $("freshness-dot");
-  if (dot) {
-    dot.className = "freshness-dot";
-    if (sev === "moderate") dot.classList.add("sev-moderate");
-    else if (sev === "high") dot.classList.add("sev-high");
-    else if (sev === "critical") dot.classList.add("sev-critical");
-    else if (sev === "resolved") dot.classList.add("sev-resolved");
-  }
-
-  // Update app severity class for wave pattern suppression
-  var appEl = document.querySelector('.app');
-  if (appEl) {
-    appEl.className = 'app sa-wave-bg';
-    if (sev === 'high') appEl.classList.add('severity-high');
-    if (sev === 'critical') appEl.classList.add('severity-critical');
-  }
+  if (dayCounter) dayCounter.textContent = incident.day_count || "--";
 }
 
 /* ============ MAIN RENDER ============ */
@@ -3245,8 +2993,7 @@ function render(snap) {
   }
   lastZoneStatus = zone;
 
-  var sev = (snap.incident && snap.incident.severity) || "low";
-  renderHeroSplit(sev, snap);
+  renderHeroStatus(snap);
 
 
 
