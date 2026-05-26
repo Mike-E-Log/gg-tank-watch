@@ -2569,7 +2569,7 @@ async function geocodeAddress(q, cfg) {
   async function nominatim(qstr, vb) {
     var u = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(qstr);
     if (vb && vb.length === 4) u += "&viewbox=" + vb[0] + "," + vb[1] + "," + vb[2] + "," + vb[3] + "&bounded=1";
-    var r = await fetch(u, { headers: { "Accept-Language": "en" } });
+    var r = await fetch(u, { headers: { "Accept-Language": "en", "User-Agent": "GG-Dashboard/1.0 (emergency-awareness)" } });
     if (!r.ok) throw new Error("Nominatim HTTP " + r.status);
     return await r.json();
   }
