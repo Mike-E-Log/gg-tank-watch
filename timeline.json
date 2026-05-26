@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-26T16:10:52Z",
+  "generated_at": "2026-05-26T19:10:36Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -660,6 +660,17 @@
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19172203/",
       "source_name": "ABC7 LA",
       "category": "official_statement"
+    },
+    {
+      "id": "evt-20260526-007",
+      "timestamp_utc": "2026-05-26T22:00:00Z",
+      "timestamp_local": "2026-05-26T15:00:00-07:00",
+      "day": 6,
+      "title": "Tank temperature steady at 92°F; main cooling hose stream deactivated",
+      "description": "OCFA Fire Capt. and PIO Greg Barta reports tank temperature holding at a steady 92°F, down from 100°F peak. Officials deactivate one of the main unmanned master hose streams that had been continuously spraying water on the tank for days. Onsite sprinkler system remains active. MMA continues to harden inside tank, further reducing spill threat.",
+      "source_url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-evacuation-update/",
+      "source_name": "KTLA",
+      "category": "tank_status"
     }
   ]
 }
