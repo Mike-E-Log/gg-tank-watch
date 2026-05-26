@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-26T15:37:43Z",
-  "data_as_of_iso": "2026-05-26T15:37:43Z",
-  "next_check_at_iso": "2026-05-26T16:07:43Z",
-  "stale_after_iso": "2026-05-26T16:17:43Z",
+  "last_updated_iso": "2026-05-26T16:10:52Z",
+  "data_as_of_iso": "2026-05-26T16:10:52Z",
+  "next_check_at_iso": "2026-05-26T16:40:52Z",
+  "stale_after_iso": "2026-05-26T16:50:52Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Evacuation zone reduced ~65% to ~16,000 residents; ~34,000 cleared to return home; MMA in tank hardening (polymerizing), greatly reducing spill potential; tank at 93\u00b0F and cooling; smaller explosion/spill risk remains \u2014 crisis not fully resolved.",
+    "status_headline": "Tank temperature declining from 93\u00b0F; ~16,000 residents remain under evacuation orders (65% reduction from 50,000 peak); catastrophic explosion risk eliminated; MMA hardening in tank; 7 arrests made during evacuation; incident ongoing but stabilizing \u2014 Day 6.",
     "severity": "high",
     "resolved_iso": null
   },
@@ -58,53 +58,70 @@
       "time_iso": "2026-05-26T14:00:00Z",
       "text": "The liquid potential in the tank [has been] greatly reduced, as it has been hardened.",
       "source_url": "https://www.cbsnews.com/losangeles/video/ocfa-chief-craig-covey-talks-about-resolving-the-garden-grove-emergency/"
+    },
+    {
+      "agency": "Garden Grove PD Chief Amir El-Farra",
+      "time_iso": "2026-05-27T01:00:00Z",
+      "text": "Seven total arrests have been made since the incident began \u2014 one person for looting and six for prowling. The DA\u2019s office will prosecute them to the fullest extent of the law.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19172203/"
+    },
+    {
+      "agency": "OCFA \u2013 Incident Commander Craig Covey",
+      "time_iso": "2026-05-27T01:00:00Z",
+      "text": "So, you got a deluge system with a full throttle on it, and then we have that ground monitor on the ground that\u2019s flowing 1,250 gallons a minute, so imagine five days of that.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19172480/"
     }
   ],
   "sources_checked": [
     {
       "url": "https://ggcity.org/emergency",
       "title": "Emergency | City of Garden Grove",
-      "fetched_iso": "2026-05-26T17:30:00Z"
+      "fetched_iso": "2026-05-27T01:00:00Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/garden-grove-chemical-tank-evacuations-partially-lifted-16k-still-evacuated/",
       "title": "Garden Grove Chemical Tank Evacuations Partially Lifted, 16K Still Evacuated \u2013 Voice of OC",
-      "fetched_iso": "2026-05-26T17:30:00Z"
-    },
-    {
-      "url": "https://www.nbclosangeles.com/news/local/toxic-chemical-tank-garden-grove-orange-county/3894971/",
-      "title": "Recap: Evacuation map reduced, thousands of residents can return home \u2013 NBC Los Angeles",
-      "fetched_iso": "2026-05-26T17:31:00Z"
-    },
-    {
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove tank crisis updates: Evacuation zone reduced \u2013 ABC7 Los Angeles",
-      "fetched_iso": "2026-05-26T17:31:00Z"
-    },
-    {
-      "url": "https://ktla.com/news/orange-county/oc-chemical-tank-incident-evacuation-reduced/",
-      "title": "Thousands return home as Garden Grove chemical tank evacuation reduced \u2013 KTLA",
-      "fetched_iso": "2026-05-26T17:32:00Z"
-    },
-    {
-      "url": "https://ktla.com/news/orange-county/orange-county-residents-await-update-on-evacuation-zones/",
-      "title": "Orange County residents await update on evacuation zones \u2013 KTLA",
-      "fetched_iso": "2026-05-26T17:32:00Z"
-    },
-    {
-      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
-      "title": "Garden Grove chemical leak \u2013 Wikipedia",
-      "fetched_iso": "2026-05-26T17:32:00Z"
-    },
-    {
-      "url": "https://newsantaana.com/34000-garden-grove-residents-cleared-to-return-home-as-chemical-danger-zone-shrinks/",
-      "title": "34,000 Garden Grove residents cleared to return home as chemical danger zone shrinks \u2013 New Santa Ana",
-      "fetched_iso": "2026-05-26T17:33:00Z"
+      "fetched_iso": "2026-05-27T01:00:00Z"
     },
     {
       "url": "https://www.cbsnews.com/losangeles/video/ocfa-chief-craig-covey-talks-about-resolving-the-garden-grove-emergency/",
       "title": "OCFA Chief Craig Covey talks about resolving the Garden Grove emergency \u2013 CBS Los Angeles",
-      "fetched_iso": "2026-05-26T17:33:00Z"
+      "fetched_iso": "2026-05-27T01:00:00Z"
+    },
+    {
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "title": "Garden Grove tank crisis updates \u2013 ABC7 Los Angeles",
+      "fetched_iso": "2026-05-27T01:00:00Z"
+    },
+    {
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19172203/",
+      "title": "7 arrests made during Garden Grove evacuation \u2013 ABC7 Los Angeles",
+      "fetched_iso": "2026-05-27T01:00:00Z"
+    },
+    {
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19172480/",
+      "title": "Millions of gallons of water used during Garden Grove chemical tank crisis response \u2013 ABC7 Los Angeles",
+      "fetched_iso": "2026-05-27T01:00:00Z"
+    },
+    {
+      "url": "https://www.foxla.com/news/garden-grove-chemical-crisis-reaches-6th-day",
+      "title": "LIVE UPDATES: Garden Grove chemical crisis reaches 6th day | FOX 11 Los Angeles",
+      "fetched_iso": "2026-05-27T01:00:00Z"
+    },
+    {
+      "url": "https://www.nbclosangeles.com/news/local/toxic-chemical-tank-garden-grove-orange-county/3894971/",
+      "title": "Recap: Some evacuations lifted in Garden Grove \u2013 NBC Los Angeles",
+      "fetched_iso": "2026-05-27T01:00:00Z"
+    },
+    {
+      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-crack-explosion-risk/",
+      "title": "Garden Grove chemical tank cools, risk of catastrophic explosion eliminated \u2013 KTLA",
+      "fetched_iso": "2026-05-27T01:00:00Z"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
+      "title": "Garden Grove chemical leak \u2013 Wikipedia",
+      "fetched_iso": "2026-05-27T01:00:00Z"
     }
   ],
   "schools_closed": [
@@ -206,8 +223,8 @@
   ],
   "air_quality": null,
   "breaking": true,
-  "breaking_reason": "1 new official statement(s)",
-  "breaking_since_iso": "2026-05-26T15:37:43Z",
+  "breaking_reason": "2 new official statement(s)",
+  "breaking_since_iso": "2026-05-26T16:10:52Z",
   "breaking_level": "info",
   "_meta": {
     "injuries": 0,
@@ -216,7 +233,9 @@
       "f1844f1823dfab8e",
       "b3010e50df6692be",
       "b1b47a5cb86aad70",
-      "7e652c0ffece03f7"
+      "7e652c0ffece03f7",
+      "eb44466bee8d912f",
+      "71e8af113801816d"
     ],
     "last_residents_shift_iso": null
   }
