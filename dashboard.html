@@ -20,7 +20,7 @@
       --sa-surface-2: #f3efe7;
       --sa-text:      #1a1612;
       --sa-text-2:    #5c5347;
-      --sa-text-3:    #706862;
+      --sa-text-3:    #6a635d;
       --sa-celadon:   #0e6f5e;
       --sa-celadon-2: #d8eae5;
       --sa-celadon-3: rgba(14, 111, 94, 0.12);
@@ -42,7 +42,7 @@
       --sa-surface-2: #28241e;
       --sa-text:      #f0ece6;
       --sa-text-2:    #a39a8e;
-      --sa-text-3:    #7a7268;
+      --sa-text-3:    #948c82;
       --sa-celadon:   #4ecdb4;
       --sa-celadon-2: #1f3a35;
       --sa-celadon-3: rgba(78, 205, 180, 0.14);
@@ -1468,7 +1468,8 @@
     <!-- ===== TAB CONTENT ===== -->
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
-        <div id="map"></div>
+        <div id="map" role="img" aria-label="Interactive map showing the evacuation zone, shelter locations, and current wind direction near the Garden Grove chemical tank facility"></div>
+        <div id="map-alt" class="sr-only">Map showing evacuation zone polygon around the chemical tank facility at Brookhurst Street and Hazard Avenue in Garden Grove, with markers for evacuation shelters. Wind direction and speed are displayed in the overlay. For shelter addresses, see the Info tab.</div>
         <div class="map-wind-overlay" id="map-wind-overlay">
           <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
           <span id="wind-text-map">--</span>
@@ -1526,8 +1527,6 @@ var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
 var ICON_MOON = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z" fill="#94a3b8"/></svg>';
 var FLAG_VN = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#da251d"/><polygon points="15,4 16.8,9.6 22.6,9.6 17.9,13 19.7,18.6 15,15.1 10.3,18.6 12.1,13 7.4,9.6 13.2,9.6" fill="#ff0"/></svg>';
 var FLAG_US = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><g fill="#b22234"><rect width="30" height="2" y="0"/><rect width="30" height="2" y="4"/><rect width="30" height="2" y="8"/><rect width="30" height="2" y="12"/><rect width="30" height="2" y="16"/></g><rect width="13" height="10" fill="#3c3b6e"/></svg>';
-var FLAG_ES = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#c60b1e"/><rect width="30" height="10" y="5" fill="#ffc400"/></svg>';
-var FLAG_KR = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><path d="M10 10a5 5 0 0 1 10 0z" fill="#cd2e3a"/><path d="M10 10a5 5 0 0 0 10 0z" fill="#0047a0"/></svg>';
 
 function fixMojibake(s) {
   if (typeof s !== "string" || s.indexOf("â") === -1) return s;
@@ -1544,124 +1543,123 @@ var WIND_MAX_MS = 480000;
 
 /* ============ I18N (EN / VI) ============ */
 var STRINGS = {
-  "tab.map": { en: "Map", vi: "Bản đồ", es: "Mapa" },
-  "tab.news": { en: "News", vi: "Tin tức", es: "Noticias" },
-  "tab.info": { en: "Info", vi: "Thông tin", es: "Información" },
-  "theme.dark": { en: "Dark", vi: "Tối", es: "Oscuro" },
-  "theme.light": { en: "Light", vi: "Sáng", es: "Claro" },
-  "updated.loading": { en: "loading...", vi: "đang tải...", es: "cargando..." },
-  "updated.freshness": { en: "⟳ ~20 min · {t}", vi: "⟳ ~20 phút · {t}", es: "⟳ ~20 min · {t}" },
-  "updated.stale": { en: "⚠ Stale · last updated {t}", vi: "⚠ Cũ · cập nhật lần cuối {t}", es: "⚠ Desactualizado · última actualización {t}" },
-  "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}.", vi: "Tự động cập nhật khoảng 20 phút một lần. Lần cập nhật cuối {t}.", es: "Se actualiza automáticamente cada 20 minutos. Última actualización {t}." },
-  "topbar.unofficial": { en: "UNOFFICIAL", vi: "KHÔNG CHÍNH THỨC", es: "NO OFICIAL" },
-  "topbar.unofficial.title": { en: "Volunteer-made — not an official government source", vi: "Do tình nguyện viên xây dựng — không phải nguồn chính thức của chính phủ", es: "Hecho por voluntarios — no es una fuente oficial del gobierno" },
-  "safety.strip.info": { en: "Informational only — not official. In an emergency, call 911.", vi: "Chỉ mang tính thông tin — không chính thức. Trong trường hợp khẩn cấp, gọi 911.", es: "Solo informativo — no oficial. En una emergencia, llame al 911." },
-  "safety.strip.official": { en: "Official source:", vi: "Nguồn chính thức:", es: "Fuente oficial:" },
-  "safety.strip.terms": { en: "Full terms & disclaimer", vi: "Điều khoản & miễn trừ đầy đủ", es: "Términos y descargo de responsabilidad completos" },
-  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels.", vi: "Các tóm tắt trên trang này được tổng hợp với sự hỗ trợ của AI từ các nguồn chính thức và tin tức, sau đó được kiểm tra bởi người thật. Luôn xác nhận thông tin an toàn sinh mạng với các kênh chính thức.", es: "Los resúmenes en esta página se compilan con asistencia de IA a partir de fuentes oficiales y de noticias, luego son verificados por una persona. Siempre confirme la información de seguridad con los canales oficiales." },
-  "hero.severity.label": { en: "Incident severity:", vi: "Mức độ nghiêm trọng:", es: "Gravedad del incidente:" },
-  "hero.status.evacuation": { en: "Evacuation", vi: "Sơ tán", es: "Evacuación" },
-  "hero.status.residents": { en: "Residents affected", vi: "Cư dân bị ảnh hưởng", es: "Residentes afectados" },
-  "hero.status.tankTemp": { en: "Tank temp", vi: "Nhiệt độ bồn", es: "Temp. tanque" },
-  "hero.status.day": { en: "Day", vi: "Ngày", es: "Día" },
-  "hero.status.active": { en: "Active", vi: "Đang diễn ra", es: "Activa" },
-  "hero.status.lifted": { en: "Lifted", vi: "Đã dỡ bỏ", es: "Levantada" },
-  "hero.summary.loading": { en: "Loading current status…", vi: "Đang tải tình trạng hiện tại…", es: "Cargando estado actual…" },
-  "hero.lead": { en: "Active chemical-tank emergency in Garden Grove.", vi: "Tình trạng khẩn cấp bồn chứa hóa chất đang diễn ra tại Garden Grove.", es: "Emergencia activa de tanque químico en Garden Grove." },
-  "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders.", vi: "Sự cố bồn chứa hóa chất đang diễn ra tại Garden Grove. Hãy tuân theo lệnh của cơ quan chức năng.", es: "Incidente activo de tanque químico en Garden Grove. Siga las órdenes oficiales." },
-  "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest.", vi: "Sự cố đã được giải quyết. Xem ggcity.org/emergency để biết thông tin mới nhất.", es: "Incidente resuelto. Consulte ggcity.org/emergency para la información más reciente." },
-  "hero.res.label": { en: "residents in evacuation zone", vi: "cư dân trong vùng sơ tán", es: "residentes en zona de evacuación" },
-  "hero.whatchanged": { en: "What changed", vi: "Diễn biến", es: "Qué cambió" },
-  "legend.evac": { en: "Evac zone", vi: "Khu sơ tán", es: "Zona de evacuación" },
-  "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn", es: "Refugio" },
-  "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán", es: "Zona de evacuación" },
-  "map.tooltip.you": { en: "You", vi: "Bạn", es: "Usted" },
-  "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức", es: "{n} comunicado{s} oficial{s}" },
-  "news.coverage": { en: "Coverage", vi: "Báo chí đưa tin", es: "Cobertura" },
-  "news.feed.title": { en: "News & updates", vi: "Tin tức & cập nhật", es: "Noticias y actualizaciones" },
-  "news.situation.label": { en: "Current situation", vi: "Tình hình hiện tại", es: "Situación actual" },
-  "news.type.official": { en: "🏛 Official", vi: "🏛 Chính thức", es: "🏛 Oficial" },
-  "news.type.article": { en: "📰 Article", vi: "📰 Bài báo", es: "📰 Artículo" },
-  "news.type.video": { en: "▶ Video", vi: "▶ Video", es: "▶ Video" },
-  "info.group.status": { en: "Incident status", vi: "Tình trạng sự cố", es: "Estado del incidente" },
-  "info.tank.title": { en: "Tank", vi: "Bồn chứa", es: "Tanque" },
-  "info.tank.crack": { en: "Crack observed", vi: "Đã thấy vết nứt", es: "Grieta observada" },
-  "info.evac.title": { en: "Evacuation", vi: "Sơ tán", es: "Evacuación" },
-  "info.evac.area": { en: "Area", vi: "Diện tích", es: "Área" },
-  "info.evac.lifted": { en: "Order lifted", vi: "Đã dỡ bỏ lệnh", es: "Orden levantada" },
-  "info.evac.expanded": { en: "Expanded today", vi: "Mở rộng hôm nay", es: "Ampliada hoy" },
-  "info.evac.boundary": { en: "Boundary", vi: "Ranh giới", es: "Límite" },
-  "info.shelters.title": { en: "Evacuation shelters", vi: "Nơi trú ẩn sơ tán", es: "Refugios de evacuación" },
+  "tab.map": { en: "Map", vi: "Bản đồ" },
+  "tab.news": { en: "News", vi: "Tin tức" },
+  "tab.info": { en: "Info", vi: "Thông tin" },
+  "theme.dark": { en: "Dark", vi: "Tối" },
+  "theme.light": { en: "Light", vi: "Sáng" },
+  "updated.loading": { en: "loading...", vi: "đang tải..." },
+  "updated.freshness": { en: "⟳ ~20 min · {t}", vi: "⟳ ~20 phút · {t}" },
+  "updated.stale": { en: "⚠ Stale · last updated {t}", vi: "⚠ Cũ · cập nhật lần cuối {t}" },
+  "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}.", vi: "Tự động cập nhật khoảng 20 phút một lần. Lần cập nhật cuối {t}." },
+  "topbar.unofficial": { en: "UNOFFICIAL", vi: "KHÔNG CHÍNH THỨC" },
+  "topbar.unofficial.title": { en: "Volunteer-made — not an official government source", vi: "Do tình nguyện viên xây dựng — không phải nguồn chính thức của chính phủ" },
+  "safety.strip.info": { en: "Informational only — not official. In an emergency, call 911.", vi: "Chỉ mang tính thông tin — không chính thức. Trong trường hợp khẩn cấp, gọi 911." },
+  "safety.strip.official": { en: "Official source:", vi: "Nguồn chính thức:" },
+  "safety.strip.terms": { en: "Full terms & disclaimer", vi: "Điều khoản & miễn trừ đầy đủ" },
+  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels.", vi: "Các tóm tắt trên trang này được tổng hợp với sự hỗ trợ của AI từ các nguồn chính thức và tin tức, sau đó được kiểm tra bởi người thật. Luôn xác nhận thông tin an toàn sinh mạng với các kênh chính thức." },
+  "hero.severity.label": { en: "Incident severity:", vi: "Mức độ nghiêm trọng:" },
+  "hero.status.evacuation": { en: "Evacuation", vi: "Sơ tán" },
+  "hero.status.residents": { en: "Residents affected", vi: "Cư dân bị ảnh hưởng" },
+  "hero.status.tankTemp": { en: "Tank temp", vi: "Nhiệt độ bồn" },
+  "hero.status.day": { en: "Day", vi: "Ngày" },
+  "hero.status.active": { en: "Active", vi: "Đang diễn ra" },
+  "hero.status.lifted": { en: "Lifted", vi: "Đã dỡ bỏ" },
+  "hero.summary.loading": { en: "Loading current status…", vi: "Đang tải tình trạng hiện tại…" },
+  "hero.lead": { en: "Active chemical-tank emergency in Garden Grove.", vi: "Tình trạng khẩn cấp bồn chứa hóa chất đang diễn ra tại Garden Grove." },
+  "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders.", vi: "Sự cố bồn chứa hóa chất đang diễn ra tại Garden Grove. Hãy tuân theo lệnh của cơ quan chức năng." },
+  "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest.", vi: "Sự cố đã được giải quyết. Xem ggcity.org/emergency để biết thông tin mới nhất." },
+  "hero.res.label": { en: "residents in evacuation zone", vi: "cư dân trong vùng sơ tán" },
+  "hero.whatchanged": { en: "What changed", vi: "Diễn biến" },
+  "legend.evac": { en: "Evac zone", vi: "Khu sơ tán" },
+  "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn" },
+  "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán" },
+  "map.tooltip.you": { en: "You", vi: "Bạn" },
+  "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức" },
+  "news.coverage": { en: "Coverage", vi: "Báo chí đưa tin" },
+  "news.feed.title": { en: "News & updates", vi: "Tin tức & cập nhật" },
+  "news.situation.label": { en: "Current situation", vi: "Tình hình hiện tại" },
+  "news.type.official": { en: "🏛 Official", vi: "🏛 Chính thức" },
+  "news.type.article": { en: "📰 Article", vi: "📰 Bài báo" },
+  "news.type.video": { en: "▶ Video", vi: "▶ Video" },
+  "info.group.status": { en: "Incident status", vi: "Tình trạng sự cố" },
+  "info.tank.title": { en: "Tank", vi: "Bồn chứa" },
+  "info.tank.crack": { en: "Crack observed", vi: "Đã thấy vết nứt" },
+  "info.evac.title": { en: "Evacuation", vi: "Sơ tán" },
+  "info.evac.area": { en: "Area", vi: "Diện tích" },
+  "info.evac.lifted": { en: "Order lifted", vi: "Đã dỡ bỏ lệnh" },
+  "info.evac.expanded": { en: "Expanded today", vi: "Mở rộng hôm nay" },
+  "info.evac.boundary": { en: "Boundary", vi: "Ranh giới" },
+  "info.shelters.title": { en: "Evacuation shelters", vi: "Nơi trú ẩn sơ tán" },
   "info.shelters.cta": {
     en: '&#128719; <strong>Live list at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; the city is the source of truth; the list below is a snapshot.',
-    vi: '&#128719; <strong>Danh sách trực tiếp tại <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; thành phố là nguồn chính thức; danh sách bên dưới là ảnh chụp thời điểm.',
-    es: '&#128719; <strong>Lista en vivo en <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; la ciudad es la fuente oficial; la lista a continuación es una captura del momento.'
+    vi: '&#128719; <strong>Danh sách trực tiếp tại <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; thành phố là nguồn chính thức; danh sách bên dưới là ảnh chụp thời điểm.'
   },
-  "info.shelters.directions": { en: "Directions ↗", vi: "Chỉ đường ↗", es: "Direcciones ↗" },
+  "info.shelters.directions": { en: "Directions ↗", vi: "Chỉ đường ↗" },
   "info.shelters.empty": {
     en: 'No shelters configured. Edit <code>config.json</code> map.shelters.',
-    vi: 'Chưa cấu hình nơi trú ẩn. Sửa <code>config.json</code> map.shelters.',
-    es: 'No hay refugios configurados. Edite <code>config.json</code> map.shelters.'
+    vi: 'Chưa cấu hình nơi trú ẩn. Sửa <code>config.json</code> map.shelters.'
   },
-  "info.schools.title": { en: "Schools closed", vi: "Trường học đóng cửa", es: "Escuelas cerradas" },
-  "info.schools.none": { en: "None reported", vi: "Chưa có báo cáo", es: "Ninguno reportado" },
-  "info.sources.title": { en: "Sources verified", vi: "Nguồn đã xác minh", es: "Fuentes verificadas" },
-  "info.sources.empty": { en: "No sources in this snapshot", vi: "Không có nguồn trong bản chụp này", es: "Sin fuentes en esta captura" },
-  "info.sources.checked": { en: "checked", vi: "đã kiểm tra", es: "verificado" },
-  "common.yes": { en: "yes", vi: "có", es: "sí" },
-  "common.no": { en: "no", vi: "không", es: "no" },
-  "info.method.title": { en: "Methodology & trust", vi: "Phương pháp & độ tin cậy", es: "Metodología y confianza" },
-  "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.", vi: "<strong>Quy trình dữ liệu:</strong> Tình trạng được cập nhật 30 phút một lần qua các nguồn web đã xác minh. Mỗi thông tin được đối chiếu với nhiều nguồn trước khi đăng.", es: "<strong>Pipeline de datos:</strong> Estado actualizado cada 30 min a través de fuentes web verificadas. Cada dato se contrasta con múltiples fuentes antes de publicar." },
-  "info.method.wind": { en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds.", vi: "<strong>Dữ liệu gió:</strong> Quan sát trực tiếp từ trạm NOAA KFUL, cập nhật 60 giây một lần.", es: "<strong>Datos del viento:</strong> Observaciones en vivo de la estación NOAA KFUL, consultada cada 60 segundos." },
-  "info.method.checker": { en: "<strong>Safety checker:</strong> Geocodes the entered address via OpenStreetMap Nominatim, then tests whether the point falls inside the area officials have described as evacuated (point-in-polygon). Defers to the official evacuation checker for authoritative orders.", vi: "<strong>Bộ kiểm tra:</strong> Định vị địa chỉ qua OpenStreetMap Nominatim, sau đó kiểm tra xem điểm có nằm trong khu vực sơ tán hay không.", es: "<strong>Verificador de seguridad:</strong> Geocodifica la dirección ingresada vía OpenStreetMap Nominatim, luego verifica si el punto cae dentro del área evacuada." },
-  "info.method.eval": { en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests and LLM-as-judge rubrics for design and data quality.', vi: '<strong>Đánh giá:</strong> Dashboard này có <a href="eval/">bộ kiểm thử</a> gồm các kiểm thử hành vi và các rubric LLM-as-judge.', es: '<strong>Evaluación:</strong> Este dashboard tiene un <a href="eval/">conjunto de pruebas</a> que incluye pruebas de comportamiento y rúbricas LLM-as-judge.' },
-  "info.method.disclaimer": { en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.', vi: '<strong>Tuyên bố miễn trừ:</strong> Đây là công cụ cộng đồng, không phải nguồn chính thức. Luôn xác minh tại <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; trong trường hợp khẩn cấp, gọi 911.', es: '<strong>Descargo de responsabilidad:</strong> Esta es una herramienta comunitaria. Siempre verifique en <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; en una emergencia, llame al 911.' },
-  "info.about.title": { en: "Who made this", vi: "Ai xây dựng trang này", es: "Quién hizo esto" },
-  "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.", vi: "Được xây dựng bởi hai tình nguyện viên địa phương, Mike và Nancy, để hỗ trợ cộng đồng trong sự cố bồn chứa hóa chất tại Garden Grove. Miễn phí, không cần đăng ký, không quảng cáo — chúng tôi không thu thập dữ liệu của bạn.", es: "Creado por dos voluntarios locales, Mike y Nancy, para ayudar a nuestra comunidad durante la emergencia del tanque químico en Garden Grove. Gratis, sin registro, sin anuncios — no recopilamos sus datos." },
-  "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.", vi: "Để biết lệnh và cập nhật chính thức, luôn sử dụng ggcity.org/emergency · 714-628-7085 · OCFA.", es: "Para órdenes y actualizaciones oficiales, siempre use ggcity.org/emergency · 714-628-7085 · OCFA." },
-  "info.about.termslink": { en: "Read the full Terms & disclaimer", vi: "Đọc Điều khoản & miễn trừ đầy đủ", es: "Leer los Términos y descargo de responsabilidad completos" },
-  "info.about.conductlink": { en: "Information Conduit Code of Conduct", vi: "Quy tắc ứng xử Kênh Thông tin", es: "Código de Conducta del Canal de Información" },
-  "info.group.closures": { en: "Closures", vi: "Đóng cửa", es: "Cierres" },
-  "info.roads.title": { en: "Road closures", vi: "Đóng đường", es: "Cierres de calles" },
-  "info.roads.defer": { en: 'Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.', vi: 'Các đường trong khu vực sơ tán đã đóng. Xem <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> để biết thông tin đóng đường hiện tại.', es: 'Las calles dentro de la zona de evacuación están cerradas. Consulte <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> para los cierres de calles actuales.' },
-  "info.group.official": { en: "Official sources", vi: "Nguồn chính thức", es: "Fuentes oficiales" },
-  "info.official.note": { en: "No single source should be your only one. Subscribe to official alerts and check multiple channels.", vi: "Không nên chỉ dựa vào một nguồn duy nhất. Hãy đăng ký nhận cảnh báo chính thức và kiểm tra nhiều kênh.", es: "Ninguna fuente debe ser la única. Suscríbase a las alertas oficiales y consulte múltiples canales." },
-  "info.official.city": { en: "City of Garden Grove emergency page", vi: "Trang khẩn cấp Thành phố Garden Grove", es: "Página de emergencia de la Ciudad de Garden Grove" },
-  "info.official.zonehaven": { en: "Genasys / Zonehaven zone lookup", vi: "Tra cứu khu vực Genasys / Zonehaven", es: "Búsqueda de zona Genasys / Zonehaven" },
-  "info.official.alert": { en: "AlertOC sign-up (official county alerts)", vi: "Đăng ký AlertOC (cảnh báo chính thức của quận)", es: "Registro en AlertOC (alertas oficiales del condado)" },
-  "info.official.airnow": { en: "EPA AirNow air quality", vi: "Chất lượng không khí EPA AirNow", es: "Calidad del aire EPA AirNow" },
-  "info.group.sources": { en: "Sources & how this works", vi: "Nguồn & cách hoạt động", es: "Fuentes y cómo funciona" },
-  "news.badge.newest": { en: "Newest", vi: "Mới nhất", es: "Más reciente" },
-  "news.badge.recent": { en: "Recent", vi: "Gần đây", es: "Reciente" },
-  "news.source": { en: "source ↗", vi: "nguồn ↗", es: "fuente ↗" },
-  "news.untitled": { en: "(untitled)", vi: "(không có tiêu đề)", es: "(sin título)" },
-  "news.empty": { en: "No coverage yet.", vi: "Chưa có tin tức.", es: "Aún no hay cobertura." },
-  "news.media.video": { en: "▶ video", vi: "▶ video", es: "▶ video" },
-  "news.media.article": { en: "📰 article", vi: "📰 bài báo", es: "📰 artículo" },
-  "banner.schema.title": { en: "⚠️ Schema changed", vi: "⚠️ Đã thay đổi cấu trúc", es: "⚠️ Esquema cambiado" },
-  "banner.schema.msg": { en: "Reload this page.", vi: "Hãy tải lại trang này.", es: "Recargue esta página." },
-  "banner.stale.title": { en: "⚠️ Stale", vi: "⚠️ Cũ", es: "⚠️ Desactualizado" },
-  "banner.stale.msg": { en: "Last update {n} min ago", vi: "Cập nhật cuối cùng {n} phút trước", es: "Última actualización hace {n} min" },
-  "banner.offline.title": { en: "Offline", vi: "Ngoại tuyến", es: "Sin conexión" },
-  "banner.offline.msg": { en: "Last fetch failed", vi: "Lần lấy dữ liệu cuối thất bại", es: "La última consulta falló" },
-  "banner.offline.detail": { en: "Could not load status.json — {err}", vi: "Không thể tải status.json — {err}", es: "No se pudo cargar status.json — {err}" },
-  "banner.update.title": { en: "📢 UPDATE", vi: "📢 CẬP NHẬT", es: "📢 ACTUALIZACIÓN" },
-  "banner.urgent.title": { en: "🚨 URGENT", vi: "🚨 KHẨN CẤP", es: "🚨 URGENTE" },
-  "banner.action.updates": { en: "→ News", vi: "→ Tin tức", es: "→ Noticias" },
-  "time.justNow": { en: "just now", vi: "vừa xong", es: "ahora mismo" },
-  "time.minAgo": { en: "{n} min ago", vi: "{n} phút trước", es: "hace {n} min" },
-  "loading.firstData": { en: "Waiting for first data. Auto-retry in 30s.", vi: "Đang đợi dữ liệu đầu tiên. Tự động thử lại sau 30 giây.", es: "Esperando los primeros datos. Reintento automático en 30s." },
+  "info.schools.title": { en: "Schools closed", vi: "Trường học đóng cửa" },
+  "info.schools.none": { en: "None reported", vi: "Chưa có báo cáo" },
+  "info.sources.title": { en: "Sources verified", vi: "Nguồn đã xác minh" },
+  "info.sources.empty": { en: "No sources in this snapshot", vi: "Không có nguồn trong bản chụp này" },
+  "info.sources.checked": { en: "checked", vi: "đã kiểm tra" },
+  "common.yes": { en: "yes", vi: "có" },
+  "common.no": { en: "no", vi: "không" },
+  "info.method.title": { en: "Methodology & trust", vi: "Phương pháp & độ tin cậy" },
+  "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.", vi: "<strong>Quy trình dữ liệu:</strong> Tình trạng được cập nhật 30 phút một lần qua các nguồn web đã xác minh. Mỗi thông tin được đối chiếu với nhiều nguồn trước khi đăng." },
+  "info.method.wind": { en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds.", vi: "<strong>Dữ liệu gió:</strong> Quan sát trực tiếp từ trạm NOAA KFUL, cập nhật 60 giây một lần." },
+
+  "info.method.eval": { en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests and LLM-as-judge rubrics for design and data quality.', vi: '<strong>Đánh giá:</strong> Dashboard này có <a href="eval/">bộ kiểm thử</a> gồm các kiểm thử hành vi và các rubric LLM-as-judge.' },
+  "info.method.disclaimer": { en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.', vi: '<strong>Tuyên bố miễn trừ:</strong> Đây là công cụ cộng đồng, không phải nguồn chính thức. Luôn xác minh tại <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; trong trường hợp khẩn cấp, gọi 911.' },
+  "info.about.title": { en: "Who made this", vi: "Ai xây dựng trang này" },
+  "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.", vi: "Được xây dựng bởi hai tình nguyện viên địa phương, Mike và Nancy, để hỗ trợ cộng đồng trong sự cố bồn chứa hóa chất tại Garden Grove. Miễn phí, không cần đăng ký, không quảng cáo — chúng tôi không thu thập dữ liệu của bạn." },
+  "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.", vi: "Để biết lệnh và cập nhật chính thức, luôn sử dụng ggcity.org/emergency · 714-628-7085 · OCFA." },
+  "info.about.termslink": { en: "Read the full Terms & disclaimer", vi: "Đọc Điều khoản & miễn trừ đầy đủ" },
+  "info.about.conductlink": { en: "Information Conduit Code of Conduct", vi: "Quy tắc ứng xử Kênh Thông tin" },
+  "info.about.a11ylink": { en: "Accessibility", vi: "Khả năng tiếp cận" },
+  "info.group.closures": { en: "Closures", vi: "Đóng cửa" },
+  "info.roads.title": { en: "Road closures", vi: "Đóng đường" },
+  "info.roads.defer": { en: 'Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.', vi: 'Các đường trong khu vực sơ tán đã đóng. Xem <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> để biết thông tin đóng đường hiện tại.' },
+  "info.group.official": { en: "Official sources", vi: "Nguồn chính thức" },
+  "info.official.note": { en: "No single source should be your only one. Subscribe to official alerts and check multiple channels.", vi: "Không nên chỉ dựa vào một nguồn duy nhất. Hãy đăng ký nhận cảnh báo chính thức và kiểm tra nhiều kênh." },
+  "info.official.city": { en: "City of Garden Grove emergency page", vi: "Trang khẩn cấp Thành phố Garden Grove" },
+  "info.official.zonehaven": { en: "Genasys / Zonehaven zone lookup", vi: "Tra cứu khu vực Genasys / Zonehaven" },
+  "info.official.alert": { en: "AlertOC sign-up (official county alerts)", vi: "Đăng ký AlertOC (cảnh báo chính thức của quận)" },
+  "info.official.airnow": { en: "EPA AirNow air quality", vi: "Chất lượng không khí EPA AirNow" },
+  "info.group.sources": { en: "Sources & how this works", vi: "Nguồn & cách hoạt động" },
+  "news.badge.newest": { en: "Newest", vi: "Mới nhất" },
+  "news.badge.recent": { en: "Recent", vi: "Gần đây" },
+  "news.source": { en: "source ↗", vi: "nguồn ↗" },
+  "news.untitled": { en: "(untitled)", vi: "(không có tiêu đề)" },
+  "news.empty": { en: "No coverage yet.", vi: "Chưa có tin tức." },
+  "news.media.video": { en: "▶ video", vi: "▶ video" },
+  "news.media.article": { en: "📰 article", vi: "📰 bài báo" },
+  "banner.schema.title": { en: "⚠️ Schema changed", vi: "⚠️ Đã thay đổi cấu trúc" },
+  "banner.schema.msg": { en: "Reload this page.", vi: "Hãy tải lại trang này." },
+  "banner.stale.title": { en: "⚠️ Stale", vi: "⚠️ Cũ" },
+  "banner.stale.msg": { en: "Last update {n} min ago", vi: "Cập nhật cuối cùng {n} phút trước" },
+  "banner.offline.title": { en: "Offline", vi: "Ngoại tuyến" },
+  "banner.offline.msg": { en: "Last fetch failed", vi: "Lần lấy dữ liệu cuối thất bại" },
+  "banner.offline.detail": { en: "Could not load status.json — {err}", vi: "Không thể tải status.json — {err}" },
+  "banner.update.title": { en: "📢 UPDATE", vi: "📢 CẬP NHẬT" },
+  "banner.urgent.title": { en: "🚨 URGENT", vi: "🚨 KHẨN CẤP" },
+  "banner.action.updates": { en: "→ News", vi: "→ Tin tức" },
+  "time.justNow": { en: "just now", vi: "vừa xong" },
+  "time.minAgo": { en: "{n} min ago", vi: "{n} phút trước" },
+  "loading.firstData": { en: "Waiting for first data. Auto-retry in 30s.", vi: "Đang đợi dữ liệu đầu tiên. Tự động thử lại sau 30 giây." },
   /* G1 placeholder — new keys for tab restructure */
-  "timeline.title": { en: "Incident timeline", vi: "Dòng thời gian sự cố" /* G1 placeholder */, es: "Línea de tiempo del incidente" },
-  "timeline.empty": { en: "No events match filters", vi: "Không có sự kiện khớp bộ lọc" /* G1 placeholder */, es: "Ningún evento coincide con los filtros" },
-  "timeline.events": { en: "{n} events", vi: "{n} sự kiện" /* G1 placeholder */, es: "{n} eventos" },
-  "resources.shelters": { en: "Shelters", vi: "Nơi trú ẩn" /* G1 placeholder */, es: "Refugios" },
-  "resources.government": { en: "Government", vi: "Chính phủ" /* G1 placeholder */, es: "Gobierno" },
-  "resources.safety": { en: "Safety", vi: "An toàn" /* G1 placeholder */, es: "Seguridad" },
-  "resources.community": { en: "Community", vi: "Cộng đồng" /* G1 placeholder */, es: "Comunidad" },
-  "resources.call": { en: "Call", vi: "Gọi" /* G1 placeholder */, es: "Llamar" },
-  "resources.visit": { en: "Visit", vi: "Truy cập" /* G1 placeholder */, es: "Visitar" },
-  "filter.all": { en: "All", vi: "Tất cả" /* G1 placeholder */, es: "Todos" },
+  "timeline.title": { en: "Incident timeline", vi: "Dòng thời gian sự cố" /* G1 placeholder */ },
+  "timeline.empty": { en: "No events match filters", vi: "Không có sự kiện khớp bộ lọc" /* G1 placeholder */ },
+  "timeline.events": { en: "{n} events", vi: "{n} sự kiện" /* G1 placeholder */ },
+  "resources.shelters": { en: "Shelters", vi: "Nơi trú ẩn" /* G1 placeholder */ },
+  "resources.government": { en: "Government", vi: "Chính phủ" /* G1 placeholder */ },
+  "resources.safety": { en: "Safety", vi: "An toàn" /* G1 placeholder */ },
+  "resources.community": { en: "Community", vi: "Cộng đồng" /* G1 placeholder */ },
+  "resources.call": { en: "Call", vi: "Gọi" /* G1 placeholder */ },
+  "resources.visit": { en: "Visit", vi: "Truy cập" /* G1 placeholder */ },
+  "filter.all": { en: "All", vi: "Tất cả" /* G1 placeholder */ },
   /* ===== NEWS TAB i18n ===== */
   "news.filter.all": { en: "All", vi: "Tất cả" },
   "news.filter.official": { en: "Official", vi: "Chính thức" },
@@ -1693,9 +1691,7 @@ var STRINGS = {
 
 var LANGS = [
   { code: "en", label: "English",    flag: FLAG_US, locale: "en-US", ready: true },
-  { code: "vi", label: "Tiếng Việt", flag: FLAG_VN, locale: "vi-VN", ready: true },
-  { code: "es", label: "Español",    flag: FLAG_ES, locale: "es-US", ready: false },
-  { code: "ko", label: "한국어",      flag: FLAG_KR, locale: "ko-KR", ready: false }
+  { code: "vi", label: "Tiếng Việt", flag: FLAG_VN, locale: "vi-VN", ready: true }
 ];
 function readyLangs() { return LANGS.filter(function(l) { return l.ready; }); }
 function langByCode(code) {
@@ -2227,6 +2223,8 @@ function renderInfoTab() {
   html += '<p>' + t("info.builtBy") + '</p>';
   html += '<div class="info-seal">' + t("info.unofficial.seal") + '</div>';
   html += '<p style="font-size:11px;color:var(--sa-text-3);line-height:1.4">' + t("disclosure.ai") + '</p>';
+  html += '<p style="font-size:12px;margin-top:8px"><a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>';
+  html += ' · <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>';
   html += '</div>';
 
   // Sources (collapsed)
@@ -2235,7 +2233,6 @@ function renderInfoTab() {
   html += '<div class="info-who-body" style="padding-bottom:12px">';
   html += '<p>' + t("info.method.pipeline") + '</p>';
   html += '<p>' + t("info.method.wind") + '</p>';
-  html += '<p>' + t("info.method.checker") + '</p>';
   html += '<p>' + t("info.method.eval") + '</p>';
   html += '<p>' + t("info.method.disclaimer") + '</p>';
   html += '</div>';
