@@ -65,11 +65,12 @@
 - **Reduced motion:** Respected via prefers-reduced-motion
 
 ## Core UX Principle
-The hero answers "What should I do?" not "What zone am I in?"
-- outside/outside_downwind: "STAY PUT. Close windows. Monitor for updates."
-- inside: "LEAVE NOW. Evacuate per OCFA guidance."
-- resolved: "ALL CLEAR. Evacuation lifted."
-- unknown: "CHECK YOUR STATUS. Use safety checker or ggcity.org/emergency."
+The hero shows severity status and situation bullets — never directives.
+- Information conduit: amplify official information, route to authorities
+- Never tell users to evacuate, stay, or take specific action
+- Severity word + "What changed" bullets give situational awareness
+- Address checker provides unofficial zone check with routing to ggcity.org/emergency
+- All verdicts defer to official channels for authoritative orders
 
 ## Decisions Log
 | Date | Decision | Rationale |
