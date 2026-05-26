@@ -20,7 +20,7 @@
       --sa-surface-2: #f3efe7;
       --sa-text:      #1a1612;
       --sa-text-2:    #5c5347;
-      --sa-text-3:    #8a8279;
+      --sa-text-3:    #706862;
       --sa-celadon:   #0e6f5e;
       --sa-celadon-2: #d8eae5;
       --sa-celadon-3: rgba(14, 111, 94, 0.12);
@@ -42,7 +42,7 @@
       --sa-surface-2: #28241e;
       --sa-text:      #f0ece6;
       --sa-text-2:    #a39a8e;
-      --sa-text-3:    #6e665c;
+      --sa-text-3:    #7a7268;
       --sa-celadon:   #4ecdb4;
       --sa-celadon-2: #1f3a35;
       --sa-celadon-3: rgba(78, 205, 180, 0.14);
@@ -89,6 +89,9 @@
     html[lang="vi"] .topbar-wordmark {
       letter-spacing: 0.3px;
     }
+
+    /* ===== SCREEN-READER UTILITIES ===== */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
     /* ===== SKIP NAVIGATION ===== */
     .skip-link {
@@ -1811,7 +1814,7 @@
       <button class="topbar-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle theme">&#x1F319;</button>
     </header>
 
-    <div class="banners" id="banners"></div>
+    <div class="banners" id="banners" aria-live="assertive" aria-atomic="false"></div>
 
     <section class="hero-split" id="hero">
       <div class="hero-split-left" id="hero-severity-border" style="border-top: 3px solid var(--sa-safe)">
@@ -1821,7 +1824,7 @@
         </div>
         <div class="hero-severity-word sa-sev-low" id="hero-severity-word">LOW</div>
         <div class="hero-res-row">
-          <span class="hero-res-count" id="hero-res-count">--</span>
+          <span class="hero-res-count" id="hero-res-count"><span class="skeleton" style="width:60px;height:24px"></span></span>
           <span class="hero-res-label" data-i18n="hero.res.label">residents in evacuation zone</span>
         </div>
       </div>
@@ -1829,9 +1832,13 @@
         <div class="hero-split-right-header">
           <span data-i18n="hero.whatchanged">What changed</span>
           <span class="hero-split-right-header-line"></span>
-          <span class="hero-day-counter" id="hero-day-counter">--</span>
+          <span class="hero-day-counter" id="hero-day-counter"><span class="skeleton" style="width:120px;height:14px"></span></span>
         </div>
-        <div id="hero-bullets"></div>
+        <div id="hero-bullets">
+          <div style="padding:8px 0"><span class="skeleton" style="width:100%;height:14px"></span></div>
+          <div style="padding:8px 0"><span class="skeleton" style="width:90%;height:14px"></span></div>
+          <div style="padding:8px 0"><span class="skeleton" style="width:95%;height:14px"></span></div>
+        </div>
       </div>
     </section>
 
@@ -1887,6 +1894,7 @@
             <div class="check-subtitle" data-i18n="check.sub">Pins your address on the map and gives an unofficial verdict.</div>
             <form id="check-tab-form" onsubmit="event.preventDefault(); checkTabAddress();">
               <div class="check-input-group">
+                <label for="check-tab-input" class="sr-only" data-i18n="check.prompt">Check an address or intersection</label>
                 <input type="text" class="check-input" id="check-tab-input" data-i18n-placeholder="check.placeholder" placeholder="e.g. Magnolia &amp; Talbert" autocomplete="off">
                 <button type="submit" class="check-submit-btn" id="check-tab-btn" data-i18n="check.btn">Check</button>
               </div>
@@ -1898,7 +1906,7 @@
             <div class="check-recent-header" data-i18n="check.recent">Recent</div>
             <div class="check-recent-list" id="check-recent-list"></div>
           </div>
-          <div class="check-right" id="check-verdict-area">
+          <div class="check-right" id="check-verdict-area" aria-live="polite" aria-atomic="true">
             <div class="check-empty-state" id="check-empty-state">
               <div style="font-size:24px;margin-bottom:8px;opacity:0.3">&#x1F4CD;</div>
               <span data-i18n="check.prompt">Check an address or intersection</span>
@@ -1914,19 +1922,19 @@
 
     <nav class="tab-bar" role="tablist" aria-label="Dashboard sections">
       <button class="tab-btn active" role="tab" id="tab-map" aria-selected="true" aria-controls="panel-map" data-tab="map" onclick="switchTab('map')">
-        <span class="tab-btn-glyph" aria-hidden="true">M</span>
+        <svg class="tab-btn-icon-svg" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         <span class="tab-btn-label" data-i18n="tab.map">Map</span>
       </button>
       <button class="tab-btn" role="tab" id="tab-news" aria-selected="false" aria-controls="panel-news" data-tab="news" onclick="switchTab('news')">
-        <span class="tab-btn-glyph" aria-hidden="true">N</span>
+        <svg class="tab-btn-icon-svg" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><line x1="10" y1="6" x2="18" y2="6"/><line x1="10" y1="10" x2="18" y2="10"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
         <span class="tab-btn-label" data-i18n="tab.news">News</span>
       </button>
       <button class="tab-btn" role="tab" id="tab-check" aria-selected="false" aria-controls="panel-check" data-tab="check" onclick="switchTab('check')">
-        <span class="tab-btn-glyph" aria-hidden="true">C</span>
+        <svg class="tab-btn-icon-svg" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <span class="tab-btn-label" data-i18n="tab.check">Check</span>
       </button>
       <button class="tab-btn" role="tab" id="tab-info" aria-selected="false" aria-controls="panel-info" data-tab="info" onclick="switchTab('info')">
-        <span class="tab-btn-glyph" aria-hidden="true">I</span>
+        <svg class="tab-btn-icon-svg" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <span class="tab-btn-label" data-i18n="tab.info">Info</span>
       </button>
     </nav>
