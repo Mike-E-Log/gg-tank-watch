@@ -131,6 +131,11 @@
       margin: 0 auto;
       overflow: hidden;
     }
+    @media (min-width: 768px) {
+      .app.map-active {
+        max-width: none;
+      }
+    }
 
     /* ===== REFRESH BAR ===== */
     .refresh-bar {
@@ -387,6 +392,66 @@
     }
     @media (min-width: 600px) {
       .safety-strip-terms { margin-left: auto; font-size: 11px; }
+    }
+
+    /* ===== HERO INLINE CHECK ===== */
+    .hero-check-inline {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--sa-border);
+      background: var(--sa-surface);
+    }
+    @media (min-width: 600px) {
+      .hero-check-inline { padding: 8px 22px; }
+    }
+    .hero-check-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sa-text-2);
+      margin-bottom: 6px;
+    }
+    .hero-check-row {
+      display: flex;
+      gap: 6px;
+    }
+    .hero-check-row input {
+      flex: 1;
+      padding: 7px 10px;
+      font-size: 13px;
+      border: 1px solid var(--sa-border-2);
+      border-radius: 6px;
+      background: var(--sa-bg);
+      color: var(--sa-text);
+      outline: none;
+    }
+    .hero-check-row input:focus {
+      border-color: var(--sa-celadon);
+      box-shadow: 0 0 0 2px var(--sa-celadon-3);
+    }
+    .hero-check-row button {
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      background: var(--sa-celadon);
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .hero-check-row button:hover {
+      opacity: 0.9;
+    }
+    .hero-check-verdict {
+      display: none;
+      font-size: 12px;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    .hero-check-verdict.active {
+      display: block;
     }
 
     /* ===== OFFICIAL SOURCES PANEL ===== */
@@ -659,23 +724,15 @@
       font-weight: 700;
       color: var(--sa-celadon);
     }
-    .tab-btn-glyph {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 11px;
-      font-weight: 700;
+    .tab-btn-icon-svg {
+      width: 18px;
+      height: 18px;
+      display: block;
       opacity: 0.7;
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
       color: var(--sa-text-3);
     }
-    .tab-btn.active .tab-btn-glyph {
-      background: var(--sa-celadon);
-      color: var(--sa-surface);
+    .tab-btn.active .tab-btn-icon-svg {
+      color: var(--sa-celadon);
       opacity: 1;
     }
     .tab-btn-label { letter-spacing: 0.3px; font-size: 10px; }
@@ -702,7 +759,7 @@
         background: var(--sa-celadon);
         border-radius: 1px;
       }
-      .tab-btn-glyph { display: none; }
+      .tab-btn-icon-svg { display: none; }
       .tab-btn-label { font-size: 13.5px; }
     }
 
@@ -1799,7 +1856,7 @@
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  <div class="app sa-wave-bg">
+  <div class="app sa-wave-bg map-active">
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
     <header class="topbar">
@@ -1841,6 +1898,17 @@
         </div>
       </div>
     </section>
+
+    <div class="hero-check-inline">
+      <form onsubmit="event.preventDefault(); checkTabAddress(document.getElementById('hero-inline-input').value.trim());">
+        <label class="hero-check-label" data-i18n="check.prompt">Check your address</label>
+        <div class="hero-check-row">
+          <input id="hero-inline-input" type="text" placeholder="e.g. Magnolia &amp; Talbert" data-i18n-placeholder="check.placeholder" autocomplete="off">
+          <button type="submit" data-i18n="check.btn">Check</button>
+        </div>
+      </form>
+      <div class="hero-check-verdict" id="hero-inline-verdict" role="status" aria-live="polite"></div>
+    </div>
 
     <div class="safety-strip" role="note">
       <div class="safety-strip-row">
@@ -2246,7 +2314,7 @@ function setLang(lang) {
   try { localStorage.setItem("gg-lang", currentLang); } catch (e) {}
   applyLang();
   if (lastSnap) render(lastSnap);
-  if (configCache) { renderResources(); renderAbout(); renderInfoTab(); renderInfoShelters(); if (lastSnap) updateInfoData(lastSnap); }
+  if (configCache) { renderResources(); renderInfoTab(); renderInfoShelters(); if (lastSnap) updateInfoData(lastSnap); }
   renderCheckRecent();
   renderNewsFilterChips();
   if (timelineData) renderTimeline();
@@ -2314,6 +2382,8 @@ function switchTab(tabId) {
     tab.classList.add("active");
     tab.setAttribute("aria-selected", "true");
   }
+  var appEl = document.querySelector('.app');
+  if (appEl) appEl.classList.toggle('map-active', tabId === 'map');
   if (tabId === "map" && map) {
     setTimeout(function() { map.invalidateSize(); }, 50);
   }
@@ -2639,48 +2709,6 @@ function translateErrorMessage(msg) {
   return msg;
 }
 
-/* ============ HERO CHECK ============ */
-async function heroCheckSafety() {
-  var inputEl = $("hero-check-input");
-  if (!inputEl) return;
-  var q = inputEl.value.trim();
-  if (!q) return;
-  var btn = $("hero-check-btn");
-  var el = $("hero-verdict");
-  if (btn) btn.disabled = true;
-  if (el) { el.className = "hero-verdict hero-verdict-loading active"; el.textContent = t("hero.verdict.loading"); }
-  try {
-    var addr = await geocodeAddress(q, configCache);
-    var result = computeSafety(addr, configCache);
-    var inside = result.insideEvac;
-    if (el) { el.className = "hero-verdict active " + (inside ? "hero-verdict-inside" : "hero-verdict-outside"); el.textContent = inside ? t("hero.verdict.inside") : t("hero.verdict.outside"); }
-    try { localStorage.setItem("gg-hero-check", JSON.stringify({ q: q, inside: inside, at: Date.now() })); } catch (e) {}
-    renderSafetyResult(addr, addr, result);
-  } catch (e) {
-    if (el) { el.className = "hero-verdict hero-verdict-error active"; el.textContent = t("hero.verdict.error"); }
-  } finally {
-    if (btn) btn.disabled = false;
-  }
-}
-window.heroCheckSafety = heroCheckSafety;
-
-function restoreHeroCheck() {
-  try {
-    var raw = localStorage.getItem("gg-hero-check");
-    if (!raw) return;
-    var obj = JSON.parse(raw);
-    if (!obj || !obj.q) return;
-    if ((Date.now() - obj.at) > 24 * 60 * 60 * 1000) return;
-    var inputEl = $("hero-check-input");
-    if (inputEl) inputEl.value = obj.q;
-    var el = $("hero-verdict");
-    if (el) {
-      el.className = "hero-verdict active " + (obj.inside ? "hero-verdict-inside" : "hero-verdict-outside");
-      el.textContent = obj.inside ? t("hero.verdict.inside") : t("hero.verdict.outside");
-    }
-  } catch (e) {}
-}
-
 /* ============ CHECK TAB ============ */
 var activeNewsFilter = "all";
 var lastFeed = [];
@@ -2733,6 +2761,18 @@ function renderCheckVerdict(query, addr, result) {
   if (existingCard) existingCard.remove();
   if (existingBtn) existingBtn.remove();
   area.insertAdjacentHTML("beforeend", html);
+
+  // Also update the hero inline verdict
+  var heroVerdict = $("hero-inline-verdict");
+  if (heroVerdict) {
+    var sevColor = v.sev === "critical" ? "var(--sa-critical)"
+                 : v.sev === "high" ? "var(--sa-high)"
+                 : v.sev === "moderate" ? "var(--sa-moderate)"
+                 : "var(--sa-safe)";
+    heroVerdict.style.color = sevColor;
+    heroVerdict.textContent = t(v.key) + " · " + result.distance_mi.toFixed(2) + " mi from tank";
+    heroVerdict.className = "hero-check-verdict active";
+  }
 }
 
 function renderCheckRecent() {
@@ -2964,6 +3004,9 @@ function renderInfoTab() {
   // School closures
   html += '<div class="info-section"><div class="info-section-title">' + t("info.schoolsClosed") + '</div></div>';
   html += '<div class="info-schools-grid" id="info-schools-grid"></div>';
+
+  // Community resources (populated by renderResources)
+  html += '<div id="resources-content"></div>';
 
   // Who made this
   html += '<div class="info-section"><div class="info-section-title">' + t("info.whoMade") + '</div></div>';
@@ -3341,112 +3384,6 @@ function renderResourceSheltersInto(grid) {
   }).join("");
 }
 
-/* ============ ABOUT TAB ============ */
-function renderAbout() {
-  var html = '<div class="about-panel-inner">';
-
-  html += '<div class="about-section">';
-  html += '<div class="about-section-title" data-i18n="info.group.status">' + t("info.group.status") + '</div>';
-  html += '<div class="info-section-title" data-i18n="info.tank.title">' + t("info.tank.title") + '</div>';
-  html += '<div class="info-big mono" id="about-tank-temp">--</div>';
-  html += '<div class="info-row"><span class="k" data-i18n="info.tank.crack">' + t("info.tank.crack") + '</span><span class="v" id="about-tank-crack">--</span></div>';
-  html += '</div>';
-
-  html += '<div class="about-section">';
-  html += '<div class="info-section-title" data-i18n="info.evac.title">' + t("info.evac.title") + '</div>';
-  html += '<div class="info-big mono" id="about-evac-residents">--</div>';
-  html += '<div class="info-row"><span class="k">' + t("info.evac.area") + '</span><span class="v mono" id="about-evac-area">--</span></div>';
-  html += '<div class="info-row"><span class="k">' + t("info.evac.lifted") + '</span><span class="v" id="about-evac-lifted">--</span></div>';
-  html += '<div class="info-row"><span class="k">' + t("info.evac.expanded") + '</span><span class="v" id="about-evac-expanded">--</span></div>';
-  html += '<div class="info-row"><span class="k">' + t("info.evac.boundary") + '</span><span class="v" style="font-size:11px;text-align:right;max-width:60%" id="about-evac-boundary">--</span></div>';
-  html += '</div>';
-
-  html += '<div class="lotus-divider"></div>';
-
-  html += '<div class="about-section">';
-  html += '<div class="about-section-title" data-i18n="info.group.closures">' + t("info.group.closures") + '</div>';
-  html += '<div class="info-section-title">' + t("info.schools.title") + '</div>';
-  html += '<div id="about-schools">--</div>';
-  html += '<div class="info-section-title" style="margin-top:8px">' + t("info.roads.title") + '</div>';
-  html += '<div class="info-roads-defer" data-i18n-html="info.roads.defer">' + t("info.roads.defer") + '</div>';
-  html += '</div>';
-
-  html += '<div class="lotus-divider"></div>';
-
-  html += '<div class="about-section">';
-  html += '<div class="about-section-title">' + t("info.group.sources") + '</div>';
-  html += '<div class="info-section-title">' + t("info.sources.title") + '</div>';
-  html += '<div id="about-source-list"></div>';
-  html += '</div>';
-
-  html += '<div class="about-section">';
-  html += '<div class="about-section-title">' + t("info.method.title") + '</div>';
-  html += '<div class="about-body">';
-  html += '<p>' + t("info.method.pipeline") + '</p>';
-  html += '<p>' + t("info.method.wind") + '</p>';
-  html += '<p>' + t("info.method.checker") + '</p>';
-  html += '<p>' + t("info.method.eval") + '</p>';
-  html += '<p>' + t("info.method.disclaimer") + '</p>';
-  html += '</div></div>';
-
-  html += '<div class="lotus-divider"></div>';
-
-  html += '<div class="about-section">';
-  html += '<div class="about-section-title">' + t("info.about.title") + '</div>';
-  html += '<div class="about-body">';
-  html += '<p>' + t("info.about.body") + '</p>';
-  html += '<p>' + t("info.about.official") + '</p>';
-  html += '<p><a href="terms.html">' + t("info.about.termslink") + '</a></p>';
-  html += '<p><a href="docs/CODE_OF_CONDUCT.md">' + t("info.about.conductlink") + '</a></p>';
-  html += '</div></div>';
-
-  html += '</div>';
-
-  var acEl = $("about-content");
-  if (acEl) acEl.innerHTML = html;
-}
-
-function updateAboutData(snap) {
-  var tank = snap.tank || {};
-  var evac = snap.evacuation || {};
-  document.querySelectorAll("[id='about-tank-temp']").forEach(function(el) {
-    el.textContent = (tank.temp_f != null) ? tank.temp_f + "°F" : "—";
-  });
-  document.querySelectorAll("[id='about-tank-crack']").forEach(function(el) {
-    el.innerHTML = yesNo(tank.crack_observed);
-  });
-  document.querySelectorAll("[id='about-evac-residents']").forEach(function(el) {
-    el.textContent = fmtNumber(evac.residents);
-  });
-  document.querySelectorAll("[id='about-evac-area']").forEach(function(el) {
-    el.textContent = (evac.area_sq_mi || "—") + " sq mi";
-  });
-  document.querySelectorAll("[id='about-evac-lifted']").forEach(function(el) {
-    el.innerHTML = yesNo(evac.lifted);
-  });
-  document.querySelectorAll("[id='about-evac-expanded']").forEach(function(el) {
-    el.innerHTML = yesNo(evac.expanded_since_yesterday);
-  });
-  document.querySelectorAll("[id='about-evac-boundary']").forEach(function(el) {
-    el.textContent = evac.boundary_text || "—";
-  });
-  var schools = snap.schools_closed || [];
-  document.querySelectorAll("[id='about-schools']").forEach(function(el) {
-    el.innerHTML = schools.length
-      ? schools.map(function(s) { return '<div class="info-row"><span class="v">' + s + '</span></div>'; }).join("")
-      : '<span style="color:var(--sa-text-3);font-size:12px">' + t("info.schools.none") + '</span>';
-  });
-  var sources = snap.sources_checked || [];
-  document.querySelectorAll("[id='about-source-list']").forEach(function(el) {
-    el.innerHTML = sources.length
-      ? sources.map(function(s) {
-          var checked = s.fetched_iso ? ' <span class="source-time">' + t("info.sources.checked") + ' ' + relativeTime(s.fetched_iso) + '</span>' : '';
-          return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + checked + '</a>';
-        }).join("")
-      : '<span style="color:var(--sa-text-3);font-size:12px">' + t("info.sources.empty") + '</span>';
-  });
-}
-
 /* ============ SHELTERS (for old render path) ============ */
 function renderShelters(cfg) {
   renderResourceShelters("resources-shelters-grid");
@@ -3671,7 +3608,6 @@ function render(snap) {
   var tank = snap.tank || {};
   var evac = snap.evacuation || {};
 
-  updateAboutData(snap);
   updateInfoData(snap);
 
   var feed = [];
@@ -3751,7 +3687,6 @@ async function loadConfig() {
     configCache = await resp.json();
     initMap(configCache);
     renderResources();
-    renderAbout();
     renderInfoTab();
     renderInfoShelters();
     renderCheckRecent();
@@ -3775,9 +3710,31 @@ async function fetchStatus() {
   }
 }
 
+function restoreHeroInlineCheck() {
+  try {
+    var history = getCheckHistory();
+    if (!history.length) return;
+    var last = history[0];
+    if (!last || !last.query) return;
+    var inputEl = $("hero-inline-input");
+    if (inputEl) inputEl.value = last.query;
+    var heroVerdict = $("hero-inline-verdict");
+    if (heroVerdict && last.verdict) {
+      var sevColor = last.verdict === "verdict.inside" ? "var(--sa-critical)"
+                   : last.verdict === "verdict.blast20" ? "var(--sa-high)"
+                   : last.verdict === "verdict.blastMod" ? "var(--sa-moderate)"
+                   : "var(--sa-safe)";
+      heroVerdict.style.color = sevColor;
+      var milesText = last.miles != null ? " · " + last.miles.toFixed(2) + " mi from tank" : "";
+      heroVerdict.textContent = t(last.verdict) + milesText;
+      heroVerdict.className = "hero-check-verdict active";
+    }
+  } catch (e) {}
+}
+
 /* ============ KICKOFF ============ */
 applyLang();
-restoreHeroCheck();
+restoreHeroInlineCheck();
 loadConfig().then(function() {
   fetchStatus();
   loadTimeline();
