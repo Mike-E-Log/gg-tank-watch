@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T04:11:00Z",
+  "generated_at": "2026-05-27T07:10:28Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -715,6 +715,17 @@
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
       "category": "tank_status"
+    },
+    {
+      "id": "evt-20260527-004",
+      "timestamp_utc": "2026-05-28T01:00:00Z",
+      "timestamp_local": "2026-05-27T18:00:00-07:00",
+      "day": 7,
+      "title": "Residents demand GKN accountability at Garden Grove City Council meeting",
+      "description": "At a second special Tuesday evening City Council meeting, OCFA Incident Commander Craig Covey and Garden Grove Police Chief Amir El-Farra break the news that evacuation orders will be lifted. Angry residents demand accountability from city leaders and GKN Aerospace, questioning why a company handling such chemicals operates so close to homes, schools, and businesses. Garden Grove Mayor Stephanie Klopfenstein pledges GKN will be held accountable: \"Our community deserves to know what happened, why it happened and whether laws or regulations were violated, and what steps we must take to prevent something like this from ever happening again.\"",
+      "source_url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
+      "source_name": "Voice of OC",
+      "category": "government_action"
     },
     {
       "id": "evt-20260528-001",
