@@ -1,9 +1,11 @@
-var CACHE_NAME = "gg-tank-v6";
+var CACHE_NAME = "gg-tank-v7";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
   "/config.json",
-  "/manifest.json"
+  "/manifest.json",
+  "/lib/maplibre-gl.js",
+  "/lib/maplibre-gl.css"
 ];
 
 self.addEventListener("install", function (event) {
