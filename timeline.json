@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T21:08:42Z",
+  "generated_at": "2026-05-27T04:11:00Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -695,6 +695,17 @@
       "category": "tank_status"
     },
     {
+      "id": "evt-20260527-003",
+      "timestamp_utc": "2026-05-27T20:00:00Z",
+      "timestamp_local": "2026-05-27T13:00:00-07:00",
+      "day": 7,
+      "title": "DA Spitzer expands criminal investigation; adds price-gouging probe",
+      "description": "Orange County District Attorney Todd Spitzer announces expansion of the criminal investigation into GKN Aerospace. The scope now includes alleged price gouging by third parties and predatory solicitation practices by attorneys targeting evacuees. Spitzer: he wants to make sure anyone impacted, including tens of thousands forced from their homes, is made whole. His office is looking into price gouging to prevent illicit activity.",
+      "source_url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
+      "source_name": "NBC LA",
+      "category": "government_action"
+    },
+    {
       "id": "evt-20260527-002",
       "timestamp_utc": "2026-05-27T23:00:00Z",
       "timestamp_local": "2026-05-27T16:00:00-07:00",
@@ -704,6 +715,17 @@
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
       "category": "tank_status"
+    },
+    {
+      "id": "evt-20260528-001",
+      "timestamp_utc": "2026-05-28T02:30:00Z",
+      "timestamp_local": "2026-05-27T19:30:00-07:00",
+      "day": 7,
+      "title": "All evacuation orders lifted; OCFA, county health, and EPA declare no risk",
+      "description": "OCFA announces all evacuation orders lifted at 7:30 PM PDT for the final 16,000 remaining evacuees — ending a 7-day crisis that displaced up to 50,000 residents. County health officials, OCFA fire crews, and the EPA jointly confirmed no chemical leak, no threat of explosion, no threat of fire, and no risk to the public from the damaged GKN Aerospace tank. EPA on-scene coordinator Chris Myers: \"No exceedances have been detected at any time throughout this event. There was no contamination. There were no fumes. There were no vapors that came from this incident.\" No injuries were reported during the entire 7-day incident.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "source_name": "ABC7 LA",
+      "category": "evacuation"
     }
   ]
 }

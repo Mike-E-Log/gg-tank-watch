@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-27T01:08:42Z",
-  "data_as_of_iso": "2026-05-27T01:08:42Z",
-  "next_check_at_iso": "2026-05-27T01:38:42Z",
-  "stale_after_iso": "2026-05-27T01:48:42Z",
+  "last_updated_iso": "2026-05-27T04:14:00Z",
+  "data_as_of_iso": "2026-05-27T04:14:00Z",
+  "next_check_at_iso": "2026-05-27T04:44:00Z",
+  "stale_after_iso": "2026-05-27T04:54:00Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Water cooling halted on Day 7; crews walk and climb tank as MMA solidifies \u2014 16,000 remain under evacuation; focus now on preventing fire or small explosion.",
-    "severity": "high",
+    "status_headline": "Incident resolved Day 7: all evacuation orders lifted at 7:30 PM PDT \u2014 OCFA, county health, and EPA confirm no chemical leak, no explosion threat, and no risk to public. All 50,000 displaced residents may return home. DA criminal investigation expanded. Ongoing investigation into cause.",
+    "severity": "low",
     "resolved_iso": null
   },
   "tank": {
@@ -18,10 +18,10 @@
     "crack_observed": true
   },
   "evacuation": {
-    "residents": 16000,
+    "residents": 0,
     "area_sq_mi": null,
-    "boundary_text": "Orangewood Ave (north), Dale St (east), Knott St (west), Garden Grove Blvd (south)",
-    "lifted": false,
+    "boundary_text": null,
+    "lifted": true,
     "expanded_since_yesterday": false
   },
   "you": {
@@ -30,33 +30,33 @@
   },
   "official_statements": [
     {
-      "agency": "OCFA \u2013 Interim Fire Chief TJ McGovern",
-      "time_iso": "2026-05-27T14:00:00Z",
-      "text": "We're going to shut down one of those two systems, and we're going to monitor the temperature. We're looking for it to stabilize. We don't want it to come up. We're hoping it comes down. If that looks good throughout the day, then we're going to shut down the second system, and we are going to watch that.",
+      "agency": "OCFA",
+      "time_iso": "2026-05-28T02:30:00Z",
+      "text": "There is no longer a threat of explosion, fire or chemical leak for the damaged tank at the GKN Aerospace facility in Garden Grove. County health officials, fire crews and the Environmental Protection Agency all confirmed that there is no chemical leak, threat of explosion, threat of fire, or risk to the public in connection with the chemical incident in Garden Grove.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     },
     {
-      "agency": "OCFA \u2013 Interim Fire Chief TJ McGovern",
-      "time_iso": "2026-05-27T14:00:00Z",
-      "text": "We gotta get the fire problem handled first, stabilize that temperature, and then the team will make that determination \u2014 now, how do we get inside?",
+      "agency": "US EPA \u2014 on-scene coordinator Chris Myers",
+      "time_iso": "2026-05-28T02:00:00Z",
+      "text": "No exceedances have been detected at any time throughout this event, and air monitoring will continue. There was no contamination. There were no fumes. There were no vapors that came from this incident.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     }
   ],
   "sources_checked": [
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove tank crisis updates: Focus turns to preventing fire, small explosion at OC tank; crews no longer spraying water \u2013 ABC7 Los Angeles",
-      "fetched_iso": "2026-05-27T21:00:00Z"
+      "title": "All evacuation orders lifted, no threat of explosion, fire or leak at Garden Grove chemical tank \u2013 ABC7 Los Angeles",
+      "fetched_iso": "2026-05-27T04:00:00Z"
     },
     {
       "url": "https://ggcity.org/emergency",
       "title": "Emergency | City of Garden Grove",
-      "fetched_iso": "2026-05-27T21:00:00Z"
+      "fetched_iso": "2026-05-27T04:00:00Z"
     },
     {
-      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-evacuation-update/",
-      "title": "Garden Grove chemical tank holding steady but evacuations continue \u2013 KTLA",
-      "fetched_iso": "2026-05-27T21:00:00Z"
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-evacuation-order-lifted/3895476/",
+      "title": "Evacuation order lifted for all Garden Grove residents, PD says \u2013 NBC Los Angeles",
+      "fetched_iso": "2026-05-27T04:00:00Z"
     }
   ],
   "schools_closed": [
@@ -158,14 +158,14 @@
   ],
   "air_quality": null,
   "breaking": true,
-  "breaking_reason": "2 new official statement(s)",
-  "breaking_since_iso": "2026-05-27T01:08:42Z",
-  "breaking_level": "info",
+  "breaking_reason": "Evacuation order LIFTED",
+  "breaking_since_iso": "2026-05-27T04:14:00Z",
+  "breaking_level": "urgent",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
-      "55e3b84740060e02",
-      "19feec7402d2a802"
+      "c936db97a5c6280f",
+      "7c7390a75c7bc93b"
     ],
     "last_residents_shift_iso": null
   }
