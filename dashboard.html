@@ -2791,18 +2791,25 @@ function _ggSwapMapStyle(dark) {
   _ggMap.setStyle(dark
     ? "https://tiles.openfreemap.org/styles/dark"
     : "https://tiles.openfreemap.org/styles/liberty");
-  setTimeout(function poll() {
+  var _swapPhase = 0;
+  (function poll() {
+    if (_swapPhase === 0) {
+      if (!_ggMap.isStyleLoaded()) _swapPhase = 1;
+      setTimeout(poll, 30);
+      return;
+    }
     if (!_ggMap.isStyleLoaded()) { setTimeout(poll, 50); return; }
-    if (_ggMap.getSource("evac-zone")) return;
-    _ggMap.addSource("evac-zone", {
-      type: "geojson",
-      data: { type: "Feature", geometry: { type: "Polygon", coordinates: [_ggEvacCoords] } }
-    });
-    _ggMap.addLayer({ id: "evac-fill", type: "fill", source: "evac-zone",
-      paint: { "fill-color": "#3b82f6", "fill-opacity": 0.15 } });
-    _ggMap.addLayer({ id: "evac-line", type: "line", source: "evac-zone",
-      paint: { "line-color": "#3b82f6", "line-width": 2.5 } });
-  }, 200);
+    if (!_ggMap.getSource("evac-zone")) {
+      _ggMap.addSource("evac-zone", {
+        type: "geojson",
+        data: { type: "Feature", geometry: { type: "Polygon", coordinates: [_ggEvacCoords] } }
+      });
+      _ggMap.addLayer({ id: "evac-fill", type: "fill", source: "evac-zone",
+        paint: { "fill-color": "#3b82f6", "fill-opacity": 0.15 } });
+      _ggMap.addLayer({ id: "evac-line", type: "line", source: "evac-zone",
+        paint: { "line-color": "#3b82f6", "line-width": 2.5 } });
+    }
+  })();
 }
 
 (function() {
