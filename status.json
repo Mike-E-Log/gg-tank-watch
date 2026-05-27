@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-27T13:11:47Z",
-  "data_as_of_iso": "2026-05-27T13:11:47Z",
-  "next_check_at_iso": "2026-05-27T13:41:47Z",
-  "stale_after_iso": "2026-05-27T13:51:47Z",
+  "last_updated_iso": "2026-05-27T16:11:41Z",
+  "data_as_of_iso": "2026-05-27T16:11:41Z",
+  "next_check_at_iso": "2026-05-27T16:41:41Z",
+  "stale_after_iso": "2026-05-27T16:51:41Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Incident resolved: all evacuation orders lifted May 27 at 7:30 PM PDT after 7-day crisis. Zero injuries, zero chemical release, zero explosion. Hazmat exclusion zone and road closure on Western Ave (Chapman to Garden Grove Blvd) remain for ongoing monitoring. DA criminal investigation active; FEMA assistance available for impacted residents.",
+    "status_headline": "Incident resolved: all evacuation orders lifted May 27 at 7:30 PM PDT. OCFA, EPA, and county health confirm zero chemical release, zero explosion, zero risk to public. Western Ave road closure (Chapman\u2013Garden Grove Blvd) continues for hazmat team monitoring. DA criminal investigation and class-action lawsuits active. FEMA federal assistance available.",
     "severity": "low",
     "resolved_iso": null
   },
@@ -30,21 +30,21 @@
   },
   "official_statements": [
     {
-      "agency": "OCFA",
+      "agency": "OCFA Unified Command",
       "time_iso": "2026-05-28T02:30:00Z",
-      "text": "All evacuation orders related to the Garden Grove hazardous materials incident have been lifted. No chemical leak. No threat of explosion. No threat of fire. No risk to the public.",
+      "text": "All evacuation orders related to the Garden Grove hazardous materials incident have been lifted. No active chemical leak. No threat of explosion. No threat of fire. No risk to the public.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     },
     {
-      "agency": "US EPA on-scene coordinator Chris Myers",
+      "agency": "EPA on-scene coordinator Chris Myers",
       "time_iso": "2026-05-28T02:00:00Z",
       "text": "No exceedances have been detected at any time throughout this event. There was no contamination. There were no fumes. There were no vapors that came from this incident.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     },
     {
-      "agency": "Rep. Derek Tran (CA-45)",
-      "time_iso": "2026-05-28T03:00:00Z",
-      "text": "While immediate danger has been lifted, residents are still left to pick up the pieces. Our community is rightfully angry, and I will continue working around the clock to demand accountability from all responsible actors.",
+      "agency": "Garden Grove Mayor Stephanie Klopfenstein",
+      "time_iso": "2026-05-28T01:00:00Z",
+      "text": "Our community deserves to know what happened, why it happened and whether laws or regulations were violated, and what steps we must take to prevent something like this from ever happening again.",
       "source_url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/"
     }
   ],
@@ -52,32 +52,42 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Emergency | City of Garden Grove",
-      "fetched_iso": "2026-05-27T18:30:00Z"
+      "fetched_iso": "2026-05-27T15:30:00Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove tank crisis updates: Evacuation orders lifted for final 16K residents - ABC7 Los Angeles",
-      "fetched_iso": "2026-05-27T18:30:00Z"
+      "title": "Garden Grove tank crisis updates: Evacuation orders lifted for final 16K residents - ABC7 LA",
+      "fetched_iso": "2026-05-27T15:30:00Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
       "title": "Evacuations End in Garden Grove Chemical Tank Emergency - Voice of OC",
-      "fetched_iso": "2026-05-27T18:30:00Z"
+      "fetched_iso": "2026-05-27T15:30:00Z"
     },
     {
       "url": "https://www.nbclosangeles.com/news/local/garden-grove-evacuation-order-lifted/3895476/",
       "title": "Evacuation order lifted for all Garden Grove residents - NBC LA",
-      "fetched_iso": "2026-05-27T18:30:00Z"
+      "fetched_iso": "2026-05-27T15:30:00Z"
     },
     {
       "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
       "title": "Chemical tank update: Evacuation orders lifted as officials declare no further risk to public - OCDE Newsroom",
-      "fetched_iso": "2026-05-27T18:30:00Z"
+      "fetched_iso": "2026-05-27T15:30:00Z"
     },
     {
       "url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
       "title": "Criminal investigation expands into chemical tank crisis in Garden Grove - NBC LA",
-      "fetched_iso": "2026-05-27T18:30:00Z"
+      "fetched_iso": "2026-05-27T15:30:00Z"
+    },
+    {
+      "url": "https://ktla.com/news/orange-county/all-evacuations-lifted-residents-chemical-tank-garden-grove/",
+      "title": "All evacuation orders lifted for residents near chemical tank in Garden Grove - KTLA",
+      "fetched_iso": "2026-05-27T15:30:00Z"
+    },
+    {
+      "url": "https://abcnews.com/US/chemical-tank-southern-california-longer-threat-explosion-officials/story?id=133286870",
+      "title": "All evacuation orders tied to Southern California chemical tank lifted - ABC News",
+      "fetched_iso": "2026-05-27T15:30:00Z"
     }
   ],
   "schools_closed": [
@@ -178,16 +188,16 @@
     }
   ],
   "air_quality": null,
-  "breaking": false,
-  "breaking_reason": null,
-  "breaking_since_iso": null,
-  "breaking_level": null,
+  "breaking": true,
+  "breaking_reason": "3 new official statement(s)",
+  "breaking_since_iso": "2026-05-27T16:11:41Z",
+  "breaking_level": "info",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
-      "8b3dc1cc41e811d1",
-      "1fb54348041483a7",
-      "a12e09d6b7cc4653"
+      "c94a8e58160d8324",
+      "0a8f9512307c50dc",
+      "577ad6d4f8ed49b7"
     ],
     "last_residents_shift_iso": null
   }
