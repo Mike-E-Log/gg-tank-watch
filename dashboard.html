@@ -678,9 +678,14 @@
       border: 1px solid rgba(0,0,0,0.1);
     }
     .static-map-actions {
-      padding: 12px 16px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 16px;
       text-align: center;
-      border-top: 1px solid var(--sa-border);
+      background: linear-gradient(transparent, var(--sa-surface) 30%);
+      z-index: 2;
     }
     .zone-check-btn {
       display: inline-flex;
@@ -698,12 +703,6 @@
       max-width: 400px;
     }
     .zone-check-btn:hover { opacity: 0.9; }
-    .zone-gmaps-link {
-      display: inline-block;
-      margin-top: 8px;
-      font-size: 13px;
-      color: var(--sa-celadon);
-    }
     .zone-check-note {
       font-size: 11px;
       color: var(--sa-text-3);
@@ -712,10 +711,12 @@
     }
     .zone-check-note a { color: var(--sa-celadon); }
     .static-map-attribution {
+      position: absolute;
+      bottom: 2px;
+      right: 4px;
       font-size: 9px;
       color: var(--sa-text-3);
-      text-align: right;
-      padding: 2px 8px;
+      z-index: 2;
     }
     .static-map-attribution a { color: var(--sa-text-3); }
 
@@ -1584,13 +1585,12 @@
             <div class="legend-row"><span class="legend-dot" style="background:#111"></span> Facility</div>
           </div>
           <div class="map-zoom-hint" id="map-zoom-hint">Pinch or scroll to zoom</div>
+          <div class="static-map-actions">
+            <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check your zone (official tool)</a>
+            <p class="zone-check-note" data-i18n-html="map.zone_note">Boundaries are approximate. Verify your evacuation status at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.</p>
+          </div>
+          <div class="static-map-attribution">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a></div>
         </div>
-        <div class="static-map-actions">
-          <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check your zone (official tool)</a>
-          <a href="https://www.google.com/maps/place/33.7858,-118.005" target="_blank" rel="noopener" class="zone-gmaps-link">Open in Google Maps</a>
-          <p class="zone-check-note" data-i18n-html="map.zone_note">Boundaries are approximate. Verify your evacuation status at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.</p>
-        </div>
-        <div class="static-map-attribution">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a></div>
       </div>
 
       <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
@@ -2857,21 +2857,26 @@ setInterval(fetchStatus, REFRESH_MS);
   var hint = document.getElementById("map-zoom-hint");
   if (!vp || !content || !img) return;
 
+  var EVAC_CX = 1860, EVAC_CY = 2160;
+  var IMG_W = 4000, IMG_H = 4333;
+
   var scale = 1, minScale = 1, maxScale = 3;
   var panX = 0, panY = 0;
-  var startTouches = null, startScale = 1, startDist = 0;
+  var startScale = 1, startDist = 0;
   var startPanX = 0, startPanY = 0, startMidX = 0, startMidY = 0;
   var isDragging = false, dragStartX = 0, dragStartY = 0;
   var lastTap = 0;
-  var hiresLoaded = false;
 
   function applyTransform() {
-    var vpW = vp.clientWidth, vpH = vp.clientHeight;
-    var cW = content.scrollWidth * scale, cH = content.scrollHeight * scale;
-    var maxPanX = Math.max(0, cW - vpW), maxPanY = Math.max(0, cH - vpH);
-    panX = Math.max(-maxPanX, Math.min(0, panX));
-    panY = Math.max(-maxPanY, Math.min(0, panY));
     content.style.transform = "translate(" + panX + "px," + panY + "px) scale(" + scale + ")";
+  }
+
+  function centerOn(fracX, fracY) {
+    var vpW = vp.clientWidth, vpH = vp.clientHeight;
+    var cW = img.offsetWidth * scale, cH = img.offsetHeight * scale;
+    panX = vpW / 2 - fracX * cW;
+    panY = vpH / 2 - fracY * cH;
+    applyTransform();
   }
 
   function dist(t) {
@@ -2879,7 +2884,6 @@ setInterval(fetchStatus, REFRESH_MS);
     var dy = t[0].clientY - t[1].clientY;
     return Math.sqrt(dx * dx + dy * dy);
   }
-
   function mid(t) {
     return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2 };
   }
@@ -2892,7 +2896,7 @@ setInterval(fetchStatus, REFRESH_MS);
       var m = mid(e.touches);
       startMidX = m.x; startMidY = m.y;
       startPanX = panX; startPanY = panY;
-    } else if (e.touches.length === 1 && scale > 1) {
+    } else if (e.touches.length === 1) {
       dragStartX = e.touches[0].clientX - panX;
       dragStartY = e.touches[0].clientY - panY;
       isDragging = true;
@@ -2901,14 +2905,16 @@ setInterval(fetchStatus, REFRESH_MS);
     var now = Date.now();
     if (e.touches.length === 1 && now - lastTap < 300) {
       e.preventDefault();
-      scale = scale > 1 ? 1 : 2;
-      if (scale === 1) { panX = 0; panY = 0; }
-      else {
+      if (scale > 1) {
+        scale = 1;
+        centerOn(EVAC_CX / IMG_W, EVAC_CY / IMG_H);
+      } else {
+        scale = 2;
         var r = vp.getBoundingClientRect();
         panX = -(e.touches[0].clientX - r.left) * (scale - 1);
         panY = -(e.touches[0].clientY - r.top) * (scale - 1);
+        applyTransform();
       }
-      applyTransform();
     }
     lastTap = now;
   }, { passive: false });
@@ -2934,7 +2940,6 @@ setInterval(fetchStatus, REFRESH_MS);
   vp.addEventListener("touchend", function() {
     isDragging = false;
     vp.classList.remove("is-dragging");
-    startTouches = null;
   });
 
   vp.addEventListener("wheel", function(e) {
@@ -2952,7 +2957,6 @@ setInterval(fetchStatus, REFRESH_MS);
 
   var mouseDown = false, mouseSX = 0, mouseSY = 0;
   vp.addEventListener("mousedown", function(e) {
-    if (scale <= 1) return;
     mouseDown = true;
     mouseSX = e.clientX - panX;
     mouseSY = e.clientY - panY;
@@ -2976,11 +2980,11 @@ setInterval(fetchStatus, REFRESH_MS);
 
   var hires = new Image();
   hires.onload = function() {
-    hiresLoaded = true;
     img.src = hires.src;
     img.removeAttribute("width");
     img.removeAttribute("height");
     if (svg) svg.style.display = "";
+    centerOn(EVAC_CX / IMG_W, EVAC_CY / IMG_H);
   };
   hires.src = "/images/zone-map-hires.jpg";
 })();
