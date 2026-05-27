@@ -1,11 +1,10 @@
-var CACHE_NAME = "gg-tank-v3";
+var CACHE_NAME = "gg-tank-v4";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
   "/config.json",
   "/manifest.json",
-  "/lib/leaflet.js",
-  "/lib/leaflet.css"
+  "/images/zone-map.png"
 ];
 
 self.addEventListener("install", function (event) {
@@ -70,6 +69,6 @@ self.addEventListener("fetch", function (event) {
     return;
   }
 
-  // Pass through external requests (NOAA, tiles, fonts)
+  // Pass through external requests (NOAA, fonts)
   event.respondWith(fetch(event.request));
 });

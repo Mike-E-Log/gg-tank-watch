@@ -12,7 +12,6 @@
   <meta name="theme-color" content="#0e6f5e">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="stylesheet" href="/lib/leaflet.css">
   <style>
     :root, html.theme-light {
       --sa-bg:        #faf8f5;
@@ -580,17 +579,24 @@
       .tab-btn-label { font-size: 13.5px; }
     }
 
-    /* ===== MAP PANEL ===== */
-    #map {
+    /* ===== STATIC MAP PANEL ===== */
+    .static-map-container {
+      position: relative;
       width: 100%;
-      height: 100%;
+      flex: 1;
+      min-height: 0;
       background: var(--sa-bg);
     }
-    .map-wind-overlay {
+    .static-map-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .static-map-wind {
       position: absolute;
       top: 8px;
       right: 8px;
-      z-index: 1000;
       background: var(--sa-surface);
       border: 1px solid var(--sa-border);
       border-radius: 6px;
@@ -602,18 +608,16 @@
       align-items: center;
       gap: 4px;
     }
-    .map-legend-overlay {
+    .static-map-legend {
       position: absolute;
-      bottom: 24px;
+      bottom: 8px;
       left: 8px;
-      z-index: 1000;
       background: var(--sa-surface);
       border: 1px solid var(--sa-border);
       border-radius: 6px;
       padding: 6px 10px;
       font-size: 10px;
       box-shadow: var(--sa-shadow);
-      max-width: 200px;
     }
     .legend-row {
       display: flex;
@@ -629,26 +633,41 @@
       flex-shrink: 0;
       border: 1px solid rgba(0,0,0,0.1);
     }
-    html.theme-dark .leaflet-control-attribution {
-      background: var(--sa-surface) !important;
-      color: var(--sa-text-3) !important;
+    .static-map-actions {
+      padding: 12px 16px;
+      text-align: center;
+      border-top: 1px solid var(--sa-border);
     }
-    html.theme-dark .leaflet-control-attribution a { color: var(--sa-celadon) !important; }
-    html.theme-dark .leaflet-control-zoom a {
-      background: var(--sa-surface) !important;
-      color: var(--sa-text) !important;
-      border-color: var(--sa-border) !important;
+    .zone-check-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 24px;
+      background: var(--sa-celadon);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 8px;
+      text-decoration: none;
+      width: 100%;
+      max-width: 400px;
     }
-    .leaflet-tooltip.fixed-point-label {
-      background: var(--sa-surface);
-      color: var(--sa-text);
-      border: 1px solid var(--sa-border);
+    .zone-check-btn:hover { opacity: 0.9; }
+    .zone-check-note {
       font-size: 11px;
-      font-weight: 600;
-      padding: 2px 6px;
-      box-shadow: var(--sa-shadow);
+      color: var(--sa-text-3);
+      margin: 8px 0 0;
+      line-height: 1.4;
     }
-    .leaflet-tooltip.fixed-point-label::before { display: none; }
+    .zone-check-note a { color: var(--sa-celadon); }
+    .static-map-attribution {
+      font-size: 9px;
+      color: var(--sa-text-3);
+      text-align: right;
+      padding: 2px 8px;
+    }
+    .static-map-attribution a { color: var(--sa-text-3); }
 
     /* ===== NEWS PANEL ===== */
     .news-section-label {
@@ -1480,16 +1499,23 @@
     <!-- ===== TAB CONTENT ===== -->
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
-        <div id="map" role="img" aria-label="Interactive map showing the evacuation zone, shelter locations, and current wind direction near the Garden Grove chemical tank facility"></div>
-        <div id="map-alt" class="sr-only">Map showing evacuation zone polygon around the chemical tank facility at Brookhurst Street and Hazard Avenue in Garden Grove, with markers for evacuation shelters. Wind direction and speed are displayed in the overlay. For shelter addresses, see the Info tab.</div>
-        <div class="map-wind-overlay" id="map-wind-overlay">
-          <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
-          <span id="wind-text-map">--</span>
+        <div class="static-map-container">
+          <img src="/images/zone-map.png" alt="Map of the Garden Grove evacuation zone. The blue rectangle marks the approximate evacuation boundary around the GKN Aerospace facility at Brookhurst Street and Hazard Avenue. House icons mark shelter locations. For shelter addresses, see the Info tab." class="static-map-img" width="1200" height="800" loading="eager">
+          <div class="static-map-wind" id="map-wind-overlay">
+            <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
+            <span id="wind-text-map">--</span>
+          </div>
+          <div class="static-map-legend">
+            <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span> Evac zone</div>
+            <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span> Shelter</div>
+            <div class="legend-row"><span class="legend-dot" style="background:#111"></span> Facility</div>
+          </div>
         </div>
-        <div class="map-legend-overlay" id="map-legend">
-          <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span><span data-i18n="legend.evac">Evac zone</span></div>
-          <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span><span data-i18n="legend.shelter">Shelter</span></div>
+        <div class="static-map-actions">
+          <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check your zone (official tool)</a>
+          <p class="zone-check-note" data-i18n="map.zone_note">Boundaries are approximate. Verify your evacuation status at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.</p>
         </div>
+        <div class="static-map-attribution">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a></div>
       </div>
 
       <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
@@ -1529,7 +1555,6 @@
   <!-- ===== PRINT-ONLY CONTENT ===== -->
   <div class="print-only print-content" id="print-content"></div>
 
-<script src="/lib/leaflet.js"></script>
 <script>
 var REFRESH_MS = 30000;
 var NORMAL_TITLE = "GG Tank Watch";
@@ -1821,12 +1846,8 @@ var lastZoneStatus = null;
 var titleToggle = null;
 var audioCtx = null;
 var lastFetchOK = true;
-var mapInited = false;
-var map = null;
-var layers = { evac: null, facility: null, you: null };
 var configCache = null;
 var lastWind = null;
-var fixedPointMarkers = [];
 var windInterval = WIND_BASE_MS;
 var windTimer = null;
 var lastObservationTime = null;
@@ -1868,9 +1889,6 @@ function switchTab(tabId) {
   }
   var appEl = document.querySelector('.app');
   if (appEl) appEl.classList.toggle('map-active', tabId === 'map');
-  if (tabId === "map" && map) {
-    setTimeout(function() { map.invalidateSize(); }, 50);
-  }
 }
 window.switchTab = switchTab;
 
@@ -1983,78 +2001,7 @@ function beep() {
   } catch (e) {}
 }
 
-/* ============ MAP ============ */
-function destPoint(lat, lon, bearingDeg, distMi) {
-  var R = 3958.8;
-  var br = bearingDeg * Math.PI / 180;
-  var p1 = lat * Math.PI / 180;
-  var l1 = lon * Math.PI / 180;
-  var dr = distMi / R;
-  var p2 = Math.asin(Math.sin(p1) * Math.cos(dr) + Math.cos(p1) * Math.sin(dr) * Math.cos(br));
-  var l2 = l1 + Math.atan2(Math.sin(br) * Math.sin(dr) * Math.cos(p1), Math.cos(dr) - Math.sin(p1) * Math.sin(p2));
-  return [p2 * 180 / Math.PI, ((l2 * 180 / Math.PI) + 540) % 360 - 180];
-}
-
-function initMap(cfg) {
-  if (mapInited) return;
-  var m = cfg.map;
-  var c = [m.facility.lat, m.facility.lon];
-  var el = $("map");
-  if (!el) return;
-  map = L.map(el, { zoomControl: true, scrollWheelZoom: true, attributionControl: true }).setView(c, 13);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    maxZoom: 20,
-    subdomains: "abcd",
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
-  }).addTo(map);
-
-  layers.evac = L.polygon(m.evac_polygon, {
-    color: "#3b82f6", weight: 2, fillOpacity: 0.12
-  }).addTo(map).bindTooltip(t("map.tooltip.evac"), {sticky: true});
-
-  layers.facility = L.circleMarker([m.facility.lat, m.facility.lon], {
-    radius: 8, fillColor: "#111", color: "#fff", weight: 2, fillOpacity: 1
-  }).addTo(map).bindTooltip(m.facility.label, {permanent: false, direction: "top"});
-
-  if (m.anna_location && Array.isArray(m.anna_location)) {
-    layers.you = L.circleMarker(m.anna_location, {
-      radius: 7, fillColor: "#059669", color: "#fff", weight: 2, fillOpacity: 1
-    }).addTo(map).bindTooltip(t("map.tooltip.you"), {permanent: true, direction: "right", offset: [8, 0]});
-  }
-
-  fixedPointMarkers = (m.fixed_points || []).map(function(fp) {
-    var marker = L.circleMarker([fp.lat, fp.lon], {
-      radius: 7, fillColor: "#6366f1", color: "#fff", weight: 2, fillOpacity: 1
-    }).addTo(map).bindTooltip(fp.label, {permanent: true, direction: "right", offset: [8, 0], className: "fixed-point-label"});
-    marker.__fp = fp;
-    return marker;
-  });
-
-  (m.shelters || []).forEach(function(s) {
-    var icon = L.divIcon({
-      className: "shelter-icon",
-      html: '<div class="shelter-marker">&#127968;</div>',
-      iconSize: [22, 22],
-      iconAnchor: [11, 11]
-    });
-    L.marker([s.lat, s.lon], { icon: icon }).addTo(map).bindTooltip(
-      "<strong>" + s.name + "</strong><br>" + s.city + (s.notes ? '<br><span style="opacity:0.8;font-size:11px">' + s.notes + "</span>" : ""),
-      { direction: "top", offset: [0, -8] }
-    );
-  });
-
-  var boundsPoints = m.evac_polygon.concat([
-    [m.facility.lat, m.facility.lon],
-    destPoint(m.facility.lat, m.facility.lon, 0, 1.5),
-    destPoint(m.facility.lat, m.facility.lon, 180, 1.5)
-  ]).concat((m.fixed_points || []).map(function(fp) { return [fp.lat, fp.lon]; }))
-    .concat((m.shelters || []).map(function(s) { return [s.lat, s.lon]; }));
-  if (m.anna_location && Array.isArray(m.anna_location)) {
-    boundsPoints.push(m.anna_location);
-  }
-  map.fitBounds(L.latLngBounds(boundsPoints), { padding: [20, 20] });
-  mapInited = true;
-}
+/* ============ MAP (static image — no tile server dependency) ============ */
 
 function updateWindDisplay(wind) {
   if (!wind) return;
@@ -2793,7 +2740,6 @@ async function loadConfig() {
     var resp = await fetch("config.json?t=" + Date.now(), {cache:"no-store"});
     if (!resp.ok) throw new Error("config.json HTTP " + resp.status);
     configCache = await resp.json();
-    initMap(configCache);
     renderInfoTab();
     renderResources();
     renderInfoShelters();
