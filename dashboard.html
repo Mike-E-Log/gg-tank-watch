@@ -579,21 +579,63 @@
       .tab-btn-label { font-size: 13.5px; }
     }
 
-    /* ===== STATIC MAP PANEL ===== */
-    .static-map-container {
+    /* ===== MAP PANEL ===== */
+    .map-outer {
       position: relative;
       width: 100%;
       flex: 1;
       min-height: 0;
       background: var(--sa-bg);
+      overflow: hidden;
     }
-    .static-map-img {
+    .map-viewport {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      display: block;
+      overflow: hidden;
+      touch-action: none;
+      cursor: grab;
+      position: relative;
     }
-    .static-map-wind {
+    .map-viewport.is-dragging { cursor: grabbing; }
+    .map-content {
+      position: relative;
+      transform-origin: 0 0;
+      will-change: transform;
+      display: inline-block;
+    }
+    .map-content img {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .map-overlay-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .map-zoom-hint {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 16px;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.4s;
+      z-index: 3;
+    }
+    .map-zoom-hint.hidden { opacity: 0; }
+    .map-wind {
       position: absolute;
       top: 8px;
       right: 8px;
@@ -607,8 +649,9 @@
       display: flex;
       align-items: center;
       gap: 4px;
+      z-index: 2;
     }
-    .static-map-legend {
+    .map-legend {
       position: absolute;
       bottom: 8px;
       left: 8px;
@@ -618,6 +661,7 @@
       padding: 6px 10px;
       font-size: 10px;
       box-shadow: var(--sa-shadow);
+      z-index: 2;
     }
     .legend-row {
       display: flex;
@@ -654,6 +698,12 @@
       max-width: 400px;
     }
     .zone-check-btn:hover { opacity: 0.9; }
+    .zone-gmaps-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--sa-celadon);
+    }
     .zone-check-note {
       font-size: 11px;
       color: var(--sa-text-3);
@@ -1392,7 +1442,7 @@
       .sa-wave-bg { background-image: none; }
       .tab-bar, .tab-content { display: none !important; }
       .refresh-bar, .banners, .topbar-btn, .lang-picker,
-      .map-wind-overlay, .map-legend-overlay, .skip-link { display: none !important; }
+      .map-wind, .map-legend, .map-zoom-hint, .skip-link { display: none !important; }
       .safety-strip { background: none; border: 1px solid #ccc; }
       .print-only { display: block !important; }
       .print-content {
@@ -1499,21 +1549,46 @@
     <!-- ===== TAB CONTENT ===== -->
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
-        <div class="static-map-container">
-          <img src="/images/zone-map.png" alt="Map of the Garden Grove evacuation zone. The blue rectangle marks the approximate evacuation boundary around the GKN Aerospace facility at Brookhurst Street and Hazard Avenue. House icons mark shelter locations. For shelter addresses, see the Info tab." class="static-map-img" width="1200" height="800" loading="eager">
-          <div class="static-map-wind" id="map-wind-overlay">
+        <div class="map-outer" id="map-outer">
+          <div class="map-viewport" id="map-viewport">
+            <div class="map-content" id="map-content">
+              <img src="/images/zone-map.png" alt="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility at Brookhurst Street and Hazard Avenue, with shelter locations marked. For shelter addresses, see the Info tab." id="map-img" width="1200" height="800" loading="eager">
+              <svg class="map-overlay-svg" id="map-svg" viewBox="0 0 4000 4333" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style="display:none">
+                <polygon points="851.6,1097.7 2869.3,1097.7 2869.3,3222.4 851.6,3222.4" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="4"/>
+                <circle cx="1974.2" cy="2422.9" r="10" fill="#dc2626" stroke="#111" stroke-width="2.5"/>
+                <g font-size="36" font-family="system-ui,sans-serif" font-weight="600" fill="#1e40af">
+                  <text x="1974.2" y="2388" text-anchor="middle" font-size="28" fill="#7f1d1d">GKN Aerospace</text>
+                </g>
+                <g class="map-shelters" font-size="28" font-family="system-ui,sans-serif" fill="#1e3a5f">
+                  <circle cx="1097.4" cy="1046.6" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+                  <text x="1117" y="1056" font-size="24">Cypress CC</text>
+                  <circle cx="3005.8" cy="634.1" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+                  <text x="3025" y="644" font-size="24">Savanna HS</text>
+                  <circle cx="997.3" cy="367.6" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+                  <text x="1017" y="377" font-size="24">JFK HS</text>
+                  <circle cx="3160.5" cy="3251.6" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+                  <text x="3180" y="3261" font-size="24">GG Sports &amp; Rec</text>
+                  <circle cx="2016.7" cy="4324.8" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+                  <text x="2036" y="4310" font-size="24">Golden West College</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div class="map-wind" id="map-wind-overlay">
             <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
             <span id="wind-text-map">--</span>
           </div>
-          <div class="static-map-legend">
+          <div class="map-legend">
             <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span> Evac zone</div>
             <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span> Shelter</div>
             <div class="legend-row"><span class="legend-dot" style="background:#111"></span> Facility</div>
           </div>
+          <div class="map-zoom-hint" id="map-zoom-hint">Pinch or scroll to zoom</div>
         </div>
         <div class="static-map-actions">
           <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check your zone (official tool)</a>
-          <p class="zone-check-note" data-i18n="map.zone_note">Boundaries are approximate. Verify your evacuation status at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.</p>
+          <a href="https://www.google.com/maps/place/33.7858,-118.005" target="_blank" rel="noopener" class="zone-gmaps-link">Open in Google Maps</a>
+          <p class="zone-check-note" data-i18n-html="map.zone_note">Boundaries are approximate. Verify your evacuation status at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.</p>
         </div>
         <div class="static-map-attribution">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a></div>
       </div>
@@ -1610,6 +1685,8 @@ var STRINGS = {
   "hero.whatchanged": { en: "What changed", vi: "Diễn biến" },
   "legend.evac": { en: "Evac zone", vi: "Khu sơ tán" },
   "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn" },
+  "map.check_zone": { en: "Check your zone (official tool)", vi: "Kiểm tra khu vực của bạn (công cụ chính thức)" },
+  "map.zone_note": { en: "Boundaries are approximate. Verify your evacuation status at <a href=\"https://ggcity.org/emergency\" target=\"_blank\" rel=\"noopener\">ggcity.org/emergency</a>.", vi: "Ranh giới là gần đúng. Xác minh tình trạng sơ tán của bạn tại <a href=\"https://ggcity.org/emergency\" target=\"_blank\" rel=\"noopener\">ggcity.org/emergency</a>." },
   "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán" },
   "map.tooltip.you": { en: "You", vi: "Bạn" },
   "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức" },
@@ -2770,6 +2847,143 @@ loadConfig().then(function() {
   loadTimeline();
 });
 setInterval(fetchStatus, REFRESH_MS);
+
+/* ============ ZOOMABLE MAP ============ */
+(function() {
+  var vp = document.getElementById("map-viewport");
+  var content = document.getElementById("map-content");
+  var img = document.getElementById("map-img");
+  var svg = document.getElementById("map-svg");
+  var hint = document.getElementById("map-zoom-hint");
+  if (!vp || !content || !img) return;
+
+  var scale = 1, minScale = 1, maxScale = 3;
+  var panX = 0, panY = 0;
+  var startTouches = null, startScale = 1, startDist = 0;
+  var startPanX = 0, startPanY = 0, startMidX = 0, startMidY = 0;
+  var isDragging = false, dragStartX = 0, dragStartY = 0;
+  var lastTap = 0;
+  var hiresLoaded = false;
+
+  function applyTransform() {
+    var vpW = vp.clientWidth, vpH = vp.clientHeight;
+    var cW = content.scrollWidth * scale, cH = content.scrollHeight * scale;
+    var maxPanX = Math.max(0, cW - vpW), maxPanY = Math.max(0, cH - vpH);
+    panX = Math.max(-maxPanX, Math.min(0, panX));
+    panY = Math.max(-maxPanY, Math.min(0, panY));
+    content.style.transform = "translate(" + panX + "px," + panY + "px) scale(" + scale + ")";
+  }
+
+  function dist(t) {
+    var dx = t[0].clientX - t[1].clientX;
+    var dy = t[0].clientY - t[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function mid(t) {
+    return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2 };
+  }
+
+  vp.addEventListener("touchstart", function(e) {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      startDist = dist(e.touches);
+      startScale = scale;
+      var m = mid(e.touches);
+      startMidX = m.x; startMidY = m.y;
+      startPanX = panX; startPanY = panY;
+    } else if (e.touches.length === 1 && scale > 1) {
+      dragStartX = e.touches[0].clientX - panX;
+      dragStartY = e.touches[0].clientY - panY;
+      isDragging = true;
+      vp.classList.add("is-dragging");
+    }
+    var now = Date.now();
+    if (e.touches.length === 1 && now - lastTap < 300) {
+      e.preventDefault();
+      scale = scale > 1 ? 1 : 2;
+      if (scale === 1) { panX = 0; panY = 0; }
+      else {
+        var r = vp.getBoundingClientRect();
+        panX = -(e.touches[0].clientX - r.left) * (scale - 1);
+        panY = -(e.touches[0].clientY - r.top) * (scale - 1);
+      }
+      applyTransform();
+    }
+    lastTap = now;
+  }, { passive: false });
+
+  vp.addEventListener("touchmove", function(e) {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      var d = dist(e.touches);
+      scale = Math.min(maxScale, Math.max(minScale, startScale * (d / startDist)));
+      var m = mid(e.touches);
+      panX = startPanX + (m.x - startMidX);
+      panY = startPanY + (m.y - startMidY);
+      applyTransform();
+      hideHint();
+    } else if (e.touches.length === 1 && isDragging) {
+      e.preventDefault();
+      panX = e.touches[0].clientX - dragStartX;
+      panY = e.touches[0].clientY - dragStartY;
+      applyTransform();
+    }
+  }, { passive: false });
+
+  vp.addEventListener("touchend", function() {
+    isDragging = false;
+    vp.classList.remove("is-dragging");
+    startTouches = null;
+  });
+
+  vp.addEventListener("wheel", function(e) {
+    e.preventDefault();
+    var r = vp.getBoundingClientRect();
+    var mx = e.clientX - r.left, my = e.clientY - r.top;
+    var prev = scale;
+    var delta = e.deltaY > 0 ? 0.9 : 1.1;
+    scale = Math.min(maxScale, Math.max(minScale, scale * delta));
+    panX = mx - (mx - panX) * (scale / prev);
+    panY = my - (my - panY) * (scale / prev);
+    applyTransform();
+    hideHint();
+  }, { passive: false });
+
+  var mouseDown = false, mouseSX = 0, mouseSY = 0;
+  vp.addEventListener("mousedown", function(e) {
+    if (scale <= 1) return;
+    mouseDown = true;
+    mouseSX = e.clientX - panX;
+    mouseSY = e.clientY - panY;
+    vp.classList.add("is-dragging");
+    e.preventDefault();
+  });
+  document.addEventListener("mousemove", function(e) {
+    if (!mouseDown) return;
+    panX = e.clientX - mouseSX;
+    panY = e.clientY - mouseSY;
+    applyTransform();
+  });
+  document.addEventListener("mouseup", function() {
+    mouseDown = false;
+    vp.classList.remove("is-dragging");
+  });
+
+  function hideHint() {
+    if (hint) { hint.classList.add("hidden"); }
+  }
+
+  var hires = new Image();
+  hires.onload = function() {
+    hiresLoaded = true;
+    img.src = hires.src;
+    img.removeAttribute("width");
+    img.removeAttribute("height");
+    if (svg) svg.style.display = "";
+  };
+  hires.src = "/images/zone-map-hires.jpg";
+})();
 </script>
   <script>
     if ("serviceWorker" in navigator) {

@@ -1,10 +1,11 @@
-var CACHE_NAME = "gg-tank-v4";
+var CACHE_NAME = "gg-tank-v5";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
   "/config.json",
   "/manifest.json",
-  "/images/zone-map.png"
+  "/images/zone-map.png",
+  "/images/zone-map-hires.jpg"
 ];
 
 self.addEventListener("install", function (event) {
