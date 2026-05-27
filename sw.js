@@ -1,9 +1,11 @@
-var CACHE_NAME = "gg-tank-v1";
+var CACHE_NAME = "gg-tank-v2";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
   "/config.json",
-  "/manifest.json"
+  "/manifest.json",
+  "/lib/leaflet.js",
+  "/lib/leaflet.css"
 ];
 
 self.addEventListener("install", function (event) {
@@ -68,6 +70,6 @@ self.addEventListener("fetch", function (event) {
     return;
   }
 
-  // Pass through external requests (Nominatim, NOAA, tiles, fonts)
+  // Pass through external requests (NOAA, tiles, fonts)
   event.respondWith(fetch(event.request));
 });
