@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-27T10:11:24Z",
-  "data_as_of_iso": "2026-05-27T10:11:24Z",
-  "next_check_at_iso": "2026-05-27T10:41:24Z",
-  "stale_after_iso": "2026-05-27T10:51:24Z",
+  "last_updated_iso": "2026-05-27T13:11:47Z",
+  "data_as_of_iso": "2026-05-27T13:11:47Z",
+  "next_check_at_iso": "2026-05-27T13:41:47Z",
+  "stale_after_iso": "2026-05-27T13:51:47Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Day 7 incident resolved: all evacuation orders lifted 7:30 PM PDT May 27 \u2014 up to 50,000 residents returned home after 7-day crisis. Zero injuries, zero chemical release, zero explosion throughout event. GKN tank MMA hardening inside with hazmat site under monitored access restriction. DA criminal investigation expanded to price-gouging; multiple class-action lawsuits filed against GKN.",
+    "status_headline": "Incident resolved: all evacuation orders lifted May 27 at 7:30 PM PDT after 7-day crisis. Zero injuries, zero chemical release, zero explosion. Hazmat exclusion zone and road closure on Western Ave (Chapman to Garden Grove Blvd) remain for ongoing monitoring. DA criminal investigation active; FEMA assistance available for impacted residents.",
     "severity": "low",
     "resolved_iso": null
   },
@@ -52,32 +52,32 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Emergency | City of Garden Grove",
-      "fetched_iso": "2026-05-27T15:30:00Z"
+      "fetched_iso": "2026-05-27T18:30:00Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove tank crisis updates: Evacuation orders lifted for final 16K residents \u2014 ABC7 Los Angeles",
-      "fetched_iso": "2026-05-27T15:30:00Z"
-    },
-    {
-      "url": "https://www.nbclosangeles.com/news/local/garden-grove-evacuation-order-lifted/3895476/",
-      "title": "Evacuation order lifted for all Garden Grove residents \u2014 NBC Los Angeles",
-      "fetched_iso": "2026-05-27T15:30:00Z"
+      "title": "Garden Grove tank crisis updates: Evacuation orders lifted for final 16K residents - ABC7 Los Angeles",
+      "fetched_iso": "2026-05-27T18:30:00Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
-      "title": "Evacuations End in Garden Grove Chemical Tank Emergency \u2014 Voice of OC",
-      "fetched_iso": "2026-05-27T15:30:00Z"
+      "title": "Evacuations End in Garden Grove Chemical Tank Emergency - Voice of OC",
+      "fetched_iso": "2026-05-27T18:30:00Z"
     },
     {
-      "url": "https://www.nbclosangeles.com/news/local/gkn-aerospace-air-quality-safety-violation-settlement/3894740/",
-      "title": "GKN Aerospace settled air quality safety violation, agreed to pay $900K fine in 2025 \u2014 NBC LA",
-      "fetched_iso": "2026-05-27T15:30:00Z"
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-evacuation-order-lifted/3895476/",
+      "title": "Evacuation order lifted for all Garden Grove residents - NBC LA",
+      "fetched_iso": "2026-05-27T18:30:00Z"
+    },
+    {
+      "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
+      "title": "Chemical tank update: Evacuation orders lifted as officials declare no further risk to public - OCDE Newsroom",
+      "fetched_iso": "2026-05-27T18:30:00Z"
     },
     {
       "url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
-      "title": "Criminal investigation expands into chemical tank crisis in Garden Grove \u2014 NBC LA",
-      "fetched_iso": "2026-05-27T15:30:00Z"
+      "title": "Criminal investigation expands into chemical tank crisis in Garden Grove - NBC LA",
+      "fetched_iso": "2026-05-27T18:30:00Z"
     }
   ],
   "schools_closed": [
@@ -178,10 +178,10 @@
     }
   ],
   "air_quality": null,
-  "breaking": true,
-  "breaking_reason": "2 new official statement(s)",
-  "breaking_since_iso": "2026-05-27T10:11:24Z",
-  "breaking_level": "info",
+  "breaking": false,
+  "breaking_reason": null,
+  "breaking_since_iso": null,
+  "breaking_level": null,
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
