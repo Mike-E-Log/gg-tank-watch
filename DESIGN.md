@@ -55,6 +55,7 @@
   - Tabbed content (flex: 1, internal scroll only)
   - Bottom tab bar (48px+ with safe-area-inset-bottom)
 - **Tabs:** Map | News | Check | Info
+- **Map tab:** MapLibre GL JS v4.7.1 (WebGL, UMD bundle) rendering OpenFreeMap vector tiles (Liberty style). GeoJSON evacuation polygon from config.json, 9 shelter markers with tappable popups. GPU-accelerated pan/zoom. No API key, no rate limits, $0 at any traffic level.
 - **Desktop (>768px):** Same structure, wider content
 - **Border radius:** sm:4px, md:6px, lg:8px
 
@@ -69,8 +70,8 @@ The hero shows severity status and situation bullets — never directives.
 - Information conduit: amplify official information, route to authorities
 - Never tell users to evacuate, stay, or take specific action
 - Severity word + "What changed" bullets give situational awareness
-- Address checker provides unofficial zone check with routing to ggcity.org/emergency
-- All verdicts defer to official channels for authoritative orders
+- Map tab links to Zonehaven's official zone checker for evacuation status
+- All information defers to official channels for authoritative orders
 
 ## Decisions Log
 | Date | Decision | Rationale |
@@ -85,3 +86,7 @@ The hero shows severity status and situation bullets — never directives.
 | 2026-05-25 | Be Vietnam Pro for vi body | Purpose-built Vietnamese diacritical rendering. Plus Jakarta Sans remains brand typeface. |
 | 2026-05-25 | Always-on cultural theme | Community IS Vietnamese-American. Theme honors identity regardless of language selection. |
 | 2026-05-25 | Severity colors unchanged | Safety-critical signals. Cultural theme works around them, never over them. |
+| 2026-05-26 | Conduit cleanup: address checker + severity removed | Pure information conduit — no functional output that could imply authority. Section 230 safe harbor. |
+| 2026-05-27 | MapLibre GL JS v4.7.1 + OpenFreeMap vector tiles | GPU-accelerated WebGL map replacing static JPEG + SVG overlay. $0, no API key, no rate limits. UMD bundle for single-file dashboard. |
+| 2026-05-27 | OpenFreeMap over Mapbox/Google/Protomaps | Zero cost at any traffic, no registration, survived 100K req/sec stress test. CARTO tiles (previous) went enterprise-only. |
+| 2026-05-27 | Dark mode map tiles | OpenFreeMap dark style swapped on theme toggle. Evacuation polygon + markers persist across style changes. |
