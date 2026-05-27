@@ -133,9 +133,7 @@
 
     /* ===== REFRESH BAR ===== */
     .refresh-bar {
-      height: 2px;
-      background: var(--sa-border);
-      flex-shrink: 0;
+      display: none;
     }
     .refresh-bar-fill {
       height: 100%;
@@ -2857,10 +2855,11 @@ setInterval(fetchStatus, REFRESH_MS);
   if (!vp || !content || !img) return;
 
   var EVAC_CX = 1860, EVAC_CY = 2160;
+  var EVAC_W = 2018, EVAC_H = 2125;
   var IMG_W = 4000, IMG_H = 4333;
   var baseW = 0, baseH = 0;
 
-  var scale = 1, minScale = 1, maxScale = 4;
+  var scale = 1, minScale = 0.5, maxScale = 4;
   var panX = 0, panY = 0;
   var startScale = 1, startDist = 0;
   var startPanX = 0, startPanY = 0, startMidX = 0, startMidY = 0;
@@ -2869,17 +2868,15 @@ setInterval(fetchStatus, REFRESH_MS);
 
   function sizeImage() {
     var vpW = vp.clientWidth, vpH = vp.clientHeight;
-    var imgAspect = IMG_W / IMG_H;
-    var vpAspect = vpW / vpH;
-    if (vpAspect < imgAspect) {
-      baseH = vpH;
-      baseW = vpH * imgAspect;
-    } else {
-      baseW = vpW;
-      baseH = vpW / imgAspect;
-    }
+    var zoneW = EVAC_W / IMG_W, zoneH = EVAC_H / IMG_H;
+    var pad = 1.3;
+    var fitW = vpW / (zoneW * pad);
+    var fitH = vpH / (zoneH * pad);
+    baseW = Math.min(fitW, fitH * (IMG_W / IMG_H));
+    baseH = baseW * (IMG_H / IMG_W);
     img.style.width = baseW + "px";
     img.style.height = baseH + "px";
+    minScale = Math.min(1, vpW / baseW, vpH / baseH) * 0.8;
   }
 
   function applyTransform() {
