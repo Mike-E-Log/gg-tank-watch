@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0e6f5e">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -583,55 +585,13 @@
       position: relative;
       flex: 1;
       min-height: 0;
-      background: var(--sa-bg);
-      overflow: hidden;
     }
-    .map-viewport {
+    #maplibre-map {
       width: 100%;
       height: 100%;
-      overflow: hidden;
-      touch-action: none;
-      cursor: grab;
-      position: relative;
     }
-    .map-viewport.is-dragging { cursor: grabbing; }
-    .map-content {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform-origin: 0 0;
-      will-change: transform;
-    }
-    .map-content img {
-      display: block;
-      pointer-events: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-    .map-overlay-svg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-    .map-zoom-hint {
-      position: absolute;
-      bottom: 48px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      font-size: 12px;
-      padding: 6px 14px;
-      border-radius: 16px;
-      pointer-events: none;
-      opacity: 1;
-      transition: opacity 0.4s;
-      z-index: 3;
-    }
-    .map-zoom-hint.hidden { opacity: 0; }
+    .maplibregl-ctrl-bottom-left,
+    .maplibregl-ctrl-bottom-right { display: none; }
     .map-wind {
       position: absolute;
       top: 8px;
@@ -1440,7 +1400,7 @@
       .sa-wave-bg { background-image: none; }
       .tab-bar, .tab-content { display: none !important; }
       .refresh-bar, .banners, .topbar-btn, .lang-picker,
-      .map-wind, .map-legend, .map-zoom-hint, .skip-link { display: none !important; }
+      .map-wind, .map-legend, .skip-link { display: none !important; }
       .safety-strip { background: none; border: 1px solid #ccc; }
       .print-only { display: block !important; }
       .print-content {
@@ -1548,30 +1508,7 @@
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
         <div class="map-outer" id="map-outer">
-          <div class="map-viewport" id="map-viewport">
-            <div class="map-content" id="map-content">
-              <img src="/images/zone-map.png" alt="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility at Brookhurst Street and Hazard Avenue, with shelter locations marked. For shelter addresses, see the Info tab." id="map-img" width="1200" height="800" loading="eager">
-              <svg class="map-overlay-svg" id="map-svg" viewBox="0 0 4000 4333" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style="display:none">
-                <polygon points="851.6,1097.7 2869.3,1097.7 2869.3,3222.4 851.6,3222.4" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="4"/>
-                <circle cx="1974.2" cy="2422.9" r="10" fill="#dc2626" stroke="#111" stroke-width="2.5"/>
-                <g font-size="36" font-family="system-ui,sans-serif" font-weight="600" fill="#1e40af">
-                  <text x="1974.2" y="2388" text-anchor="middle" font-size="28" fill="#7f1d1d">GKN Aerospace</text>
-                </g>
-                <g class="map-shelters" font-size="28" font-family="system-ui,sans-serif" fill="#1e3a5f">
-                  <circle cx="1097.4" cy="1046.6" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
-                  <text x="1117" y="1056" font-size="24">Cypress CC</text>
-                  <circle cx="3005.8" cy="634.1" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
-                  <text x="3025" y="644" font-size="24">Savanna HS</text>
-                  <circle cx="997.3" cy="367.6" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
-                  <text x="1017" y="377" font-size="24">JFK HS</text>
-                  <circle cx="3160.5" cy="3251.6" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
-                  <text x="3180" y="3261" font-size="24">GG Sports &amp; Rec</text>
-                  <circle cx="2016.7" cy="4324.8" r="7" fill="#2563eb" stroke="#fff" stroke-width="2"/>
-                  <text x="2036" y="4310" font-size="24">Golden West College</text>
-                </g>
-              </svg>
-            </div>
-          </div>
+          <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations marked."></div>
           <div class="map-wind" id="map-wind-overlay">
             <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
             <span id="wind-text-map">--</span>
@@ -1581,12 +1518,11 @@
             <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span> Shelter</div>
             <div class="legend-row"><span class="legend-dot" style="background:#111"></span> Facility</div>
           </div>
-          <div class="map-zoom-hint" id="map-zoom-hint">Pinch or scroll to zoom</div>
           <div class="static-map-actions">
             <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check your zone (official tool)</a>
             <p class="zone-check-note" data-i18n-html="map.zone_note">Boundaries are approximate. Verify your evacuation status at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.</p>
           </div>
-          <div class="static-map-attribution">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a></div>
+          <div class="static-map-attribution">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></div>
         </div>
       </div>
 
@@ -2845,164 +2781,69 @@ loadConfig().then(function() {
 });
 setInterval(fetchStatus, REFRESH_MS);
 
-/* ============ ZOOMABLE MAP ============ */
+/* ============ MAPLIBRE MAP ============ */
 (function() {
-  var vp = document.getElementById("map-viewport");
-  var content = document.getElementById("map-content");
-  var img = document.getElementById("map-img");
-  var svg = document.getElementById("map-svg");
-  var hint = document.getElementById("map-zoom-hint");
-  if (!vp || !content || !img) return;
+  if (typeof maplibregl === "undefined") return;
 
-  var EVAC_CX = 1860, EVAC_CY = 2160;
-  var EVAC_W = 2018, EVAC_H = 2125;
-  var IMG_W = 4000, IMG_H = 4333;
-  var baseW = 0, baseH = 0;
+  var mapEl = document.getElementById("maplibre-map");
+  if (!mapEl) return;
 
-  var scale = 1, minScale = 0.5, maxScale = 4;
-  var panX = 0, panY = 0;
-  var startScale = 1, startDist = 0;
-  var startPanX = 0, startPanY = 0, startMidX = 0, startMidY = 0;
-  var isDragging = false, dragStartX = 0, dragStartY = 0;
-  var lastTap = 0;
-
-  function sizeImage() {
-    var vpW = vp.clientWidth, vpH = vp.clientHeight;
-    var zoneW = EVAC_W / IMG_W, zoneH = EVAC_H / IMG_H;
-    var pad = 1.3;
-    var fitW = vpW / (zoneW * pad);
-    var fitH = vpH / (zoneH * pad);
-    baseW = Math.min(fitW, fitH * (IMG_W / IMG_H));
-    baseH = baseW * (IMG_H / IMG_W);
-    img.style.width = baseW + "px";
-    img.style.height = baseH + "px";
-    minScale = Math.min(1, vpW / baseW, vpH / baseH) * 0.8;
-  }
-
-  function applyTransform() {
-    content.style.transform = "translate(" + panX + "px," + panY + "px) scale(" + scale + ")";
-  }
-
-  function centerOnEvac() {
-    var vpW = vp.clientWidth, vpH = vp.clientHeight;
-    panX = vpW / 2 - (EVAC_CX / IMG_W) * baseW * scale;
-    panY = vpH / 2 - (EVAC_CY / IMG_H) * baseH * scale;
-    applyTransform();
-  }
-
-  function dist(t) {
-    var dx = t[0].clientX - t[1].clientX;
-    var dy = t[0].clientY - t[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
-  function mid(t) {
-    return { x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2 };
-  }
-
-  vp.addEventListener("touchstart", function(e) {
-    if (e.touches.length === 2) {
-      e.preventDefault();
-      startDist = dist(e.touches);
-      startScale = scale;
-      var m = mid(e.touches);
-      startMidX = m.x; startMidY = m.y;
-      startPanX = panX; startPanY = panY;
-    } else if (e.touches.length === 1) {
-      dragStartX = e.touches[0].clientX - panX;
-      dragStartY = e.touches[0].clientY - panY;
-      isDragging = true;
-      vp.classList.add("is-dragging");
-    }
-    var now = Date.now();
-    if (e.touches.length === 1 && now - lastTap < 300) {
-      e.preventDefault();
-      if (scale > 1) { scale = 1; centerOnEvac(); }
-      else {
-        scale = 2;
-        var r = vp.getBoundingClientRect();
-        var tx = e.touches[0].clientX - r.left, ty = e.touches[0].clientY - r.top;
-        panX = tx - (tx - panX) * 2;
-        panY = ty - (ty - panY) * 2;
-        applyTransform();
-      }
-    }
-    lastTap = now;
-  }, { passive: false });
-
-  vp.addEventListener("touchmove", function(e) {
-    if (e.touches.length === 2) {
-      e.preventDefault();
-      var d = dist(e.touches);
-      scale = Math.min(maxScale, Math.max(minScale, startScale * (d / startDist)));
-      var m = mid(e.touches);
-      panX = startPanX + (m.x - startMidX);
-      panY = startPanY + (m.y - startMidY);
-      applyTransform();
-      hideHint();
-    } else if (e.touches.length === 1 && isDragging) {
-      e.preventDefault();
-      panX = e.touches[0].clientX - dragStartX;
-      panY = e.touches[0].clientY - dragStartY;
-      applyTransform();
-    }
-  }, { passive: false });
-
-  vp.addEventListener("touchend", function() {
-    isDragging = false;
-    vp.classList.remove("is-dragging");
+  var map = new maplibregl.Map({
+    container: "maplibre-map",
+    style: "https://tiles.openfreemap.org/styles/liberty",
+    center: [-118.0088, 33.7930],
+    zoom: 12.5,
+    minZoom: 10,
+    maxZoom: 17,
+    attributionControl: false
   });
 
-  vp.addEventListener("wheel", function(e) {
-    e.preventDefault();
-    var r = vp.getBoundingClientRect();
-    var mx = e.clientX - r.left, my = e.clientY - r.top;
-    var prev = scale;
-    var delta = e.deltaY > 0 ? 0.9 : 1.1;
-    scale = Math.min(maxScale, Math.max(minScale, scale * delta));
-    panX = mx - (mx - panX) * (scale / prev);
-    panY = my - (my - panY) * (scale / prev);
-    applyTransform();
-    hideHint();
-  }, { passive: false });
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-left");
 
-  var mouseDown = false, mouseSX = 0, mouseSY = 0;
-  vp.addEventListener("mousedown", function(e) {
-    mouseDown = true;
-    mouseSX = e.clientX - panX;
-    mouseSY = e.clientY - panY;
-    vp.classList.add("is-dragging");
-    e.preventDefault();
+  map.on("load", function() {
+    fetch("/config.json").then(function(r) { return r.json(); }).then(function(cfg) {
+      var poly = cfg.map.evac_polygon;
+      var coords = poly.map(function(p) { return [p[1], p[0]]; });
+      coords.push(coords[0]);
+
+      map.addSource("evac-zone", {
+        type: "geojson",
+        data: { type: "Feature", geometry: { type: "Polygon", coordinates: [coords] } }
+      });
+      map.addLayer({
+        id: "evac-fill", type: "fill", source: "evac-zone",
+        paint: { "fill-color": "#3b82f6", "fill-opacity": 0.15 }
+      });
+      map.addLayer({
+        id: "evac-line", type: "line", source: "evac-zone",
+        paint: { "line-color": "#3b82f6", "line-width": 2.5 }
+      });
+
+      var fac = cfg.map.facility;
+      var facEl = document.createElement("div");
+      facEl.style.cssText = "width:14px;height:14px;background:#dc2626;border:2px solid #111;border-radius:50%;";
+      new maplibregl.Marker({ element: facEl })
+        .setLngLat([fac.lon, fac.lat])
+        .setPopup(new maplibregl.Popup({ offset: 12, closeButton: false }).setHTML("<strong>" + fac.label + "</strong>"))
+        .addTo(map);
+
+      cfg.map.shelters.forEach(function(s) {
+        var el = document.createElement("div");
+        el.style.cssText = "width:12px;height:12px;background:#2563eb;border:2px solid #fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,0.3);";
+        new maplibregl.Marker({ element: el })
+          .setLngLat([s.lon, s.lat])
+          .setPopup(new maplibregl.Popup({ offset: 10, closeButton: false }).setHTML("<strong>" + s.name + "</strong><br>" + s.city + (s.notes ? " &middot; " + s.notes : "")))
+          .addTo(map);
+      });
+
+      map.fitBounds([
+        [Math.min.apply(null, coords.map(function(c){return c[0]})) - 0.005,
+         Math.min.apply(null, coords.map(function(c){return c[1]})) - 0.005],
+        [Math.max.apply(null, coords.map(function(c){return c[0]})) + 0.005,
+         Math.max.apply(null, coords.map(function(c){return c[1]})) + 0.005]
+      ], { padding: 40, maxZoom: 14 });
+    });
   });
-  document.addEventListener("mousemove", function(e) {
-    if (!mouseDown) return;
-    panX = e.clientX - mouseSX;
-    panY = e.clientY - mouseSY;
-    applyTransform();
-  });
-  document.addEventListener("mouseup", function() {
-    mouseDown = false;
-    vp.classList.remove("is-dragging");
-  });
-
-  function hideHint() {
-    if (hint) { hint.classList.add("hidden"); }
-  }
-
-  function init() {
-    sizeImage();
-    centerOnEvac();
-  }
-
-  var hires = new Image();
-  hires.onload = function() {
-    img.src = hires.src;
-    img.removeAttribute("width");
-    img.removeAttribute("height");
-    if (svg) svg.style.display = "";
-    init();
-  };
-  hires.src = "/images/zone-map-hires.jpg";
-  window.addEventListener("resize", function() { sizeImage(); centerOnEvac(); });
 })();
 </script>
   <script>
