@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T15:30:00Z",
+  "generated_at": "2026-05-27T23:55:00Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -748,6 +748,17 @@
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19172551/",
       "source_name": "ABC7 LA",
       "category": "community_impact"
+    },
+    {
+      "id": "evt-20260528-003",
+      "timestamp_utc": "2026-05-28T05:00:00Z",
+      "timestamp_local": "2026-05-27T22:00:00-07:00",
+      "day": 7,
+      "title": "GGUSD announces all 12 closed campuses reopen Wednesday — last day of school year",
+      "description": "Garden Grove Unified School District announces all schools will reopen Wednesday, May 28 — the final day of the school year. Students will not be penalized if unable to attend as families continue to recover; students held harmless on grades. The announcement follows the 7:30 PM PDT all-clear. Hazmat crews remain on Western Ave treating remaining MMA within a 300-foot exclusion zone around the GKN tanks.",
+      "source_url": "https://www.ggusd.us/news/evacuation-orders-lifted-all-schools-reopen-tomorrowevacuation-orders-lifted-all-schools-reopen-tomorrow",
+      "source_name": "GGUSD",
+      "category": "school_closure"
     }
   ]
 }
