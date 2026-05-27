@@ -580,9 +580,9 @@
     }
 
     /* ===== MAP PANEL ===== */
+    #panel-map { overflow: hidden; display: flex; flex-direction: column; }
     .map-outer {
       position: relative;
-      width: 100%;
       flex: 1;
       min-height: 0;
       background: var(--sa-bg);
@@ -598,15 +598,14 @@
     }
     .map-viewport.is-dragging { cursor: grabbing; }
     .map-content {
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
       transform-origin: 0 0;
       will-change: transform;
-      display: inline-block;
     }
     .map-content img {
       display: block;
-      width: 100%;
-      height: auto;
       pointer-events: none;
       -webkit-user-select: none;
       user-select: none;
@@ -2859,23 +2858,38 @@ setInterval(fetchStatus, REFRESH_MS);
 
   var EVAC_CX = 1860, EVAC_CY = 2160;
   var IMG_W = 4000, IMG_H = 4333;
+  var baseW = 0, baseH = 0;
 
-  var scale = 1, minScale = 1, maxScale = 3;
+  var scale = 1, minScale = 1, maxScale = 4;
   var panX = 0, panY = 0;
   var startScale = 1, startDist = 0;
   var startPanX = 0, startPanY = 0, startMidX = 0, startMidY = 0;
   var isDragging = false, dragStartX = 0, dragStartY = 0;
   var lastTap = 0;
 
+  function sizeImage() {
+    var vpW = vp.clientWidth, vpH = vp.clientHeight;
+    var imgAspect = IMG_W / IMG_H;
+    var vpAspect = vpW / vpH;
+    if (vpAspect < imgAspect) {
+      baseH = vpH;
+      baseW = vpH * imgAspect;
+    } else {
+      baseW = vpW;
+      baseH = vpW / imgAspect;
+    }
+    img.style.width = baseW + "px";
+    img.style.height = baseH + "px";
+  }
+
   function applyTransform() {
     content.style.transform = "translate(" + panX + "px," + panY + "px) scale(" + scale + ")";
   }
 
-  function centerOn(fracX, fracY) {
+  function centerOnEvac() {
     var vpW = vp.clientWidth, vpH = vp.clientHeight;
-    var cW = img.offsetWidth * scale, cH = img.offsetHeight * scale;
-    panX = vpW / 2 - fracX * cW;
-    panY = vpH / 2 - fracY * cH;
+    panX = vpW / 2 - (EVAC_CX / IMG_W) * baseW * scale;
+    panY = vpH / 2 - (EVAC_CY / IMG_H) * baseH * scale;
     applyTransform();
   }
 
@@ -2905,14 +2919,13 @@ setInterval(fetchStatus, REFRESH_MS);
     var now = Date.now();
     if (e.touches.length === 1 && now - lastTap < 300) {
       e.preventDefault();
-      if (scale > 1) {
-        scale = 1;
-        centerOn(EVAC_CX / IMG_W, EVAC_CY / IMG_H);
-      } else {
+      if (scale > 1) { scale = 1; centerOnEvac(); }
+      else {
         scale = 2;
         var r = vp.getBoundingClientRect();
-        panX = -(e.touches[0].clientX - r.left) * (scale - 1);
-        panY = -(e.touches[0].clientY - r.top) * (scale - 1);
+        var tx = e.touches[0].clientX - r.left, ty = e.touches[0].clientY - r.top;
+        panX = tx - (tx - panX) * 2;
+        panY = ty - (ty - panY) * 2;
         applyTransform();
       }
     }
@@ -2978,15 +2991,21 @@ setInterval(fetchStatus, REFRESH_MS);
     if (hint) { hint.classList.add("hidden"); }
   }
 
+  function init() {
+    sizeImage();
+    centerOnEvac();
+  }
+
   var hires = new Image();
   hires.onload = function() {
     img.src = hires.src;
     img.removeAttribute("width");
     img.removeAttribute("height");
     if (svg) svg.style.display = "";
-    centerOn(EVAC_CX / IMG_W, EVAC_CY / IMG_H);
+    init();
   };
   hires.src = "/images/zone-map-hires.jpg";
+  window.addEventListener("resize", function() { sizeImage(); centerOnEvac(); });
 })();
 </script>
   <script>
