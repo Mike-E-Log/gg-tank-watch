@@ -1446,7 +1446,7 @@
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  <div class="app sa-wave-bg map-active">
+  <div class="app sa-wave-bg">
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
     <header class="topbar">
@@ -1899,7 +1899,6 @@ function switchTab(tabId) {
     tab.setAttribute("aria-selected", "true");
   }
   var appEl = document.querySelector('.app');
-  if (appEl) appEl.classList.toggle('map-active', tabId === 'map');
 }
 window.switchTab = switchTab;
 
