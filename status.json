@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-27T19:09:49Z",
-  "data_as_of_iso": "2026-05-27T19:09:49Z",
-  "next_check_at_iso": "2026-05-27T19:39:49Z",
-  "stale_after_iso": "2026-05-27T19:49:49Z",
+  "last_updated_iso": "2026-05-27T22:10:05Z",
+  "data_as_of_iso": "2026-05-27T22:10:05Z",
+  "next_check_at_iso": "2026-05-27T22:40:05Z",
+  "stale_after_iso": "2026-05-27T22:50:05Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Incident resolved: all evacuation orders lifted May 27 at 7:30 PM PDT. GGUSD schools reopen Wednesday (final day of school year); students held harmless. Hazmat crews treating remaining ~11,000 gal MMA within 300-ft exclusion zone on Western Ave. DA criminal investigation active. FEMA federal assistance available; call 714-741-5444.",
+    "status_headline": "Incident resolved: all evacuation orders lifted May 27 at 7:30 PM PDT. EPA confirmed zero air quality exceedances throughout the 7-day incident. Hazmat crews treating remaining solidified MMA in 300-ft exclusion zone on Western Ave. DA criminal investigation ongoing; residents demand GKN accountability. GGUSD schools reopened today (final school day of year). FEMA individual assistance available; call 714-741-5444.",
     "severity": "low",
     "resolved_iso": null
   },
@@ -30,12 +30,6 @@
   },
   "official_statements": [
     {
-      "agency": "Garden Grove Unified School District",
-      "time_iso": "2026-05-28T05:00:00Z",
-      "text": "All GGUSD schools will reopen Wednesday, May 28 \u2014 the final day of the school year. Students will not be penalized if unable to attend as families continue to recover and make necessary arrangements. Students will be held harmless with grades.",
-      "source_url": "https://www.ggusd.us/news/evacuation-orders-lifted-all-schools-reopen-tomorrowevacuation-orders-lifted-all-schools-reopen-tomorrow"
-    },
-    {
       "agency": "OCFA Unified Command",
       "time_iso": "2026-05-28T02:30:00Z",
       "text": "All evacuation orders related to the Garden Grove hazardous materials incident have been lifted. No active chemical leak. No threat of explosion. No threat of fire. No risk to the public.",
@@ -52,53 +46,59 @@
       "time_iso": "2026-05-28T01:00:00Z",
       "text": "Our community deserves to know what happened, why it happened and whether laws or regulations were violated, and what steps we must take to prevent something like this from ever happening again.",
       "source_url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/"
+    },
+    {
+      "agency": "Garden Grove Unified School District",
+      "time_iso": "2026-05-28T05:00:00Z",
+      "text": "All GGUSD schools will reopen Wednesday, May 28 \u2014 the final day of the school year. Students will not be penalized if unable to attend as families continue to recover. Students will be held harmless with grades.",
+      "source_url": "https://www.ggusd.us/news/evacuation-orders-lifted-all-schools-reopen-tomorrowevacuation-orders-lifted-all-schools-reopen-tomorrow"
     }
   ],
   "sources_checked": [
     {
-      "url": "https://www.ggusd.us/news/evacuation-orders-lifted-all-schools-reopen-tomorrowevacuation-orders-lifted-all-schools-reopen-tomorrow",
-      "title": "Evacuation Orders Lifted - All Schools Reopen Tomorrow | Garden Grove Unified School District",
-      "fetched_iso": "2026-05-27T23:45:00Z"
-    },
-    {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove tank crisis updates: Evacuation orders lifted for final 16K residents - ABC7 LA",
-      "fetched_iso": "2026-05-27T23:45:00Z"
+      "title": "Garden Grove tank crisis updates: Evacuation orders lifted - ABC7 LA",
+      "fetched_iso": "2026-05-28T00:30:00Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
       "title": "Evacuations End in Garden Grove Chemical Tank Emergency - Voice of OC",
-      "fetched_iso": "2026-05-27T23:45:00Z"
+      "fetched_iso": "2026-05-28T00:30:00Z"
     },
     {
-      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
-      "title": "Criminal investigation expands into chemical tank crisis in Garden Grove - NBC LA",
-      "fetched_iso": "2026-05-27T23:45:00Z"
+      "url": "https://www.ggusd.us/news/evacuation-orders-lifted-all-schools-reopen-tomorrowevacuation-orders-lifted-all-schools-reopen-tomorrow",
+      "title": "Evacuation Orders Lifted - All Schools Reopen Tomorrow - GGUSD",
+      "fetched_iso": "2026-05-28T00:30:00Z"
+    },
+    {
+      "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
+      "title": "Chemical tank update: Evacuation orders lifted - OCDE Newsroom",
+      "fetched_iso": "2026-05-28T00:30:00Z"
     },
     {
       "url": "https://ktla.com/news/orange-county/all-evacuations-lifted-residents-chemical-tank-garden-grove/",
-      "title": "All evacuation orders lifted for residents near chemical tank in Garden Grove - KTLA",
-      "fetched_iso": "2026-05-27T23:45:00Z"
+      "title": "All evacuation orders lifted for residents near chemical tank - KTLA",
+      "fetched_iso": "2026-05-28T00:30:00Z"
     },
     {
       "url": "https://ggcity.org/emergency",
       "title": "Emergency | City of Garden Grove",
-      "fetched_iso": "2026-05-27T23:45:00Z"
+      "fetched_iso": "2026-05-28T00:30:00Z"
     },
     {
-      "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
-      "title": "Chemical tank update: Evacuation orders lifted as officials declare no further risk - OCDE Newsroom",
-      "fetched_iso": "2026-05-27T23:45:00Z"
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
+      "title": "Criminal investigation expands into chemical tank crisis - NBC LA",
+      "fetched_iso": "2026-05-28T00:30:00Z"
     },
     {
-      "url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel32.asp",
-      "title": "Helping Garden Grove Schools After Chemical Leak - CA Dept of Education",
-      "fetched_iso": "2026-05-27T23:45:00Z"
+      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
+      "title": "Garden Grove chemical leak - Wikipedia",
+      "fetched_iso": "2026-05-28T00:30:00Z"
     },
     {
-      "url": "https://abcnews.com/US/chemical-tank-southern-california-longer-threat-explosion-officials/story?id=133286870",
-      "title": "All evacuation orders tied to Southern California chemical tank lifted - ABC News",
-      "fetched_iso": "2026-05-27T23:45:00Z"
+      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-chemical-incident-gkn-aerospace-residents-demand-accountability/",
+      "title": "Orange County residents demand accountability after Garden Grove chemical incident - CBS LA",
+      "fetched_iso": "2026-05-28T00:30:00Z"
     }
   ],
   "schools_closed": [
@@ -201,15 +201,15 @@
   "air_quality": null,
   "breaking": true,
   "breaking_reason": "1 new official statement(s)",
-  "breaking_since_iso": "2026-05-27T19:09:49Z",
+  "breaking_since_iso": "2026-05-27T22:10:05Z",
   "breaking_level": "info",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
-      "75de641550729ecb",
       "c94a8e58160d8324",
       "0a8f9512307c50dc",
-      "577ad6d4f8ed49b7"
+      "577ad6d4f8ed49b7",
+      "a540cd92f3634963"
     ],
     "last_residents_shift_iso": null
   }
