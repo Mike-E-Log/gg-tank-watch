@@ -128,7 +128,7 @@
       overflow: hidden;
     }
     @media (min-width: 768px) {
-      .app.map-active {
+      .app {
         max-width: none;
       }
     }
@@ -2870,11 +2870,11 @@ function _ggSwapMapStyle(dark) {
       });
 
       map.fitBounds([
-        [Math.min.apply(null, coords.map(function(c){return c[0]})) - 0.005,
-         Math.min.apply(null, coords.map(function(c){return c[1]})) - 0.005],
-        [Math.max.apply(null, coords.map(function(c){return c[0]})) + 0.005,
-         Math.max.apply(null, coords.map(function(c){return c[1]})) + 0.005]
-      ], { padding: 40, maxZoom: 14 });
+        [Math.min.apply(null, coords.map(function(c){return c[0]})) - 0.08,
+         Math.min.apply(null, coords.map(function(c){return c[1]})) - 0.08],
+        [Math.max.apply(null, coords.map(function(c){return c[0]})) + 0.08,
+         Math.max.apply(null, coords.map(function(c){return c[1]})) + 0.08]
+      ], { padding: 20, maxZoom: 11 });
 
       _ggEvacCoords = coords;
       _ggMap = map;
