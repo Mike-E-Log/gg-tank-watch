@@ -89,3 +89,4 @@ The hero shows severity status and situation bullets — never directives.
 | 2026-05-26 | Conduit cleanup: address checker + severity removed | Pure information conduit — no functional output that could imply authority. Section 230 safe harbor. |
 | 2026-05-27 | MapLibre GL JS v4.7.1 + OpenFreeMap vector tiles | GPU-accelerated WebGL map replacing static JPEG + SVG overlay. $0, no API key, no rate limits. UMD bundle for single-file dashboard. |
 | 2026-05-27 | OpenFreeMap over Mapbox/Google/Protomaps | Zero cost at any traffic, no registration, survived 100K req/sec stress test. CARTO tiles (previous) went enterprise-only. |
+| 2026-05-27 | Dark mode map tiles | OpenFreeMap dark style swapped on theme toggle. Evacuation polygon + markers persist across style changes. |
