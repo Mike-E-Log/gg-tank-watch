@@ -1873,6 +1873,7 @@ function applyTheme(theme) {
   document.documentElement.classList.toggle("theme-light", theme !== "dark");
   var btn = $("theme-toggle");
   if (btn) btn.innerHTML = theme === "dark" ? ICON_SUN : ICON_MOON;
+  _ggSwapMapStyle(theme === "dark");
 }
 function toggleTheme() {
   var cur = document.documentElement.classList.contains("theme-dark") ? "dark" : "light";
@@ -2782,15 +2783,40 @@ loadConfig().then(function() {
 setInterval(fetchStatus, REFRESH_MS);
 
 /* ============ MAPLIBRE MAP ============ */
+var _ggMap = null;
+var _ggEvacCoords = null;
+
+function _ggSwapMapStyle(dark) {
+  if (!_ggMap || !_ggEvacCoords) return;
+  _ggMap.setStyle(dark
+    ? "https://tiles.openfreemap.org/styles/dark"
+    : "https://tiles.openfreemap.org/styles/liberty");
+  setTimeout(function poll() {
+    if (!_ggMap.isStyleLoaded()) { setTimeout(poll, 50); return; }
+    if (_ggMap.getSource("evac-zone")) return;
+    _ggMap.addSource("evac-zone", {
+      type: "geojson",
+      data: { type: "Feature", geometry: { type: "Polygon", coordinates: [_ggEvacCoords] } }
+    });
+    _ggMap.addLayer({ id: "evac-fill", type: "fill", source: "evac-zone",
+      paint: { "fill-color": "#3b82f6", "fill-opacity": 0.15 } });
+    _ggMap.addLayer({ id: "evac-line", type: "line", source: "evac-zone",
+      paint: { "line-color": "#3b82f6", "line-width": 2.5 } });
+  }, 200);
+}
+
 (function() {
   if (typeof maplibregl === "undefined") return;
 
   var mapEl = document.getElementById("maplibre-map");
   if (!mapEl) return;
 
+  var isDark = document.documentElement.classList.contains("theme-dark");
   var map = new maplibregl.Map({
     container: "maplibre-map",
-    style: "https://tiles.openfreemap.org/styles/liberty",
+    style: isDark
+      ? "https://tiles.openfreemap.org/styles/dark"
+      : "https://tiles.openfreemap.org/styles/liberty",
     center: [-118.0088, 33.7930],
     zoom: 12.5,
     minZoom: 10,
@@ -2842,6 +2868,10 @@ setInterval(fetchStatus, REFRESH_MS);
         [Math.max.apply(null, coords.map(function(c){return c[0]})) + 0.005,
          Math.max.apply(null, coords.map(function(c){return c[1]})) + 0.005]
       ], { padding: 40, maxZoom: 14 });
+
+      _ggEvacCoords = coords;
+      _ggMap = map;
+
     });
   });
 })();
