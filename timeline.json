@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T07:10:28Z",
+  "generated_at": "2026-05-27T15:30:00Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -737,6 +737,17 @@
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
       "category": "evacuation"
+    },
+    {
+      "id": "evt-20260528-002",
+      "timestamp_utc": "2026-05-28T03:30:00Z",
+      "timestamp_local": "2026-05-27T20:30:00-07:00",
+      "day": 7,
+      "title": "Residents return home; community demands GKN accountability",
+      "description": "Following the 7:30 PM PDT all-clear, tens of thousands of residents returned home after the 7-day evacuation. Many expressed relief but also anger over the week-long displacement. Rep. Derek Tran (CA-45): \"While immediate danger has been lifted, residents are still left to pick up the pieces. Our community is rightfully angry, and I will continue working around the clock to demand accountability from all responsible actors.\" NBC LA reported the evacuation order for all Garden Grove residents was officially lifted by the Garden Grove Police Department. GKN Aerospace's prior $909,935.95 SCAQMD settlement from early 2025 — stemming from air quality violations first cited in a 2020 inspection — drew renewed scrutiny as residents demanded answers about how the company was permitted to store hazardous chemicals so close to homes and schools.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19172551/",
+      "source_name": "ABC7 LA",
+      "category": "community_impact"
     }
   ]
 }
