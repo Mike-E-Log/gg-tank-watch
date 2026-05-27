@@ -128,7 +128,7 @@
       overflow: hidden;
     }
     @media (min-width: 768px) {
-      .app.map-active {
+      .app {
         max-width: none;
       }
     }
@@ -1446,7 +1446,7 @@
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  <div class="app sa-wave-bg map-active">
+  <div class="app sa-wave-bg">
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
     <header class="topbar">
@@ -1899,7 +1899,6 @@ function switchTab(tabId) {
     tab.setAttribute("aria-selected", "true");
   }
   var appEl = document.querySelector('.app');
-  if (appEl) appEl.classList.toggle('map-active', tabId === 'map');
 }
 window.switchTab = switchTab;
 
@@ -2870,11 +2869,11 @@ function _ggSwapMapStyle(dark) {
       });
 
       map.fitBounds([
-        [Math.min.apply(null, coords.map(function(c){return c[0]})) - 0.005,
-         Math.min.apply(null, coords.map(function(c){return c[1]})) - 0.005],
-        [Math.max.apply(null, coords.map(function(c){return c[0]})) + 0.005,
-         Math.max.apply(null, coords.map(function(c){return c[1]})) + 0.005]
-      ], { padding: 40, maxZoom: 14 });
+        [Math.min.apply(null, coords.map(function(c){return c[0]})) - 0.08,
+         Math.min.apply(null, coords.map(function(c){return c[1]})) - 0.08],
+        [Math.max.apply(null, coords.map(function(c){return c[0]})) + 0.08,
+         Math.max.apply(null, coords.map(function(c){return c[1]})) + 0.08]
+      ], { padding: 20, maxZoom: 11 });
 
       _ggEvacCoords = coords;
       _ggMap = map;
