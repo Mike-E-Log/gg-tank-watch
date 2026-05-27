@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-26T22:12:44Z",
+  "generated_at": "2026-05-27T21:08:42Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -682,6 +682,28 @@
       "source_url": "https://ggcity.org/emergency",
       "source_name": "City of Garden Grove",
       "category": "government_action"
+    },
+    {
+      "id": "evt-20260527-001",
+      "timestamp_utc": "2026-05-27T14:00:00Z",
+      "timestamp_local": "2026-05-27T07:00:00-07:00",
+      "day": 7,
+      "title": "McGovern: water cooling to be shut down system by system to test tank stability",
+      "description": "OCFA Interim Fire Chief TJ McGovern announces at Tuesday morning briefing that crews will begin gradually shutting down the two water-cooling systems to test whether the tank can stabilize on its own. \"We're going to shut down one of those two systems, and we're going to monitor the temperature. We're looking for it to stabilize. We don't want it to come up. We're hoping it comes down. If that looks good throughout the day, then we're going to shut down the second system, and we are going to watch that.\" Tank temperature holding steady at 92°F.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "source_name": "ABC7 LA",
+      "category": "tank_status"
+    },
+    {
+      "id": "evt-20260527-002",
+      "timestamp_utc": "2026-05-27T23:00:00Z",
+      "timestamp_local": "2026-05-27T16:00:00-07:00",
+      "day": 7,
+      "title": "All water cooling deactivated; crews walk and climb tank as MMA solidifies",
+      "description": "AIR7 aerial video above GKN Aerospace shows no water being sprayed on the tank. Both cooling systems shut down; crews observed walking around the tank and climbing on top. Focus shifts from explosion prevention to assessing how to safely access the tank interior. MMA believed to be solidifying inside. OCFA Chief McGovern: \"We gotta get the fire problem handled first, stabilize that temperature, and then the team will make that determination — now, how do we get inside?\" 16,000 residents remain under reduced evacuation orders.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "source_name": "ABC7 LA",
+      "category": "tank_status"
     }
   ]
 }

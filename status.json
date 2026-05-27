@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-26T22:11:53Z",
-  "data_as_of_iso": "2026-05-26T22:11:53Z",
-  "next_check_at_iso": "2026-05-26T22:41:53Z",
-  "stale_after_iso": "2026-05-26T22:51:53Z",
+  "last_updated_iso": "2026-05-27T01:08:42Z",
+  "data_as_of_iso": "2026-05-27T01:08:42Z",
+  "next_check_at_iso": "2026-05-27T01:38:42Z",
+  "stale_after_iso": "2026-05-27T01:48:42Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Tank temperature holding at 92°F; ∼16,000 residents remain under evacuation orders in reduced zone; crews transferring MMA to neutralizing-agent tank — Day 6.",
+    "status_headline": "Water cooling halted on Day 7; crews walk and climb tank as MMA solidifies \u2014 16,000 remain under evacuation; focus now on preventing fire or small explosion.",
     "severity": "high",
     "resolved_iso": null
   },
@@ -30,76 +30,48 @@
   },
   "official_statements": [
     {
-      "agency": "OCFA",
-      "time_iso": "2026-05-25T21:03:00Z",
-      "text": "Due to the threat of the BLEVE being eliminated, Fire & Law are re-evaluating the evacuation zones.",
-      "source_url": "https://ggcity.org/emergency"
-    },
-    {
-      "agency": "OCFA – Interim Fire Chief TJ McGovern",
-      "time_iso": "2026-05-26T20:00:00Z",
-      "text": "The most catastrophic and worst-case scenario has been mitigated and resolved, but it’s not over yet.",
+      "agency": "OCFA \u2013 Interim Fire Chief TJ McGovern",
+      "time_iso": "2026-05-27T14:00:00Z",
+      "text": "We're going to shut down one of those two systems, and we're going to monitor the temperature. We're looking for it to stabilize. We don't want it to come up. We're hoping it comes down. If that looks good throughout the day, then we're going to shut down the second system, and we are going to watch that.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     },
     {
-      "agency": "OC Health Officer Dr. Regina Chinsio-Kwong",
-      "time_iso": "2026-05-26T01:00:00Z",
-      "text": "There was no contamination, no fumes, no vapors. You should feel comfortable going home. Even if you’re across the street from that new zone line.",
-      "source_url": "https://voiceofoc.org/2026/05/garden-grove-chemical-tank-evacuations-partially-lifted-16k-still-evacuated/"
-    },
-    {
-      "agency": "OCFA – Incident Commander Craig Covey",
-      "time_iso": "2026-05-26T20:00:00Z",
-      "text": "The liquid potential in the tank [has been] greatly reduced, as it has been hardened.",
-      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
-    },
-    {
-      "agency": "Garden Grove PD Chief Amir El-Farra",
-      "time_iso": "2026-05-26T22:00:00Z",
-      "text": "Seven total arrests have been made since the incident began — one person for looting and six for prowling. The DA’s office will prosecute them to the fullest extent of the law.",
+      "agency": "OCFA \u2013 Interim Fire Chief TJ McGovern",
+      "time_iso": "2026-05-27T14:00:00Z",
+      "text": "We gotta get the fire problem handled first, stabilize that temperature, and then the team will make that determination \u2014 now, how do we get inside?",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     }
   ],
   "sources_checked": [
     {
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "title": "Garden Grove tank crisis updates: Focus turns to preventing fire, small explosion at OC tank; crews no longer spraying water \u2013 ABC7 Los Angeles",
+      "fetched_iso": "2026-05-27T21:00:00Z"
+    },
+    {
       "url": "https://ggcity.org/emergency",
       "title": "Emergency | City of Garden Grove",
-      "fetched_iso": "2026-05-26T20:00:00Z"
+      "fetched_iso": "2026-05-27T21:00:00Z"
     },
     {
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove tank crisis updates – ABC7 Los Angeles",
-      "fetched_iso": "2026-05-26T20:00:00Z"
-    },
-    {
-      "url": "https://voiceofoc.org/2026/05/garden-grove-chemical-tank-evacuations-partially-lifted-16k-still-evacuated/",
-      "title": "Garden Grove Chemical Tank Evacuations Partially Lifted, 16K Still Evacuated – Voice of OC",
-      "fetched_iso": "2026-05-26T20:00:00Z"
-    },
-    {
-      "url": "https://www.nbclosangeles.com/news/local/toxic-chemical-tank-garden-grove-orange-county/3894971/",
-      "title": "Recap: Some evacuations lifted in Garden Grove – NBC Los Angeles",
-      "fetched_iso": "2026-05-26T20:00:00Z"
-    },
-    {
-      "url": "https://www.npr.org/2026/05/26/nx-s1-5834347/evacuation-orders-lift-for-thousands-of-residents-near-damaged-chemical-tank",
-      "title": "Evacuation orders lift for thousands of residents near damaged chemical tank – NPR",
-      "fetched_iso": "2026-05-26T20:00:00Z"
+      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-evacuation-update/",
+      "title": "Garden Grove chemical tank holding steady but evacuations continue \u2013 KTLA",
+      "fetched_iso": "2026-05-27T21:00:00Z"
     }
   ],
   "schools_closed": [
-    "Garden Grove Unified – Barker Elementary",
-    "Garden Grove Unified – Bryant Elementary",
-    "Garden Grove Unified – Carver Elementary",
-    "Garden Grove Unified – Enders Elementary",
-    "Garden Grove Unified – Garden Park Elementary",
-    "Garden Grove Unified – Lawrence Elementary",
-    "Garden Grove Unified – Wakeham Elementary",
-    "Garden Grove Unified – Patton Elementary",
-    "Garden Grove Unified – Bell Intermediate",
-    "Garden Grove Unified – Alamitos Intermediate",
-    "Garden Grove Unified – Pacifica High School",
-    "Garden Grove Unified – Rancho Alamitos High School"
+    "Garden Grove Unified \u2013 Barker Elementary",
+    "Garden Grove Unified \u2013 Bryant Elementary",
+    "Garden Grove Unified \u2013 Carver Elementary",
+    "Garden Grove Unified \u2013 Enders Elementary",
+    "Garden Grove Unified \u2013 Garden Park Elementary",
+    "Garden Grove Unified \u2013 Lawrence Elementary",
+    "Garden Grove Unified \u2013 Wakeham Elementary",
+    "Garden Grove Unified \u2013 Patton Elementary",
+    "Garden Grove Unified \u2013 Bell Intermediate",
+    "Garden Grove Unified \u2013 Alamitos Intermediate",
+    "Garden Grove Unified \u2013 Pacifica High School",
+    "Garden Grove Unified \u2013 Rancho Alamitos High School"
   ],
   "videos": [
     {
@@ -186,17 +158,14 @@
   ],
   "air_quality": null,
   "breaking": true,
-  "breaking_reason": "4 new official statement(s)",
-  "breaking_since_iso": "2026-05-26T22:11:53Z",
+  "breaking_reason": "2 new official statement(s)",
+  "breaking_since_iso": "2026-05-27T01:08:42Z",
   "breaking_level": "info",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
-      "b3010e50df6692be",
-      "800851e9c2ac70f8",
-      "db7b7e912fd21e68",
-      "7e652c0ffece03f7",
-      "eb44466bee8d912f"
+      "55e3b84740060e02",
+      "19feec7402d2a802"
     ],
     "last_residents_shift_iso": null
   }
