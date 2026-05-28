@@ -580,6 +580,7 @@
     }
     .maplibregl-ctrl-bottom-left,
     .maplibregl-ctrl-bottom-right { display: none; }
+    .maplibregl-ctrl-group button { width: 40px; height: 40px; }
     .map-wind {
       position: absolute;
       top: 8px;
@@ -598,7 +599,7 @@
     }
     .map-legend {
       position: absolute;
-      bottom: 8px;
+      bottom: 72px; /* clear the action button band (~68px) so the full-width CTA doesn't bury the legend on mobile */
       left: 8px;
       background: var(--sa-surface);
       border: 1px solid var(--sa-border);
@@ -666,6 +667,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-size: 15px;
       font-weight: 700;
+      line-height: 1.25;
       border-radius: 8px;
       text-decoration: none;
       width: 100%;
@@ -1544,15 +1546,17 @@
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
         <div class="map-outer" id="map-outer">
-          <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations marked."></div>
+          <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations and the current wind direction marked."></div>
           <div class="map-wind" id="map-wind-overlay">
             <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
             <span id="wind-text-map">--</span>
           </div>
-          <div class="map-legend">
-            <div class="legend-row"><span class="legend-icon legend-icon-evac"></span> Evac zone</div>
-            <div class="legend-row"><span class="legend-icon legend-icon-shelter">&#127968;</span> Shelter</div>
-            <div class="legend-row"><span class="legend-icon legend-icon-facility"></span> Facility</div>
+          <!-- G1: "Map legend" group label is English-only pending native-speaker (Nancy) VI review. -->
+          <div class="map-legend" role="group" aria-label="Map legend">
+            <div class="legend-row"><span class="legend-icon legend-icon-evac" aria-hidden="true"></span> <span data-i18n="legend.evac">Evac zone</span></div>
+            <div class="legend-row"><span class="legend-icon legend-icon-shelter" aria-hidden="true">&#127968;</span> <span data-i18n="legend.shelter">Shelter</span></div>
+            <!-- G1: "Facility" has no verified VI string; do NOT machine-translate. Flagged for native-speaker (Nancy) review before adding legend.facility. -->
+            <div class="legend-row"><span class="legend-icon legend-icon-facility" aria-hidden="true"></span> Facility</div>
           </div>
           <div class="static-map-actions">
             <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check Address (Official Tool)</a>
@@ -2904,7 +2908,7 @@ function _ggSwapMapStyle(dark) {
          Math.min.apply(null, coords.map(function(c){return c[1]})) - 0.08],
         [Math.max.apply(null, coords.map(function(c){return c[0]})) + 0.08,
          Math.max.apply(null, coords.map(function(c){return c[1]})) + 0.08]
-      ], { padding: 20, maxZoom: 11 });
+      ], { padding: { top: 40, bottom: 80, left: 20, right: 20 }, maxZoom: 11 });
 
       _ggEvacCoords = coords;
       _ggMap = map;
