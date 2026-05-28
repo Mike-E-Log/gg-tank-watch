@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T23:55:00Z",
+  "generated_at": "2026-05-28T01:10:21Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -759,6 +759,17 @@
       "source_url": "https://www.ggusd.us/news/evacuation-orders-lifted-all-schools-reopen-tomorrowevacuation-orders-lifted-all-schools-reopen-tomorrow",
       "source_name": "GGUSD",
       "category": "school_closure"
+    },
+    {
+      "id": "evt-20260528-004",
+      "timestamp_utc": "2026-05-28T14:00:00Z",
+      "timestamp_local": "2026-05-28T07:00:00-07:00",
+      "day": 8,
+      "title": "Evacuation shelters formally close; SBDC business recovery webinar announced",
+      "description": "Orange County officials announce formal closure of four evacuation shelters opened during the 7-day crisis, including Golden West College (Huntington Beach), Los Amigos High School (Fountain Valley), and Los Alamitos High School. Ongoing support services and recovery resources remain available. The Small Business Development Center (SBDC) announces a free webinar for businesses impacted by the chemical incident, covering available federal, state, county, and local resources, business support services, and guidance. Western Ave remains closed between Chapman Ave and Garden Grove Blvd with a 300-ft exclusion zone as hazmat crews continue treating solidified MMA around the GKN tanks.",
+      "source_url": "https://ktla.com/news/orange-county/where-orange-county-evacuees-can-find-assistance-amid-garden-grove-chemical-leak-incident/",
+      "source_name": "KTLA",
+      "category": "community_impact"
     }
   ]
 }
