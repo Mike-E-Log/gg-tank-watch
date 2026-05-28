@@ -793,6 +793,17 @@
       "category": "official_statement"
     },
     {
+      "id": "evt-20260528-008",
+      "timestamp_utc": "2026-05-28T19:00:00Z",
+      "timestamp_local": "2026-05-28T12:00:00-07:00",
+      "day": 8,
+      "title": "37+ lawsuits filed against GKN Aerospace in OC and federal courts",
+      "description": "As of Day 8, 29 claims against GKN Aerospace have been filed in Orange County Superior Court and approximately 8 in federal court — beyond the initial class-action filed May 23 — as residents and attorneys continue to seek damages for the 7-day displacement of up to 50,000 people. Separately, a coalition of community and advocacy groups is calling for permanent closure of the GKN Garden Grove facility. The Orange County DA criminal investigation remains open.",
+      "source_url": "https://mynewsla.com/orange-county/2026/05/28/legal-troubles-mount-for-garden-grove-aerospace-facility/",
+      "source_name": "MyNewsLA",
+      "category": "government_action"
+    },
+    {
       "id": "evt-20260528-007",
       "timestamp_utc": "2026-05-28T22:00:00Z",
       "timestamp_local": "2026-05-28T15:00:00-07:00",
@@ -804,5 +815,5 @@
       "category": "evacuation"
     }
   ],
-  "generated_at": "2026-05-28T13:08:12Z"
+  "generated_at": "2026-05-28T19:10:04Z"
 }

@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-28T16:13:45Z",
-  "data_as_of_iso": "2026-05-28T16:13:45Z",
-  "next_check_at_iso": "2026-05-28T16:43:45Z",
-  "stale_after_iso": "2026-05-28T16:53:45Z",
+  "last_updated_iso": "2026-05-28T19:10:04Z",
+  "data_as_of_iso": "2026-05-28T19:10:04Z",
+  "next_check_at_iso": "2026-05-28T19:40:04Z",
+  "stale_after_iso": "2026-05-28T19:50:04Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Incident resolved. All evacuation orders lifted May 27 at 7:30 PM PDT. All roads fully reopened. MMA solidifying inside tank; 300-ft exclusion zone remains for hazmat monitoring. DA criminal investigation and multiple class-action lawsuits ongoing.",
+    "status_headline": "Incident resolved. All evacuation orders lifted May 27 at 7:30 PM PDT. All roads fully reopened. MMA solidifying inside tank; 300-ft exclusion zone remains. 37+ lawsuits filed in OC and federal courts; DA criminal investigation ongoing.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
@@ -52,42 +52,37 @@
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove tank crisis updates: Orange County evacuees return home",
-      "fetched_iso": "2026-05-28T23:30:00Z"
+      "fetched_iso": "2026-05-28T19:08:00Z"
+    },
+    {
+      "url": "https://mynewsla.com/orange-county/2026/05/28/legal-troubles-mount-for-garden-grove-aerospace-facility/",
+      "title": "Garden Grove Aerospace Facility Accrues Legal Troubles After Chemical Leak",
+      "fetched_iso": "2026-05-28T19:08:00Z"
+    },
+    {
+      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
+      "title": "Garden Grove residents call for GKN Aerospace shutdown after chemical scare",
+      "fetched_iso": "2026-05-28T19:08:00Z"
     },
     {
       "url": "https://www.cbsnews.com/losangeles/news/california-chemical-incident-orange-county-evacuation-orders-removed/",
       "title": "GKN Aerospace shares statement after Orange County chemical leak in California",
-      "fetched_iso": "2026-05-28T23:30:00Z"
-    },
-    {
-      "url": "https://ktla.com/news/orange-county/all-evacuations-lifted-residents-chemical-tank-garden-grove/",
-      "title": "All evacuation orders lifted for residents near chemical tank in Garden Grove",
-      "fetched_iso": "2026-05-28T23:30:00Z"
-    },
-    {
-      "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
-      "title": "Evacuations End in Garden Grove Chemical Tank Emergency",
-      "fetched_iso": "2026-05-28T23:30:00Z"
-    },
-    {
-      "url": "https://www.nbclosangeles.com/news/local/toxic-chemical-tank-garden-grove-orange-county/3894971/",
-      "title": "Recap: Some evacuations lifted in Garden Grove",
-      "fetched_iso": "2026-05-28T23:30:00Z"
-    },
-    {
-      "url": "https://ggcity.org/emergency",
-      "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-28T23:30:00Z"
+      "fetched_iso": "2026-05-28T19:08:00Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
       "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-05-28T23:30:00Z"
+      "fetched_iso": "2026-05-28T19:08:00Z"
     },
     {
-      "url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel32.asp",
-      "title": "Helping Garden Grove Schools After Chemical Leak - Year 2026 (CA Dept of Education)",
-      "fetched_iso": "2026-05-28T23:30:00Z"
+      "url": "https://ggcity.org/emergency",
+      "title": "Hazardous Materials Incident | City of Garden Grove",
+      "fetched_iso": "2026-05-28T19:08:00Z"
+    },
+    {
+      "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
+      "title": "Evacuations End in Garden Grove Chemical Tank Emergency",
+      "fetched_iso": "2026-05-28T19:08:00Z"
     }
   ],
   "schools_closed": [
@@ -192,10 +187,10 @@
     }
   ],
   "air_quality": null,
-  "breaking": true,
-  "breaking_reason": "3 new official statement(s)",
-  "breaking_since_iso": "2026-05-28T16:13:45Z",
-  "breaking_level": "info",
+  "breaking": false,
+  "breaking_reason": null,
+  "breaking_since_iso": null,
+  "breaking_level": null,
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
