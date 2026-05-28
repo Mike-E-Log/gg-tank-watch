@@ -166,7 +166,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 8px;
+      padding: 3px 6px;
       border-radius: 4px;
       background: var(--sa-gold-2);
       border: 1px solid var(--sa-gold);
@@ -178,13 +178,6 @@
       white-space: nowrap;
       cursor: help;
       flex: 0 0 auto;
-    }
-    .unofficial-pill-dot {
-      display: inline-block;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--sa-gold);
     }
     .topbar-wordmark {
       font-weight: 800;
@@ -328,8 +321,8 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 4px;
-      padding: 10px 14px;
+      gap: 3px;
+      padding: 8px 14px;
       font-size: 11.5px;
       line-height: 1.35;
       background: var(--sa-surface-2);
@@ -452,11 +445,11 @@
     }
 
     /* ===== HERO STATUS BOARD ===== */
-    .hero-status { padding: 12px 16px; border-bottom: 1px solid var(--sa-border); }
+    .hero-status { padding: 8px 16px; border-bottom: 1px solid var(--sa-border); }
     .hero-status-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
     .hero-status-item { display: flex; flex-direction: column; gap: 2px; min-width: 80px; }
     .hero-status-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--sa-text-3); font-family: "IBM Plex Mono", monospace; }
-    .hero-status-value { font-size: 18px; font-weight: 700; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; color: var(--sa-text); }
+    .hero-status-value { font-size: 16px; font-weight: 700; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; color: var(--sa-text); }
 
     .wind-arrow-sm {
       display: inline-block;
@@ -1488,7 +1481,7 @@
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
     <header class="topbar">
-      <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source"><span class="unofficial-pill-dot"></span>UNOFFICIAL</span>
+      <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
       <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
       <span class="topbar-spacer"></span>
       <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
@@ -2667,7 +2660,7 @@ function render(snap) {
   var updEl = $("updated-text");
   var freshLabel = $("freshness-label");
   var _d = snap.last_updated_iso ? new Date(snap.last_updated_iso) : null;
-  var clock = _d ? _d.toLocaleDateString("en-US", {month:"numeric", day:"numeric", year:"numeric"}) + ", " + _d.toLocaleTimeString("en-US", TIME_OPTS) : "—";
+  var clock = _d ? _d.toLocaleDateString("en-US", {month:"numeric", day:"numeric"}) + ", " + _d.toLocaleTimeString("en-US", TIME_OPTS) : "—";
   if (freshLabel) freshLabel.textContent = t("updated.freshness", { t: clock });
   if (updEl) updEl.title = t("updated.title", { t: clock });
 
@@ -2691,6 +2684,11 @@ function render(snap) {
     }
   } else { stopBreakingTitle(); }
   setBanners(banners);
+  // A new banner shrinks the fixed-height .app column's flex:1 .tab-content,
+  // shrinking the map container. MapLibre only re-syncs its GL canvas on an
+  // explicit resize(); without this the canvas keeps stale dims and the map
+  // blanks on refresh. Defer one tick so the post-banner layout settles first.
+  if (_ggMap) { setTimeout(function() { _ggMap.resize(); }, 0); }
 
   var you = snap.you || {};
   var zone = you.zone_status || "unknown";
