@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-28T19:10:04Z",
-  "data_as_of_iso": "2026-05-28T19:10:04Z",
-  "next_check_at_iso": "2026-05-28T19:40:04Z",
-  "stale_after_iso": "2026-05-28T19:50:04Z",
+  "last_updated_iso": "2026-05-28T22:09:13Z",
+  "data_as_of_iso": "2026-05-28T22:09:13Z",
+  "next_check_at_iso": "2026-05-28T22:39:13Z",
+  "stale_after_iso": "2026-05-28T22:49:13Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Incident resolved. All evacuation orders lifted May 27 at 7:30 PM PDT. All roads fully reopened. MMA solidifying inside tank; 300-ft exclusion zone remains. 37+ lawsuits filed in OC and federal courts; DA criminal investigation ongoing.",
+    "status_headline": "Incident resolved. All evacuation orders lifted May 27 at 7:30 PM PDT. All roads fully reopened. MMA solidifying inside tank; 300-ft exclusion zone remains for hazmat crews. DA criminal investigation and 37+ lawsuits ongoing.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
@@ -52,37 +52,37 @@
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove tank crisis updates: Orange County evacuees return home",
-      "fetched_iso": "2026-05-28T19:08:00Z"
+      "fetched_iso": "2026-05-28T22:35:00Z"
     },
     {
-      "url": "https://mynewsla.com/orange-county/2026/05/28/legal-troubles-mount-for-garden-grove-aerospace-facility/",
-      "title": "Garden Grove Aerospace Facility Accrues Legal Troubles After Chemical Leak",
-      "fetched_iso": "2026-05-28T19:08:00Z"
-    },
-    {
-      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
-      "title": "Garden Grove residents call for GKN Aerospace shutdown after chemical scare",
-      "fetched_iso": "2026-05-28T19:08:00Z"
-    },
-    {
-      "url": "https://www.cbsnews.com/losangeles/news/california-chemical-incident-orange-county-evacuation-orders-removed/",
-      "title": "GKN Aerospace shares statement after Orange County chemical leak in California",
-      "fetched_iso": "2026-05-28T19:08:00Z"
-    },
-    {
-      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
-      "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-05-28T19:08:00Z"
+      "url": "https://ktla.com/news/orange-county/all-evacuations-lifted-residents-chemical-tank-garden-grove/",
+      "title": "All evacuation orders lifted for residents near chemical tank in Garden Grove",
+      "fetched_iso": "2026-05-28T22:35:00Z"
     },
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-28T19:08:00Z"
+      "fetched_iso": "2026-05-28T22:35:00Z"
+    },
+    {
+      "url": "https://www.cbsnews.com/losangeles/news/california-chemical-incident-orange-county-evacuation-orders-removed/",
+      "title": "GKN Aerospace shares statement after Orange County chemical leak",
+      "fetched_iso": "2026-05-28T22:35:00Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
       "title": "Evacuations End in Garden Grove Chemical Tank Emergency",
-      "fetched_iso": "2026-05-28T19:08:00Z"
+      "fetched_iso": "2026-05-28T22:35:00Z"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
+      "title": "Garden Grove chemical leak - Wikipedia",
+      "fetched_iso": "2026-05-28T22:35:00Z"
+    },
+    {
+      "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
+      "title": "Chemical tank update: Evacuation orders lifted - OCDE Newsroom",
+      "fetched_iso": "2026-05-28T22:35:00Z"
     }
   ],
   "schools_closed": [
@@ -155,8 +155,7 @@
       "url": "https://www.youtube.com/watch?v=N8caNzoKrTo",
       "youtube_id": "N8caNzoKrTo",
       "published_iso": "2026-05-24T17:00:00Z",
-      "thumbnail_url": "https://img.youtube.com/vi/N8caNzoKrTo/hqdefault.jpg",
-      "is_video": true
+      "thumbnail_url": "https://img.youtube.com/vi/N8caNzoKrTo/hqdefault.jpg"
     },
     {
       "outlet": "ABC News (national)",
@@ -164,8 +163,7 @@
       "url": "https://www.youtube.com/watch?v=oGNppVWDiug",
       "youtube_id": "oGNppVWDiug",
       "published_iso": "2026-05-23T20:00:00Z",
-      "thumbnail_url": "https://img.youtube.com/vi/oGNppVWDiug/hqdefault.jpg",
-      "is_video": true
+      "thumbnail_url": "https://img.youtube.com/vi/oGNppVWDiug/hqdefault.jpg"
     },
     {
       "outlet": "ABC News (national)",
@@ -173,8 +171,7 @@
       "url": "https://www.youtube.com/watch?v=JDvRR9feMUs",
       "youtube_id": "JDvRR9feMUs",
       "published_iso": "2026-05-24T21:00:00Z",
-      "thumbnail_url": "https://img.youtube.com/vi/JDvRR9feMUs/hqdefault.jpg",
-      "is_video": true
+      "thumbnail_url": "https://img.youtube.com/vi/JDvRR9feMUs/hqdefault.jpg"
     },
     {
       "outlet": "News18 (N18G)",
@@ -182,15 +179,14 @@
       "url": "https://www.youtube.com/watch?v=erJI75y4N5s",
       "youtube_id": "erJI75y4N5s",
       "published_iso": "2026-05-23T12:00:00Z",
-      "thumbnail_url": "https://img.youtube.com/vi/erJI75y4N5s/hqdefault.jpg",
-      "is_video": true
+      "thumbnail_url": "https://img.youtube.com/vi/erJI75y4N5s/hqdefault.jpg"
     }
   ],
   "air_quality": null,
-  "breaking": false,
-  "breaking_reason": null,
-  "breaking_since_iso": null,
-  "breaking_level": null,
+  "breaking": true,
+  "breaking_reason": "INCIDENT RESOLVED \u2014 evacuation lifted",
+  "breaking_since_iso": "2026-05-28T22:09:13Z",
+  "breaking_level": "urgent",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
