@@ -2606,7 +2606,8 @@ function render(snap) {
   }
   var updEl = $("updated-text");
   var freshLabel = $("freshness-label");
-  var clock = fmtAbsTime(snap.last_updated_iso);
+  var _d = snap.last_updated_iso ? new Date(snap.last_updated_iso) : null;
+  var clock = _d ? _d.toLocaleDateString("en-US", {month:"numeric", day:"numeric", year:"numeric"}) + ", " + _d.toLocaleTimeString("en-US", TIME_OPTS) : "—";
   if (freshLabel) freshLabel.textContent = t("updated.freshness", { t: clock });
   if (updEl) updEl.title = t("updated.title", { t: clock });
 
