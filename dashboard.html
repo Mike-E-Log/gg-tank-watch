@@ -1536,7 +1536,7 @@
             <div class="legend-row"><span class="legend-icon legend-icon-facility"></span> Facility</div>
           </div>
           <div class="static-map-actions">
-            <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check Address</a>
+            <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check Address (Official Tool)</a>
           </div>
           <div class="static-map-attribution">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></div>
         </div>
@@ -1634,7 +1634,7 @@ var STRINGS = {
   "hero.whatchanged": { en: "What changed", vi: "Diễn biến" },
   "legend.evac": { en: "Evac zone", vi: "Khu sơ tán" },
   "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn" },
-  "map.check_zone": { en: "Check Address", vi: "Kiểm Tra Địa Chỉ" },
+  "map.check_zone": { en: "Check Address (Official Tool)", vi: "Kiểm Tra Địa Chỉ (Công Cụ Chính Thức)" },
   "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán" },
   "map.tooltip.you": { en: "You", vi: "Bạn" },
   "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức" },
@@ -1869,7 +1869,6 @@ document.addEventListener("keydown", function(e) { if (e.key === "Escape") close
 var lastSnap = null;
 var lastZoneStatus = null;
 var titleToggle = null;
-var audioCtx = null;
 var lastFetchOK = true;
 var configCache = null;
 var lastWind = null;
@@ -1983,14 +1982,12 @@ function setBanners(banners) {
       var bannerClass = isUrgent ? "banner-urgent" : "banner-update";
       var pillClass = isUrgent ? "banner-pill-urgent" : "banner-pill-update";
       var pillLabel = isUrgent ? t("banner.urgent.title").replace(/[^\w\s]/g, "").trim() : t("banner.update.title").replace(/[^\w\s]/g, "").trim();
-      var dismissAction = isUrgent
-        ? ''
-        : ' onclick="event.stopPropagation(); ackUpdate(\'' + (b.sig || '') + '\'); this.closest(\'.banner\').remove()"';
+      var dismissAction = ' onclick="event.stopPropagation(); ackUpdate(\'' + (b.sig || '') + '\'); this.closest(\'.banner\').remove()"';
       var bannerOnclick = 'onclick="' + tabTarget + '"';
       return '<div class="banner ' + bannerClass + '" ' + bannerOnclick + ' style="display:flex;align-items:center;gap:10px;padding:8px 22px;font-size:12.5px;animation:sa-fade-in .25s ease-out">' +
         '<span class="banner-pill ' + pillClass + '">' + pillLabel + '</span>' +
         '<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (b.message || '') + '</span>' +
-        (isUrgent ? '' : '<button class="banner-dismiss" aria-label="Dismiss"' + dismissAction + '>&times;</button>') +
+        '<button class="banner-dismiss" aria-label="Dismiss"' + dismissAction + '>&times;</button>' +
       '</div>';
     }
     return '<div class="banner banner-' + b.kind + '">' +
@@ -2009,22 +2006,7 @@ function stopBreakingTitle() {
   if (titleToggle) { clearInterval(titleToggle); titleToggle = null; }
   document.title = NORMAL_TITLE;
 }
-function beep() {
-  try {
-    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    for (var i = 0; i < 3; i++) {
-      (function(idx) {
-        setTimeout(function() {
-          var osc = audioCtx.createOscillator();
-          var gain = audioCtx.createGain();
-          osc.frequency.value = 880; osc.type = "square"; gain.gain.value = 0.15;
-          osc.connect(gain).connect(audioCtx.destination);
-          osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-        }, idx * 350);
-      })(i);
-    }
-  } catch (e) {}
-}
+
 
 /* ============ MAP (static image — no tile server dependency) ============ */
 
@@ -2670,12 +2652,6 @@ function render(snap) {
   var zone = you.zone_status || "unknown";
   var resolved = !!(snap.incident && snap.incident.resolved_iso);
 
-  if (snap.breaking && (snap.breaking_level || "urgent") === "urgent" && lastZoneStatus !== null) {
-    if (window.__lastUrgentReason !== snap.breaking_reason) {
-      beep();
-      window.__lastUrgentReason = snap.breaking_reason;
-    }
-  }
   if (!snap.breaking || (snap.breaking_level || "urgent") !== "urgent") {
     window.__lastUrgentReason = null;
   }
