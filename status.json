@@ -1,20 +1,20 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-28T13:08:12Z",
-  "data_as_of_iso": "2026-05-28T13:08:12Z",
-  "next_check_at_iso": "2026-05-28T13:38:12Z",
-  "stale_after_iso": "2026-05-28T13:48:12Z",
+  "last_updated_iso": "2026-05-28T16:13:45Z",
+  "data_as_of_iso": "2026-05-28T16:13:45Z",
+  "next_check_at_iso": "2026-05-28T16:43:45Z",
+  "stale_after_iso": "2026-05-28T16:53:45Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Incident fully resolved. All evacuation orders lifted May 27 at 7:30 PM PDT. All roads \u2014 including Western Ave \u2014 fully reopened May 28. Only a 300-ft exclusion zone remains around the GKN tank as hazmat crews treat solidified MMA. GGUSD 12 campuses reopened today for the final day of the school year. DA criminal investigation and class-action lawsuits ongoing.",
+    "status_headline": "Incident resolved. All evacuation orders lifted May 27 at 7:30 PM PDT. All roads fully reopened. MMA solidifying inside tank; 300-ft exclusion zone remains for hazmat monitoring. DA criminal investigation and multiple class-action lawsuits ongoing.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
   "tank": {
-    "temp_f": 90,
+    "temp_f": null,
     "crack_observed": true
   },
   "evacuation": {
@@ -30,76 +30,64 @@
   },
   "official_statements": [
     {
-      "agency": "OCFA Unified Command",
+      "agency": "OCFA / Unified Command",
       "time_iso": "2026-05-28T02:30:00Z",
-      "text": "All evacuation orders related to the Garden Grove hazardous materials incident have been lifted. No active chemical leak. No threat of explosion. No threat of fire. No risk to the public.",
+      "text": "No chemical leak, no threat of explosion, no threat of fire, and no risk to the public from the damaged GKN Aerospace tank. All evacuation orders are lifted.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     },
     {
-      "agency": "EPA on-scene coordinator Chris Myers",
-      "time_iso": "2026-05-28T02:00:00Z",
+      "agency": "EPA (on-scene coordinator Chris Myers)",
+      "time_iso": "2026-05-28T02:30:00Z",
       "text": "No exceedances have been detected at any time throughout this event. There was no contamination. There were no fumes. There were no vapors that came from this incident.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     },
     {
-      "agency": "Garden Grove Mayor Stephanie Klopfenstein",
-      "time_iso": "2026-05-28T01:00:00Z",
-      "text": "Our community deserves to know what happened, why it happened and whether laws or regulations were violated, and what steps we must take to prevent something like this from ever happening again.",
-      "source_url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/"
-    },
-    {
-      "agency": "GKN Aerospace SVP Steve Carlin",
+      "agency": "GKN Aerospace (SVP Steve Carlin)",
       "time_iso": "2026-05-28T18:00:00Z",
-      "text": "On behalf of the team at GKN Aerospace, I want to say how sorry we are for the uncertainty and disruption this situation has caused. The past several days have been difficult for residents, businesses, and the broader Garden Grove, Stanton, and surrounding Orange County communities. We are relieved that the incident has been resolved and residents have been able to return home.",
+      "text": "On behalf of the team at GKN Aerospace, I want to say how sorry we are for the uncertainty and disruption this situation has caused. We are relieved that the incident has been resolved and residents have been able to return home.",
       "source_url": "https://www.cbsnews.com/losangeles/news/california-chemical-incident-orange-county-evacuation-orders-removed/"
-    },
-    {
-      "agency": "OCFA (roads reopening)",
-      "time_iso": "2026-05-28T22:00:00Z",
-      "text": "All roads that were closed around GKN Aerospace as a result of the hazardous materials incident have reopened. A 300-foot exclusion zone around the tank remains in place as hazmat crews continue treating solidified MMA.",
-      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     }
   ],
   "sources_checked": [
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove tank crisis updates: Orange County evacuees return home, but say concerns linger over chemical tank",
-      "fetched_iso": "2026-05-28T17:00:00Z"
+      "title": "Garden Grove tank crisis updates: Orange County evacuees return home",
+      "fetched_iso": "2026-05-28T23:30:00Z"
     },
     {
       "url": "https://www.cbsnews.com/losangeles/news/california-chemical-incident-orange-county-evacuation-orders-removed/",
       "title": "GKN Aerospace shares statement after Orange County chemical leak in California",
-      "fetched_iso": "2026-05-28T17:00:00Z"
+      "fetched_iso": "2026-05-28T23:30:00Z"
     },
     {
       "url": "https://ktla.com/news/orange-county/all-evacuations-lifted-residents-chemical-tank-garden-grove/",
       "title": "All evacuation orders lifted for residents near chemical tank in Garden Grove",
-      "fetched_iso": "2026-05-28T17:00:00Z"
-    },
-    {
-      "url": "https://ggcity.org/emergency",
-      "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-28T17:00:00Z"
+      "fetched_iso": "2026-05-28T23:30:00Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
       "title": "Evacuations End in Garden Grove Chemical Tank Emergency",
-      "fetched_iso": "2026-05-28T17:00:00Z"
+      "fetched_iso": "2026-05-28T23:30:00Z"
     },
     {
       "url": "https://www.nbclosangeles.com/news/local/toxic-chemical-tank-garden-grove-orange-county/3894971/",
       "title": "Recap: Some evacuations lifted in Garden Grove",
-      "fetched_iso": "2026-05-28T17:00:00Z"
+      "fetched_iso": "2026-05-28T23:30:00Z"
     },
     {
-      "url": "https://www.foxla.com/news/garden-grove-aerospace-chemical-evacuation-orders-lifted",
-      "title": "All evacuation orders lifted after Garden Grove chemical plant explosion threat defused",
-      "fetched_iso": "2026-05-28T17:00:00Z"
+      "url": "https://ggcity.org/emergency",
+      "title": "Hazardous Materials Incident | City of Garden Grove",
+      "fetched_iso": "2026-05-28T23:30:00Z"
     },
     {
-      "url": "https://www.ggusd.us/news/evacuation-orders-lifted-all-schools-reopen-tomorrowevacuation-orders-lifted-all-schools-reopen-tomorrow",
-      "title": "Evacuation Orders Lifted - All Schools Reopen Tomorrow",
-      "fetched_iso": "2026-05-28T17:00:00Z"
+      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
+      "title": "Garden Grove chemical leak - Wikipedia",
+      "fetched_iso": "2026-05-28T23:30:00Z"
+    },
+    {
+      "url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel32.asp",
+      "title": "Helping Garden Grove Schools After Chemical Leak - Year 2026 (CA Dept of Education)",
+      "fetched_iso": "2026-05-28T23:30:00Z"
     }
   ],
   "schools_closed": [
@@ -205,17 +193,15 @@
   ],
   "air_quality": null,
   "breaking": true,
-  "breaking_reason": "1 new official statement(s)",
-  "breaking_since_iso": "2026-05-28T13:08:12Z",
+  "breaking_reason": "3 new official statement(s)",
+  "breaking_since_iso": "2026-05-28T16:13:45Z",
   "breaking_level": "info",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
-      "c94a8e58160d8324",
-      "0a8f9512307c50dc",
-      "577ad6d4f8ed49b7",
-      "bdf809e4da4a1d98",
-      "84b78bd35272f0fb"
+      "bca255af272a6ea0",
+      "d909c964479ae0b1",
+      "640e873a15c535e7"
     ],
     "last_residents_shift_iso": null
   }
