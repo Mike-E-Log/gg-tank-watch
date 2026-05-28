@@ -1122,6 +1122,37 @@
       background-image: none;
     }
 
+    /* ===== NEWS SUB-TABS (Updates | Timeline) ===== */
+    .news-subtabs {
+      display: flex;
+      gap: 4px;
+      padding: 8px 12px 0;
+      border-bottom: 1px solid var(--sa-border);
+      background: var(--sa-surface);
+    }
+    .news-subtab {
+      flex: 1;
+      padding: 10px 12px;
+      border: none;
+      background: transparent;
+      color: var(--sa-text-2);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      min-height: 44px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .news-subtab:hover { color: var(--sa-text); }
+    .news-subtab.active {
+      color: var(--sa-celadon);
+      border-bottom-color: var(--sa-celadon);
+    }
+    .news-subpanel { display: none; }
+    .news-subpanel.active { display: block; }
+
     /* ===== NEWS FILTER CHIPS ===== */
     .news-filter-chips {
       display: flex;
@@ -1531,15 +1562,23 @@
       </div>
 
       <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
-        <div id="news-situation" class="news-situation" hidden></div>
-        <div class="news-filter-chips" id="news-filter-chips"></div>
-        <div id="news-feed"></div>
-        <div class="timeline-header">
-          <span class="timeline-title" data-i18n="timeline.title">Incident timeline</span>
-          <span class="timeline-count sa-mono" id="timeline-count"></span>
+        <div class="news-subtabs" role="tablist" aria-label="News sections">
+          <button type="button" class="news-subtab active" role="tab" id="news-subtab-updates" aria-selected="true" aria-controls="news-subpanel-updates" data-i18n="news.subtab.updates" onclick="switchNewsSubtab('updates')">Updates</button>
+          <button type="button" class="news-subtab" role="tab" id="news-subtab-timeline" aria-selected="false" aria-controls="news-subpanel-timeline" data-i18n="news.subtab.timeline" onclick="switchNewsSubtab('timeline')">Timeline</button>
         </div>
-        <div class="filter-chips" id="filter-chips"></div>
-        <div id="timeline-feed"></div>
+        <div class="news-subpanel active" id="news-subpanel-updates" role="tabpanel" aria-labelledby="news-subtab-updates">
+          <div id="news-situation" class="news-situation" hidden></div>
+          <div class="news-filter-chips" id="news-filter-chips"></div>
+          <div id="news-feed"></div>
+        </div>
+        <div class="news-subpanel" id="news-subpanel-timeline" role="tabpanel" aria-labelledby="news-subtab-timeline">
+          <div class="timeline-header">
+            <span class="timeline-title" data-i18n="timeline.title">Incident timeline</span>
+            <span class="timeline-count sa-mono" id="timeline-count"></span>
+          </div>
+          <div class="filter-chips" id="filter-chips"></div>
+          <div id="timeline-feed"></div>
+        </div>
       </div>
 
 
@@ -1594,6 +1633,8 @@ var WIND_MAX_MS = 480000;
 var STRINGS = {
   "tab.map": { en: "Map", vi: "Bản đồ" },
   "tab.news": { en: "News", vi: "Tin tức" },
+  "news.subtab.updates": { en: "Updates", vi: "Cập nhật" },
+  "news.subtab.timeline": { en: "Timeline", vi: "Dòng thời gian" },
   "tab.info": { en: "Info", vi: "Thông tin" },
   "theme.dark": { en: "Dark", vi: "Tối" },
   "theme.light": { en: "Light", vi: "Sáng" },
@@ -2050,6 +2091,21 @@ function pointInPolygon(pt, polygon) {
 }
 var activeNewsFilter = "all";
 var lastFeed = [];
+
+/* ============ NEWS SUB-TABS ============ */
+function switchNewsSubtab(name) {
+  var tabs = document.querySelectorAll(".news-subtab");
+  var panels = document.querySelectorAll(".news-subpanel");
+  for (var i = 0; i < tabs.length; i++) {
+    var isActive = tabs[i].id === "news-subtab-" + name;
+    tabs[i].classList.toggle("active", isActive);
+    tabs[i].setAttribute("aria-selected", isActive ? "true" : "false");
+  }
+  for (var j = 0; j < panels.length; j++) {
+    panels[j].classList.toggle("active", panels[j].id === "news-subpanel-" + name);
+  }
+}
+window.switchNewsSubtab = switchNewsSubtab;
 
 /* ============ NEWS FILTER ============ */
 function setNewsFilter(filter) {
