@@ -179,17 +179,9 @@
       cursor: help;
       flex: 0 0 auto;
     }
-    .unofficial-pill-dot {
-      display: none; /* mobile: hidden to save topbar width */
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--sa-gold);
-    }
     @media (min-width: 768px) {
-      /* desktop restores the original pill (dot + roomier padding) */
+      /* desktop restores the original roomier pill padding (compaction is mobile-only) */
       .unofficial-pill { padding: 4px 8px; }
-      .unofficial-pill-dot { display: inline-block; }
     }
     .topbar-wordmark {
       font-weight: 800;
@@ -1498,7 +1490,7 @@
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
     <header class="topbar">
-      <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source"><span class="unofficial-pill-dot"></span>UNOFFICIAL</span>
+      <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
       <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
       <span class="topbar-spacer"></span>
       <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
