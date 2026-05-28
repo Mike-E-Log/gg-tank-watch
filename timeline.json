@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-28T01:10:21Z",
+  "generated_at": "2026-05-28T07:11:39Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -770,6 +770,17 @@
       "source_url": "https://ktla.com/news/orange-county/where-orange-county-evacuees-can-find-assistance-amid-garden-grove-chemical-leak-incident/",
       "source_name": "KTLA",
       "category": "community_impact"
+    },
+    {
+      "id": "evt-20260528-005",
+      "timestamp_utc": "2026-05-28T17:00:00Z",
+      "timestamp_local": "2026-05-28T10:00:00-07:00",
+      "day": 8,
+      "title": "Former GKN employee raises prior safety concerns; urges use of right-to-know laws",
+      "description": "Valerie Morales, a former environmental health and safety manager who spent 18 years in the field including time at GKN Aerospace's Santa Ana facility, speaks to Fox 11 Los Angeles about the crisis. Morales calls the incident a wake-up call and urges California residents to use existing \"right-to-know\" laws to research hazardous materials stored in facilities near their homes. Her comments come as the Orange County DA's criminal investigation continues and multiple class-action lawsuits are filed against GKN Aerospace.",
+      "source_url": "https://www.foxla.com/news/former-gkn-employee-speaks-out-garden-grove-chemical-theft",
+      "source_name": "FOX 11 Los Angeles",
+      "category": "media_coverage"
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-28T04:12:12Z",
-  "data_as_of_iso": "2026-05-28T04:12:12Z",
-  "next_check_at_iso": "2026-05-28T04:42:12Z",
-  "stale_after_iso": "2026-05-28T04:52:12Z",
+  "last_updated_iso": "2026-05-28T07:11:39Z",
+  "data_as_of_iso": "2026-05-28T07:11:39Z",
+  "next_check_at_iso": "2026-05-28T07:41:39Z",
+  "stale_after_iso": "2026-05-28T07:51:39Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Incident fully resolved \u2014 all evacuation orders lifted May 27 at 7:30 PM PDT. No chemical leak, explosion risk, or fire threat. Tank temperature stabilizing at 90\u00b0F; water cooling deactivated. Hazmat crews treating solidified MMA in 300-ft exclusion zone on Western Ave. GGUSD schools reopened today (final day of school year). Evacuation shelters closed. DA criminal investigation, class-action lawsuits, and Rep. Tran town hall demanding state/federal accountability all ongoing.",
+    "status_headline": "Incident fully resolved \u2014 all evacuation orders lifted May 27 at 7:30 PM PDT. No chemical leak, explosion risk, or fire threat. Former GKN employee raises prior safety concerns as DA criminal investigation, class-action lawsuits, and accountability demands continue. Hazmat crews treating solidified MMA in 300-ft exclusion zone on Western Ave. GGUSD schools open for final day of school year.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
@@ -57,53 +57,43 @@
   "sources_checked": [
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove tank crisis updates: Evacuation orders lifted for final 16K residents - ABC7 LA",
-      "fetched_iso": "2026-05-28T15:00:00Z"
-    },
-    {
-      "url": "http://ggcity.org/emergency",
-      "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-28T15:00:00Z"
-    },
-    {
-      "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
-      "title": "Evacuations End in Garden Grove Chemical Tank Emergency - Voice of OC",
-      "fetched_iso": "2026-05-28T15:00:00Z"
-    },
-    {
-      "url": "https://asamnews.com/2026/05/27/derek-tran-town-hall-garden-grove-chemical-leak-investigation/",
-      "title": "Rep. Derek Tran calls for investigation into chemical leak - AsAmNews",
-      "fetched_iso": "2026-05-28T15:00:00Z"
+      "title": "Garden Grove tank crisis updates: Orange County evacuees return home, but say concerns linger over chemical tank",
+      "fetched_iso": "2026-05-28T19:30:00Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
       "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-05-28T15:00:00Z"
+      "fetched_iso": "2026-05-28T19:30:00Z"
     },
     {
-      "url": "https://ktla.com/news/orange-county/all-evacuations-lifted-residents-chemical-tank-garden-grove/",
-      "title": "All evacuation orders lifted for residents near chemical tank - KTLA",
-      "fetched_iso": "2026-05-28T15:00:00Z"
+      "url": "http://ggcity.org/emergency",
+      "title": "Hazardous Materials Incident | City of Garden Grove",
+      "fetched_iso": "2026-05-28T19:30:00Z"
     },
     {
-      "url": "https://www.foxnews.com/us/50000-evacuees-cleared-return-home-chemical-tank-crisis-southern-california-aerospace-plant",
-      "title": "All evacuation orders lifted after Garden Grove chemical tank emergency - Fox News",
-      "fetched_iso": "2026-05-28T15:00:00Z"
+      "url": "https://www.foxla.com/news/former-gkn-employee-speaks-out-garden-grove-chemical-theft",
+      "title": "Former GKN employee speaks out on Garden Grove chemical threat",
+      "fetched_iso": "2026-05-28T19:30:00Z"
     },
     {
-      "url": "https://tran.house.gov/media/press-releases/representative-derek-tran-garden-grove-hazardous-materials-incident",
-      "title": "Representative Derek Tran on Garden Grove Hazardous Materials Incident",
-      "fetched_iso": "2026-05-28T15:00:00Z"
+      "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
+      "title": "Evacuations End in Garden Grove Chemical Tank Emergency",
+      "fetched_iso": "2026-05-28T19:30:00Z"
+    },
+    {
+      "url": "https://asamnews.com/2026/05/27/derek-tran-town-hall-garden-grove-chemical-leak-investigation/",
+      "title": "Rep. Derek Tran calls for investigation into chemical leak",
+      "fetched_iso": "2026-05-28T19:30:00Z"
     },
     {
       "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
-      "title": "Chemical tank update: Evacuation orders lifted as officials declare no further risk - OCDE Newsroom",
-      "fetched_iso": "2026-05-28T15:00:00Z"
+      "title": "Chemical tank update: Evacuation orders lifted as officials declare no further risk to public",
+      "fetched_iso": "2026-05-28T19:30:00Z"
     },
     {
-      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-chemical-incident-gkn-aerospace-residents-demand-accountability/",
-      "title": "Orange County residents demand accountability after GKN incident - CBS LA",
-      "fetched_iso": "2026-05-28T15:00:00Z"
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
+      "title": "DA Spitzer expands criminal investigation, adds price-gouging probe",
+      "fetched_iso": "2026-05-28T19:30:00Z"
     }
   ],
   "schools_closed": [
@@ -208,10 +198,10 @@
     }
   ],
   "air_quality": null,
-  "breaking": true,
-  "breaking_reason": "1 new official statement(s)",
-  "breaking_since_iso": "2026-05-28T04:12:12Z",
-  "breaking_level": "info",
+  "breaking": false,
+  "breaking_reason": null,
+  "breaking_since_iso": null,
+  "breaking_level": null,
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
