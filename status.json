@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-28T07:11:39Z",
-  "data_as_of_iso": "2026-05-28T07:11:39Z",
-  "next_check_at_iso": "2026-05-28T07:41:39Z",
-  "stale_after_iso": "2026-05-28T07:51:39Z",
+  "last_updated_iso": "2026-05-28T10:11:50Z",
+  "data_as_of_iso": "2026-05-28T10:11:50Z",
+  "next_check_at_iso": "2026-05-28T10:41:50Z",
+  "stale_after_iso": "2026-05-28T10:51:50Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Incident fully resolved \u2014 all evacuation orders lifted May 27 at 7:30 PM PDT. No chemical leak, explosion risk, or fire threat. Former GKN employee raises prior safety concerns as DA criminal investigation, class-action lawsuits, and accountability demands continue. Hazmat crews treating solidified MMA in 300-ft exclusion zone on Western Ave. GGUSD schools open for final day of school year.",
+    "status_headline": "Incident resolved \u2014 all evacuation orders lifted May 27 at 7:30 PM PDT. GKN Aerospace SVP Steve Carlin issues formal apology: \"We are sorry for the uncertainty and disruption this situation has caused.\" Hundreds of residents demand accountability and GKN closure. GGUSD 12 campuses reopened today for final day of school year. Hazmat crews continue treating solidified MMA in 300-ft exclusion zone on Western Ave. DA criminal investigation and class-action lawsuits ongoing.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
@@ -52,48 +52,59 @@
       "time_iso": "2026-05-27T22:00:00Z",
       "text": "GKN Aerospace must take full responsibility for this chemical leak. There should be an investigation at both the state and federal levels into how the leak occurred at the GKN Aerospace Facility.",
       "source_url": "https://asamnews.com/2026/05/27/derek-tran-town-hall-garden-grove-chemical-leak-investigation/"
+    },
+    {
+      "agency": "GKN Aerospace SVP Steve Carlin",
+      "time_iso": "2026-05-28T18:00:00Z",
+      "text": "On behalf of the team at GKN Aerospace, I want to say how sorry we are for the uncertainty and disruption this situation has caused. The past several days have been difficult for residents, businesses, and the broader Garden Grove, Stanton, and surrounding Orange County communities. We are relieved that the incident has been resolved and residents have been able to return home.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
     }
   ],
   "sources_checked": [
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove tank crisis updates: Orange County evacuees return home, but say concerns linger over chemical tank",
-      "fetched_iso": "2026-05-28T19:30:00Z"
+      "fetched_iso": "2026-05-28T10:09:27Z"
     },
     {
-      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
-      "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-05-28T19:30:00Z"
+      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-chemical-incident-gkn-aerospace-residents-demand-accountability/",
+      "title": "Orange County residents demand accountability after Garden Grove chemical incident: Shut it down",
+      "fetched_iso": "2026-05-28T10:09:27Z"
     },
     {
-      "url": "http://ggcity.org/emergency",
+      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
+      "title": "Garden Grove residents call for GKN Aerospace shutdown after chemical scare",
+      "fetched_iso": "2026-05-28T10:09:27Z"
+    },
+    {
+      "url": "https://www.loscerritosnews.net/2026/05/27/aerospace-giant-gkn-breaks-silence-after-garden-grove-tank-leak-crisis-and-massive-evacuation/",
+      "title": "Aerospace Giant GKN Breaks Silence After Garden Grove Tank Leak Crisis and Massive Evacuation",
+      "fetched_iso": "2026-05-28T10:09:27Z"
+    },
+    {
+      "url": "https://www.ggusd.us/news/evacuation-orders-lifted-all-schools-reopen-tomorrowevacuation-orders-lifted-all-schools-reopen-tomorrow",
+      "title": "Evacuation Orders Lifted \u2014 All Schools Reopen Tomorrow",
+      "fetched_iso": "2026-05-28T10:09:27Z"
+    },
+    {
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
+      "title": "Criminal investigation expands into chemical tank crisis in Garden Grove",
+      "fetched_iso": "2026-05-28T10:09:27Z"
+    },
+    {
+      "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-28T19:30:00Z"
-    },
-    {
-      "url": "https://www.foxla.com/news/former-gkn-employee-speaks-out-garden-grove-chemical-theft",
-      "title": "Former GKN employee speaks out on Garden Grove chemical threat",
-      "fetched_iso": "2026-05-28T19:30:00Z"
+      "fetched_iso": "2026-05-28T10:09:27Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
       "title": "Evacuations End in Garden Grove Chemical Tank Emergency",
-      "fetched_iso": "2026-05-28T19:30:00Z"
+      "fetched_iso": "2026-05-28T10:09:27Z"
     },
     {
       "url": "https://asamnews.com/2026/05/27/derek-tran-town-hall-garden-grove-chemical-leak-investigation/",
       "title": "Rep. Derek Tran calls for investigation into chemical leak",
-      "fetched_iso": "2026-05-28T19:30:00Z"
-    },
-    {
-      "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
-      "title": "Chemical tank update: Evacuation orders lifted as officials declare no further risk to public",
-      "fetched_iso": "2026-05-28T19:30:00Z"
-    },
-    {
-      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
-      "title": "DA Spitzer expands criminal investigation, adds price-gouging probe",
-      "fetched_iso": "2026-05-28T19:30:00Z"
+      "fetched_iso": "2026-05-28T10:09:27Z"
     }
   ],
   "schools_closed": [
@@ -198,17 +209,18 @@
     }
   ],
   "air_quality": null,
-  "breaking": false,
-  "breaking_reason": null,
-  "breaking_since_iso": null,
-  "breaking_level": null,
+  "breaking": true,
+  "breaking_reason": "3 new official statement(s)",
+  "breaking_since_iso": "2026-05-28T10:11:50Z",
+  "breaking_level": "info",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
       "c94a8e58160d8324",
       "0a8f9512307c50dc",
       "577ad6d4f8ed49b7",
-      "df314f3999e57749"
+      "df314f3999e57749",
+      "bdf809e4da4a1d98"
     ],
     "last_residents_shift_iso": null
   }

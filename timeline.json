@@ -1,5 +1,4 @@
 {
-  "generated_at": "2026-05-28T07:11:39Z",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -781,6 +780,18 @@
       "source_url": "https://www.foxla.com/news/former-gkn-employee-speaks-out-garden-grove-chemical-theft",
       "source_name": "FOX 11 Los Angeles",
       "category": "media_coverage"
+    },
+    {
+      "id": "evt-20260528-006",
+      "timestamp_utc": "2026-05-28T18:00:00Z",
+      "timestamp_local": "2026-05-28T11:00:00-07:00",
+      "day": 8,
+      "title": "GKN Aerospace SVP Steve Carlin issues formal apology to displaced community",
+      "description": "GKN Aerospace Senior Vice President Steve Carlin issues a formal public apology for the 7-day chemical tank crisis: \"On behalf of the team at GKN Aerospace, I want to say how sorry we are for the uncertainty and disruption this situation has caused. The past several days have been difficult for residents, businesses, and the broader Garden Grove, Stanton, and surrounding Orange County communities. We are relieved that the incident has been resolved and residents have been able to return home.\" The statement comes as hundreds of angry residents demand accountability and the permanent closure of the GKN facility, and as the Orange County DA's criminal investigation, multiple class-action lawsuits, and community pressure continue.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "source_name": "ABC7 LA",
+      "category": "official_statement"
     }
-  ]
+  ],
+  "generated_at": "2026-05-28T10:11:50Z"
 }
