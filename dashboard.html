@@ -616,24 +616,46 @@
       background: var(--sa-surface);
       border: 1px solid var(--sa-border);
       border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
       box-shadow: var(--sa-shadow);
       z-index: 2;
     }
     .legend-row {
       display: flex;
       align-items: center;
-      gap: 5px;
-      padding: 1px 0;
+      gap: 6px;
+      padding: 2px 0;
       color: var(--sa-text-2);
     }
-    .legend-dot {
-      width: 10px;
+    .legend-icon {
+      flex-shrink: 0;
+      border: 1px solid rgba(0,0,0,0.15);
+    }
+    .legend-icon-evac {
+      width: 18px;
       height: 10px;
       border-radius: 2px;
-      flex-shrink: 0;
-      border: 1px solid rgba(0,0,0,0.1);
+      background: #D95F02;
+      opacity: 0.7;
+    }
+    .legend-icon-shelter {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      background: #1B9E77;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      line-height: 1;
+      color: #fff;
+    }
+    .legend-icon-facility {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #444;
     }
     .static-map-actions {
       position: absolute;
@@ -955,7 +977,7 @@
     .shelter-card .directions:hover { text-decoration: underline; }
     .shelter-icon { background: none !important; border: none !important; }
     .shelter-marker {
-      width: 22px; height: 22px; background: #2563eb; border: 2px solid white;
+      width: 22px; height: 22px; background: #1B9E77; border: 2px solid white;
       border-radius: 4px; display: flex; align-items: center; justify-content: center;
       font-size: 13px; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
@@ -1007,7 +1029,7 @@
     }
     .cr-cat-government { background: var(--sa-celadon-3); color: var(--sa-celadon); }
     .cr-cat-safety { background: var(--sa-gold-2); color: var(--sa-moderate); }
-    .cr-cat-shelter { background: #dbeafe; color: #2563eb; }
+    .cr-cat-shelter { background: #d1fae5; color: #1B9E77; }
     .cr-cat-community { background: var(--sa-gold-2); color: var(--sa-gold); }
 
     /* ===== RESOURCES TAB ===== */
@@ -1278,7 +1300,7 @@
     .info-shelter-icon {
       width: 20px;
       height: 20px;
-      background: #2563eb;
+      background: #1B9E77;
       border-radius: 3px;
       display: flex;
       align-items: center;
@@ -1509,9 +1531,9 @@
             <span id="wind-text-map">--</span>
           </div>
           <div class="map-legend">
-            <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span> Evac zone</div>
-            <div class="legend-row"><span class="legend-dot" style="background:#2563eb;border-radius:2px"></span> Shelter</div>
-            <div class="legend-row"><span class="legend-dot" style="background:#111"></span> Facility</div>
+            <div class="legend-row"><span class="legend-icon legend-icon-evac"></span> Evac zone</div>
+            <div class="legend-row"><span class="legend-icon legend-icon-shelter">&#127968;</span> Shelter</div>
+            <div class="legend-row"><span class="legend-icon legend-icon-facility"></span> Facility</div>
           </div>
           <div class="static-map-actions">
             <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check Address</a>
@@ -2797,9 +2819,9 @@ function _ggSwapMapStyle(dark) {
         data: { type: "Feature", geometry: { type: "Polygon", coordinates: [_ggEvacCoords] } }
       });
       _ggMap.addLayer({ id: "evac-fill", type: "fill", source: "evac-zone",
-        paint: { "fill-color": "#3b82f6", "fill-opacity": 0.15 } });
+        paint: { "fill-color": "#D95F02", "fill-opacity": 0.13 } });
       _ggMap.addLayer({ id: "evac-line", type: "line", source: "evac-zone",
-        paint: { "line-color": "#3b82f6", "line-width": 2.5 } });
+        paint: { "line-color": "#D95F02", "line-width": 2.5 } });
     }
   })();
 }
@@ -2837,16 +2859,16 @@ function _ggSwapMapStyle(dark) {
       });
       map.addLayer({
         id: "evac-fill", type: "fill", source: "evac-zone",
-        paint: { "fill-color": "#3b82f6", "fill-opacity": 0.15 }
+        paint: { "fill-color": "#D95F02", "fill-opacity": 0.13 }
       });
       map.addLayer({
         id: "evac-line", type: "line", source: "evac-zone",
-        paint: { "line-color": "#3b82f6", "line-width": 2.5 }
+        paint: { "line-color": "#D95F02", "line-width": 2.5 }
       });
 
       var fac = cfg.map.facility;
       var facEl = document.createElement("div");
-      facEl.style.cssText = "width:14px;height:14px;background:#dc2626;border:2px solid #111;border-radius:50%;";
+      facEl.style.cssText = "width:16px;height:16px;background:#444;border:2px solid #fff;border-radius:50%;";
       new maplibregl.Marker({ element: facEl })
         .setLngLat([fac.lon, fac.lat])
         .setPopup(new maplibregl.Popup({ offset: 12, closeButton: false }).setHTML("<strong>" + fac.label + "</strong>"))
@@ -2854,7 +2876,7 @@ function _ggSwapMapStyle(dark) {
 
       cfg.map.shelters.forEach(function(s) {
         var el = document.createElement("div");
-        el.style.cssText = "width:12px;height:12px;background:#2563eb;border:2px solid #fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,0.3);";
+        el.style.cssText = "width:14px;height:14px;background:#1B9E77;border:2px solid #fff;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,0.3);";
         new maplibregl.Marker({ element: el })
           .setLngLat([s.lon, s.lat])
           .setPopup(new maplibregl.Popup({ offset: 10, closeButton: false }).setHTML("<strong>" + s.name + "</strong><br>" + s.city + (s.notes ? " &middot; " + s.notes : "")))
