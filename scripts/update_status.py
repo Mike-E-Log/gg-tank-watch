@@ -445,11 +445,25 @@ def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
     injuries = facts.get("injuries", 0) or 0
 
     # Videos: list of {outlet, title, url, thumbnail_url?, published_iso?, youtube_id?}
-    # If youtube_id is set and thumbnail_url is missing, derive YouTube hqdefault.
+    # - Dedupe by URL (keep first occurrence) — live-blog URLs were being
+    #   duplicated across "stories" that all point at the same page.
+    # - is_video is re-derived from URL pattern; any incoming flag is ignored
+    #   so display classification stays consistent with the actual destination.
+    # - If youtube_id is set and thumbnail_url is missing, derive YouTube hqdefault.
     raw_videos = facts.get("videos") if "videos" in facts else prev.get("videos") or []
     videos = []
+    seen_urls = set()
     for v in raw_videos or []:
         v = dict(v)
+        url = (v.get("url") or "").strip()
+        if url:
+            if url in seen_urls:
+                continue
+            seen_urls.add(url)
+        if v.get("youtube_id") or "youtube.com/" in url or "youtu.be/" in url or "/video/" in url:
+            v["is_video"] = True
+        else:
+            v["is_video"] = False
         if not v.get("thumbnail_url") and v.get("youtube_id"):
             v["thumbnail_url"] = f"https://img.youtube.com/vi/{v['youtube_id']}/hqdefault.jpg"
         videos.append(v)
