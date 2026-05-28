@@ -44,3 +44,10 @@ prompts/
 .env.*.local
 .vercel
 .gstack/
+
+# One-off scratch files (not part of the project)
+render_safety_briefing.py
+safety-briefing-philosophy.md
+safety-briefing.png
+Mobile _ 390.html
+C--Users-redacted-OneDrive-Desktop-GG-tank-updates/
