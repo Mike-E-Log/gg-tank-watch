@@ -791,7 +791,18 @@
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
       "category": "official_statement"
+    },
+    {
+      "id": "evt-20260528-007",
+      "timestamp_utc": "2026-05-28T22:00:00Z",
+      "timestamp_local": "2026-05-28T15:00:00-07:00",
+      "day": 8,
+      "title": "All roads around GKN Aerospace fully reopen; 300-ft exclusion zone only remains",
+      "description": "OCFA confirms all roads closed during the 7-day chemical emergency — including Western Ave between Chapman Ave and Garden Grove Blvd — have fully reopened. The only restriction remaining is a 300-foot exclusion zone immediately surrounding the GKN Aerospace tanks, where hazmat crews continue treating and monitoring the solidified MMA. The Orange County DA criminal investigation and multiple class-action lawsuits remain ongoing.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "source_name": "ABC7 LA",
+      "category": "evacuation"
     }
   ],
-  "generated_at": "2026-05-28T10:11:50Z"
+  "generated_at": "2026-05-28T13:08:12Z"
 }
