@@ -215,19 +215,6 @@
     @media (min-width: 768px) {
       .topbar-freshness { font-size: 11.5px; }
     }
-    .topbar-freshness.stale { color: var(--sa-high); font-weight: 700; }
-    .freshness-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--sa-safe);
-      animation: sa-pulse 2.4s ease-out infinite;
-    }
-    .freshness-dot.sev-moderate { background: var(--sa-moderate); }
-    .freshness-dot.sev-high { background: var(--sa-high); }
-    .freshness-dot.sev-critical { background: var(--sa-critical); }
-    .freshness-dot.sev-resolved { background: var(--sa-celadon); }
     .topbar-btn {
       display: inline-flex;
       align-items: center;
@@ -676,6 +663,7 @@
       padding: 12px 24px;
       background: var(--sa-celadon);
       color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-size: 15px;
       font-weight: 700;
       border-radius: 8px;
@@ -1470,7 +1458,7 @@
       <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source"><span class="unofficial-pill-dot"></span>UNOFFICIAL</span>
       <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
       <span class="topbar-spacer"></span>
-      <span class="topbar-freshness" id="updated-text"><span class="freshness-dot" id="freshness-dot"></span><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
+      <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
       <div class="lang-picker" id="lang-picker">
         <button class="topbar-btn" id="lang-toggle" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" title="Language / Ng&#xF4;n ng&#x1EEF;">VI</button>
         <div class="lang-menu" id="lang-menu" role="menu"></div>
@@ -1610,8 +1598,7 @@ var STRINGS = {
   "theme.dark": { en: "Dark", vi: "Tối" },
   "theme.light": { en: "Light", vi: "Sáng" },
   "updated.loading": { en: "loading...", vi: "đang tải..." },
-  "updated.freshness": { en: "⟳ ~20 min · {t}", vi: "⟳ ~20 phút · {t}" },
-  "updated.stale": { en: "⚠ Stale · last updated {t}", vi: "⚠ Cũ · cập nhật lần cuối {t}" },
+  "updated.freshness": { en: "As of {t}", vi: "Lúc {t}" },
   "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}.", vi: "Tự động cập nhật khoảng 20 phút một lần. Lần cập nhật cuối {t}." },
   "topbar.unofficial": { en: "UNOFFICIAL", vi: "KHÔNG CHÍNH THỨC" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source", vi: "Do tình nguyện viên xây dựng — không phải nguồn chính thức của chính phủ" },
@@ -2619,13 +2606,9 @@ function render(snap) {
   }
   var updEl = $("updated-text");
   var freshLabel = $("freshness-label");
-  var isStale = snap.stale_after_iso && new Date(snap.stale_after_iso) < new Date();
-  var rel = relativeTime(snap.last_updated_iso);
-  if (freshLabel) freshLabel.textContent = t(isStale ? "updated.stale" : "updated.freshness", { t: rel });
-  if (updEl) {
-    updEl.title = t("updated.title", { t: rel });
-    updEl.classList.toggle("stale", !!isStale);
-  }
+  var clock = fmtAbsTime(snap.last_updated_iso);
+  if (freshLabel) freshLabel.textContent = t("updated.freshness", { t: clock });
+  if (updEl) updEl.title = t("updated.title", { t: clock });
 
   var banners = [];
   if (!lastFetchOK) banners.push({kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.msg")});
