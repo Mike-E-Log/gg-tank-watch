@@ -218,10 +218,13 @@
       /* VI: "KHÔNG CHÍNH THỨC" is wide. .topbar-lead (pill + wordmark) takes flex:1 1 0,
          so its line-break hypothetical width is 0 — flex-wrap never pushes the controls
          cluster onto a second line. The controls stay pinned top-right on row 1; the
-         pill/wordmark wrap INSIDE the lead instead (wordmark drops below the pill when the
-         pill is long). flex-shrink alone can't do this: flex-wrap breaks lines at unshrunk
-         sizes, so the controls would wrap before the pill ever shrinks. */
+         pill and wordmark stack INSIDE the lead instead. flex-shrink alone can't do this:
+         flex-wrap breaks lines at unshrunk sizes, so the controls would wrap before the
+         pill ever shrinks. */
       .topbar-lead { display: flex; flex: 1 1 0; min-width: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+      /* wordmark always on its own line below the pill (flex-basis 100% forces a wrap), so
+         its position never shifts between EN and VI — that shift was the source of the jump. */
+      .topbar-wordmark { flex: 0 0 100%; }
       .topbar-spacer { display: none; }
       .topbar-controls { align-self: flex-start; }
       .unofficial-pill { white-space: normal; text-align: center; }
