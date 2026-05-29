@@ -2,6 +2,15 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.11] — 2026-05-28 (mobile layout polish)
+
+### Fixed
+- **Footer disclaimer alignment** — on mobile the separator dots and the "OCFA" label floated above the official-source links (`ggcity.org/emergency · 911 · 714-628-7085 · OCFA`). The whole row now shares one vertical centerline.
+- **Vietnamese header wrap** — in Vietnamese the light/dark toggle dropped onto its own line. The language and theme controls are now a single cluster that never splits, and the "KHÔNG CHÍNH THỨC" unofficial badge stays fully visible.
+
+### Changed
+- **More map on small screens** — the stats grid and disclaimer strip are tighter on mobile, giving the map noticeably more height (~30–65px reclaimed) without dropping any stat, the disclaimer sentence, the terms link, or any official-source link. Desktop layout is unchanged.
+
 ## [v0.10] — 2026-05-25 (data-quality hardening + freshness UI)
 
 ### Added
