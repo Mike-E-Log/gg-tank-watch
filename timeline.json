@@ -813,7 +813,29 @@
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
       "category": "evacuation"
+    },
+    {
+      "id": "evt-20260529-001",
+      "timestamp_utc": "2026-05-29T15:00:00Z",
+      "timestamp_local": "2026-05-29T08:00:00-07:00",
+      "day": 9,
+      "title": "City launches community impact survey; OC United Way opens recovery fund",
+      "description": "The City of Garden Grove launches an online community impact survey asking residents and businesses to document the effects of the evacuation and chemical emergency (ggcity.org/hazmat-incident/survey). Separately, Orange County United Way launches the OC Community Resilience Fund to provide direct financial support for residents and businesses in Garden Grove, Stanton, Westminster, Cypress, Anaheim, and Buena Park affected by the incident.",
+      "source_url": "https://ggcity.org/emergency",
+      "source_name": "City of Garden Grove",
+      "category": "government_action"
+    },
+    {
+      "id": "evt-20260529-002",
+      "timestamp_utc": "2026-05-29T17:00:00Z",
+      "timestamp_local": "2026-05-29T10:00:00-07:00",
+      "day": 9,
+      "title": "Residents publicly call for permanent GKN Aerospace plant closure",
+      "description": "KTLA reports hundreds of Garden Grove residents are publicly demanding the permanent closure of the GKN Aerospace facility at 12122 Western Ave. Community members question how a company handling explosive industrial chemicals was permitted to operate within a mile of homes and schools. The City Council took no action at the special meeting despite chants and pleas from residents. The Orange County DA criminal investigation, multiple class-action lawsuits, and prior SCAQMD settlement history continue to fuel community pressure.",
+      "source_url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
+      "source_name": "KTLA",
+      "category": "community_impact"
     }
   ],
-  "generated_at": "2026-05-28T19:10:04Z"
+  "generated_at": "2026-05-29T15:00:00Z"
 }
