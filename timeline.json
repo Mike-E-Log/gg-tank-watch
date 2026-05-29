@@ -835,7 +835,18 @@
       "source_url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
       "source_name": "KTLA",
       "category": "community_impact"
+    },
+    {
+      "id": "evt-20260529-003",
+      "timestamp_utc": "2026-05-29T19:00:00Z",
+      "timestamp_local": "2026-05-29T12:00:00-07:00",
+      "day": 9,
+      "title": "Mass tort against GKN Aerospace surpasses 100 plaintiffs; multiple class-actions filed",
+      "description": "More than 100 people have joined a mass tort lawsuit against GKN Aerospace following the 7-day chemical emergency. Beyond the initial X-Law Group class action (filed May 23), DiCello Levitt LLP filed a separate federal class action on May 27 on behalf of evacuated property owners and renters, and a second federal case (Sanchez v. GKN Aerospace Transparency Systems, Case No. 8:26-cv-01296, C.D. Cal.) was filed May 26. Westminster, Anaheim, and the Orange County Board of Supervisors ratified local emergencies at their May 28 meetings, a step officials say is necessary to pursue state and federal reimbursement for displaced residents and affected businesses. The Orange County DA criminal investigation remains open.",
+      "source_url": "https://ktla.com/news/orange-county/class-action-lawsuit-filed-chemical-leak-crisis-garden-grove/",
+      "source_name": "KTLA",
+      "category": "government_action"
     }
   ],
-  "generated_at": "2026-05-29T15:00:00Z"
+  "generated_at": "2026-05-29T19:00:00Z"
 }
