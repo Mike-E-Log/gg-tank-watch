@@ -2,6 +2,12 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.12] — 2026-05-28 (mobile header + banner dismiss fixes)
+
+### Fixed
+- **Vietnamese header controls** — the language and light/dark buttons no longer drop to a second row at the far left in Vietnamese. They stay pinned top-right (as in English); the long "KHÔNG CHÍNH THỨC" badge and wordmark wrap below instead. English and desktop layouts are unchanged.
+- **Dismissed notification reappearing** — closing the × on a top banner now sticks. Previously the urgent banner had no memory of being dismissed and a routine data refresh would bring it (and the info banner) right back. A dismissed banner now stays closed until the underlying situation actually changes; a genuine escalation still re-alerts.
+
 ## [v0.11] — 2026-05-28 (mobile layout polish)
 
 ### Fixed
