@@ -705,6 +705,17 @@
       "category": "government_action"
     },
     {
+      "id": "evt-20260527-005",
+      "timestamp_utc": "2026-05-27T21:00:00Z",
+      "timestamp_local": "2026-05-27T14:00:00-07:00",
+      "day": 7,
+      "title": "Gov. Newsom directs statewide review of chemical plant safety records",
+      "description": "Governor Gavin Newsom announces that state officials are beginning to review GKN Aerospace's safety records and those of other chemical plant operators in California in the wake of the Garden Grove emergency.",
+      "source_url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
+      "source_name": "Wikipedia",
+      "category": "government_action"
+    },
+    {
       "id": "evt-20260527-002",
       "timestamp_utc": "2026-05-27T23:00:00Z",
       "timestamp_local": "2026-05-27T16:00:00-07:00",
@@ -881,5 +892,5 @@
       "category": "government_action"
     }
   ],
-  "generated_at": "2026-05-29T22:00:00Z"
+  "generated_at": "2026-05-29T23:30:00Z"
 }
