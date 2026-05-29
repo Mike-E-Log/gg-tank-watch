@@ -196,6 +196,8 @@
     }
     .topbar-wordmark-tank { color: var(--sa-celadon); }
     .topbar-spacer { flex: 1 1 auto; }
+    /* desktop: lead is transparent — pill + wordmark act as direct topbar children (layout unchanged). Mobile re-flexes it below. */
+    .topbar-lead { display: contents; }
     .topbar-freshness {
       display: inline-flex;
       align-items: center;
@@ -213,7 +215,15 @@
       /* mobile: freshness on its own full-width line so it never clips in the crowded topbar */
       .topbar { flex-wrap: wrap; }
       .topbar-freshness { order: 1; width: 100%; display: block; text-align: right; overflow: visible; }
-      /* VI: let "KHÔNG CHÍNH THỨC" wrap to 2 lines (stays fully visible) instead of pushing the controls off the row */
+      /* VI: "KHÔNG CHÍNH THỨC" is wide. .topbar-lead (pill + wordmark) takes flex:1 1 0,
+         so its line-break hypothetical width is 0 — flex-wrap never pushes the controls
+         cluster onto a second line. The controls stay pinned top-right on row 1; the
+         pill/wordmark wrap INSIDE the lead instead (wordmark drops below the pill when the
+         pill is long). flex-shrink alone can't do this: flex-wrap breaks lines at unshrunk
+         sizes, so the controls would wrap before the pill ever shrinks. */
+      .topbar-lead { display: flex; flex: 1 1 0; min-width: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+      .topbar-spacer { display: none; }
+      .topbar-controls { align-self: flex-start; }
       .unofficial-pill { white-space: normal; text-align: center; }
     }
     @media (min-width: 768px) {
@@ -1495,8 +1505,10 @@
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
     <header class="topbar">
-      <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
-      <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
+      <div class="topbar-lead">
+        <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
+        <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
+      </div>
       <span class="topbar-spacer"></span>
       <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
       <div class="topbar-controls">
@@ -2687,19 +2699,29 @@ function render(snap) {
   if (!lastFetchOK) banners.push({kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.msg")});
   if (snap.breaking) {
     var level = snap.breaking_level || "urgent";
+    var newestStmtIso = (snap.official_statements || []).reduce(function(max, s) {
+      var ti = s.time_iso || "";
+      return ti > max ? ti : max;
+    }, "");
+    // sig = the banner's stable dismiss identity: newest statement, else the reason text.
+    // NOT last_updated_iso — the pipeline bumps that on every refresh, which would resurrect
+    // a banner the user already dismissed (the "comes back" bug). Both info and urgent banners
+    // are ack-filtered so a dismiss sticks until the situation actually changes. The level
+    // prefix means an escalation (info -> urgent) is a NEW sig and re-alerts even if the prior
+    // info banner was dismissed.
+    // The sig is embedded in the dismiss button's inline onclick (ackUpdate('<sig>')), so it
+    // must be quote-safe. newestStmtIso is an ISO timestamp (safe); the reason fallback is free
+    // text, so strip anything that could break the JS string / HTML attribute. It is only used
+    // for equality, so an opaque stripped token is fine.
+    var sigBase = newestStmtIso || (snap.breaking_reason || "").replace(/[^\w :.,-]/g, "");
+    var sig = level + ":" + sigBase;
+    var unacked = sig !== updateAckSig();
     if (level === "info") {
-      var newestStmtIso = (snap.official_statements || []).reduce(function(max, s) {
-        var ti = s.time_iso || "";
-        return ti > max ? ti : max;
-      }, "");
-      var sig = newestStmtIso || snap.last_updated_iso || "";
-      if (sig !== updateAckSig()) {
-        banners.push({kind:"update", title: t("banner.update.title"), message: snap.breaking_reason || "", sig: sig});
-      }
+      if (unacked) banners.push({kind:"update", title: t("banner.update.title"), message: snap.breaking_reason || "", sig: sig});
       stopBreakingTitle();
     } else {
-      banners.push({kind:"breaking", title: t("banner.urgent.title"), message: snap.breaking_reason || ""});
-      startBreakingTitle();
+      if (unacked) banners.push({kind:"breaking", title: t("banner.urgent.title"), message: snap.breaking_reason || "", sig: sig});
+      startBreakingTitle();  // tab-title flash persists for an active urgent situation even if the banner is dismissed
     }
   } else { stopBreakingTitle(); }
   setBanners(banners);
