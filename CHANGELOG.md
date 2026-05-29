@@ -2,6 +2,15 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.17] — 2026-05-29 (hosting migration: stale-deploy fix)
+
+### Fixed
+- **Live site was ~22h stale.** Vercel's free Hobby plan silently refuses to deploy a private repo owned by a GitHub *org*, so every `refresh_local.py` push since ~02:42Z never deployed — residents saw ~22h-old emergency data (the staleness banner correctly fired, so it was degraded-but-honest). Migrated the repo to a personal account (`Mike-E-Log/gg-tank-watch`), where Hobby deploys private repos free; auto-deploy on push is restored. Interim live URL is `gg-tank-watch.vercel.app` (resident-facing `gardengrovetankwatch.org` follows at launch).
+
+### Changed
+- **Repointed canonical / Open Graph / Twitter URLs** + the cover-letter "Live:" link to `gg-tank-watch.vercel.app`; portfolio repo ref → `Mike-E-Log/gg-tank-watch`.
+- **`refresh_local.py` `trigger_deploy()`** — optionally POSTs `$VERCEL_DEPLOY_HOOK_URL` after each push as defense-in-depth against a silent auto-deploy stall (no-op until the hook env var is set; mirrors `ping_healthcheck`).
+
 ## [v0.16] — 2026-05-29 (Vietnamese held pending fluent verification — G1 honesty)
 
 ### Changed

@@ -4,7 +4,7 @@
 
 - **URL:** https://job-boards.greenhouse.io/anthropic/jobs/5023394008
 - **Cohorts:** Rolling admissions, May/July 2026 cohorts
-- **Portfolio repo:** github.com/ggtankwatch/gg-tank-dashboard
+- **Portfolio repo:** github.com/Mike-E-Log/gg-tank-watch
 
 ## Required materials
 

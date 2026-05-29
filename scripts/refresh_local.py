@@ -22,6 +22,8 @@ Usage:
 Env:
     CLAUDE_MODEL   optional, default "sonnet" (cheaper on the shared subscription
                    quota than Opus; the gather is a simple structured task)
+    VERCEL_DEPLOY_HOOK_URL  optional; if set, POSTed after each push to force a
+                   Vercel rebuild (defense-in-depth vs a silent auto-deploy stall)
 """
 
 from __future__ import annotations
@@ -41,6 +43,7 @@ from gather_facts import PROMPT, extract_json  # noqa: E402  (reuse the one prom
 MODEL = os.environ.get("CLAUDE_MODEL", "sonnet")
 REPO = HERE.parent
 HEALTHCHECK_URL = os.environ.get("HEALTHCHECK_URL", "")
+VERCEL_DEPLOY_HOOK_URL = os.environ.get("VERCEL_DEPLOY_HOOK_URL", "")
 
 
 def ping_healthcheck(status: str = "") -> None:
@@ -51,6 +54,21 @@ def ping_healthcheck(status: str = "") -> None:
     url = HEALTHCHECK_URL if not status else f"{HEALTHCHECK_URL}/{status}"
     try:
         urllib.request.urlopen(url, timeout=10)
+    except Exception:
+        pass
+
+
+def trigger_deploy() -> None:
+    """POST the Vercel deploy hook after a push so the live site rebuilds even if
+    git-integration auto-deploy stalls (the 2026-05-29 stale-deploy incident).
+    No-op if VERCEL_DEPLOY_HOOK_URL is unset. Silent on failure."""
+    if not VERCEL_DEPLOY_HOOK_URL:
+        return
+    import urllib.request
+    try:
+        urllib.request.urlopen(
+            urllib.request.Request(VERCEL_DEPLOY_HOOK_URL, method="POST"), timeout=15
+        )
     except Exception:
         pass
 
@@ -132,6 +150,7 @@ def main() -> int:
         ping_healthcheck()
         return 0
     commit_and_push()
+    trigger_deploy()
     ping_healthcheck()
     return 0
 
