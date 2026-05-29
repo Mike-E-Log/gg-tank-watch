@@ -2,6 +2,14 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.14] — 2026-05-28 (banner messages translated)
+
+### Fixed
+- **English banner text in Vietnamese mode** — the alert banner at the top (e.g. "1 new official statement(s)") stayed in English even when the page was set to Vietnamese; only the pill label was translated. All eight banner messages the pipeline can emit (new statements, evacuation lifted/reinstated/expanded, severity change, first injuries, residents-count change, incident resolved) now render in the active language. Vietnamese shows "1 thông cáo chính thức mới". English is unchanged. The dismiss behavior is unaffected (the English text stays the banner's internal identity), and switching language re-translates any banner already on screen.
+- **Mangled Vietnamese pill** — the banner category pill showed "CP NHT" in Vietnamese (the emoji-stripping step also ate the diacritics from "CẬP NHẬT"). It now reads "CẬP NHẬT" / "KHẨN CẤP" correctly.
+
+> Note (G1): the Vietnamese for the five urgent banner reasons is drafted from already-verified terminology and corrected by a 4-reviewer audit (which caught "thương vong"/casualties → "người bị thương"/injured), but still awaits Nancy's native-speaker sign-off; each is flagged inline. English fallback is automatic. These banners are dormant unless the incident escalates.
+
 ## [v0.13] — 2026-05-28 (mobile wordmark row fix)
 
 ### Fixed
