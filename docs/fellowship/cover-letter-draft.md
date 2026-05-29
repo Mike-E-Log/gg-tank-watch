@@ -2,13 +2,15 @@
 
 I'm applying with a portfolio piece that demonstrates scalable oversight and AI control in a real deployment: **GG Tank Watch**, an emergency information dashboard serving ~50,000 evacuated residents during the Garden Grove chemical tank incident.
 
+**Live:** https://gg-tank-dashboard.vercel.app (running, bilingual English / Tiếng Việt). **Run the harness:** `python eval/run_all.py --skip integration` (45/45, exits 0). The repo trail below maps each safety principle to its code and tests.
+
 The thesis: responsible AI and helpful AI are the same lane. Every safety constraint in GG Tank Watch made the product more trustworthy and more useful — the alignment tax was zero.
 
 ## Three evidence points
 
 ### 1. Scalable oversight applied to a consumer-facing AI system
 
-An LLM summarizes live news every 30 minutes into a dashboard that scared residents refresh at 2 AM. If the model hallucinates an "all-clear," a family might stop evacuating.
+An LLM summarizes live news roughly every 20–30 minutes into a dashboard that scared residents refresh at 2 AM. If the model hallucinates an "all-clear," a family might stop evacuating.
 
 The eval harness (`eval/run_all.py`) runs 45 behavioral tests monitoring the system's safety contract. Fifteen target specific control properties: the corroboration gate (P0-1), source/URL integrity (P0-2), freshness honesty (P0-3), and date sanity (P1-1). These catch drift — fabricated sources, authored directives, stale data stamped as fresh — before it reaches users.
 
