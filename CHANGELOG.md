@@ -2,6 +2,16 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.16] — 2026-05-29 (Vietnamese held pending fluent verification — G1 honesty)
+
+### Changed
+- **Vietnamese held (`vi.ready=false`).** The ~134 AI-drafted Vietnamese strings were never verified by a fluent native speaker (the prior reviewer is not fluent and checked only a few), so they no longer ship as safety copy. `t()` falls back to verified English automatically. This corrects a real honesty gap — the site had been serving unverified Vietnamese life-safety copy. Re-enable only after a fluent native speaker + certified translation verify it (the gate below enforces this).
+- **Interim "Tiếng Việt ↗" affordance.** With the toggle hidden, the language menu offers an outbound "Tiếng Việt ↗" link to the official Vietnamese emergency page (ggcity.org/emergency), routing Vietnamese-seeking residents to verified *human* Vietnamese instead of stranding them in English ("withhold-and-amplify").
+- **Honesty corrections across docs.** Qualified/removed false "native-verified" / "Nancy has verified" claims in CODE_OF_CONDUCT, PRIOR_ART, LANGUAGE_ACCESS, DISTRIBUTION, the fellowship evidence docs, and the i18n briefing (kept with a correction note as the audit trail). The truthful forward-looking "English fallback until verified" rules are unchanged.
+
+### Added
+- **G1 language-access gate (`eval/test_language_access.py`, +2 tests → 47 total).** A build-failing guard: any non-English language flipped to `ready:true` without fluent-native verification fails the eval — turning the G1 policy into an enforced control. The falsifier recommended by the 2026-05-29 research (`docs/research/2026-05-29-vi-anthropic-lens-research.md`).
+
 ## [v0.15] — 2026-05-29 (resident shareability)
 
 ### Added
@@ -14,7 +24,7 @@ All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://
 - **English banner text in Vietnamese mode** — the alert banner at the top (e.g. "1 new official statement(s)") stayed in English even when the page was set to Vietnamese; only the pill label was translated. All eight banner messages the pipeline can emit (new statements, evacuation lifted/reinstated/expanded, severity change, first injuries, residents-count change, incident resolved) now render in the active language. Vietnamese shows "1 thông cáo chính thức mới". English is unchanged. The dismiss behavior is unaffected (the English text stays the banner's internal identity), and switching language re-translates any banner already on screen.
 - **Mangled Vietnamese pill** — the banner category pill showed "CP NHT" in Vietnamese (the emoji-stripping step also ate the diacritics from "CẬP NHẬT"). It now reads "CẬP NHẬT" / "KHẨN CẤP" correctly.
 
-> Note (G1): the Vietnamese for the five urgent banner reasons is drafted from already-verified terminology and corrected by a 4-reviewer audit (which caught "thương vong"/casualties → "người bị thương"/injured), but still awaits Nancy's native-speaker sign-off; each is flagged inline. English fallback is automatic. These banners are dormant unless the incident escalates.
+> Note (G1): the Vietnamese for the five urgent banner reasons is AI-drafted and **not** native-verified — the reviewer (Nancy) is not a fluent Vietnamese speaker, so the G1 bar was never met (corrected in v0.16, 2026-05-29). Each is flagged inline and held under automatic English fallback. These banners are dormant unless the incident escalates.
 
 ## [v0.13] — 2026-05-28 (mobile wordmark row fix)
 
