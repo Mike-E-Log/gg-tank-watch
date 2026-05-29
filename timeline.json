@@ -890,7 +890,18 @@
       "source_url": "https://workforce.ocgov.com/press/small-businesses-impacted-garden-grove-chemical-incident-encouraged-submit-sba-assistance",
       "source_name": "OC Workforce & Economic Development Division",
       "category": "government_action"
+    },
+    {
+      "id": "evt-20260529-006",
+      "timestamp_utc": "2026-05-29T23:00:00Z",
+      "timestamp_local": "2026-05-29T16:00:00-07:00",
+      "day": 9,
+      "title": "Evacuees report insurance claims denied; no GKN reimbursement process established",
+      "description": "NBC Los Angeles reports some evacuees are finding their homeowners insurance claims denied for displacement costs incurred during the 7-day evacuation. At least one evacuee filed a claim under the \"civil authority\" clause of their policy for hotel costs but was denied. Despite pressure from OC Board Chair Doug Chaffee and elected officials, GKN Aerospace has not established a formal claims or reimbursement process for the roughly 50,000 displaced residents and affected businesses. GKN said it is \"committed to understanding what occurred and identifying ways\" to support victims. The county is asking GKN to help cover losses, and has urged business owners to document losses and submit forms for potential state/SBA assistance.",
+      "source_url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-crisis-victims-financial-assistance/3896612/",
+      "source_name": "NBC LA",
+      "category": "community_impact"
     }
   ],
-  "generated_at": "2026-05-29T23:30:00Z"
+  "generated_at": "2026-05-29T22:10:56Z"
 }
