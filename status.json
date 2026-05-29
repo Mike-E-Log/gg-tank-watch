@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-29T04:12:21Z",
-  "data_as_of_iso": "2026-05-29T04:12:21Z",
-  "next_check_at_iso": "2026-05-29T04:42:21Z",
-  "stale_after_iso": "2026-05-29T04:52:21Z",
+  "last_updated_iso": "2026-05-29T07:10:30Z",
+  "data_as_of_iso": "2026-05-29T07:10:30Z",
+  "next_check_at_iso": "2026-05-29T07:40:30Z",
+  "stale_after_iso": "2026-05-29T07:50:30Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Incident resolved. All evacuation orders lifted May 27 at 7:30 PM PDT. MMA solidifying inside tank; 300-ft exclusion zone remains for hazmat crews. OC cities ratified local emergencies to enable FEMA/state reimbursement. DA investigation and 100+ plaintiffs in lawsuits ongoing.",
+    "status_headline": "Incident resolved. All evacuation orders lifted May 27 at 7:30 PM PDT. OC Board Chair Chaffee calls on GKN to establish compensation claims process for displaced residents and businesses. Root cause under investigation: cooling system failure likely. DA criminal investigation, 37+ lawsuits ongoing. 300-ft exclusion zone remains around GKN tanks.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
@@ -52,48 +52,49 @@
       "time_iso": "2026-05-29T15:00:00Z",
       "text": "The City of Garden Grove is seeking information from residents, businesses and community members impacted by the recent chemical emergency. Residents and businesses are asked to complete an impact survey at ggcity.org/hazmat-incident/survey.",
       "source_url": "https://ggcity.org/emergency"
+    },
+    {
+      "agency": "OC Board of Supervisors (Chair Doug Chaffee)",
+      "time_iso": "2026-05-29T17:00:00Z",
+      "text": "We encourage them to set up a claims process and acknowledge responsibility. We're looking for that to happen, so the public can be reimbursed.",
+      "source_url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/"
     }
   ],
   "sources_checked": [
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-29T19:00:00Z"
+      "fetched_iso": "2026-05-29T20:00:00Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove tank crisis updates: Orange County evacuees return home",
-      "fetched_iso": "2026-05-29T19:00:00Z"
-    },
-    {
-      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
-      "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-05-29T19:00:00Z"
-    },
-    {
-      "url": "https://voiceofoc.org/2026/05/oc-cities-formally-approve-local-emergencies-over-chemical-tank-crisis-what-next/",
-      "title": "OC Cities Formally Approve Local Emergencies Over Chemical Tank Crisis; What Next?",
-      "fetched_iso": "2026-05-29T19:00:00Z"
-    },
-    {
-      "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
-      "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed",
-      "fetched_iso": "2026-05-29T19:00:00Z"
-    },
-    {
-      "url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/",
-      "title": "What's next for Garden Grove chemical tank crisis",
-      "fetched_iso": "2026-05-29T19:00:00Z"
-    },
-    {
-      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
-      "title": "Garden Grove residents call for GKN Aerospace shutdown after chemical scare",
-      "fetched_iso": "2026-05-29T19:00:00Z"
+      "fetched_iso": "2026-05-29T20:00:00Z"
     },
     {
       "url": "https://www.cbsnews.com/losangeles/news/california-chemical-incident-orange-county-evacuation-orders-removed/",
       "title": "GKN Aerospace shares statement after Orange County chemical leak",
-      "fetched_iso": "2026-05-29T19:00:00Z"
+      "fetched_iso": "2026-05-29T20:00:00Z"
+    },
+    {
+      "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
+      "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed",
+      "fetched_iso": "2026-05-29T20:00:00Z"
+    },
+    {
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/",
+      "title": "What's next for Garden Grove's chemical tank crisis as victims grapple with financial fallouts",
+      "fetched_iso": "2026-05-29T20:00:00Z"
+    },
+    {
+      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
+      "title": "Garden Grove residents call for GKN Aerospace shutdown after chemical scare",
+      "fetched_iso": "2026-05-29T20:00:00Z"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
+      "title": "Garden Grove chemical leak - Wikipedia",
+      "fetched_iso": "2026-05-29T20:00:00Z"
     }
   ],
   "schools_closed": [
@@ -198,17 +199,18 @@
     }
   ],
   "air_quality": null,
-  "breaking": false,
-  "breaking_reason": null,
-  "breaking_since_iso": null,
-  "breaking_level": null,
+  "breaking": true,
+  "breaking_reason": "2 new official statement(s)",
+  "breaking_since_iso": "2026-05-29T07:10:30Z",
+  "breaking_level": "info",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
       "bca255af272a6ea0",
       "d909c964479ae0b1",
       "640e873a15c535e7",
-      "8b048a6db23a060d"
+      "8b048a6db23a060d",
+      "538d691e5291d9bb"
     ],
     "last_residents_shift_iso": null
   }

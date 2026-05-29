@@ -804,6 +804,17 @@
       "category": "government_action"
     },
     {
+      "id": "evt-20260528-009",
+      "timestamp_utc": "2026-05-28T21:00:00Z",
+      "timestamp_local": "2026-05-28T14:00:00-07:00",
+      "day": 8,
+      "title": "Community recovery meeting at Cal State Fullerton for evacuees",
+      "description": "A community recovery meeting is held at California State University Fullerton for residents displaced by the 7-day chemical emergency. Consumer protection experts are available, and OCFA Interim Fire Chief TJ McGovern attends to brief the public. The meeting runs until approximately 5:30 PM PDT, after which many residents head to a Garden Grove City Council session to continue demanding accountability from GKN Aerospace and city leadership.",
+      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19177243/",
+      "source_name": "ABC7 LA",
+      "category": "community_impact"
+    },
+    {
       "id": "evt-20260528-007",
       "timestamp_utc": "2026-05-28T22:00:00Z",
       "timestamp_local": "2026-05-28T15:00:00-07:00",
@@ -846,7 +857,18 @@
       "source_url": "https://ktla.com/news/orange-county/class-action-lawsuit-filed-chemical-leak-crisis-garden-grove/",
       "source_name": "KTLA",
       "category": "government_action"
+    },
+    {
+      "id": "evt-20260529-004",
+      "timestamp_utc": "2026-05-29T21:00:00Z",
+      "timestamp_local": "2026-05-29T14:00:00-07:00",
+      "day": 9,
+      "title": "OC Board Chair Chaffee calls on GKN to set up compensation claims process",
+      "description": "Orange County Board of Supervisors Chair Doug Chaffee publicly calls on GKN Aerospace to establish a compensation and claims process for the approximately 50,000 displaced residents and affected businesses. \"We encourage them to set up a claims process and acknowledge responsibility. We're looking for that to happen, so the public can be reimbursed.\" Chaffee says GKN should compensate businesses forced to shut down, residents who lost wages, and those who incurred hotel and displacement expenses. Details on how and when reimbursement would occur remain unclear, with county officials still exploring options. OC County has filed for FEMA reimbursement for government response costs, while pushing GKN to pay for private losses.",
+      "source_url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
+      "source_name": "Voice of OC",
+      "category": "government_action"
     }
   ],
-  "generated_at": "2026-05-29T19:00:00Z"
+  "generated_at": "2026-05-29T21:00:00Z"
 }
