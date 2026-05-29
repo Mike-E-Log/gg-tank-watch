@@ -16,13 +16,23 @@
 
 **Project:** Free, unofficial, volunteer-built static web dashboard for the Garden
 Grove, CA methyl-methacrylate (MMA) chemical-tank incident (GKN Aerospace, 12122
-Western Ave; began 2026-05-21). Shows a Leaflet map (evac zone + blast/plume
-estimates), a client-side "check your address" risk tool (OpenStreetMap Nominatim
-geocoding), and aggregated news/video/official statements from a `status.json` feed.
-Two private volunteers operate it; no money is charged. Currently `noindex` and not
-yet distributed.
+Western Ave; began 2026-05-21). Shows a MapLibre GL map on OpenFreeMap vector tiles
+(evacuation zone, the GKN facility, shelter locations, live NWS wind direction) and
+aggregated news/video/official statements from a `status.json` feed. It authors **no
+hazard verdicts** — it routes users to official sources (a pure information
+*conduit*). Two private volunteers operate it; no money is charged. Currently
+`noindex` and not yet distributed.
+
+> **2026-05-26 conduit pivot.** An earlier version had a client-side "check your
+> address" risk tool (OpenStreetMap Nominatim geocoding → SAFE/ELEVATED/HIGH/CRITICAL
+> verdict) and blast-radius/plume map layers. Both were **deliberately removed** to
+> keep the dashboard a pure conduit. This materially lowers the headline liability
+> (see [Finding 1](#1--liability-for-inaccurate-or-stale-safety-information) / R1).
+> Findings below have been reconciled to the conduit product.
 
 **Jurisdiction focus:** U.S. federal + California. **Compiled:** 2026-05-24.
+**Reconciled to the conduit product + the 2026-05-27 legal memo
+([`legal-research/2026-05-27/`](legal-research/2026-05-27/)):** 2026-05-29.
 **Method:** multi-source web research with claim-level source tracking; see
 [Methodology](#methodology--source-confidence) and [Bibliography](#bibliography).
 
@@ -62,10 +72,17 @@ is marked **⚑ partially verified**. The single most important habit for the te
 
 ## Bottom line up front
 
-1. **The biggest real risk is negligent-undertaking liability for physical harm** if
-   a user relies on inaccurate or stale "safe/unsafe" output — especially the
-   "check your address" tool, which is the feature most likely to be treated as a
-   functional product rather than protected speech. [1][2][3][9]
+1. **The biggest residual risk is negligent-undertaking / negligent-misrepresentation
+   liability for physical harm** if a user relies on inaccurate or stale information.
+   This dropped materially with the conduit pivot: the "check your address" tool — the
+   feature most likely to be treated as functional product rather than protected
+   speech — was removed, and the dashboard now authors no "safe/unsafe" output. As a
+   pure conduit republishing official data it sits closer to protected-speech /
+   intermediary territory, reinforced by two independent shields: **no pecuniary
+   interest** (Restatement §552 negligent-misrepresentation liability generally does
+   not attach to a free, non-commercial provider) and the *Brandt v. The Weather
+   Channel* line (no liability for republished forecasts/official data absent actual
+   negligence). [1][2][3][9][53][54]
 2. **Volunteer and Good Samaritan immunity statutes almost certainly do NOT cover
    this setup.** The federal Volunteer Protection Act requires a nonprofit/government
    nexus the two operators lack; California's Good Samaritan law covers hands-on care
@@ -83,13 +100,32 @@ is marked **⚑ partially verified**. The single most important habit for the te
    snippet + link + attribution, never full-article reproduction; YouTube via the
    official iframe; republish *official* statements (fair-report privilege) and be
    cautious republishing private individuals' accusations. [24][25][26][28][29][31]
-6. **The two operational compliance items that can break the site are the OSM
-   Nominatim and tile usage policies** — Nominatim bans autocomplete and caps at
-   1 request/second site-wide, with IP-ban consequences. This is a "fix before
-   distribution" item. [36][37]
+6. **The operational-compliance picture simplified with the conduit pivot.** Nominatim
+   geocoding was removed with the address tool, eliminating the highest-risk
+   service-terms item (the 1 req/s site-wide cap + autocomplete ban). The map now uses
+   self-hosted MapLibre GL on OpenFreeMap vector tiles — keep OpenFreeMap/OSM
+   attribution visible. The remaining service-terms watch item is Microlink
+   link-previews (50/day shared free quota → cache or pre-render). [41][55]
 7. **Accessibility law probably does not bind this project** (no business nexus), but
    given a vulnerable, partly limited-English audience, voluntary WCAG 2.1 AA
    conformance is cheap insurance and the right thing to do. [43][45]
+
+> **⚠️ Caveat — Vietnamese-verification gap (added 2026-05-29).** The risk ratings above
+> assume a *clean conduit*: accurate republication under honest disclosure. One gap
+> qualified that assumption. Until dashboard v0.16, the site shipped ~100 safety-critical
+> **Vietnamese** UI strings that were AI-drafted and **never verified by a fluent native
+> speaker** (the prior reviewer is not fluent), while several docs described the
+> translations as "native-verified." Unverified machine/AI translation of life-safety copy
+> is exactly the *inaccurate safety information* §1 analyzes, and a confidently wrong
+> Vietnamese "you're safe" manufactures the reliance the conduit posture exists to avoid —
+> disproportionately on a limited-English population the standard of care (HHS §1557,
+> federal LEP guidance, CA Gov. Code §7299.7) treats as protected. **Remediated in v0.16:**
+> Vietnamese is held (`ready:false`, automatic English fallback), the false "native-verified"
+> claims were corrected, and a build-failing eval gate blocks any unverified language from
+> shipping. **Open:** re-enable Vietnamese only after a fluent native speaker + certified
+> translation verify it. This caveat is risk-mapping, not legal advice; attorney review
+> still gates public launch. See `docs/LANGUAGE_ACCESS.md`, `eval/test_language_access.py`,
+> and `docs/research/2026-05-29-vi-anthropic-lens-research.md`.
 
 ---
 
@@ -140,14 +176,36 @@ reliance/causation chain. [3][4][9] **⚑ Partially verified:** no retrieved Cal
 case squarely holds a disclaimer defeats a §324A claim for safety info — the inference
 is doctrinally sound but not confirmed by an on-point holding.
 
-**First Amendment caveat for the "check your address" tool.** *Winter* protects
-general expression but carved out highly technical data "used directly in dangerous
-activities" (its aeronautical-charts line); *Brandenburg v. Ohio*, 395 U.S. 444
-(1969) protects speech short of inciting imminent lawless action. [9][10] An
-interactive tool that outputs a specific safe/unsafe determination is the feature most
-at risk of being characterized as chart-like functional output rather than protected
-speech. **⚑ Partially verified** — how a court would classify an interactive risk tool
-is fact-specific and untested.
+**Conduit pivot removed the highest-exposure feature.** *Winter* protects general
+expression but carved out highly technical data "used directly in dangerous
+activities" (its aeronautical-charts line). [9][10] An interactive tool that outputs a
+specific safe/unsafe determination was the feature most at risk of being characterized
+as chart-like functional output rather than protected speech — and that "check your
+address" tool was **removed in the 2026-05-26 conduit pivot.** The dashboard now
+displays only official-sourced facts (evac zone, wind, shelters) and routes to
+authorities; it authors no determination for a user to rely on. This moves the tool
+from the functional-product zone back toward protected informational speech, and the
+§324A(c) reliance prong now has no authored verdict to attach to. **⚑ Partially
+verified** — no retrieved holding classifies a conduit dashboard; the inference is
+doctrinally sound but untested.
+
+**Independent shield: Restatement §552 pecuniary-interest requirement.** Negligent
+misrepresentation under Restatement (Second) of Torts §552 requires that the
+information be supplied "in the course of [a] business, profession or employment, or
+in any other transaction in which [the supplier] has a **pecuniary interest**." [54]
+A free, non-commercial, volunteer dashboard with no subscriptions or ads has no
+pecuniary interest, so §552 liability almost certainly does not attach. The 2026-05-27
+conduit memo treats this as the strongest single defense against a misrepresentation
+claim. **Residual:** monetizing later (ads, subscriptions, even a creative
+"portfolio-drives-employment" theory) would change this analysis — re-assess before
+adding revenue. [50][54]
+
+**Conduit/forecaster analogy reinforces the baseline.** Courts are extremely reluctant
+to impose liability for republished predictions. In *Brandt v. The Weather Channel* a
+broadcaster was not liable when a viewer drowned during an unexpected storm; courts
+require proof of actual negligence in preparing information, not merely that it proved
+incorrect. [53] A dashboard republishing government evacuation/weather data is an
+analogous conduit, not the original source.
 
 ---
 
@@ -250,7 +308,7 @@ notice … and (2) … action that unambiguously manifests … assent," and cond
 gray font." [22] Since this site has no contract to compel (no login, no purchase, no
 arbitration clause), the realistic goal is **putting a reasonable user on notice so
 reliance becomes unreasonable** — a visible, high-contrast, legible disclaimer *on the
-page near the map and address tool*, not buried in a footer link.
+page near the map*, not buried in a footer link.
 
 **"Informational only / verify with official sources" is the highest-value clause.**
 It directly attacks reliance and causation. The pattern mirrors medical disclaimers
@@ -299,8 +357,21 @@ provider." [29] But adding your own commentary forfeits immunity *for your own
 statements*, and § 230 does not cover IP/copyright claims. [30] California's
 republication baseline is strict — "one who republishes a libel adopts it as his own."
 [31] **A pure automated feed of third-party links is squarely within § 230; the team's
-OWN editorial summaries, captions, and the risk tool's conclusions are NOT — write
-those carefully and factually.**
+OWN editorial summaries and captions are NOT — write those carefully and factually.**
+(The "risk tool's conclusions," previously the clearest example of the team's own
+content, no longer exist after the conduit pivot — see [Finding 1](#1--liability-for-inaccurate-or-stale-safety-information).)
+
+**Aggregator vs. information-content-provider (the §230 line).** The 2026-05-27 memo
+maps the controlling circuit law: *Force v. Facebook*, 934 F.3d 53 (2d Cir. 2019) held
+algorithmic curation of third-party content does not strip §230 immunity ("arranging
+and distributing third-party information … is an essential result of publishing");
+*Fair Housing Council v. Roommates.com* (9th Cir. 2008) loses immunity only when a
+platform "materially contributes to the illegality" of content; *Anderson v. TikTok*
+(3d Cir. 2024) is an outlier circuit split on personalized algorithmic recommendation.
+A dashboard that categorizes official data (evacuation, weather, shelters) without
+personalized algorithmic curation performs far less editorial function than Facebook —
+and Facebook kept its immunity. The conduit posture (passive aggregation, no authored
+analysis) sits firmly on the protected side of this line. [50][51]
 
 **Republish OFFICIAL statements for the fair-report privilege; be cautious with
 private accusations.** California does **not** recognize neutral reportage for private
@@ -326,39 +397,30 @@ California guides are not maintained post-2014/2016.
 > **This is the section with concrete operational obligations.** The Nominatim and
 > tile policies are the items most likely to get the site throttled or IP-banned.
 
-**OpenStreetMap raster tiles — `tile.openstreetmap.org` [36] (HIGH attention).** The
-OSMF Tile Usage Policy requires:
-- **Attribution:** show "© OpenStreetMap contributors" visibly; do "not hide
-  attribution beneath UI, behind toggles, or off-screen."
-- **No bulk download:** "Bulk downloading is any pre-emptive fetching of tiles other
-  than those a user is actively viewing" — prohibited; "Offline use is not permitted."
-- **User-Agent:** "Send a clear, unique User-Agent string that names your app";
-  generic SDK defaults "will be blocked."
-- **Caching:** honor cache headers, or "cache each tile for at least 7 days."
-- The policy warns "access may be withdrawn at any point." A low-traffic civic tool
-  using normal interactive panning is within policy *if* attribution + a descriptive
-  User-Agent are present — but for resilience, a keyed third-party tile CDN or
-  self-hosting (switch2osm.org) is the safer production choice.
+**Map tiles — OpenFreeMap vector tiles via self-hosted MapLibre GL [55].** The conduit
+pivot replaced Leaflet + `tile.openstreetmap.org` raster tiles with **MapLibre GL**
+(self-hosted in `/lib`, BSD-2) rendering **OpenFreeMap** vector tiles. This removed the
+OSMF raster-tile-policy exposure (the prior 7-day-cache / no-bulk-download / named
+User-Agent obligations and the "access may be withdrawn at any point" warning).
+OpenFreeMap is free for any use and asks only that you keep attribution visible; the
+underlying data is still OpenStreetMap, so the ODbL "© OpenStreetMap contributors"
+credit applies (see below). Self-hosting the renderer also removes the CDN
+single-point-of-failure that previously broke the map on refresh. **Action:** keep the
+OpenFreeMap/OSM attribution control visible and unobscured.
 
-**Nominatim geocoding — `nominatim.openstreetmap.org` [37] (HIGHEST-RISK ITEM).**
-Verbatim hard limits:
-- "an absolute **maximum of 1 request per second**" — **this cap is site-wide across
-  all your users combined, not per-user.**
-- Provide "a valid HTTP Referer or User-Agent identifying the application."
-- "Results **must be cached** on your side"; repeated identical queries "may be
-  classified as faulty and blocked."
-- **Unacceptable Use (outright bans):** "Auto-complete search"; "Systematic queries";
-  "Scraping"; "Reselling." Such uses "will get you **banned**."
+**Nominatim geocoding — REMOVED (was `nominatim.openstreetmap.org`, the prior
+HIGHEST-RISK item).** The "check your address" tool that called Nominatim was deleted
+in the 2026-05-26 conduit pivot, so the OSMF Nominatim Usage Policy no longer applies:
+the 1 req/s site-wide cap, the mandatory result caching, and the autocomplete /
+systematic-query / scraping ban (an instant-ban trigger) are all moot. *If any
+address-lookup feature is ever reintroduced, this section's limits become binding again
+— see the prior revision history.* [37]
 
-**Action:** verify the address input is **submit-on-enter, not keystroke/debounced
-autocomplete** (autocomplete is an instant-ban trigger), set a descriptive
-User-Agent/Referer, and cache results. For any real distribution volume, move to a
-keyed third-party geocoder or self-hosted Nominatim to remove the ban risk entirely.
-
-**Leaflet — BSD-2-Clause [38].** Keep the bundled copyright/LICENSE header (don't
-strip it from minified bundles). Leaflet renders OSM's attribution via its built-in
-attribution control — **do not remove that control**, which also discharges the tile
-and ODbL attribution duties.
+**MapLibre GL — BSD-2-Clause [55].** The self-hosted MapLibre GL build in `/lib` keeps
+its license header. MapLibre renders the OpenFreeMap/OSM attribution via its built-in
+attribution control — **do not remove or hide that control**, which discharges the
+vector-tile and ODbL attribution duties. (Leaflet, the prior renderer, is no longer
+used.)
 
 **YouTube embedded iframe [39][40].** Use the standard `<iframe>` embed: don't overlay
 visual elements in front of the player, keep the viewport "at least 200px by 200px,"
@@ -373,7 +435,7 @@ verified:** docs show both "50/day" (current) and a legacy "250/24h"; treat 50/d
 binding.
 
 **OSM data attribution (ODbL) [42].** Required credit: "© OpenStreetMap contributors,"
-with a link to openstreetmap.org/copyright — satisfied automatically by Leaflet's
+with a link to openstreetmap.org/copyright — satisfied automatically by MapLibre GL's
 attribution control if left intact.
 
 ---
@@ -403,11 +465,10 @@ Both, however, point to **WCAG 2.1/2.2 AA as the de facto standard** to follow.
 
 **Minimal good-faith WCAG for this tool** (important given a vulnerable, partly
 limited-English audience): text contrast ≥ 4.5:1; alt text on informational
-images/icons; full keyboard navigation with visible focus; programmatic labels on the
-address input; never convey status by color alone (status badges need text/icon too);
-semantic headings/landmarks; and — because map info is inherently visual — **a
-plain-text equivalent of the in-zone determination** so non-visual users get the same
-emergency info. A short accessibility statement with a contact email is a recommended
+images/icons; full keyboard navigation with visible focus; never convey status by color alone (status
+badges need text/icon too); semantic headings/landmarks; and — because map info is
+inherently visual — **a plain-text equivalent of the evacuation-zone information shown
+on the map** so non-visual users get the same emergency info. A short accessibility statement with a contact email is a recommended
 good-faith signal. (Pairs with the [error-report channel](#open-questions-to-raise-with-counsel)
 open question.)
 
@@ -433,11 +494,14 @@ either (a) collect no personal info via messaging, (b) implement neutral age-gat
 verifiable parental consent, or (c) document the service is not directed to children
 and act on actual knowledge.
 
-**Today's client-side geocoding note.** A user-typed address is sent from the browser
-directly to OSMF/Nominatim and is not stored by the operators. Worth a one-line
-privacy notice: *"Addresses you type are sent to OpenStreetMap's Nominatim service to
-locate them and are not stored by us."* (This is analysis of the described
-architecture, not a fetched source.)
+**No client-side geocoding today.** The conduit pivot removed the address tool, so the
+dashboard no longer sends user-typed addresses to any geocoder. There is no per-user
+location input to disclose. **Forward-looking (CCPA/CPRA + AB 1355):** if a
+location-aware feature (proximity alerts, location filtering) is ever added, precise
+geolocation is **Sensitive Personal Information** under CPRA, and California's proposed
+Location Privacy Act (AB 1355, introduced Feb 2025) would require opt-in consent with
+penalties up to $25,000/violation. Process any future geolocation **client-side only**,
+never stored server-side. [50][20]
 
 ---
 
@@ -481,14 +545,14 @@ an actuarial assessment — confirm with counsel.
 
 | # | Risk | L | S | Pre-mitigation | Mitigation |
 |---|------|---|---|----------------|------------|
-| R1 | **Negligent-undertaking / physical-harm claim** from reliance on wrong "check your address" or stale evac output | Low–Med | **High** | The headline exposure | "Informational only / verify with official sources / call 911" on-page near the tool; show data timestamp + staleness warning; frame all output as *estimates*; never output bare "safe/unsafe"; attorney review of the tool's wording [1][2][3][9] |
-| R2 | **Negligent misrepresentation** from a specific false factual assertion ("your address is safe") | Low | **High** | Tied to R1 | Avoid "safe"/"official"; hedge every determination; disclaim [1][3][4] |
+| R1 | **Negligent-undertaking / physical-harm claim** from reliance on stale evac/wind display | Low | **Low–Med** | Dropped after conduit pivot removed the address tool (was the headline exposure) | "Informational only / verify with official sources / call 911" on-page; data timestamp + staleness warning; frame as *estimates*; **no authored verdicts** (conduit); §552 no-pecuniary-interest shield [1][2][3][9][53][54] |
+| R2 | **Negligent misrepresentation** from a specific false factual assertion | Low | Low–Med | Largely moot — the "your address is safe" output was removed; reinforced by §552 pecuniary-interest shield (no revenue) | Avoid "safe"/"official"; hedge; disclaim; stay non-commercial [1][3][4][54] |
 | R3 | **No volunteer/Good-Samaritan immunity** (false sense of protection) | — | Med | A *gap*, not an event | Don't rely on VPA/§1799.102; consider a nonprofit umbrella (see open questions) [6][11][12][13] |
 | R4 | **False-association / "official" implication** | Low | Med | Reputational + escalates R1 | No seals/insignia; prominent non-affiliation notice; avoid "official" [7][34] |
 | R5 | **Defamation from republishing private accusations** | Low | Med | Higher if editorializing | §230 for pure third-party feeds; fair-report only for *official* statements; factual captions; no editorial accusations [29][30][31] |
 | R6 | **Copyright — over-long article reproduction** | Low | Med | Low if snippet+link | Headline + short snippet + link + attribution only; never full articles [24][25] |
-| R7 | **Nominatim ban / throttle** (autocomplete, >1 req/s, no caching) | **Med–High** | Med | Breaks the address tool | Submit-on-enter only; descriptive User-Agent/Referer; cache; keyed/self-hosted geocoder for volume [37] |
-| R8 | **OSM tile throttle / attribution lapse** | Low–Med | Low–Med | Map breaks | Keep "© OpenStreetMap contributors" visible; named User-Agent; consider tile CDN [36][42] |
+| R7 | **Nominatim ban / throttle** — N/A | — | — | Removed with the address tool (conduit pivot); re-applies only if address lookup is reintroduced | n/a [37] |
+| R8 | **Map-tile attribution lapse** (OpenFreeMap vector tiles + self-hosted MapLibre) | Low | Low | Self-hosting removed the OSM raster-tile throttle risk | Keep OpenFreeMap/"© OpenStreetMap contributors" attribution control visible [42][55] |
 | R9 | **Microlink 429 under public traffic** (50/day shared) | Med | Low | Previews fail | Cache / pre-render previews at build time [41] |
 | R10 | **YouTube embed ToS breach** | Low | Low | — | Official iframe ≥200×200, no overlay, don't hide branding [39][40] |
 | R11 | **Accessibility / Unruh claim** | Low | Med | $4k/violation + fees if it landed | Voluntary WCAG 2.1 AA; text equivalent for map; accessibility statement [43][45] |
@@ -504,13 +568,14 @@ an actuarial assessment — confirm with counsel.
 > items are placeholders. Per Civil Code § 1668, nothing here can (or attempts to)
 > waive liability for fraud, willful injury, violation of law, or gross negligence. [16][18]
 
-### A. On-page banner (place near the map and the "check your address" tool — visible, legible, not a footer link)
+### A. On-page banner (place near the map — visible, legible, not a footer link)
 
 > **Informational only — not official emergency guidance.** This is an independent,
-> volunteer-run website. The map, zones, and address results are **estimates**, may be
-> **out of date or wrong**, and are **not** a substitute for official guidance. Always
-> verify with the **Orange County Fire Authority** and the **City of Garden Grove**
-> (ggcity.org/emergency). **If you are in danger, call 911.**
+> volunteer-run website. The map and information shown are **estimates compiled from
+> official and news sources**, may be **out of date or wrong**, and are **not** a
+> substitute for official guidance. Always verify with the **Orange County Fire
+> Authority** and the **City of Garden Grove** (ggcity.org/emergency). **If you are in
+> danger, call 911.**
 
 *(Provide a translated equivalent for the Vietnamese audience, reviewed by the
 translator; keep the same hedged meaning — avoid words equivalent to "official" or
@@ -523,11 +588,11 @@ translator; keep the same hedged meaning — avoid words equivalent to "official
 > City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any
 > government agency. For official emergency information, see ggcity.org/emergency.
 >
-> **2. Informational only.** All content — including the map, evacuation zone, blast
-> and plume estimates, and the "check your address" tool — is provided for **general
+> **2. Informational only.** All content — including the map, the evacuation zone, and
+> the aggregated news, video, and official statements — is provided for **general
 > informational purposes only** and is **not** a substitute for official emergency
-> guidance, professional advice, or your own judgment. The estimates are not
-> authoritative and may be inaccurate, incomplete, or outdated.
+> guidance, professional advice, or your own judgment. It is compiled from official and
+> news sources, is not authoritative, and may be inaccurate, incomplete, or outdated.
 >
 > **3. No warranty; "as is."** The information is provided "**as is**" and "**as
 > available**," without warranties of any kind, express or implied, including accuracy,
@@ -553,16 +618,16 @@ translator; keep the same hedged meaning — avoid words equivalent to "official
 > at [contact]. *(See open questions — an error-report channel is itself a possible
 > liability mitigation.)*
 >
-> **8. Privacy.** We do not store the addresses you type. When you use the address
-> tool, the address is sent to OpenStreetMap's Nominatim service to locate it. *(Update
-> this if any data is ever collected or stored.)*
+> **8. Privacy.** We do not collect or store personal information. The dashboard has no
+> login, no accounts, and no address-lookup feature. *(Update this if any data is ever
+> collected or stored.)*
 >
 > **9. Changes.** We may update these terms at any time. Last updated: [date].
 
 ### C. Attribution footer (compliance)
 
-> Map © OpenStreetMap contributors. Geocoding by OpenStreetMap Nominatim. *(Keep
-> Leaflet's built-in attribution control enabled — it renders this automatically.)* [36][38][42]
+> Map © OpenStreetMap contributors, tiles by OpenFreeMap. *(Keep MapLibre GL's built-in
+> attribution control enabled — it renders this automatically.)* [42][55]
 
 ---
 
@@ -572,14 +637,13 @@ A practical pre-distribution checklist. **Items marked 🔴 are blockers**; 🟡
 recommended; 🟢 are good practice.
 
 - [ ] 🔴 **Attorney review** of (a) this document's load-bearing findings and (b) the
-      final disclaimer/ToU and the "check your address" tool's exact output wording. [1][16]
-- [ ] 🔴 **On-page "informational only / verify / call 911" banner** live near the map
-      and address tool — visible and legible, not buried. [22][23]
-- [ ] 🔴 **No "official" or "safe" language; no government seals/insignia** anywhere in
-      UI, logo, or favicon. [7][34]
-- [ ] 🔴 **Nominatim compliance:** confirm submit-on-enter (no autocomplete), set a
-      descriptive User-Agent/Referer, cache results, keep aggregate <1 req/s — or switch
-      to a keyed/self-hosted geocoder before wide distribution. [37]
+      final disclaimer/ToU wording. [1][16]
+- [ ] 🔴 **On-page "informational only / verify / call 911" banner** live near the map,
+      visible and legible, not buried. [22][23]
+- [ ] 🔴 **No authored verdicts; no "official" or "safe" language; no government
+      seals/insignia** anywhere in UI, logo, or favicon (conduit posture). [7][34]
+- [x] ✅ **Geocoder compliance — N/A.** The Nominatim address tool was removed in the
+      conduit pivot; no geocoding obligations remain. [37]
 - [ ] 🟡 **Prominent non-affiliation notice** ("not affiliated with the City of Garden
       Grove / OCFA / any government agency"). [34][35]
 - [ ] 🟡 **Data freshness/staleness indicator** visible on the dashboard (timestamp +
@@ -587,7 +651,8 @@ recommended; 🟢 are good practice.
 - [ ] 🟡 **Aggregation hygiene:** headline + short snippet + link + attribution only;
       no full-article reproduction; official iframe for YouTube. [24][25][28]
 - [ ] 🟡 **Republish official statements; avoid editorializing private accusations.** [29][31]
-- [ ] 🟡 **OSM attribution** ("© OpenStreetMap contributors") visible (Leaflet control on). [36][42]
+- [ ] 🟡 **Map attribution** ("© OpenStreetMap contributors", tiles by OpenFreeMap)
+      visible (MapLibre control on). [42][55]
 - [ ] 🟡 **Microlink:** cache/pre-render previews to avoid 429s under traffic. [41]
 - [ ] 🟢 **Voluntary WCAG 2.1 AA basics** + plain-text equivalent of the in-zone result
       + short accessibility statement (important for the limited-English audience). [43][45]
@@ -641,6 +706,16 @@ Microlink 50-vs-250/day discrepancy; and the Lanham § 43(a) line (not retrieved
 primary source). **Treat every flagged item as a question for a lawyer, not a
 conclusion.** DMLP guides cited for California defamation are not maintained past
 2014/2016.
+
+**2026-05-29 reconciliation.** This document was updated to match the shipped conduit
+product (address checker, blast/plume layers, Leaflet, and Nominatim removed) and to
+fold in the 2026-05-27 deep-research legal memo
+([`legal-research/2026-05-27/legal_risk_memo.md`](legal-research/2026-05-27/legal_risk_memo.md)).
+The memo's distinctive contributions — the §552 pecuniary-interest shield, the §230
+aggregator/ICP line (*Force v. Facebook*), the *Brandt* forecaster analogy, and the
+CCPA/AB 1355 location-privacy watch — are cited inline as [50]–[55]. The two docs use
+different primary framings (§324A negligent-undertaking here; §552 negligent
+misrepresentation in the memo); both are retained as complementary defenses.
 
 ---
 
@@ -702,6 +777,14 @@ conclusion.** DMLP guides cited for California defamation are not maintained pas
 47. DOJ — 2024 ADA Title II web rule fact sheet (state/local govt; WCAG 2.1 AA). (P, .gov) — https://www.ada.gov/resources/2024-03-08-web-rule/
 48. California Attorney General — CCPA (business thresholds). (P, .ca.gov) — https://oag.ca.gov/privacy/ccpa
 49. FTC — COPPA Rule, 16 CFR Part 312 (verifiable parental consent) ⚑. (P, .gov) — https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa · https://www.ecfr.gov/current/title-16/chapter-I/subchapter-C/part-312
+
+**Conduit reconciliation additions (2026-05-29)**
+50. 2026-05-27 deep-research legal memo (internal). [`docs/legal-research/2026-05-27/legal_risk_memo.md`](legal-research/2026-05-27/legal_risk_memo.md) — conduit-mode risk memo; sources tracked in the sibling `claims.jsonl`/`evidence.jsonl`/`sources.jsonl`.
+51. Force v. Facebook, 934 F.3d 53 (2d Cir. 2019). (P, case) — algorithmic curation protected under §230. https://law.justia.com/cases/federal/appellate-courts/F3/934/53/
+52. Bartnicki v. Vopper, 532 U.S. 514 (2001). (P, case) — First Amendment protects publishing truthful information on matters of public concern. https://supreme.justia.com/cases/federal/us/532/514/
+53. Brandt v. The Weather Channel. (S, case) — no liability for incorrect forecasts absent actual negligence (cited in memo [15]).
+54. Restatement (Second) of Torts § 552 (1977). (S, Restatement) — negligent misrepresentation; pecuniary-interest requirement. https://www.columbia.edu/~mr2651/ecommerce3/2nd/statutes/RestatementTorts.pdf
+55. OpenFreeMap (https://openfreemap.org/) + MapLibre GL JS (BSD-2-Clause, https://maplibre.org/). (P, project/license) — vector tiles + self-hosted renderer replacing OSM raster tiles + Leaflet.
 
 ---
 
