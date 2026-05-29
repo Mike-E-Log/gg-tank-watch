@@ -1763,7 +1763,26 @@ var STRINGS = {
   "banner.offline.detail": { en: "Could not load status.json — {err}", vi: "Không thể tải status.json — {err}" },
   "banner.update.title": { en: "📢 UPDATE", vi: "📢 CẬP NHẬT" },
   "banner.urgent.title": { en: "🚨 URGENT", vi: "🚨 KHẨN CẤP" },
+  /* Emoji-free pill labels — reuse verified CẬP NHẬT / KHẨN CẤP without the
+     ASCII-only \w regex strip that mangled VI diacritics ("CẬP NHẬT" -> "CP NHT"). */
+  "banner.update.pill": { en: "UPDATE", vi: "CẬP NHẬT" },
+  "banner.urgent.pill": { en: "URGENT", vi: "KHẨN CẤP" },
   "banner.action.updates": { en: "→ News", vi: "→ Tin tức" },
+  /* ===== BANNER REASON i18n (localizes scripts/update_status.py breaking_reason) =====
+     EN values reproduce pipeline output verbatim so EN render is a no-op round-trip.
+     VI reuses Nancy-verified atoms; newly-composed words flagged G1 (English fallback auto). */
+  "banner.reason.resolved":       { en: "INCIDENT RESOLVED — evacuation lifted", vi: "SỰ CỐ ĐÃ ĐƯỢC GIẢI QUYẾT — đã dỡ bỏ lệnh sơ tán" },
+  "banner.reason.severity":       { en: "Severity bumped: {prev} -> {next}", vi: "Mức độ nghiêm trọng được nâng lên: {prev} → {next}" /* G1: "được nâng lên" (4-reviewer corrected, was "tăng"); pending Nancy */ },
+  "banner.reason.evacLifted":     { en: "Evacuation order LIFTED", vi: "ĐÃ DỠ BỎ lệnh sơ tán" },
+  "banner.reason.evacReinstated": { en: "Evacuation order REINSTATED", vi: "BAN HÀNH LẠI lệnh sơ tán" /* G1: "Ban hành lại"=re-issue (4-reviewer corrected, was "Khôi phục"=restore); pending Nancy */ },
+  "banner.reason.evacExpanded":   { en: "Evacuation zone EXPANDED", vi: "MỞ RỘNG khu vực sơ tán" },
+  "banner.reason.injuries":       { en: "First reported injuries: {n}", vi: "Lần đầu báo cáo người bị thương: {n}" /* G1: "người bị thương"=injured-only (4-reviewer corrected, was "thương vong"=casualties incl. deaths); pending Nancy */ },
+  "banner.reason.newStatements":  { en: "{n} new official statement(s)", vi: "{n} thông cáo chính thức mới" },
+  "banner.reason.residentsShifted": { en: "Evacuation residents shifted: {prev} -> {next} ({delta})", vi: "Số cư dân sơ tán thay đổi: {prev} → {next} ({delta})" },
+  "severity.low":      { en: "low",      vi: "thấp" /* G1: not yet Nancy-verified */ },
+  "severity.moderate": { en: "moderate", vi: "trung bình" /* G1: not yet Nancy-verified */ },
+  "severity.high":     { en: "high",     vi: "cao" /* G1: not yet Nancy-verified */ },
+  "severity.critical": { en: "critical", vi: "nguy kịch" /* G1: 3/4 reviewers OK; 1 suggested "nguy cấp" (situation vs medical); pending Nancy */ },
   "time.justNow": { en: "just now", vi: "vừa xong" },
   "time.minAgo": { en: "{n} min ago", vi: "{n} phút trước" },
   "loading.firstData": { en: "Waiting for first data. Auto-retry in 30s.", vi: "Đang đợi dữ liệu đầu tiên. Tự động thử lại sau 30 giây." },
@@ -1855,6 +1874,9 @@ function applyLang() {
   });
   document.querySelectorAll("[data-i18n-title]").forEach(function(el) {
     el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
+  });
+  document.querySelectorAll(".banner-msg[data-reason]").forEach(function(el) {
+    el.textContent = localizeBreakingReason(el.getAttribute("data-reason"));
   });
   renderLangPicker();
   var themeBtn = document.getElementById("theme-toggle");
@@ -2029,6 +2051,40 @@ function ackUpdate(sig) {
 }
 window.ackUpdate = ackUpdate;
 
+/* Escape a string for safe placement in an HTML attribute value. */
+function escAttr(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+/* Localize a single severity token (low/moderate/high/critical). English passthrough if unknown. */
+function localizeSeverity(word) {
+  var key = "severity." + String(word).toLowerCase();
+  return STRINGS[key] ? t(key) : word;
+}
+
+/* Map an English pipeline breaking_reason to the active language.
+   Unrecognized reasons pass through unchanged (G1-safe English fallback). */
+function localizeBreakingReason(reason) {
+  if (!reason) return "";
+  var EXACT = {
+    "INCIDENT RESOLVED — evacuation lifted": "banner.reason.resolved",
+    "Evacuation order LIFTED": "banner.reason.evacLifted",
+    "Evacuation order REINSTATED": "banner.reason.evacReinstated",
+    "Evacuation zone EXPANDED": "banner.reason.evacExpanded"
+  };
+  if (EXACT[reason]) return t(EXACT[reason]);
+  var m;
+  if ((m = reason.match(/^(\d+) new official statement\(s\)$/)))
+    return t("banner.reason.newStatements", { n: m[1] });
+  if ((m = reason.match(/^First reported injuries: (\d+)$/)))
+    return t("banner.reason.injuries", { n: m[1] });
+  if ((m = reason.match(/^Severity bumped: (\w+) -> (\w+)$/)))
+    return t("banner.reason.severity", { prev: localizeSeverity(m[1]), next: localizeSeverity(m[2]) });
+  if ((m = reason.match(/^Evacuation residents shifted: ([\d,]+) -> ([\d,]+) \(([+\-][\d,]+)\)$/)))
+    return t("banner.reason.residentsShifted", { prev: m[1], next: m[2], delta: m[3] });
+  return reason;
+}
+
 function setBanners(banners) {
   $("banners").innerHTML = banners.map(function(b) {
     var clickable = (b.kind === "breaking" || b.kind === "update");
@@ -2037,12 +2093,12 @@ function setBanners(banners) {
       var isUrgent = b.kind === "breaking";
       var bannerClass = isUrgent ? "banner-urgent" : "banner-update";
       var pillClass = isUrgent ? "banner-pill-urgent" : "banner-pill-update";
-      var pillLabel = isUrgent ? t("banner.urgent.title").replace(/[^\w\s]/g, "").trim() : t("banner.update.title").replace(/[^\w\s]/g, "").trim();
+      var pillLabel = isUrgent ? t("banner.urgent.pill") : t("banner.update.pill");
       var dismissAction = ' onclick="event.stopPropagation(); ackUpdate(\'' + (b.sig || '') + '\'); this.closest(\'.banner\').remove()"';
       var bannerOnclick = 'onclick="' + tabTarget + '"';
       return '<div class="banner ' + bannerClass + '" ' + bannerOnclick + ' style="display:flex;align-items:center;gap:10px;padding:8px 22px;font-size:12.5px;animation:sa-fade-in .25s ease-out">' +
         '<span class="banner-pill ' + pillClass + '">' + pillLabel + '</span>' +
-        '<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (b.message || '') + '</span>' +
+        '<span class="banner-msg" data-reason="' + escAttr(b.message || '') + '" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + localizeBreakingReason(b.message || '') + '</span>' +
         '<button class="banner-dismiss" aria-label="Dismiss"' + dismissAction + '>&times;</button>' +
       '</div>';
     }
