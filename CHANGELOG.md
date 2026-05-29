@@ -2,6 +2,12 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.15] — 2026-05-29 (resident shareability)
+
+### Added
+- **Shareable link previews** — sharing the dashboard URL (iMessage, WhatsApp, Nextdoor, Facebook) now renders a rich card (title, description, and a "GG Tank Watch" preview image) instead of a bare link. Open Graph + Twitter Card tags drive it, and the card keeps the honest "unofficial — verify with ggcity.org/emergency" framing. Social crawlers render the card even though the site stays `noindex`, so resident-to-resident sharing — the main way it spreads during the emergency — now carries context.
+- **One-tap Share button** — a Share control in the top-right header opens the native share sheet on mobile (Web Share API) and copies the link on desktop as a fallback. No new dependencies.
+
 ## [v0.14] — 2026-05-28 (banner messages translated)
 
 ### Fixed

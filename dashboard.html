@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>GG Tank Watch</title>
   <meta name="description" content="GG Tank Watch — unofficial, volunteer-built situational awareness for the Garden Grove chemical-tank emergency. Always verify with ggcity.org/emergency.">
+  <link rel="canonical" href="https://gg-tank-dashboard.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GG Tank Watch">
+  <meta property="og:title" content="GG Tank Watch — Garden Grove tank emergency">
+  <meta property="og:description" content="Unofficial, volunteer-built situational awareness for the Garden Grove chemical-tank emergency. Routes to official sources — always verify with ggcity.org/emergency.">
+  <meta property="og:url" content="https://gg-tank-dashboard.vercel.app/">
+  <meta property="og:image" content="https://gg-tank-dashboard.vercel.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GG Tank Watch — unofficial situational awareness for the Garden Grove tank emergency">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GG Tank Watch — Garden Grove tank emergency">
+  <meta name="twitter:description" content="Unofficial, volunteer-built situational awareness. Routes to official sources — verify with ggcity.org/emergency.">
+  <meta name="twitter:image" content="https://gg-tank-dashboard.vercel.app/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -249,6 +263,7 @@
       font-weight: 600;
     }
     .topbar-btn:hover { border-color: var(--sa-celadon); }
+    #share-btn.copied { border-color: var(--sa-celadon); color: var(--sa-celadon); }
     .toggle-icon { width: 14px; height: 14px; display: block; }
     .flag { width: 16px; height: 11px; border-radius: 1px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15); display: block; }
     #theme-toggle {
@@ -1515,6 +1530,9 @@
       <span class="topbar-spacer"></span>
       <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
       <div class="topbar-controls">
+        <button id="share-btn" class="topbar-btn" type="button" aria-label="Share this page" title="Share">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+        </button>
         <div class="lang-picker" id="lang-picker">
           <button class="topbar-btn" id="lang-toggle" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" title="Language / Ng&#xF4;n ng&#x1EEF;">VI</button>
           <div class="lang-menu" id="lang-menu" role="menu"></div>
@@ -3019,6 +3037,28 @@ function _ggSwapMapStyle(dark) {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch(function () {});
     }
+  </script>
+  <script>
+    (function () {
+      var btn = document.getElementById('share-btn');
+      if (!btn) return;
+      var data = {
+        title: 'GG Tank Watch',
+        text: 'Live situational awareness for the Garden Grove tank emergency — routes you to official sources.',
+        url: location.href
+      };
+      btn.addEventListener('click', async function () {
+        if (navigator.share) {
+          try { await navigator.share(data); } catch (e) { /* user dismissed */ }
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+          try {
+            await navigator.clipboard.writeText(location.href);
+            btn.classList.add('copied');
+            setTimeout(function () { btn.classList.remove('copied'); }, 1500);
+          } catch (e) { /* clipboard blocked */ }
+        }
+      });
+    })();
   </script>
 </body>
 </html>
