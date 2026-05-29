@@ -51,7 +51,7 @@ B16004) can refine the numbers but do not change the ranking.
 
 ## Decision — prioritized language set
 
-- **Tier 1 — must-have.** **Vietnamese** (in progress — Nancy verifying, G1) and
+- **Tier 1 — must-have.** **Vietnamese** (held — `ready:false`; AI-drafted strings await a fluent native verifier, G1) and
   **Spanish**. These two cover the overwhelming majority of LEP residents across all
   four cities.
 - **Tier 2 — strong next.** **Korean** — ~14x fewer speakers than the top two, but
@@ -64,7 +64,7 @@ B16004) can refine the numbers but do not change the ranking.
 
 Each language needs a verified native translator before its copy ships. Status:
 
-- [ ] **Vietnamese (vi)** — Nancy (native VI) verifying existing + new strings. *In progress.*
+- [ ] **Vietnamese (vi)** — **held (`ready:false`).** Existing strings are AI-drafted and **not** native-verified: the prior reviewer (Nancy) is not a fluent Vietnamese speaker and checked only a few strings, so the G1 bar is not met. A fluent native verifier is reachable and certified translation is fundable; the plan is MT-assisted drafting + mandatory fluent-human verification before the toggle goes live (see [research](research/2026-05-29-vi-anthropic-lens-research.md)). English fallback until then.
 - [ ] **Spanish (es)** — source a verified native translator. Large local pool; expected fastest.
 - [ ] **Korean (ko)** — source a verified native translator. Smaller pool; start early.
 

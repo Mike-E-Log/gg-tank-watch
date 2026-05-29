@@ -11,7 +11,7 @@
 
 ## For Anthropic reviewers
 
-This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 45 tests, exits 0).
+This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 47 tests, exits 0).
 
 ### Safety architecture (30-second scan)
 
@@ -32,13 +32,13 @@ Full diagram and test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTR
 python eval/run_all.py --skip integration
 ```
 
-Expected output (45 tests, all green):
+Expected output (47 tests, all green):
 
 ```
-  behavioral       38/38   (100.0% pass)
+  behavioral       40/40   (100.0% pass)
   schema            7/7    (100.0% pass)
 ----------------------------------------------------------------
-  TOTAL            45/45   (100.0% pass)
+  TOTAL            47/47   (100.0% pass)
 ```
 
 Test categories: 5-state behavioral sequence (writer state machine) · corroboration gate · provenance · freshness · date sanity · severity derivation · gatherer failure contract · encoding integrity · schema validation. Results append to `eval/scores.jsonl` for regression tracking.

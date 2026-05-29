@@ -12,8 +12,8 @@ The thesis: responsible AI and helpful AI are the same lane. GG Tank Watch serve
 |-----------|----------------------------------|----------|
 | **Honesty / AI transparency** | Persistent disclosure: "compiled with AI assistance, checked by a person" | T3, `disclosure.ai` string |
 | **Avoiding harm** | Information conduit only — routes to officials, authors NO directives. The §552/§230 line is explicitly load-bearing | T1 router, Code of Conduct |
-| **Human oversight** | Human reviews all AI summaries pre-publish. Native-speaker verification required for translations (G1) | Pipeline design, LANGUAGE_ACCESS.md |
-| **Scalable oversight** | 45-test eval harness monitors behavioral properties. Provenance tests prevent fabricated sources. Corroboration gate on danger downgrades | eval/ harness, test_provenance.py |
+| **Human oversight** | Human reviews all AI summaries pre-publish. A fluent native speaker must verify non-English safety copy before it ships (G1); Vietnamese is held pending verification | Pipeline design, LANGUAGE_ACCESS.md, eval/test_language_access.py |
+| **Scalable oversight** | 47-test eval harness monitors behavioral properties incl. a G1 language-access gate. Provenance tests prevent fabricated sources. Corroboration gate on danger downgrades | eval/ harness, test_provenance.py, test_language_access.py |
 | **Responsible deployment** | Attorney review gates public launch. Entity + insurance required. `noindex` until cleared | Lane B, DISTRIBUTION.md |
 | **Alignment tax = zero** | Safety constraints made the product better (more trustworthy, more useful to scared residents), not worse | Conduit > verdict design |
 

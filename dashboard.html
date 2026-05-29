@@ -1844,9 +1844,14 @@ var STRINGS = {
   "info.sourcesH": { en: "Sources & methodology", vi: "Nguồn & phương pháp" }
 };
 
+// G1 language-access gate: a language is `ready: true` only AFTER a fluent native speaker
+// verifies its safety copy. Vietnamese is HELD (ready: false) until that verification lands —
+// the vi strings above are AI-drafted, unverified, and must not ship as safety copy. t() falls
+// back to English automatically; the picker routes vi-seekers to fallbackUrl (official human
+// Vietnamese) meanwhile. Guarded by eval/test_language_access.py. See docs/LANGUAGE_ACCESS.md.
 var LANGS = [
   { code: "en", label: "English",    flag: FLAG_US, locale: "en-US", ready: true },
-  { code: "vi", label: "Tiếng Việt", flag: FLAG_VN, locale: "vi-VN", ready: true }
+  { code: "vi", label: "Tiếng Việt", flag: FLAG_VN, locale: "vi-VN", ready: false, fallbackUrl: "https://ggcity.org/emergency" }
 ];
 function readyLangs() { return LANGS.filter(function(l) { return l.ready; }); }
 function langByCode(code) {
@@ -1914,14 +1919,29 @@ function renderLangPicker() {
   var cur = langByCode(currentLang);
   btn.innerHTML = '<span style="font-size:14px;line-height:1">' + cur.flag + '</span><span>' + (currentLang === "vi" ? "Vi\u1EC7t" : "Eng") + '</span>';
   var ready = readyLangs();
-  btn.style.display = ready.length > 1 ? "" : "none";
-  menu.innerHTML = ready.map(function(l) {
+  // Languages held pending native verification (ready:false) but carrying an official
+  // human-translated fallback are offered as OUTBOUND links, not in-app switches — so a
+  // Vietnamese speaker reaches verified official Vietnamese, never unverified machine copy.
+  var outbound = LANGS.filter(function(l) { return !l.ready && l.fallbackUrl; });
+  btn.style.display = (ready.length > 1 || outbound.length > 0) ? "" : "none";
+  var items = ready.map(function(l) {
     return '<button type="button" role="menuitemradio" aria-current="' +
       (l.code === currentLang ? "true" : "false") + '" data-lang="' + l.code + '">' +
       l.flag + "<span>" + l.label + "</span></button>";
-  }).join("");
+  });
+  items = items.concat(outbound.map(function(l) {
+    return '<button type="button" role="menuitem" data-href="' + l.fallbackUrl + '" ' +
+      'title="Official Vietnamese emergency info (opens ggcity.org/emergency)">' +
+      l.flag + '<span>' + l.label + ' ↗</span></button>';
+  }));
+  menu.innerHTML = items.join("");
   menu.querySelectorAll("button").forEach(function(b) {
-    b.onclick = function() { setLang(b.getAttribute("data-lang")); closeLangMenu(); };
+    b.onclick = function() {
+      var href = b.getAttribute("data-href");
+      if (href) { window.open(href, "_blank", "noopener"); }
+      else { setLang(b.getAttribute("data-lang")); }
+      closeLangMenu();
+    };
   });
 }
 function openLangMenu() {
