@@ -1,4 +1,4 @@
-# GG MMA Tank Dashboard
+# GG Tank Watch
 
 **A single-page situational-awareness dashboard built during the May 2026 Garden Grove methyl methacrylate tank emergency** — a real, ongoing chemical incident that evacuated ~50,000 residents in a 9-square-mile zone of Orange County, California. I was a downwind-adjacent resident; I built this for myself.
 
@@ -11,7 +11,7 @@
 
 ## For Anthropic reviewers
 
-This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 46 tests, exits 0).
+This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 45 tests, exits 0).
 
 ### Safety architecture (30-second scan)
 
@@ -32,13 +32,13 @@ Full diagram and test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTR
 python eval/run_all.py --skip integration
 ```
 
-Expected output (46 tests, all green):
+Expected output (45 tests, all green):
 
 ```
-  behavioral       39/39   (100.0% pass)
+  behavioral       38/38   (100.0% pass)
   schema            7/7    (100.0% pass)
 ----------------------------------------------------------------
-  TOTAL            46/46   (100.0% pass)
+  TOTAL            45/45   (100.0% pass)
 ```
 
 Test categories: 5-state behavioral sequence (writer state machine) · corroboration gate · provenance · freshness · date sanity · severity derivation · gatherer failure contract · encoding integrity · schema validation. Results append to `eval/scores.jsonl` for regression tracking.
@@ -49,12 +49,12 @@ Red-team report (12 failure modes, guarded/unguarded verdict per mode): [`docs/F
 
 | Metric | Value | How |
 |--------|-------|-----|
-| First paint (3G) | ~500 ms | Single HTTP request, no framework, ~30 KB original code |
-| JS dependencies | 0 | Vanilla JS + CDN Leaflet (map only); no React, no build step |
-| Offline resilience | PWA + service worker | Caches last-known state; staleness banner fires when stale |
-| Initial HTTP requests | 1 | Entire app ships in one HTML file; `status.json` fetched client-side after paint |
+| First paint | No framework, no build step | The whole UI ships in one ~126 KB HTML file; `status.json` is fetched client-side after paint |
+| Third-party CDN in the critical path | 0 | MapLibre GL is self-hosted in `/lib` (~800 KB) and service-worker cached, so the map can't vanish when a CDN changes |
+| Offline resilience | PWA + service worker | Caches the last-known state and the map library; the staleness banner fires when data is old |
+| Map | MapLibre GL + OpenFreeMap | Vector tiles, light/dark styles; the map library loads when the Map tab is opened |
 
-A single-file HTML app that beats most React apps on first paint while serving a safety-critical audience on mobile data. The zero-dependency constraint is also a safety property: no supply-chain risk, no bundler foot-guns, no CDN failure (beyond Leaflet tiles, which degrade gracefully).
+A single HTML file with no framework and no build step, serving a safety-critical audience on mobile data. Self-hosting the map library is a deliberate reliability choice: an earlier CDN-loaded build disappeared on refresh, so the library now ships with the app and is cached by the service worker. Tiles come from OpenFreeMap and degrade gracefully.
 
 ---
 
@@ -62,12 +62,12 @@ A single-file HTML app that beats most React apps on first paint while serving a
 
 | | |
 |---|---|
-| **Single glance** | Hero tells you whether you're inside the evacuation zone — green / red, 32px |
-| **Live map** | Leaflet + OpenStreetMap. Evac polygon, three blast-radius circles, plume cone driven by live NOAA wind, fixed reference pins (color-coded by safety verdict), tank facility marker |
-| **Safety checker** | Type any address or intersection ("Magnolia & Talbert") → geocoded via Nominatim → verdict (SAFE / ELEVATED / HIGH / CRITICAL) + pin dropped on the map |
+| **Single glance** | Hero status board: the current-situation lead plus the key facts — evacuation status, residents affected, last verified update — without scrolling |
+| **Live map** | MapLibre GL + OpenFreeMap vector tiles (light / dark). The evacuation-zone boundary, the GKN Aerospace facility marker, shelter locations, and live NOAA wind direction |
+| **Official sources** | Routes to the authoritative channels — ggcity.org/emergency, OCFA, Genasys EVAC, OC Alert, EPA AirNow — with the reminder that no single source should be your only one |
 | **Update banner** | URGENT (red, pulsing, beep) for act-now changes; UPDATE (amber, no beep) for informational. Click → scrolls sidebar to highlight the newest statement |
 | **Statements sidebar** | Sticky, scrollable, newest-first, with `Newest` + `Recent` badges. Source links on each |
-| **Auto-refresh** | Dashboard polls `status.json` every 30 s. A refresh job re-gathers facts and rewrites `status.json` on a ~20-min cadence (see [Data sync](#data-sync--how-statusjson-stays-fresh)). Wind refreshes every 5 min from NOAA's free API |
+| **Auto-refresh** | Dashboard polls `status.json` every 30 s. A contributor runs the refresh job on demand — roughly every 20–30 min during the active incident — to re-gather facts and rewrite `status.json` (see [Data sync](#data-sync--how-statusjson-stays-fresh)). Wind refreshes every 5 min from NOAA's free API |
 | **Theme** | Light default with dark toggle, saved per browser |
 
 ## Why I built it
@@ -78,7 +78,7 @@ The emergency was multi-day and evolving. The available signals — news live-bl
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  refresh job (~20 min) → claude -p WebSearch (subscription)         │
+│  refresh job (on demand) → claude -p WebSearch (subscription)       │
 │       ↓ extracts structured facts as JSON                           │
 │       ↓ pipes to stdin                                              │
 │  scripts/update_status.py  (Python stdlib only)                     │
@@ -91,11 +91,10 @@ The emergency was multi-day and evolving. The available signals — news live-bl
 │       ↑                                                              │
 │  dashboard.html  (vanilla JS, no build step)                        │
 │   • polls status.json every 30 s                                    │
-│   • renders hero / map / safety checker / sidebar / panels          │
+│   • renders hero / map / sidebar / panels                           │
 │   • fetches wind from api.weather.gov every 5 min (KFUL)            │
-│   • fetches map tiles from OpenStreetMap                            │
-│   • geocodes via Nominatim on safety check                          │
-│       ↑                                                              │
+│   • fetches map tiles from OpenFreeMap                              │
+││       ↑                                                              │
 │  start_dashboard.bat  → python -m http.server + opens browser       │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -119,14 +118,14 @@ Both share one gatherer: `refresh_local.py` imports `PROMPT` + `extract_json` fr
 
 ## Stack
 
-- **Frontend:** vanilla HTML/CSS/JS + [Leaflet](https://leafletjs.com/) (map) + [OpenStreetMap](https://www.openstreetmap.org/) (tiles, geocoding). No framework, no build step, ~30 KB of original code.
+- **Frontend:** vanilla HTML/CSS/JS + [MapLibre GL](https://maplibre.org/) (self-hosted in `/lib`) + [OpenFreeMap](https://openfreemap.org/) vector tiles. No framework, no build step; the app ships as one ~126 KB HTML file.
 - **Writer:** Python 3 stdlib only. No external deps. Uses `urllib` for HTTP would have been, but the ntfy push pipeline was scratched (see DESIGN_LOG D-009).
 - **Map data:**
   - Wind from NOAA's free `api.weather.gov` (station KFUL Fullerton Muni)
-  - Geocoding from OpenStreetMap Nominatim
-  - Blast-zone radii estimated from BLEVE scaling for the actual tank inventory (~7,000 gal MMA ≈ ~100 tonnes TNT-equivalent overpressure)
-- **Trigger:** `scripts/refresh_local.py` (run on a ~20-min schedule) gathers facts via `claude -p` WebSearch on the subscription and pipes structured JSON to the writer. See [Data sync](#data-sync--how-statusjson-stays-fresh) for the dual-path design.
-- **No deps beyond Python 3 stdlib + a CDN-loaded Leaflet.**
+  - Vector tiles from OpenFreeMap (light / dark styles)
+  - Evacuation-zone polygon, the GKN Aerospace facility, and shelter locations from `config.json`
+- **Trigger:** `scripts/refresh_local.py` (run on demand, roughly every 20–30 min during the active incident) gathers facts via `claude -p` WebSearch on the subscription and pipes structured JSON to the writer. See [Data sync](#data-sync--how-statusjson-stays-fresh) for the dual-path design.
+- **No deps beyond Python 3 stdlib + a self-hosted MapLibre GL build.**
 
 ## How design decisions get made and tracked
 
@@ -150,8 +149,8 @@ The most interesting reversal is **D-001 → D-009**: I went into the build push
 | Suite | What it checks |
 |---|---|
 | `test_writer.py` | 5-state behavioral sequence (baseline / no-diff / urgent-toggle / stable / resolved) + new-statement detection + residents-shift rate-limiting + schema validation |
-| `test_safety.py` | Known-input → known-verdict for the safety checker. Includes plume-direction math, point-in-polygon, blast-zone-distance math |
-| `test_geocoder.py` | Live Nominatim regression: `Magnolia & Talbert` → known coords (33.702, -117.972), `Trask & Harbor` → (33.766, -117.920), full street address → near facility |
+| `test_safety.py` | Conduit-principle guards: asserts the dashboard contains no authored hazard verdicts (no `blast_zones_mi`, no plume layer, no injury-radius copy) and routes users to an official source |
+| `test_geocoder.py` | Legacy integration test for the pre-conduit address geocoder (Nominatim). Skipped by default (`--skip integration`); retained as regression history |
 | `test_schema.py` | JSON schema validation for `status.json` and `config.json` |
 | `rubrics/design_quality.md` | LLM-as-judge prompt for evaluating any design decision against the 6 autoplan principles |
 | `rubrics/data_quality.md` | LLM-as-judge prompt for evaluating writer fact extraction (precision, recall, hallucination check) |
@@ -177,7 +176,7 @@ Each finding logged with status (Fixed / Deferred / Reverted) in the design log.
 - **Trust the reviewers' biggest finding even when it conflicts with the user's framing.** I built mobile push, the user said "scratch it," I deleted it cleanly — but if I'd surfaced the reviewer's full reasoning earlier maybe we'd have caught the disconnect sooner.
 - **Don't pick a `--theme=dark` aesthetic without showing the user.** First version was NWS gov-emergency-calm dark. User said "too dark" within 30 seconds. Light/dark toggle should have been default from the start.
 - **Atomic rename + OneDrive sync is a real failure mode on Windows.** The retry-with-backoff wrapper has caught at least one transient `PermissionError` in testing. Worth the 10 lines.
-- **Hardcoded blast radii are defensible if you say where they came from.** I derived them from BLEVE scaling for the actual tank inventory + visually matched to the OC Register's published map. Called out clearly in `config.json.notes` and the dashboard legend.
+- **A hardcoded estimate is defensible if you say where it came from.** Early versions rendered blast-radius circles derived from BLEVE scaling for the tank inventory, with the basis spelled out in `config.json.notes`. The circles were later removed in the conduit pivot (the dashboard authors no hazard verdicts), but the principle holds.
 
 ## Running it yourself
 
@@ -236,4 +235,4 @@ gg-tank-dashboard/
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Data + blast-zone estimates + plume visualization are informational only, NOT authoritative emergency guidance. For evacuation status refer to OCFA, ggcity.org/emergency, Genasys EVAC, Ready OC, AirNow.
+MIT — see [LICENSE](LICENSE). Data is informational only, NOT authoritative emergency guidance. For evacuation status refer to OCFA, ggcity.org/emergency, Genasys EVAC, Ready OC, AirNow.
