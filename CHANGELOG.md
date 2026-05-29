@@ -2,6 +2,11 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.13] — 2026-05-28 (mobile wordmark row fix)
+
+### Fixed
+- **Vietnamese wordmark jump** — on mobile the "GG Tank Watch" wordmark used to sit beside the UNOFFICIAL badge in English but drop below it in Vietnamese (the wider "KHÔNG CHÍNH THỨC" badge pushed it to a second row), so switching language visibly shifted the title. The wordmark now always sits on its own line just below the badge on mobile, identical in both languages — no more jump. The desktop header is unchanged.
+
 ## [v0.12] — 2026-05-28 (mobile header + banner dismiss fixes)
 
 ### Fixed
