@@ -44,6 +44,7 @@ prompts/
 .env.*.local
 .vercel
 .gstack/
+.firecrawl/
 
 # One-off scratch files (not part of the project)
 render_safety_briefing.py
