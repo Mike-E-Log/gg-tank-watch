@@ -868,7 +868,18 @@
       "source_url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
       "source_name": "Voice of OC",
       "category": "government_action"
+    },
+    {
+      "id": "evt-20260529-005",
+      "timestamp_utc": "2026-05-29T22:00:00Z",
+      "timestamp_local": "2026-05-29T15:00:00-07:00",
+      "day": 9,
+      "title": "OC Workforce launches SBA assistance program for chemical incident businesses",
+      "description": "Orange County Workforce & Economic Development Division announces that small businesses impacted by the Garden Grove chemical emergency may complete and submit an SBA Economic Injury Disaster Loan (EIDL) worksheet to determine eligibility for assistance programs. Businesses in Garden Grove, Stanton, Anaheim, Cypress, Westminster, and Buena Park affected by the 7-day evacuation can email completed forms to EOCLiaison@ocsheriff.gov or call (866) 500-6587. Separately, the Orange County government publishes a consolidated GKN HazMat incident recovery page at ocgov.com/gkn-aerospace-hazmat-incident.",
+      "source_url": "https://workforce.ocgov.com/press/small-businesses-impacted-garden-grove-chemical-incident-encouraged-submit-sba-assistance",
+      "source_name": "OC Workforce & Economic Development Division",
+      "category": "government_action"
     }
   ],
-  "generated_at": "2026-05-29T21:00:00Z"
+  "generated_at": "2026-05-29T22:00:00Z"
 }
