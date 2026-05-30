@@ -184,7 +184,7 @@ See [`USAGE.md`](USAGE.md) for full operational docs. Quick version:
 
 ```powershell
 git clone <this-repo>
-cd gg-tank-dashboard
+cd gg-tank-watch
 .\start_dashboard.bat
 ```
 
@@ -199,7 +199,7 @@ Refresh the browser to see the snapshot.
 ## Repository layout
 
 ```
-gg-tank-dashboard/
+gg-tank-watch/
 ├── README.md                       ← you are here
 ├── USAGE.md                        ← operational guide
 ├── CHANGELOG.md                    ← iteration log

@@ -69,3 +69,37 @@ def test_vietnamese_held_with_official_fallback():
     assert m, "vi must carry a fallbackUrl routing vi-seekers to official human Vietnamese"
     assert "ggcity.org" in m.group(1), "vi fallbackUrl should point to the official city emergency page"
     return {"passed": True, "details": "vi held; fallback=" + m.group(1), "metrics": {}}
+
+
+# Keys introduced for the v0.17 sign-post / new chrome must stay English-only
+# until fluent-native VI verification (G1). Listing a key here asserts "this
+# string must NOT carry a vi value yet" — the falsifier that makes an MT VI leak
+# into a new key fail the build.
+ENGLISH_ONLY_KEYS = {
+    "signpost.vi.body", "signpost.vi.cta",
+    "share.copied", "wind.source", "wind.disclaimer", "wind.unavailable",
+    "info.subtab.status", "info.subtab.resources", "info.subtab.about",
+    "timeline.showAll", "timeline.showMajor",
+}
+
+
+def test_new_strings_english_only():
+    """New v0.17 user-facing strings must not ship an (unverified) vi value (G1)."""
+    html = DASHBOARD.read_text(encoding="utf-8")
+    offenders = []
+    for key in sorted(ENGLISH_ONLY_KEYS):
+        m = re.search(r'"' + re.escape(key) + r'"\s*:\s*\{([^}]*)\}', html)
+        if not m:
+            continue  # key not present yet (e.g., partway through the build) — not an offense
+        if re.search(r"\bvi\s*:", m.group(1)):
+            offenders.append(key)
+    assert not offenders, (
+        "new i18n key(s) carry an unverified Vietnamese value (G1 violation): "
+        + ", ".join(offenders)
+        + ". Ship English-only until a fluent native speaker verifies the VI copy."
+    )
+    return {
+        "passed": True,
+        "details": "english-only keys clean=" + str(len(ENGLISH_ONLY_KEYS)),
+        "metrics": {},
+    }
