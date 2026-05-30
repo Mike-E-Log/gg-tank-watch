@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-30T10:09:11Z",
-  "data_as_of_iso": "2026-05-30T10:09:11Z",
-  "next_check_at_iso": "2026-05-30T10:39:11Z",
-  "stale_after_iso": "2026-05-30T10:49:11Z",
+  "last_updated_iso": "2026-05-30T13:10:56Z",
+  "data_as_of_iso": "2026-05-30T13:10:56Z",
+  "next_check_at_iso": "2026-05-30T13:40:56Z",
+  "stale_after_iso": "2026-05-30T13:50:56Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Day 10 recovery: All evacuations lifted May 27. Garden Grove reports $728K in preliminary OCFA response costs (excludes water, vehicles, and materials). EPA, OC Health, SCAQMD and GKN developing formal cleanup/removal plan — timeline TBD. DA criminal investigation ongoing; 100+ plaintiffs in civil suits. No GKN compensation claims process yet; OC Board Chair pressing action. OC United Way fund open; SBA EIDL: EOCLiaison@ocsheriff.gov. Survey: ggcity.org/hazmat-incident/survey.",
+    "status_headline": "Day 10 recovery: All evacuations lifted May 27. Formal cleanup plan under development by EPA, OC Health, SCAQMD and GKN — timeline TBD; 300-ft exclusion zone around GKN tanks remains. DA criminal investigation ongoing; 100+ civil plaintiffs across 7+ lawsuits. No GKN reimbursement process established; OC Board Chair pressing action. OC United Way fund open; SBA EIDL available (EOCLiaison@ocsheriff.gov). City impact survey: ggcity.org/hazmat-incident/survey.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
@@ -52,42 +52,47 @@
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
-      "fetched_iso": "2026-05-30T10:08:00Z"
+      "fetched_iso": "2026-05-30T13:08:00Z"
     },
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-30T10:08:00Z"
+      "fetched_iso": "2026-05-30T13:08:00Z"
     },
     {
       "url": "https://laist.com/news/climate-environment/whats-next-chemical-tank-plant-garden-grove-cleanup-lawsuits-concerns-residents-orange-county",
       "title": "What's next for neighbors living near Garden Grove factory at center of chemical scare?",
-      "fetched_iso": "2026-05-30T10:08:00Z"
+      "fetched_iso": "2026-05-30T13:08:00Z"
     },
     {
       "url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/",
       "title": "What's next for Garden Grove's chemical tank crisis as victims grapple with financial fallouts",
-      "fetched_iso": "2026-05-30T10:08:00Z"
+      "fetched_iso": "2026-05-30T13:08:00Z"
     },
     {
       "url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
       "title": "Garden Grove residents call for GKN Aerospace shutdown after chemical scare",
-      "fetched_iso": "2026-05-30T10:08:00Z"
+      "fetched_iso": "2026-05-30T13:08:00Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
       "title": "OC Residents Impacted By Faulty Chemical Tank May Get Reimbursed",
-      "fetched_iso": "2026-05-30T10:08:00Z"
+      "fetched_iso": "2026-05-30T13:08:00Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
       "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-05-30T10:08:00Z"
+      "fetched_iso": "2026-05-30T13:08:00Z"
     },
     {
       "url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-evacuation-lawsuit/",
       "title": "Lawsuits mount after Orange County chemical tank failure, evacuations",
-      "fetched_iso": "2026-05-30T10:08:00Z"
+      "fetched_iso": "2026-05-30T13:08:00Z"
+    },
+    {
+      "url": "https://dicellolevitt.com/dicello-levitt-and-co-counsel-file-class-action-against-gkn-aerospace-over-garden-grove-chemical-emergency/",
+      "title": "DiCello Levitt and Co-Counsel File Class Action Against GKN Aerospace",
+      "fetched_iso": "2026-05-30T13:08:00Z"
     }
   ],
   "schools_closed": [
