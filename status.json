@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-30T13:10:56Z",
-  "data_as_of_iso": "2026-05-30T13:10:56Z",
-  "next_check_at_iso": "2026-05-30T13:40:56Z",
-  "stale_after_iso": "2026-05-30T13:50:56Z",
+  "last_updated_iso": "2026-05-30T16:14:19Z",
+  "data_as_of_iso": "2026-05-30T16:14:19Z",
+  "next_check_at_iso": "2026-05-30T16:44:19Z",
+  "stale_after_iso": "2026-05-30T16:54:19Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Day 10 recovery: All evacuations lifted May 27. Formal cleanup plan under development by EPA, OC Health, SCAQMD and GKN — timeline TBD; 300-ft exclusion zone around GKN tanks remains. DA criminal investigation ongoing; 100+ civil plaintiffs across 7+ lawsuits. No GKN reimbursement process established; OC Board Chair pressing action. OC United Way fund open; SBA EIDL available (EOCLiaison@ocsheriff.gov). City impact survey: ggcity.org/hazmat-incident/survey.",
+    "status_headline": "Day 10 recovery: Exclusion zone around GKN tanks reduced to 150 ft (was 300 ft) as site continues to stabilize. All evacuations lifted May 27. EPA/OC Health/SCAQMD/GKN developing formal cleanup and removal plan — timeline TBD. DA criminal investigation ongoing; 37+ lawsuits filed. City discloses $728K in preliminary OCFA response costs. No GKN reimbursement process established; OC Board Chair pressing GKN to act. OC United Way fund open; SBA EIDL available (EOCLiaison@ocsheriff.gov). City impact survey: ggcity.org/hazmat-incident/survey.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
@@ -42,57 +42,47 @@
       "source_url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/"
     },
     {
-      "agency": "OC Board of Supervisors Chair Doug Chaffee",
-      "time_iso": "2026-05-29T21:00:00Z",
-      "text": "We encourage them to set up a claims process and acknowledge responsibility. We're looking for that to happen, so the public can be reimbursed.",
-      "source_url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/"
+      "agency": "City of Garden Grove / OCFA",
+      "time_iso": "2026-05-30T21:00:00Z",
+      "text": "The safety zone around the involved tank has been reduced to 150 feet due to continued stabilization of conditions. All roads that were closed as a result of the hazardous materials incident are now open.",
+      "source_url": "https://ggcity.org/emergency"
     }
   ],
   "sources_checked": [
     {
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
-      "fetched_iso": "2026-05-30T13:08:00Z"
-    },
-    {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-30T13:08:00Z"
+      "fetched_iso": "2026-05-30T21:00:00Z"
     },
     {
-      "url": "https://laist.com/news/climate-environment/whats-next-chemical-tank-plant-garden-grove-cleanup-lawsuits-concerns-residents-orange-county",
-      "title": "What's next for neighbors living near Garden Grove factory at center of chemical scare?",
-      "fetched_iso": "2026-05-30T13:08:00Z"
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
+      "fetched_iso": "2026-05-30T21:00:00Z"
     },
     {
       "url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/",
       "title": "What's next for Garden Grove's chemical tank crisis as victims grapple with financial fallouts",
-      "fetched_iso": "2026-05-30T13:08:00Z"
-    },
-    {
-      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
-      "title": "Garden Grove residents call for GKN Aerospace shutdown after chemical scare",
-      "fetched_iso": "2026-05-30T13:08:00Z"
-    },
-    {
-      "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
-      "title": "OC Residents Impacted By Faulty Chemical Tank May Get Reimbursed",
-      "fetched_iso": "2026-05-30T13:08:00Z"
+      "fetched_iso": "2026-05-30T21:00:00Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
       "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-05-30T13:08:00Z"
+      "fetched_iso": "2026-05-30T21:00:00Z"
+    },
+    {
+      "url": "https://laist.com/news/climate-environment/whats-next-chemical-tank-plant-garden-grove-cleanup-lawsuits-concerns-residents-orange-county",
+      "title": "What's next for neighbors living near Garden Grove factory at center of chemical scare? | LAist",
+      "fetched_iso": "2026-05-30T21:00:00Z"
     },
     {
       "url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-evacuation-lawsuit/",
-      "title": "Lawsuits mount after Orange County chemical tank failure, evacuations",
-      "fetched_iso": "2026-05-30T13:08:00Z"
+      "title": "Lawsuits mount after Orange County chemical tank failure, evacuations | KTLA",
+      "fetched_iso": "2026-05-30T21:00:00Z"
     },
     {
-      "url": "https://dicellolevitt.com/dicello-levitt-and-co-counsel-file-class-action-against-gkn-aerospace-over-garden-grove-chemical-emergency/",
-      "title": "DiCello Levitt and Co-Counsel File Class Action Against GKN Aerospace",
-      "fetched_iso": "2026-05-30T13:08:00Z"
+      "url": "https://finance.yahoo.com/sectors/technology/articles/aerospace-company-behind-garden-grove-100000752.html",
+      "title": "Aerospace company behind Garden Grove chemical leak scare faces court cases, supply disruption",
+      "fetched_iso": "2026-05-30T21:00:00Z"
     }
   ],
   "schools_closed": [
@@ -197,16 +187,16 @@
     }
   ],
   "air_quality": null,
-  "breaking": false,
-  "breaking_reason": null,
-  "breaking_since_iso": null,
-  "breaking_level": null,
+  "breaking": true,
+  "breaking_reason": "1 new official statement(s)",
+  "breaking_since_iso": "2026-05-30T16:14:19Z",
+  "breaking_level": "info",
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
       "bca255af272a6ea0",
       "5503616407d429bc",
-      "48b8502467c1be5c"
+      "f39668d5f2396acc"
     ],
     "last_residents_shift_iso": null
   }
