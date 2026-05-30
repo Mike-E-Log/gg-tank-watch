@@ -923,7 +923,18 @@
       "source_url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/",
       "source_name": "NBC LA",
       "category": "government_action"
+    },
+    {
+      "id": "evt-20260530-003",
+      "timestamp_utc": "2026-05-30T18:00:00Z",
+      "timestamp_local": "2026-05-30T11:00:00-07:00",
+      "day": 10,
+      "title": "Garden Grove discloses $728K in preliminary OCFA response costs",
+      "description": "LAist reports the City of Garden Grove has disclosed at least $728,000 in preliminary costs to the Orange County Fire Authority for the GKN Aerospace incident response — not including water used, vehicle and equipment expenses, or materials and supplies. Dozens of plaintiffs have filed at least seven lawsuits against GKN Aerospace. Activist groups continue demanding permanent closure of the Garden Grove facility. The OC Health Care Agency hazmat team, SCAQMD, and GKN Aerospace are developing a cleanup and removal plan; specific timelines remain pending.",
+      "source_url": "https://laist.com/news/climate-environment/whats-next-chemical-tank-plant-garden-grove-cleanup-lawsuits-concerns-residents-orange-county",
+      "source_name": "LAist",
+      "category": "government_action"
     }
   ],
-  "generated_at": "2026-05-30T01:08:25Z"
+  "generated_at": "2026-05-30T10:09:11Z"
 }
