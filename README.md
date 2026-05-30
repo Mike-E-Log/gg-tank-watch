@@ -64,7 +64,7 @@ A single HTML file with no framework and no build step, serving a safety-critica
 |---|---|
 | **Single glance** | Hero status board: the current-situation lead plus the key facts — evacuation status, residents affected, last verified update — without scrolling |
 | **Live map** | MapLibre GL + OpenFreeMap vector tiles (light / dark). The evacuation-zone boundary, the GKN Aerospace facility marker, shelter locations, and live NOAA wind direction |
-| **Official sources** | Routes to the authoritative channels — ggcity.org/emergency, OCFA, Genasys EVAC, OC Alert, EPA AirNow — with the reminder that no single source should be your only one |
+| **Official sources** | Routes to the authoritative channels — ggcity.org/emergency, OCFA, Genasys EVAC, OC Alert — with the reminder that no single source should be your only one |
 | **Update banner** | URGENT (red, pulsing, beep) for act-now changes; UPDATE (amber, no beep) for informational. Click → scrolls sidebar to highlight the newest statement |
 | **Statements sidebar** | Sticky, scrollable, newest-first, with `Newest` + `Recent` badges. Source links on each |
 | **Auto-refresh** | Dashboard polls `status.json` every 30 s. A contributor runs the refresh job on demand — roughly every 20–30 min during the active incident — to re-gather facts and rewrite `status.json` (see [Data sync](#data-sync--how-statusjson-stays-fresh)). Wind refreshes every 5 min from NOAA's free API |
@@ -235,4 +235,4 @@ gg-tank-watch/
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Data is informational only, NOT authoritative emergency guidance. For evacuation status refer to OCFA, ggcity.org/emergency, Genasys EVAC, Ready OC, AirNow.
+MIT — see [LICENSE](LICENSE). Data is informational only, NOT authoritative emergency guidance. For evacuation status refer to OCFA, ggcity.org/emergency, Genasys EVAC, Ready OC.
