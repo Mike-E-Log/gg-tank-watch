@@ -945,7 +945,18 @@
       "source_url": "https://ggcity.org/emergency",
       "source_name": "City of Garden Grove",
       "category": "evacuation"
+    },
+    {
+      "id": "evt-20260530-005",
+      "timestamp_utc": "2026-05-30T23:00:00Z",
+      "timestamp_local": "2026-05-30T16:00:00-07:00",
+      "day": 10,
+      "title": "CalMatters: MMA not covered by California's accident-prevention rules — regulatory gap exposed",
+      "description": "A CalMatters investigation published May 30 finds that methyl methacrylate — the chemical that nearly exploded in Garden Grove — is not a regulated substance under California's Accidental Release Program (CalARP) or the federal EPA Risk Management Program. The California EPA confirmed to CalMatters that CalARP does not apply to GKN's facility; OC Health confirmed GKN had a hazardous materials business plan on file but no risk management plan required under CalARP. Cal/OSHA did not respond to questions about whether high-hazard industrial process rules applied. The investigation finds the near-disaster exposed gaps in multiple regulatory systems that state and local agencies have not fully addressed — and that chemicals outside federal and state accident prevention programs may also be left out of community emergency planning and drills.",
+      "source_url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
+      "source_name": "CalMatters",
+      "category": "government_action"
     }
   ],
-  "generated_at": "2026-05-30T16:14:16Z"
+  "generated_at": "2026-05-30T19:19:59Z"
 }
