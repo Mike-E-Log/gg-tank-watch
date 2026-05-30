@@ -934,7 +934,18 @@
       "source_url": "https://laist.com/news/climate-environment/whats-next-chemical-tank-plant-garden-grove-cleanup-lawsuits-concerns-residents-orange-county",
       "source_name": "LAist",
       "category": "government_action"
+    },
+    {
+      "id": "evt-20260530-004",
+      "timestamp_utc": "2026-05-30T21:00:00Z",
+      "timestamp_local": "2026-05-30T14:00:00-07:00",
+      "day": 10,
+      "title": "OCFA reduces exclusion zone around GKN tanks from 300 ft to 150 ft",
+      "description": "The Orange County Fire Authority and City of Garden Grove announce the safety zone around the compromised GKN Aerospace tank has been reduced from 300 feet to 150 feet due to continued stabilization of conditions. All roads that were closed during the 7-day chemical emergency remain open. Hazmat crews and facility representatives continue monitoring the solidified MMA and developing the removal plan in coordination with EPA and OC Health.",
+      "source_url": "https://ggcity.org/emergency",
+      "source_name": "City of Garden Grove",
+      "category": "evacuation"
     }
   ],
-  "generated_at": "2026-05-30T10:09:11Z"
+  "generated_at": "2026-05-30T16:14:16Z"
 }
