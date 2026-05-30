@@ -286,28 +286,7 @@
       align-items: center;
       justify-content: center;
     }
-    #lang-toggle {
-      min-width: 44px;
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .lang-picker { position: relative; display: inline-flex; }
     .topbar-controls { display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto; }
-    .lang-menu {
-      position: absolute; top: calc(100% + 4px); right: 0; z-index: 1500;
-      background: var(--sa-surface); border: 1px solid var(--sa-border); border-radius: 6px;
-      padding: 4px; min-width: 132px; box-shadow: 0 6px 20px rgba(0,0,0,0.22); display: none;
-    }
-    .lang-menu.open { display: block; }
-    .lang-menu button {
-      display: flex; align-items: center; gap: 8px; width: 100%;
-      background: none; border: none; color: var(--sa-text); font-family: inherit;
-      font-size: 13px; padding: 8px; border-radius: 4px; cursor: pointer; text-align: left;
-    }
-    .lang-menu button:hover, .lang-menu button:focus { background: var(--sa-bg); }
-    .lang-menu button[aria-current="true"] { font-weight: 700; }
     .share-toast {
       position: fixed; left: 50%; bottom: 64px; transform: translateX(-50%);
       background: var(--sa-text); color: var(--sa-bg);
@@ -664,7 +643,6 @@
     #wind-arrow-map { vertical-align: middle; }
     #wind-text-map { white-space: normal; }
     .wind-source { display: block; margin-top: 1px; font-size: 8px; font-weight: 600; color: var(--sa-text-3); }
-    .wind-disclaimer { display: block; font-size: 9px; color: var(--sa-text-3); opacity: 0.85; line-height: 1.2; }
     .map-legend {
       position: absolute;
       bottom: 72px; /* clear the action button band (~68px) so the full-width CTA doesn't bury the legend on mobile */
@@ -876,114 +854,6 @@
       gap: 6px;
     }
 
-    /* ===== TIMELINE ===== */
-    .timeline-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px 4px;
-    }
-    .timeline-title {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--sa-text-3);
-    }
-    .timeline-count {
-      font-size: 11px;
-      color: var(--sa-text-3);
-    }
-    .filter-chips {
-      display: flex;
-      gap: 6px;
-      padding: 6px 12px;
-      overflow-x: auto;
-      flex-wrap: nowrap;
-      -webkit-overflow-scrolling: touch;
-    }
-    .filter-chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 10px;
-      border-radius: 16px;
-      font-size: 11px;
-      font-weight: 600;
-      border: 1px solid var(--sa-border);
-      background: var(--sa-surface);
-      color: var(--sa-text-2);
-      cursor: pointer;
-      white-space: nowrap;
-      min-height: 44px;
-      font-family: inherit;
-      transition: background 0.15s, border-color 0.15s;
-    }
-    .filter-chip:hover { border-color: var(--sa-celadon); }
-    .filter-chip.active {
-      background: var(--sa-celadon);
-      color: #fff;
-      border-color: var(--sa-celadon);
-    }
-    .filter-divider {
-      width: 1px;
-      background: var(--sa-border);
-      flex-shrink: 0;
-      align-self: stretch;
-      margin: 4px 2px;
-    }
-    .timeline-event {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--sa-border);
-    }
-    .timeline-event-header {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 3px;
-      flex-wrap: wrap;
-    }
-    .timeline-event-time {
-      font-size: 11px;
-      color: var(--sa-text-3);
-      font-family: "IBM Plex Mono", ui-monospace, monospace;
-      font-variant-numeric: tabular-nums;
-    }
-    .timeline-event-cat {
-      font-size: 9px;
-      font-weight: 700;
-      padding: 1px 6px;
-      border-radius: 3px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      background: var(--sa-celadon-3);
-      color: var(--sa-celadon);
-    }
-    .timeline-event-title {
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.35;
-      color: var(--sa-text);
-    }
-    .timeline-event-desc {
-      font-size: 12px;
-      line-height: 1.4;
-      color: var(--sa-text-2);
-      margin-top: 3px;
-    }
-    .timeline-event-source {
-      font-size: 11px;
-      color: var(--sa-celadon);
-      text-decoration: none;
-      margin-top: 4px;
-      display: inline-block;
-    }
-    .timeline-event-source:hover { text-decoration: underline; }
-    .timeline-empty {
-      padding: 24px 12px;
-      text-align: center;
-      color: var(--sa-text-3);
-      font-size: 13px;
-    }
 
     /* ===== EVACUATION SHELTERS ===== */
     .shelters-cta {
@@ -1047,7 +917,6 @@
       gap: 4px;
     }
     .community-resource-card .cr-title { font-size: 14px; font-weight: 700; color: var(--sa-text); line-height: 1.25; }
-    .community-resource-card .cr-title-vi { font-size: 12px; color: var(--sa-text-3); font-style: italic; }
     .community-resource-card .cr-desc { font-size: 12px; color: var(--sa-text-2); line-height: 1.4; }
     .community-resource-card .cr-actions { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
     .community-resource-card .cr-action {
@@ -1187,34 +1056,6 @@
       background-image: none;
     }
 
-    /* ===== NEWS SUB-TABS (Updates | Timeline) ===== */
-    .news-subtabs {
-      display: flex;
-      gap: 4px;
-      padding: 8px 12px 0;
-      border-bottom: 1px solid var(--sa-border);
-      background: var(--sa-surface);
-    }
-    .news-subtab {
-      flex: 1;
-      padding: 10px 12px;
-      border: none;
-      background: transparent;
-      color: var(--sa-text-2);
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      min-height: 44px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .news-subtab:hover { color: var(--sa-text); }
-    .news-subtab.active {
-      color: var(--sa-celadon);
-      border-bottom-color: var(--sa-celadon);
-    }
     .news-subpanel { display: none; }
     .news-subpanel.active { display: block; }
     .info-subtabs { display: flex; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid var(--sa-border); background: var(--sa-surface); position: sticky; top: 0; z-index: 3; }
@@ -1375,21 +1216,6 @@
       border-width: 8px 0 8px 14px;
       border-color: transparent transparent transparent #fff;
     }
-    .timeline-archive-toggle {
-      display: block;
-      width: calc(100% - 24px);
-      margin: 4px 12px 16px;
-      padding: 10px;
-      border: 1px solid var(--sa-border);
-      border-radius: 8px;
-      background: var(--sa-surface);
-      color: var(--sa-celadon);
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .timeline-archive-toggle:hover { border-color: var(--sa-celadon); }
 
     /* ===== INFO TAB (redesigned) ===== */
     .info-layout {
@@ -1973,7 +1799,6 @@ function applyLang() {
   document.querySelectorAll(".banner-msg[data-reason]").forEach(function(el) {
     el.textContent = localizeBreakingReason(el.getAttribute("data-reason"));
   });
-  renderLangPicker();
   var themeBtn = document.getElementById("theme-toggle");
   if (themeBtn) {
     var isDark = document.documentElement.classList.contains("theme-dark");
@@ -1984,74 +1809,7 @@ function applyLang() {
     renderHeroStatus(lastSnap);
   }
 }
-function renderLangPicker() {
-  var btn = document.getElementById("lang-toggle");
-  var menu = document.getElementById("lang-menu");
-  if (!btn || !menu) return;
-  var cur = langByCode(currentLang);
-  btn.innerHTML = '<span style="font-size:14px;line-height:1">' + cur.flag + '</span><span>' + (currentLang === "vi" ? "Vi\u1EC7t" : "Eng") + '</span>';
-  var ready = readyLangs();
-  // Languages held pending native verification (ready:false) but carrying an official
-  // human-translated fallback are offered as OUTBOUND links, not in-app switches — so a
-  // Vietnamese speaker reaches verified official Vietnamese, never unverified machine copy.
-  var outbound = LANGS.filter(function(l) { return !l.ready && l.fallbackUrl; });
-  btn.style.display = (ready.length > 1 || outbound.length > 0) ? "" : "none";
-  var items = ready.map(function(l) {
-    return '<button type="button" role="menuitemradio" aria-current="' +
-      (l.code === currentLang ? "true" : "false") + '" data-lang="' + l.code + '">' +
-      l.flag + "<span>" + l.label + "</span></button>";
-  });
-  items = items.concat(outbound.map(function(l) {
-    return '<button type="button" role="menuitem" data-href="' + l.fallbackUrl + '" ' +
-      'title="Official Vietnamese emergency info (opens ggcity.org/emergency)">' +
-      l.flag + '<span>' + l.label + ' ↗</span></button>';
-  }));
-  menu.innerHTML = items.join("");
-  menu.querySelectorAll("button").forEach(function(b) {
-    b.onclick = function() {
-      var href = b.getAttribute("data-href");
-      if (href) { window.open(href, "_blank", "noopener"); }
-      else { setLang(b.getAttribute("data-lang")); }
-      closeLangMenu();
-    };
-  });
-}
-function openLangMenu() {
-  var menu = document.getElementById("lang-menu");
-  var btn = document.getElementById("lang-toggle");
-  if (!menu || !btn) return;
-  menu.classList.add("open");
-  btn.setAttribute("aria-expanded", "true");
-  setTimeout(function() { document.addEventListener("click", outsideLangClick); }, 0);
-}
-function closeLangMenu() {
-  var menu = document.getElementById("lang-menu");
-  var btn = document.getElementById("lang-toggle");
-  if (menu) menu.classList.remove("open");
-  if (btn) btn.setAttribute("aria-expanded", "false");
-  document.removeEventListener("click", outsideLangClick);
-}
-function outsideLangClick(e) {
-  var picker = document.getElementById("lang-picker");
-  if (picker && !picker.contains(e.target)) closeLangMenu();
-}
-function toggleLangMenu() {
-  var menu = document.getElementById("lang-menu");
-  if (menu && menu.classList.contains("open")) closeLangMenu(); else openLangMenu();
-}
-function setLang(lang) {
-  var L = langByCode(lang);
-  currentLang = (L.code === lang && L.ready) ? lang : "en";
-  try { localStorage.setItem("gg-lang", currentLang); } catch (e) {}
-  applyLang();
-  if (lastSnap) render(lastSnap);
-  if (configCache) { renderInfoTab(); renderResources(); renderInfoShelters(); if (lastSnap) updateInfoData(lastSnap); }
-  renderNewsFilterChips();
-  if (configCache && fixedPointMarkers.length) recolorFixedPoints();
-}
 currentLang = detectLang();
-window.toggleLangMenu = toggleLangMenu;
-document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeLangMenu(); });
 
 var lastSnap = null;
 var lastZoneStatus = null;
