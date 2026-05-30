@@ -513,9 +513,10 @@ def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
         data_as_of, data_as_of_dt = now_iso, now_dt
     stale_after = (data_as_of_dt + timedelta(minutes=MAX_AGE_MINUTES)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    air_quality = fetch_air_quality(config)
-    if air_quality is None:
-        air_quality = (prev or {}).get("air_quality")
+    # AirNow removed 2026-05-30 (false reassurance: AQI measures particulates/
+    # ozone, not the MMA vapor from this leak). Do not fetch or carry forward;
+    # air_quality stays null. fetch_air_quality() is retained but unused.
+    air_quality = None
 
     snapshot = {
         "schema_version": SCHEMA_VERSION,

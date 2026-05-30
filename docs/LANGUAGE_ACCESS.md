@@ -92,7 +92,7 @@ The i18n layer in `dashboard.html` is registry-driven (`LANGS`). To bring a lang
 
 1. Add its verified strings under each key in `STRINGS` (e.g. `es: "..."`).
 2. Ensure the language has an entry in `LANGS` (code, native label, flag SVG, locale).
-3. Flip its `ready` flag to `true`. It now appears in the picker.
+3. Flip its `ready` flag to `true`. The language would then appear in the picker. (Today the app is English-only by design: only English is `ready`, so no picker renders.)
 
 Missing keys fall back to English via `t()`, so a language can ship partially
 translated (safety-critical first) without exposing blanks or machine output.
