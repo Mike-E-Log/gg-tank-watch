@@ -2,7 +2,15 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
-## [v0.17] — 2026-05-29 (hosting migration: stale-deploy fix)
+## [v0.17] — 2026-05-29 (design-complete gate + hosting fix)
+
+### Design-complete gate (Map + News + Info + Timeline + tablet)
+
+**Added** — wind overlay labels its source ("Wind — NOAA") plus a "weather data, not safety guidance" micro-label, with an honest "Wind data unavailable" fallback instead of presenting a default as a live reading (D1); English-only Vietnamese sign-post in Info → About routing Vietnamese-seekers to the city's official Vietnamese updates, `vi` held `ready:false` (D2); News video items render as 16:9 thumbnail cards with a play affordance; Info **Status | Resources | About** sub-tabs (reusing the News sub-tab pattern); Timeline curated to critical/major event categories by default with a "show full timeline" archive toggle (nothing deleted); a new eval G1 guard (`test_new_strings_english_only`) that fails the build if any new v0.17 i18n key carries an unverified Vietnamese value (eval **47 → 48**).
+
+**Fixed** — map renders on a service-worker cache-first mobile reload: `_ggMap` is assigned at construction with a `ResizeObserver` on `#map-outer` + `pageshow`/`orientationchange` handlers (B2); the hero + safety strip are clamped to `max(168px, 33dvh)` so the map keeps the majority of a short viewport and the persistent disclosure is never clipped (L1); the tab-bar moves to the bottom on desktop (≥600px) (L2) and the hero gets its roomier 4-across row from 600px to fix the 600–767 tablet seam (T12); the Share button shows an `aria-live` "Copied to clipboard" toast on clipboard fallback (B1); the legend evac swatch has a visible border matching the map color (V1).
+
+**Changed** — service-worker `CACHE_NAME` bumped `v7 → v8` so cached residents re-fetch the updated dashboard.
 
 ### Fixed
 - **Live site was ~22h stale.** Vercel's free Hobby plan silently refuses to deploy a private repo owned by a GitHub *org*, so every `refresh_local.py` push since ~02:42Z never deployed — residents saw ~22h-old emergency data (the staleness banner correctly fired, so it was degraded-but-honest). Migrated the repo to a personal account (`Mike-E-Log/gg-tank-watch`), where Hobby deploys private repos free; auto-deploy on push is restored. Interim live URL is `gg-tank-watch.vercel.app` (resident-facing `gardengrovetankwatch.org` follows at launch).

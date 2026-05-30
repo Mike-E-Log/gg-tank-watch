@@ -147,6 +147,18 @@
       }
     }
 
+    /* L1: clamp the hero + safety-strip so chrome stays <=~1/3 of a short
+       viewport and the map keeps the majority. The topbar is left OUTSIDE this
+       clamp so the language dropdown (position:absolute) is never clipped by
+       overflow:hidden; the topbar is fixed-height (min-height:56px) and never
+       squeezes the map. Real height change (not transform) so the B2
+       ResizeObserver re-fits the map when the clamp frees space. */
+    .app-chrome {
+      flex-shrink: 0;
+      max-height: max(168px, 33dvh);
+      overflow: hidden;
+    }
+
     /* ===== REFRESH BAR ===== */
     .refresh-bar {
       display: none;
@@ -296,6 +308,23 @@
     }
     .lang-menu button:hover, .lang-menu button:focus { background: var(--sa-bg); }
     .lang-menu button[aria-current="true"] { font-weight: 700; }
+    .share-toast {
+      position: fixed; left: 50%; bottom: 64px; transform: translateX(-50%);
+      background: var(--sa-text); color: var(--sa-bg);
+      padding: 8px 14px; border-radius: 6px; font-size: 13px; z-index: 50;
+      opacity: 0; transition: opacity .2s ease; pointer-events: none;
+    }
+    .share-toast.show { opacity: 1; }
+    .vi-signpost {
+      margin: 8px 14px;
+      padding: 10px 12px;
+      background: var(--sa-gold-2);
+      border: 1px solid var(--sa-gold);
+      border-radius: 8px;
+    }
+    .vi-signpost strong { display: block; font-size: 13px; margin-bottom: 4px; color: var(--sa-text); }
+    .vi-signpost p { font-size: 12px; color: var(--sa-text-2); line-height: 1.4; margin: 0 0 6px; }
+    .vi-signpost a { font-size: 12px; color: var(--sa-celadon); font-weight: 600; text-decoration: none; }
     .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); background: var(--sa-gold-2); }
     .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2); margin-bottom: 3px; }
     .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--sa-text); margin: 0; }
@@ -491,8 +520,10 @@
     .hero-status-item { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
     .hero-status-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--sa-text-3); font-family: "IBM Plex Mono", monospace; }
     .hero-status-value { font-size: 15px; font-weight: 700; line-height: 1.15; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; color: var(--sa-text); }
-    @media (min-width: 768px) {
-      /* desktop (full-width app) keeps the original, roomier hero; compaction is mobile-only */
+    @media (min-width: 600px) {
+      /* T12: the tab-bar already moves to the bottom at 600px, so give the hero its
+         roomier 4-across row from 600px too — avoids a 600-767 seam where the chrome
+         was desktop-style but the hero stayed a sparse 2x2 mobile grid. */
       .hero-status { padding: 12px 16px; }
       .hero-status-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
       .hero-status-item { min-width: 80px; }
@@ -583,10 +614,10 @@
     .tab-btn-label { letter-spacing: 0.3px; font-size: 10px; }
     @media (min-width: 600px) {
       .tab-bar {
-        border-top: none;
-        border-bottom: 1px solid var(--sa-border);
+        border-top: 1px solid var(--sa-border);
+        border-bottom: none;
         padding: 0 14px;
-        order: -2;
+        order: 1;
       }
       .tab-btn {
         flex-direction: row;
@@ -626,6 +657,8 @@
       position: absolute;
       top: 8px;
       right: 8px;
+      width: 160px;
+      box-sizing: border-box;
       background: var(--sa-surface);
       border: 1px solid var(--sa-border);
       border-radius: 6px;
@@ -633,11 +666,15 @@
       font-size: 11px;
       color: var(--sa-text-2);
       box-shadow: var(--sa-shadow);
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      text-align: right;
+      line-height: 1.3;
       z-index: 2;
     }
+    .map-wind-reading { display: block; }
+    #wind-arrow-map { vertical-align: middle; }
+    #wind-text-map { white-space: normal; }
+    .wind-source { display: block; margin-top: 1px; font-size: 10px; font-weight: 600; color: var(--sa-text-3); }
+    .wind-disclaimer { display: block; font-size: 9px; color: var(--sa-text-3); opacity: 0.85; line-height: 1.2; }
     .map-legend {
       position: absolute;
       bottom: 72px; /* clear the action button band (~68px) so the full-width CTA doesn't bury the legend on mobile */
@@ -666,7 +703,8 @@
       height: 10px;
       border-radius: 2px;
       background: #D95F02;
-      opacity: 0.7;
+      opacity: 1;
+      border: 1.5px solid #D95F02;
     }
     .legend-icon-shelter {
       width: 14px;
@@ -1189,6 +1227,17 @@
     }
     .news-subpanel { display: none; }
     .news-subpanel.active { display: block; }
+    .info-subtabs { display: flex; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid var(--sa-border); background: var(--sa-surface); }
+    .info-subtab {
+      flex: 1; padding: 10px 12px; border: none; background: transparent;
+      color: var(--sa-text-2); font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+      min-height: 44px; transition: color 0.15s, border-color 0.15s;
+    }
+    .info-subtab:hover { color: var(--sa-text); }
+    .info-subtab.active { color: var(--sa-celadon); border-bottom-color: var(--sa-celadon); }
+    .info-subpanel { display: none; }
+    .info-subpanel.active { display: block; }
 
     /* ===== NEWS FILTER CHIPS ===== */
     .news-filter-chips {
@@ -1306,6 +1355,48 @@
       font-size: 11px;
       color: var(--sa-text-3);
     }
+    .feed-card-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      margin: 6px 0 2px;
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--sa-celadon-3);
+    }
+    .feed-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .feed-card-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.55);
+    }
+    .feed-card-play::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 53%;
+      transform: translate(-50%, -50%);
+      border-style: solid;
+      border-width: 8px 0 8px 14px;
+      border-color: transparent transparent transparent #fff;
+    }
+    .timeline-archive-toggle {
+      display: block;
+      width: calc(100% - 24px);
+      margin: 4px 12px 16px;
+      padding: 10px;
+      border: 1px solid var(--sa-border);
+      border-radius: 8px;
+      background: var(--sa-surface);
+      color: var(--sa-celadon);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .timeline-archive-toggle:hover { border-color: var(--sa-celadon); }
 
     /* ===== INFO TAB (redesigned) ===== */
     .info-layout {
@@ -1543,6 +1634,7 @@
 
     <div class="banners" id="banners" aria-live="assertive" aria-atomic="false"></div>
 
+    <div class="app-chrome">
     <section class="hero-status" id="hero">
       <div class="hero-status-row">
         <div class="hero-status-item">
@@ -1584,14 +1676,20 @@
 
 
 
+    </div><!-- /.app-chrome -->
+
     <!-- ===== TAB CONTENT ===== -->
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
         <div class="map-outer" id="map-outer">
           <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations and the current wind direction marked."></div>
           <div class="map-wind" id="map-wind-overlay">
-            <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
-            <span id="wind-text-map">--</span>
+            <div class="map-wind-reading">
+              <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
+              <span id="wind-text-map">--</span>
+            </div>
+            <span class="wind-source" data-i18n="wind.source">Wind — NOAA</span>
+            <span class="wind-disclaimer" data-i18n="wind.disclaimer">weather data, not safety guidance</span>
           </div>
           <!-- G1: "Map legend" group label is English-only pending native-speaker (Nancy) VI review. -->
           <div class="map-legend" role="group" aria-label="Map legend">
@@ -1684,6 +1782,15 @@ var STRINGS = {
   "tab.info": { en: "Info", vi: "Thông tin" },
   "theme.dark": { en: "Dark", vi: "Tối" },
   "theme.light": { en: "Light", vi: "Sáng" },
+  "share.copied": { en: "Copied to clipboard" },
+  "wind.source": { en: "Wind — NOAA" },
+  "wind.disclaimer": { en: "weather data, not safety guidance" },
+  "wind.unavailable": { en: "Wind data unavailable" },
+  "signpost.vi.body": { en: "Official emergency updates are available in Vietnamese from the City of Garden Grove." },
+  "signpost.vi.cta": { en: "Open official Vietnamese updates" },
+  "info.subtab.status": { en: "Status" },
+  "info.subtab.resources": { en: "Resources" },
+  "info.subtab.about": { en: "About" },
   "updated.loading": { en: "loading...", vi: "đang tải..." },
   "updated.freshness": { en: "As of {t}", vi: "Lúc {t}" },
   "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}.", vi: "Tự động cập nhật khoảng 20 phút một lần. Lần cập nhật cuối {t}." },
@@ -1808,6 +1915,8 @@ var STRINGS = {
   "timeline.title": { en: "Incident timeline", vi: "Dòng thời gian sự cố" /* G1 placeholder */ },
   "timeline.empty": { en: "No events match filters", vi: "Không có sự kiện khớp bộ lọc" /* G1 placeholder */ },
   "timeline.events": { en: "{n} events", vi: "{n} sự kiện" /* G1 placeholder */ },
+  "timeline.showAll": { en: "Show full timeline ({n} more)" },
+  "timeline.showMajor": { en: "Show key events only" },
   "resources.shelters": { en: "Shelters", vi: "Nơi trú ẩn" /* G1 placeholder */ },
   "resources.government": { en: "Government", vi: "Chính phủ" /* G1 placeholder */ },
   "resources.safety": { en: "Safety", vi: "An toàn" /* G1 placeholder */ },
@@ -2165,7 +2274,11 @@ function updateWindDisplay(wind) {
   var heading = (wind.directionDeg + 180) % 360;
   ["wind-arrow", "wind-arrow-map"].forEach(function(id) {
     var el = $(id);
-    if (el) el.style.transform = "rotate(" + heading + "deg)";
+    if (el) {
+      // F4: hide the directional arrow when there is no real observation (default fallback).
+      el.style.visibility = wind.fallback ? "hidden" : "visible";
+      el.style.transform = "rotate(" + heading + "deg)";
+    }
   });
   var windCompact = cardinalFromDeg(wind.directionDeg) + "→" + cardinalFromDeg(heading) + " " + Math.round(wind.speedMph) + "mph";
   var el = $("wind-compact");
@@ -2173,8 +2286,14 @@ function updateWindDisplay(wind) {
   ["wind-text-map"].forEach(function(id) {
     var mapEl = $(id);
     if (mapEl) {
-      var obs = wind.observedAt ? " (obs " + fmtAbsTime(wind.observedAt) + ")" : "";
-      mapEl.textContent = windCompact + obs;
+      if (wind.fallback) {
+        // F4: the hardcoded default (NOAA fetch failed, no cached observation) must
+        // never read as a live measurement. Show an explicit unavailable state.
+        mapEl.textContent = t("wind.unavailable");
+      } else {
+        var obs = wind.observedAt ? " (obs " + fmtAbsTime(wind.observedAt) + ")" : "";
+        mapEl.textContent = windCompact + obs;
+      }
     }
   });
 }
@@ -2228,6 +2347,20 @@ function switchNewsSubtab(name) {
   }
 }
 window.switchNewsSubtab = switchNewsSubtab;
+
+function switchInfoSubtab(name) {
+  var tabs = document.querySelectorAll(".info-subtab");
+  var panels = document.querySelectorAll(".info-subpanel");
+  for (var i = 0; i < tabs.length; i++) {
+    var isActive = tabs[i].id === "info-subtab-" + name;
+    tabs[i].classList.toggle("active", isActive);
+    tabs[i].setAttribute("aria-selected", isActive ? "true" : "false");
+  }
+  for (var j = 0; j < panels.length; j++) {
+    panels[j].classList.toggle("active", panels[j].id === "info-subpanel-" + name);
+  }
+}
+window.switchInfoSubtab = switchInfoSubtab;
 
 /* ============ NEWS FILTER ============ */
 function setNewsFilter(filter) {
@@ -2307,10 +2440,19 @@ function buildFeedCardsHtml(feed) {
     }
 
     var escapedUrl = (it.url || "").replace(/"/g, "&quot;");
-    return '<a class="feed-card' + newestClass + '" href="' + it.url + '" target="_blank" rel="noopener" style="text-decoration:none;display:block" data-needs-og="' + (!it.thumb) + '" data-url="' + escapedUrl + '">' + meta +
+    // Video items render as a 16:9 thumbnail card (thumb from youtube hqdefault when
+    // present, graceful placeholder + play affordance otherwise). No duration badge:
+    // the live feed carries no duration field.
+    var thumbHtml = it.isVideo
+      ? '<div class="feed-card-thumb' + (it.thumb ? '' : ' placeholder-video') + '">' +
+          (it.thumb ? '<img loading="lazy" src="' + it.thumb + '" alt="">' : '') +
+          '<span class="feed-card-play" aria-hidden="true"></span>' +
+        '</div>'
+      : '';
+    return '<a class="feed-card' + (it.isVideo ? ' feed-card-video' : '') + newestClass + '" href="' + it.url + '" target="_blank" rel="noopener" style="text-decoration:none;display:block" data-needs-og="' + (!it.thumb) + '" data-url="' + escapedUrl + '">' + meta +
+      thumbHtml +
       '<div class="feed-card-title">' + (it.title || t("news.untitled")) + '</div>' +
       '<span style="font-size:11px;color:var(--sa-text-3)">' + it.source + '</span>' +
-      (it.isVideo ? '<div class="feed-card-video-info">&#9654; ' + t("news.media.video") + '</div>' : '') +
     '</a>';
   }).join("");
 }
@@ -2319,10 +2461,17 @@ function buildFeedCardsHtml(feed) {
 function renderInfoTab() {
   var el = $("info-content");
   if (!el) return;
-  var html = '<div class="info-layout">';
+  var html = '';
 
-  // Left column
-  html += '<div class="info-col-left">';
+  // Sub-tabs: Status | Resources | About (reuses the News sub-tab pattern)
+  html += '<div class="info-subtabs" role="tablist" aria-label="Info sections">';
+  html += '<button type="button" class="info-subtab active" role="tab" id="info-subtab-status" aria-selected="true" aria-controls="info-subpanel-status" onclick="switchInfoSubtab(\'status\')">' + t("info.subtab.status") + '</button>';
+  html += '<button type="button" class="info-subtab" role="tab" id="info-subtab-resources" aria-selected="false" aria-controls="info-subpanel-resources" onclick="switchInfoSubtab(\'resources\')">' + t("info.subtab.resources") + '</button>';
+  html += '<button type="button" class="info-subtab" role="tab" id="info-subtab-about" aria-selected="false" aria-controls="info-subpanel-about" onclick="switchInfoSubtab(\'about\')">' + t("info.subtab.about") + '</button>';
+  html += '</div>';
+
+  // STATUS panel — incident status
+  html += '<div class="info-subpanel active" id="info-subpanel-status" role="tabpanel" aria-labelledby="info-subtab-status">';
 
   // Incident status section
   html += '<div class="info-section"><div class="info-section-title">' + t("info.group.status") + '</div></div>';
@@ -2330,6 +2479,10 @@ function renderInfoTab() {
   html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankTemp") + '</span><span class="info-kv-val sa-mono" id="info-temp-val">--</span></div>';
   html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacResidents") + '</span><span class="info-kv-val sa-mono" id="info-residents-val">--</span></div>';
   html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val" id="info-boundary-val" style="font-size:11px;max-width:55%;text-align:right">--</span></div>';
+  html += '</div>'; // end status panel
+
+  // RESOURCES panel — where to go, school closures, community resources
+  html += '<div class="info-subpanel" id="info-subpanel-resources" role="tabpanel" aria-labelledby="info-subtab-resources">';
 
   // Shelters section
   html += '<div class="info-section" style="margin-top:4px"><div class="info-section-title">' + t("info.whereToGo") + '</div></div>';
@@ -2338,17 +2491,16 @@ function renderInfoTab() {
   html += '<a href="https://ggcity.org/emergency" target="_blank" rel="noopener" style="font-size:11px;color:var(--sa-celadon);text-decoration:none">' + t("info.liveList") + ' ↗</a>';
   html += '</div>';
 
-  html += '</div>'; // end left col
-
-  // Right column
-  html += '<div class="info-col-right">';
-
   // School closures
   html += '<div class="info-section"><div class="info-section-title">' + t("info.schoolsClosed") + '</div></div>';
   html += '<div class="info-schools-grid" id="info-schools-grid"></div>';
 
   // Community resources (populated by renderResources)
   html += '<div id="resources-content"></div>';
+  html += '</div>'; // end resources panel
+
+  // ABOUT panel — who made this, Vietnamese sign-post, sources
+  html += '<div class="info-subpanel" id="info-subpanel-about" role="tabpanel" aria-labelledby="info-subtab-about">';
 
   // Who made this
   html += '<div class="info-section"><div class="info-section-title">' + t("info.whoMade") + '</div></div>';
@@ -2359,6 +2511,15 @@ function renderInfoTab() {
   html += '<p style="font-size:12px;margin-top:8px"><a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>';
   html += ' · <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>';
   html += '</div>';
+
+  // Vietnamese sign-post (D2): English-only body routing vi-seekers to the city's
+  // official human Vietnamese updates. The only Vietnamese string is the verified
+  // LANGS label; vi stays ready:false (G1 — no machine-translated safety copy).
+  html += '<aside class="vi-signpost" role="note">';
+  html += '<strong lang="vi">Tiếng Việt</strong>';
+  html += '<p>' + t("signpost.vi.body") + '</p>';
+  html += '<a href="https://ggcity.org/emergency" target="_blank" rel="noopener">' + t("signpost.vi.cta") + '</a>';
+  html += '</aside>';
 
   // Sources (collapsed)
   html += '<details>';
@@ -2371,9 +2532,7 @@ function renderInfoTab() {
   html += '</div>';
   html += '<div id="info-source-list" style="padding:0 14px 12px"></div>';
   html += '</details>';
-
-  html += '</div>'; // end right col
-  html += '</div>'; // end layout
+  html += '</div>'; // end about panel
 
   el.innerHTML = html;
 }
@@ -2571,6 +2730,17 @@ var DAY_LABELS = {
   5: "Day 5 · Mon 5/25"
 };
 
+// T11: the timeline defaults to critical/major event categories so the feed isn't
+// overwhelming; the archive toggle reveals the full record (nothing is deleted).
+var TIMELINE_MAJOR = ["evacuation", "initial_response", "official_statement", "government_action", "air_quality"];
+var timelineShowAll = false;
+
+function toggleTimelineArchive() {
+  timelineShowAll = !timelineShowAll;
+  renderTimeline();
+}
+window.toggleTimelineArchive = toggleTimelineArchive;
+
 function toggleFilter(type, value) {
   var arr = activeFilters[type];
   var idx = arr.indexOf(value);
@@ -2606,9 +2776,12 @@ function renderTimelineEvents(feedId, countId) {
   var feed = $(feedId);
   var countEl = $(countId);
   if (!feed || !timelineData) return;
+  var curating = !timelineShowAll && !activeFilters.categories.length;
   var events = timelineData.events.filter(function(e) {
     if (activeFilters.days.length && activeFilters.days.indexOf(e.day) === -1) return false;
     if (activeFilters.categories.length && activeFilters.categories.indexOf(e.category) === -1) return false;
+    // T11 curation: hide minor categories by default; the archive toggle reveals all.
+    if (curating && TIMELINE_MAJOR.indexOf(e.category) === -1) return false;
     return true;
   });
   if (countEl) countEl.textContent = t("timeline.events", { n: events.length });
@@ -2629,6 +2802,16 @@ function renderTimelineEvents(feedId, countId) {
       (e.source_url ? '<a class="timeline-event-source" href="' + e.source_url + '" target="_blank" rel="noopener">' + (e.source_name || 'source') + ' ↗</a>' : '') +
     '</div>';
   }).join("");
+
+  // T11 archive toggle: count events the curation hides (respecting any active day filter)
+  var hiddenCount = !activeFilters.categories.length ? timelineData.events.filter(function(e) {
+    if (activeFilters.days.length && activeFilters.days.indexOf(e.day) === -1) return false;
+    return TIMELINE_MAJOR.indexOf(e.category) === -1;
+  }).length : 0;
+  if (timelineShowAll || hiddenCount > 0) {
+    feed.innerHTML += '<button type="button" class="timeline-archive-toggle" onclick="toggleTimelineArchive()">' +
+      (timelineShowAll ? t("timeline.showMajor") : t("timeline.showAll", { n: hiddenCount })) + '</button>';
+  }
 }
 
 function renderTimeline() {
@@ -3003,6 +3186,8 @@ function _ggSwapMapStyle(dark) {
 
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-left");
 
+  _ggMap = map;  // assign at construction so resize() (dashboard.html:2829) and the observers below fire before on('load') completes
+
   map.on("load", function() {
     fetch("/config.json").then(function(r) { return r.json(); }).then(function(cfg) {
       var poly = cfg.map.evac_polygon;
@@ -3047,9 +3232,22 @@ function _ggSwapMapStyle(dark) {
       ], { padding: { top: 40, bottom: 80, left: 20, right: 20 }, maxZoom: 11 });
 
       _ggEvacCoords = coords;
-      _ggMap = map;
 
     });
+  });
+
+  var _mapOuter = document.getElementById("map-outer");
+  if (_mapOuter && typeof ResizeObserver !== "undefined") {
+    var _rzPending = false;
+    new ResizeObserver(function () {
+      if (_rzPending) return;
+      _rzPending = true;
+      requestAnimationFrame(function () { _rzPending = false; if (_ggMap) _ggMap.resize(); });
+    }).observe(_mapOuter);
+  }
+  window.addEventListener("pageshow", function () { if (_ggMap) _ggMap.resize(); });
+  window.addEventListener("orientationchange", function () {
+    setTimeout(function () { if (_ggMap) _ggMap.resize(); }, 150);
   });
 })();
 </script>
@@ -3074,11 +3272,18 @@ function _ggSwapMapStyle(dark) {
           try {
             await navigator.clipboard.writeText(location.href);
             btn.classList.add('copied');
+            var _toast = document.getElementById('share-toast');
+            if (_toast) {
+              _toast.textContent = (typeof t === 'function' ? t('share.copied') : 'Copied to clipboard');
+              _toast.hidden = false; _toast.classList.add('show');
+              setTimeout(function () { _toast.classList.remove('show'); }, 1500);
+            }
             setTimeout(function () { btn.classList.remove('copied'); }, 1500);
           } catch (e) { /* clipboard blocked */ }
         }
       });
     })();
   </script>
+  <div id="share-toast" role="status" aria-live="polite" aria-atomic="true" class="share-toast" hidden></div>
 </body>
 </html>

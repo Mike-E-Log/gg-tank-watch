@@ -55,7 +55,7 @@ All breaking banners auto-clear 30 min after firing.
 ## Manual run (force an update right now)
 
 ```powershell
-cd gg-tank-dashboard   # the repo root
+cd gg-tank-watch   # the repo root
 '{"tank_temp_f": 100, "evacuation_residents": 50000, "evacuation_lifted": false, "status_headline": "Manual refresh"}' | python scripts\update_status.py
 ```
 
@@ -82,8 +82,8 @@ The active refresh path (`refresh_local.py` — see [Data sync](README.md#data-s
 2. Trigger: Daily, every 30 minutes
 3. Action: Start a program
    - Program: `python`
-   - Arguments: `"<your-clone-path>\gg-tank-dashboard\scripts\update_status.py"`
-   - Start in: `<your-clone-path>\gg-tank-dashboard`
+   - Arguments: `"<your-clone-path>\gg-tank-watch\scripts\update_status.py"`
+   - Start in: `<your-clone-path>\gg-tank-watch`
 4. **But:** without WebSearch (only the `refresh_local.py` path has it), the script needs facts piped to stdin. Either:
    - Curate `facts.json` once a day with what you've read in news, then schedule:
      ```powershell

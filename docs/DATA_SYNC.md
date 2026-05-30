@@ -29,7 +29,7 @@ while the machine is on. Pick one:
 ```powershell
 $py = (Get-Command python).Source
 schtasks /Create /TN "gg-tank-refresh" /SC MINUTE /MO 20 /F `
-  /TR "cmd /c cd /d C:\Users\redacted\Desktop\Projects\gg-tank-dashboard && `"$py`" scripts\refresh_local.py"
+  /TR "cmd /c cd /d C:\Users\redacted\Desktop\Projects\gg-tank-watch && `"$py`" scripts\refresh_local.py"
 # remove later:  schtasks /Delete /TN "gg-tank-refresh" /F
 ```
 

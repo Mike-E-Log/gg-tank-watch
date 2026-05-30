@@ -90,3 +90,41 @@ The hero shows severity status and situation bullets — never directives.
 | 2026-05-27 | MapLibre GL JS v4.7.1 + OpenFreeMap vector tiles | GPU-accelerated WebGL map replacing static JPEG + SVG overlay. $0, no API key, no rate limits. UMD bundle for single-file dashboard. |
 | 2026-05-27 | OpenFreeMap over Mapbox/Google/Protomaps | Zero cost at any traffic, no registration, survived 100K req/sec stress test. CARTO tiles (previous) went enterprise-only. |
 | 2026-05-27 | Dark mode map tiles | OpenFreeMap dark style swapped on theme toggle. Evacuation polygon + markers persist across style changes. |
+| 2026-05-29 | v0.17 = full-scope design-complete (Map+News+Info+Timeline+tablet), NOT Map-only | Founder: the design-complete gate must address ALL observations, concerns, and instructions. |
+| 2026-05-29 | L1 chrome clamp-with-pixel-floor | Cap chrome to ~1/3 viewport but guarantee the persistent disclosure is never clipped on short screens. |
+| 2026-05-29 | V1 legend-only border fix (map #D95F02 unchanged) | Real defect is the faint legend swatch border, not the perimeter color. |
+| 2026-05-29 | D1 wind "Wind — NOAA" + "(weather data, not safety guidance)" | Source-attributed fact; micro-label prevents misreading wind as shelter guidance. Wind never ranks/recolors shelters. |
+| 2026-05-29 | D2 'Tiếng Việt' sign-post, vi.ready=false (standing posture) | Reviewer reachable but NOT scheduled → withhold-and-amplify is the durable design, not a temporary patch. G1. |
+| 2026-05-29 | Info sub-tabs: Status \| Resources \| About | "Get Help" over-claims (conduit routes to help, doesn't provide it); "Sources" folded under About to remove the Resources/Sources label clash. |
+| 2026-05-29 | Timeline: curate + archive toggle | Keep the data; default-show ~critical/major milestones, archive toggle for forensic depth. Fits the during-incident thesis without dropping history. |
+| 2026-05-29 | Tablet: comprehensive responsive (600–767 + 768–1023) | All-concerns scope + portfolio stakes warrant proper tablet handling, not a deferral. |
+| 2026-05-29 | News dedupe deferred | Dedupe code is proven in tests but effectively a no-op on the static seed; defer to a post-incident video-sourcing strategy. |
+
+## v0.17 Design-Complete Gate (2026-05-29)
+
+The founder's binding "design-complete" bar, made finite so it can be reached (not a receding feeling). v0.17 is **all-concerns**, not Map-only. Done = every item below passes, verified, and recorded here.
+
+**Build order (foundation-first):** B2 → L1 → L2 → V1 → B1 → D1 → D2 → News video cards → Info sub-tabs → Timeline curate → tablet → eval + visual verify + cache bump + docs.
+
+**Gate items (17):**
+1. **B2** — map renders (not blank) on cached mobile reload @ 375x812/375x667; `_ggMap` assigned at construction; `ResizeObserver` on `.map-outer`; `pageshow`/`orientationchange` fire `resize()`.
+2. **L1** — chrome clamps to `max(Npx, 33dvh)`; persistent disclosure never clipped at any mobile/tablet height; map is the flex residue.
+3. **L2** — tab-bar at bottom on desktop (`order:1` @ ≥600px); top on mobile.
+4. **V1** — `.legend-icon-evac` border opaque/visible; map `#D95F02` paint sites unchanged.
+5. **B1** — Share: clipboard fallback + `role=status aria-live=polite` toast (`share.copied`, English fallback per G1).
+6. **D1** — wind shows "Wind — NOAA" + "(weather data, not safety guidance)"; no directional verbs; never ranks/recolors shelters.
+7. **D2** — 'Tiếng Việt' sign-post routes to official VI; `vi.ready=false`; no machine-translated copy; `test_vietnamese_held_with_official_fallback` passes.
+8. **News video cards** — thumbnail + duration badge + play affordance; 16:9; YouTube CDN thumbnail; no CSP violation.
+9. **News dedupe** — decision documented (deferred; no-op in practice).
+10. **Info sub-tabs** — Status | Resources | About (Resources = shelters + schools + community resources; About = who-made-this + sources/methods).
+11. **Timeline** — curate + archive toggle (default critical/major; archive for the rest); no orphaned refs.
+12. **Tablet** — comprehensive 600–767 + 768–1023 media handling; renders clean at the full viewport matrix.
+13. **Eval** — `python eval/run_all.py --skip integration` → 48/48 by scorecard (never `--quiet`); the +1 over v0.16 is the new `test_new_strings_english_only` G1 guard (new i18n keys must be English-only until fluent-native verification).
+14. **Visual verify** — Edge-headless at 375x812, 375x667, 700x900, 768x1024, 1024x768, 1280x720, light + dark; no clipping/reflow.
+15. **Cache** — `CACHE_NAME` v7→v8 on deploy (dashboard.html changes); reason in CHANGELOG.
+16. **Docs + rename refs** — CHANGELOG + this gate; constraints audit (conduit/G1/honesty/noindex); update README/USAGE/docs/DATA_SYNC current-facing `gg-tank-dashboard`→`gg-tank-watch` refs (leave historical records).
+17. **Submission-ready** — all of the above merged + deployed; Fellows application can submit.
+
+**Milestone ladder (safety net, not a scope cut — the gate is M3):** M1 Map-foundation (B2+L1+L2+V1+B1) · M2 +D1+D2+video cards · **M3 = full all-concerns (the gate).**
+
+**Binding constraints:** conduit (no authored directives) · G1 (no MT safety copy; vi held) · persistent honesty disclosure · `noindex` ON (vercel.json header). **Verified non-issues:** noindex meta tag, Info "buried disclaimer", `.vercel/project.json` staleness (gitignored).
