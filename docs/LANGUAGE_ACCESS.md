@@ -7,17 +7,21 @@ elderly, limited-English, low-income. For an emergency tool the right metric is 
 raw speaker count but **limited-English proficiency (LEP)**: the people who *cannot*
 get the information in English are exactly the people a translation serves.
 
-## Binding constraint (G1)
+## Binding constraint (G1) — English-only by design
 
-**No machine-translated safety copy ships.** Every non-English string must be
-verified by a native speaker before it goes live. A wrong "you're safe" is far worse
-than a missing translation (see [DISTRIBUTION.md](DISTRIBUTION.md) G1, [LEGAL.md](LEGAL.md)).
-Until a verified translation exists, the UI falls back to English (`t()` does this
-automatically) — never to a machine translation.
+**The app ships English only.** We do not author, machine-translate, *or surface*
+(even via a link framed as our own content) any non-English safety copy without
+reliable human verification. A wrong "you're safe" — or a mistranslated evacuation
+instruction — is far worse than a missing translation (see
+[DISTRIBUTION.md](DISTRIBUTION.md) G1, [LEGAL.md](LEGAL.md)). For a two-person volunteer
+conduit without reliable native translators on call, the honest and safe choice is to
+**not ship translations at all** and route limited-English residents to the officials
+who publish their own verified copy (the city's emergency page carries human-authored
+Vietnamese, Spanish, and Korean per-update).
 
-This makes **sourcing verified native translators the blocking dependency**, not the
-code. The i18n framework supports N languages today; a language only appears in the
-picker when its verified copy lands.
+This is the most conservative form of the rule: there is no non-English surface to get
+wrong. `test_english_only` enforces it — the build fails if any non-English language
+is added to `LANGS`.
 
 ## The affected area
 
@@ -49,24 +53,33 @@ Data USA (Garden Grove / Westminster / Stanton); Census, "Languages We Speak in 
 United States" (2022, 2019 ACS). Exact city-level ACS table pulls (B16001 / C16001 /
 B16004) can refine the numbers but do not change the ranking.
 
-## Decision — prioritized language set
+## Decision — English-only; route LEP residents to officials
 
-- **Tier 1 — must-have.** **Vietnamese** (held — `ready:false`; AI-drafted strings await a fluent native verifier, G1) and
-  **Spanish**. These two cover the overwhelming majority of LEP residents across all
-  four cities.
-- **Tier 2 — strong next.** **Korean** — ~14x fewer speakers than the top two, but
-  high per-capita LEP and a real Garden Grove community.
-- **Tier 3 — defer / monitor.** Chinese (Mandarin/Cantonese) and Arabic (Anaheim's
-  Little Arabia) are smaller in the immediate zone. **Tagalog deprioritized** —
-  Filipino speakers have the lowest LEP rate (mostly English-proficient).
+Given the demographics above, the residents most at risk are also the most
+limited-English (Vietnamese 57% LEP, Spanish 39%). The instinct is to translate the
+tool for them. But this is a two-person volunteer conduit, and we do not have reliable
+native translators on call for safety-critical copy — so the responsible choice is
+**not** to ship our own translations.
 
-## Translator sourcing checklist (the human long-pole)
+Instead the conduit does the one thing it can do safely for LEP residents: route them
+to the **official** channel, which already publishes human-authored Vietnamese /
+Spanish / Korean for each incident update. We amplify verified official translations;
+we never substitute an unverifiable one of our own. The (high) bar to ever add a
+language in-app is below — but the default, and the shipped state, is English-only.
 
-Each language needs a verified native translator before its copy ships. Status:
+## The bar to ever add a language
 
-- [ ] **Vietnamese (vi)** — **held (`ready:false`).** Existing strings are AI-drafted and **not** native-verified: the prior reviewer (Nancy) is not a fluent Vietnamese speaker and checked only a few strings, so the G1 bar is not met. A fluent native verifier is reachable and certified translation is fundable; the plan is MT-assisted drafting + mandatory fluent-human verification before the toggle goes live (see [research](research/2026-05-29-vi-anthropic-lens-research.md)). English fallback until then.
-- [ ] **Spanish (es)** — source a verified native translator. Large local pool; expected fastest.
-- [ ] **Korean (ko)** — source a verified native translator. Smaller pool; start early.
+English-only is the shipped default. A language would be added *only* if all of the
+following hold — anything less stays English-only:
+
+- A **fluent native speaker** verifies every safety-critical string (the prior
+  Vietnamese attempt failed this bar: the reviewer was not a fluent Vietnamese speaker
+  and checked only a few strings), ideally backed by **funded certified translation**.
+- The translation is **maintained** for every future incident update, not a one-time
+  pass — stale safety copy in another language is its own hazard.
+- It clears attorney review alongside the rest of the pre-launch gate.
+
+Until all three hold, the conduit routes non-English residents to officials (above).
 
 What a translator receives: the English string set (the `STRINGS` table in
 `dashboard.html`), with emphasis on the **safety-critical copy** (the address-check

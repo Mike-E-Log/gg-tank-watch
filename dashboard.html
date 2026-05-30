@@ -315,16 +315,6 @@
       opacity: 0; transition: opacity .2s ease; pointer-events: none;
     }
     .share-toast.show { opacity: 1; }
-    .vi-signpost {
-      margin: 8px 14px;
-      padding: 10px 12px;
-      background: var(--sa-gold-2);
-      border: 1px solid var(--sa-gold);
-      border-radius: 8px;
-    }
-    .vi-signpost strong { display: block; font-size: 13px; margin-bottom: 4px; color: var(--sa-text); }
-    .vi-signpost p { font-size: 12px; color: var(--sa-text-2); line-height: 1.4; margin: 0 0 6px; }
-    .vi-signpost a { font-size: 12px; color: var(--sa-celadon); font-weight: 600; text-decoration: none; }
     .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); background: var(--sa-gold-2); }
     .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2); margin-bottom: 3px; }
     .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--sa-text); margin: 0; }
@@ -657,23 +647,23 @@
       position: absolute;
       top: 8px;
       right: 8px;
-      width: 160px;
+      width: 90px;
       box-sizing: border-box;
       background: var(--sa-surface);
       border: 1px solid var(--sa-border);
       border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 11px;
+      padding: 3px 6px;
+      font-size: 9px;
       color: var(--sa-text-2);
       box-shadow: var(--sa-shadow);
       text-align: right;
-      line-height: 1.3;
+      line-height: 1.25;
       z-index: 2;
     }
     .map-wind-reading { display: block; }
     #wind-arrow-map { vertical-align: middle; }
     #wind-text-map { white-space: normal; }
-    .wind-source { display: block; margin-top: 1px; font-size: 10px; font-weight: 600; color: var(--sa-text-3); }
+    .wind-source { display: block; margin-top: 1px; font-size: 8px; font-weight: 600; color: var(--sa-text-3); }
     .wind-disclaimer { display: block; font-size: 9px; color: var(--sa-text-3); opacity: 0.85; line-height: 1.2; }
     .map-legend {
       position: absolute;
@@ -1227,7 +1217,7 @@
     }
     .news-subpanel { display: none; }
     .news-subpanel.active { display: block; }
-    .info-subtabs { display: flex; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid var(--sa-border); background: var(--sa-surface); }
+    .info-subtabs { display: flex; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid var(--sa-border); background: var(--sa-surface); position: sticky; top: 0; z-index: 3; }
     .info-subtab {
       flex: 1; padding: 10px 12px; border: none; background: transparent;
       color: var(--sa-text-2); font-family: inherit; font-size: 13px; font-weight: 600;
@@ -1238,6 +1228,9 @@
     .info-subtab.active { color: var(--sa-celadon); border-bottom-color: var(--sa-celadon); }
     .info-subpanel { display: none; }
     .info-subpanel.active { display: block; }
+    @media (min-width: 768px) {
+      .info-subpanel.active { max-width: 760px; margin-left: auto; margin-right: auto; }
+    }
 
     /* ===== NEWS FILTER CHIPS ===== */
     .news-filter-chips {
@@ -1624,10 +1617,6 @@
         <button id="share-btn" class="topbar-btn" type="button" aria-label="Share this page" title="Share">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
         </button>
-        <div class="lang-picker" id="lang-picker">
-          <button class="topbar-btn" id="lang-toggle" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" title="Language / Ng&#xF4;n ng&#x1EEF;">VI</button>
-          <div class="lang-menu" id="lang-menu" role="menu"></div>
-        </div>
         <button class="topbar-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle theme">&#x1F319;</button>
       </div>
     </header>
@@ -1663,13 +1652,11 @@
         <a class="safety-strip-terms" href="terms.html" data-i18n="safety.strip.terms">Full terms</a>
       </div>
       <div class="safety-strip-sources">
-        <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>
+        Emergency <a href="tel:911">911</a>
         <span class="safety-strip-sep">&#xB7;</span>
-        <a href="tel:911">911</a>
+        Official <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>
         <span class="safety-strip-sep">&#xB7;</span>
-        <a href="tel:+17146287085">714-628-7085</a>
-        <span class="safety-strip-sep">&#xB7;</span>
-        <span>OCFA</span>
+        City info <a href="tel:+17146287085">(714) 628-7085</a>
       </div>
     </div>
 
@@ -1683,13 +1670,12 @@
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
         <div class="map-outer" id="map-outer">
           <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations and the current wind direction marked."></div>
-          <div class="map-wind" id="map-wind-overlay">
+          <div class="map-wind" id="map-wind-overlay" title="Weather data, not safety guidance">
             <div class="map-wind-reading">
               <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
               <span id="wind-text-map">--</span>
             </div>
             <span class="wind-source" data-i18n="wind.source">Wind — NOAA</span>
-            <span class="wind-disclaimer" data-i18n="wind.disclaimer">weather data, not safety guidance</span>
           </div>
           <!-- G1: "Map legend" group label is English-only pending native-speaker (Nancy) VI review. -->
           <div class="map-legend" role="group" aria-label="Map legend">
@@ -1706,22 +1692,10 @@
       </div>
 
       <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
-        <div class="news-subtabs" role="tablist" aria-label="News sections">
-          <button type="button" class="news-subtab active" role="tab" id="news-subtab-updates" aria-selected="true" aria-controls="news-subpanel-updates" data-i18n="news.subtab.updates" onclick="switchNewsSubtab('updates')">Updates</button>
-          <button type="button" class="news-subtab" role="tab" id="news-subtab-timeline" aria-selected="false" aria-controls="news-subpanel-timeline" data-i18n="news.subtab.timeline" onclick="switchNewsSubtab('timeline')">Timeline</button>
-        </div>
-        <div class="news-subpanel active" id="news-subpanel-updates" role="tabpanel" aria-labelledby="news-subtab-updates">
+        <div class="news-subpanel active" id="news-subpanel-updates">
           <div id="news-situation" class="news-situation" hidden></div>
           <div class="news-filter-chips" id="news-filter-chips"></div>
           <div id="news-feed"></div>
-        </div>
-        <div class="news-subpanel" id="news-subpanel-timeline" role="tabpanel" aria-labelledby="news-subtab-timeline">
-          <div class="timeline-header">
-            <span class="timeline-title" data-i18n="timeline.title">Incident timeline</span>
-            <span class="timeline-count sa-mono" id="timeline-count"></span>
-          </div>
-          <div class="filter-chips" id="filter-chips"></div>
-          <div id="timeline-feed"></div>
         </div>
       </div>
 
@@ -1757,7 +1731,6 @@ var BREAKING_TITLE = "\u{1F534} BREAKING — GG Tank Watch";
 
 var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><g fill="#f59e0b"><circle cx="12" cy="12" r="5"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(0 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(45 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(90 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(135 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(180 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(225 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(270 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(315 12 12)"/></g></svg>';
 var ICON_MOON = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z" fill="#94a3b8"/></svg>';
-var FLAG_VN = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#da251d"/><polygon points="15,4 16.8,9.6 22.6,9.6 17.9,13 19.7,18.6 15,15.1 10.3,18.6 12.1,13 7.4,9.6 13.2,9.6" fill="#ff0"/></svg>';
 var FLAG_US = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><g fill="#b22234"><rect width="30" height="2" y="0"/><rect width="30" height="2" y="4"/><rect width="30" height="2" y="8"/><rect width="30" height="2" y="12"/><rect width="30" height="2" y="16"/></g><rect width="13" height="10" fill="#3c3b6e"/></svg>';
 
 function fixMojibake(s) {
@@ -1775,182 +1748,173 @@ var WIND_MAX_MS = 480000;
 
 /* ============ I18N (EN / VI) ============ */
 var STRINGS = {
-  "tab.map": { en: "Map", vi: "Bản đồ" },
-  "tab.news": { en: "News", vi: "Tin tức" },
-  "news.subtab.updates": { en: "Updates", vi: "Cập nhật" },
-  "news.subtab.timeline": { en: "Timeline", vi: "Dòng thời gian" },
-  "tab.info": { en: "Info", vi: "Thông tin" },
-  "theme.dark": { en: "Dark", vi: "Tối" },
-  "theme.light": { en: "Light", vi: "Sáng" },
+  "tab.map": { en: "Map" },
+  "tab.news": { en: "News" },
+  "tab.info": { en: "Info" },
+  "theme.dark": { en: "Dark" },
+  "theme.light": { en: "Light" },
   "share.copied": { en: "Copied to clipboard" },
   "wind.source": { en: "Wind — NOAA" },
   "wind.disclaimer": { en: "weather data, not safety guidance" },
   "wind.unavailable": { en: "Wind data unavailable" },
-  "signpost.vi.body": { en: "Official emergency updates are available in Vietnamese from the City of Garden Grove." },
-  "signpost.vi.cta": { en: "Open official Vietnamese updates" },
   "info.subtab.status": { en: "Status" },
   "info.subtab.resources": { en: "Resources" },
   "info.subtab.about": { en: "About" },
-  "updated.loading": { en: "loading...", vi: "đang tải..." },
-  "updated.freshness": { en: "As of {t}", vi: "Lúc {t}" },
-  "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}.", vi: "Tự động cập nhật khoảng 20 phút một lần. Lần cập nhật cuối {t}." },
-  "topbar.unofficial": { en: "UNOFFICIAL", vi: "KHÔNG CHÍNH THỨC" },
-  "topbar.unofficial.title": { en: "Volunteer-made — not an official government source", vi: "Do tình nguyện viên xây dựng — không phải nguồn chính thức của chính phủ" },
-  "safety.strip.info": { en: "Informational only — not official. In an emergency, call 911.", vi: "Chỉ mang tính thông tin — không chính thức. Trong trường hợp khẩn cấp, gọi 911." },
-  "safety.strip.official": { en: "Official source:", vi: "Nguồn chính thức:" },
-  "safety.strip.terms": { en: "Full terms & disclaimer", vi: "Điều khoản & miễn trừ đầy đủ" },
-  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels.", vi: "Các tóm tắt trên trang này được tổng hợp với sự hỗ trợ của AI từ các nguồn chính thức và tin tức, sau đó được kiểm tra bởi người thật. Luôn xác nhận thông tin an toàn sinh mạng với các kênh chính thức." },
-  "hero.severity.label": { en: "Incident severity:", vi: "Mức độ nghiêm trọng:" },
-  "hero.status.evacuation": { en: "Evacuation", vi: "Sơ tán" },
-  "hero.status.residents": { en: "Residents affected", vi: "Cư dân bị ảnh hưởng" },
-  "hero.status.tankTemp": { en: "Tank temp", vi: "Nhiệt độ bồn" },
-  "hero.status.day": { en: "Day", vi: "Ngày" },
-  "hero.status.active": { en: "Active", vi: "Đang diễn ra" },
-  "hero.status.lifted": { en: "Lifted", vi: "Đã dỡ bỏ" },
-  "hero.summary.loading": { en: "Loading current status…", vi: "Đang tải tình trạng hiện tại…" },
-  "hero.lead": { en: "Active chemical-tank emergency in Garden Grove.", vi: "Tình trạng khẩn cấp bồn chứa hóa chất đang diễn ra tại Garden Grove." },
-  "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders.", vi: "Sự cố bồn chứa hóa chất đang diễn ra tại Garden Grove. Hãy tuân theo lệnh của cơ quan chức năng." },
-  "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest.", vi: "Sự cố đã được giải quyết. Xem ggcity.org/emergency để biết thông tin mới nhất." },
-  "hero.res.label": { en: "residents in evacuation zone", vi: "cư dân trong vùng sơ tán" },
-  "hero.whatchanged": { en: "What changed", vi: "Diễn biến" },
-  "legend.evac": { en: "Evac zone", vi: "Khu sơ tán" },
-  "legend.shelter": { en: "Shelter", vi: "Nơi trú ẩn" },
-  "map.check_zone": { en: "Check Address (Official Tool)", vi: "Kiểm Tra Địa Chỉ (Công Cụ Chính Thức)" },
-  "map.tooltip.evac": { en: "Evacuation zone", vi: "Khu vực sơ tán" },
-  "map.tooltip.you": { en: "You", vi: "Bạn" },
-  "news.statements.count": { en: "{n} official statement{s}", vi: "{n} thông cáo chính thức" },
-  "news.coverage": { en: "Coverage", vi: "Báo chí đưa tin" },
-  "news.feed.title": { en: "News & updates", vi: "Tin tức & cập nhật" },
-  "news.situation.label": { en: "Current situation", vi: "Tình hình hiện tại" },
-  "news.type.official": { en: "🏛 Official", vi: "🏛 Chính thức" },
-  "news.type.article": { en: "📰 Article", vi: "📰 Bài báo" },
-  "news.type.video": { en: "▶ Video", vi: "▶ Video" },
-  "info.group.status": { en: "Incident status", vi: "Tình trạng sự cố" },
-  "info.tank.title": { en: "Tank", vi: "Bồn chứa" },
-  "info.tank.crack": { en: "Crack observed", vi: "Đã thấy vết nứt" },
-  "info.evac.title": { en: "Evacuation", vi: "Sơ tán" },
-  "info.evac.area": { en: "Area", vi: "Diện tích" },
-  "info.evac.lifted": { en: "Order lifted", vi: "Đã dỡ bỏ lệnh" },
-  "info.evac.expanded": { en: "Expanded today", vi: "Mở rộng hôm nay" },
-  "info.evac.boundary": { en: "Boundary", vi: "Ranh giới" },
-  "info.shelters.title": { en: "Evacuation shelters", vi: "Nơi trú ẩn sơ tán" },
+  "updated.loading": { en: "loading..." },
+  "updated.freshness": { en: "As of {t}" },
+  "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}." },
+  "topbar.unofficial": { en: "UNOFFICIAL" },
+  "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
+  "safety.strip.info": { en: "Informational only — not official. In an emergency, call 911." },
+  "safety.strip.official": { en: "Official source:" },
+  "safety.strip.terms": { en: "Full terms & disclaimer" },
+  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels." },
+  "hero.severity.label": { en: "Incident severity:" },
+  "hero.status.evacuation": { en: "Evacuation" },
+  "hero.status.residents": { en: "Residents affected" },
+  "hero.status.tankTemp": { en: "Tank temp" },
+  "hero.status.day": { en: "Day" },
+  "hero.status.active": { en: "Active" },
+  "hero.status.lifted": { en: "Lifted" },
+  "hero.summary.loading": { en: "Loading current status…" },
+  "hero.lead": { en: "Active chemical-tank emergency in Garden Grove." },
+  "hero.summary.default": { en: "Active chemical-tank incident in Garden Grove. Follow official orders." },
+  "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
+  "hero.res.label": { en: "residents in evacuation zone" },
+  "hero.whatchanged": { en: "What changed" },
+  "legend.evac": { en: "Evac zone" },
+  "legend.shelter": { en: "Shelter" },
+  "map.check_zone": { en: "Check Address (Official Tool)" },
+  "map.tooltip.evac": { en: "Evacuation zone" },
+  "map.tooltip.you": { en: "You" },
+  "news.statements.count": { en: "{n} official statement{s}" },
+  "news.coverage": { en: "Coverage" },
+  "news.feed.title": { en: "News & updates" },
+  "news.situation.label": { en: "Current situation" },
+  "news.type.official": { en: "🏛 Official" },
+  "news.type.article": { en: "📰 Article" },
+  "news.type.video": { en: "▶ Video" },
+  "info.group.status": { en: "Incident status" },
+  "info.tank.title": { en: "Tank" },
+  "info.tank.crack": { en: "Crack observed" },
+  "info.evac.title": { en: "Evacuation" },
+  "info.evac.area": { en: "Area" },
+  "info.evac.lifted": { en: "Order lifted" },
+  "info.evac.expanded": { en: "Expanded today" },
+  "info.evac.boundary": { en: "Boundary" },
+  "info.shelters.title": { en: "Evacuation shelters" },
   "info.shelters.cta": {
     en: '&#128719; <strong>Live list at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; the city is the source of truth; the list below is a snapshot.',
     vi: '&#128719; <strong>Danh sách trực tiếp tại <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; thành phố là nguồn chính thức; danh sách bên dưới là ảnh chụp thời điểm.'
   },
-  "info.shelters.directions": { en: "Directions ↗", vi: "Chỉ đường ↗" },
+  "info.shelters.directions": { en: "Directions ↗" },
   "info.shelters.empty": {
     en: 'No shelters configured. Edit <code>config.json</code> map.shelters.',
     vi: 'Chưa cấu hình nơi trú ẩn. Sửa <code>config.json</code> map.shelters.'
   },
-  "info.schools.title": { en: "Schools closed", vi: "Trường học đóng cửa" },
-  "info.schools.none": { en: "None reported", vi: "Chưa có báo cáo" },
-  "info.sources.title": { en: "Sources verified", vi: "Nguồn đã xác minh" },
-  "info.sources.empty": { en: "No sources in this snapshot", vi: "Không có nguồn trong bản chụp này" },
-  "info.sources.checked": { en: "checked", vi: "đã kiểm tra" },
-  "common.yes": { en: "yes", vi: "có" },
-  "common.no": { en: "no", vi: "không" },
-  "info.method.title": { en: "Methodology & trust", vi: "Phương pháp & độ tin cậy" },
-  "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing.", vi: "<strong>Quy trình dữ liệu:</strong> Tình trạng được cập nhật 30 phút một lần qua các nguồn web đã xác minh. Mỗi thông tin được đối chiếu với nhiều nguồn trước khi đăng." },
-  "info.method.wind": { en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds.", vi: "<strong>Dữ liệu gió:</strong> Quan sát trực tiếp từ trạm NOAA KFUL, cập nhật 60 giây một lần." },
+  "info.schools.title": { en: "Schools closed" },
+  "info.schools.none": { en: "None reported" },
+  "info.sources.title": { en: "Sources verified" },
+  "info.sources.empty": { en: "No sources in this snapshot" },
+  "info.sources.checked": { en: "checked" },
+  "common.yes": { en: "yes" },
+  "common.no": { en: "no" },
+  "info.method.title": { en: "Methodology & trust" },
+  "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing." },
+  "info.method.wind": { en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds." },
 
   "info.method.eval": { en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests and LLM-as-judge rubrics for design and data quality.', vi: '<strong>Đánh giá:</strong> Dashboard này có <a href="eval/">bộ kiểm thử</a> gồm các kiểm thử hành vi và các rubric LLM-as-judge.' },
   "info.method.disclaimer": { en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.', vi: '<strong>Tuyên bố miễn trừ:</strong> Đây là công cụ cộng đồng, không phải nguồn chính thức. Luôn xác minh tại <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; trong trường hợp khẩn cấp, gọi 911.' },
-  "info.about.title": { en: "Who made this", vi: "Ai xây dựng trang này" },
-  "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data.", vi: "Được xây dựng bởi hai tình nguyện viên địa phương, Mike và Nancy, để hỗ trợ cộng đồng trong sự cố bồn chứa hóa chất tại Garden Grove. Miễn phí, không cần đăng ký, không quảng cáo — chúng tôi không thu thập dữ liệu của bạn." },
-  "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA.", vi: "Để biết lệnh và cập nhật chính thức, luôn sử dụng ggcity.org/emergency · 714-628-7085 · OCFA." },
-  "info.about.termslink": { en: "Read the full Terms & disclaimer", vi: "Đọc Điều khoản & miễn trừ đầy đủ" },
-  "info.about.conductlink": { en: "Information Conduit Code of Conduct", vi: "Quy tắc ứng xử Kênh Thông tin" },
-  "info.about.a11ylink": { en: "Accessibility", vi: "Khả năng tiếp cận" },
-  "info.group.closures": { en: "Closures", vi: "Đóng cửa" },
-  "info.roads.title": { en: "Road closures", vi: "Đóng đường" },
+  "info.about.title": { en: "Who made this" },
+  "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
+  "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA." },
+  "info.about.termslink": { en: "Read the full Terms & disclaimer" },
+  "info.about.conductlink": { en: "Information Conduit Code of Conduct" },
+  "info.about.a11ylink": { en: "Accessibility" },
+  "info.group.closures": { en: "Closures" },
+  "info.roads.title": { en: "Road closures" },
   "info.roads.defer": { en: 'Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.', vi: 'Các đường trong khu vực sơ tán đã đóng. Xem <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> để biết thông tin đóng đường hiện tại.' },
-  "info.group.official": { en: "Official sources", vi: "Nguồn chính thức" },
-  "info.official.note": { en: "No single source should be your only one. Subscribe to official alerts and check multiple channels.", vi: "Không nên chỉ dựa vào một nguồn duy nhất. Hãy đăng ký nhận cảnh báo chính thức và kiểm tra nhiều kênh." },
-  "info.official.city": { en: "City of Garden Grove emergency page", vi: "Trang khẩn cấp Thành phố Garden Grove" },
-  "info.official.zonehaven": { en: "Genasys / Zonehaven zone lookup", vi: "Tra cứu khu vực Genasys / Zonehaven" },
-  "info.official.alert": { en: "AlertOC sign-up (official county alerts)", vi: "Đăng ký AlertOC (cảnh báo chính thức của quận)" },
-  "info.official.airnow": { en: "EPA AirNow air quality", vi: "Chất lượng không khí EPA AirNow" },
-  "info.group.sources": { en: "Sources & how this works", vi: "Nguồn & cách hoạt động" },
-  "news.badge.newest": { en: "Newest", vi: "Mới nhất" },
-  "news.badge.recent": { en: "Recent", vi: "Gần đây" },
-  "news.source": { en: "source ↗", vi: "nguồn ↗" },
-  "news.untitled": { en: "(untitled)", vi: "(không có tiêu đề)" },
-  "news.empty": { en: "No coverage yet.", vi: "Chưa có tin tức." },
-  "news.media.video": { en: "▶ video", vi: "▶ video" },
-  "news.media.article": { en: "📰 article", vi: "📰 bài báo" },
-  "banner.schema.title": { en: "⚠️ Schema changed", vi: "⚠️ Đã thay đổi cấu trúc" },
-  "banner.schema.msg": { en: "Reload this page.", vi: "Hãy tải lại trang này." },
-  "banner.stale.title": { en: "⚠️ Stale", vi: "⚠️ Cũ" },
-  "banner.stale.msg": { en: "Last update {n} min ago", vi: "Cập nhật cuối cùng {n} phút trước" },
-  "banner.offline.title": { en: "Offline", vi: "Ngoại tuyến" },
-  "banner.offline.msg": { en: "Last fetch failed", vi: "Lần lấy dữ liệu cuối thất bại" },
-  "banner.offline.detail": { en: "Could not load status.json — {err}", vi: "Không thể tải status.json — {err}" },
-  "banner.update.title": { en: "📢 UPDATE", vi: "📢 CẬP NHẬT" },
-  "banner.urgent.title": { en: "🚨 URGENT", vi: "🚨 KHẨN CẤP" },
+  "info.group.official": { en: "Official sources" },
+  "info.official.note": { en: "No single source should be your only one. Subscribe to official alerts and check multiple channels." },
+  "info.official.city": { en: "City of Garden Grove emergency page" },
+  "info.official.zonehaven": { en: "Genasys / Zonehaven zone lookup" },
+  "info.official.alert": { en: "AlertOC sign-up (official county alerts)" },
+  "info.official.airnow": { en: "EPA AirNow air quality" },
+  "info.group.sources": { en: "Sources & how this works" },
+  "news.badge.newest": { en: "Newest" },
+  "news.badge.recent": { en: "Recent" },
+  "news.source": { en: "source ↗" },
+  "news.untitled": { en: "(untitled)" },
+  "news.empty": { en: "No coverage yet." },
+  "news.media.video": { en: "▶ video" },
+  "news.media.article": { en: "📰 article" },
+  "banner.schema.title": { en: "⚠️ Schema changed" },
+  "banner.schema.msg": { en: "Reload this page." },
+  "banner.stale.title": { en: "⚠️ Stale" },
+  "banner.stale.msg": { en: "Last update {n} min ago" },
+  "banner.offline.title": { en: "Offline" },
+  "banner.offline.msg": { en: "Last fetch failed" },
+  "banner.offline.detail": { en: "Could not load status.json — {err}" },
+  "banner.update.title": { en: "📢 UPDATE" },
+  "banner.urgent.title": { en: "🚨 URGENT" },
   /* Emoji-free pill labels — reuse verified CẬP NHẬT / KHẨN CẤP without the
      ASCII-only \w regex strip that mangled VI diacritics ("CẬP NHẬT" -> "CP NHT"). */
-  "banner.update.pill": { en: "UPDATE", vi: "CẬP NHẬT" },
-  "banner.urgent.pill": { en: "URGENT", vi: "KHẨN CẤP" },
-  "banner.action.updates": { en: "→ News", vi: "→ Tin tức" },
+  "banner.update.pill": { en: "UPDATE" },
+  "banner.urgent.pill": { en: "URGENT" },
+  "banner.action.updates": { en: "→ News" },
   /* ===== BANNER REASON i18n (localizes scripts/update_status.py breaking_reason) =====
      EN values reproduce pipeline output verbatim so EN render is a no-op round-trip.
      VI reuses Nancy-verified atoms; newly-composed words flagged G1 (English fallback auto). */
-  "banner.reason.resolved":       { en: "INCIDENT RESOLVED — evacuation lifted", vi: "SỰ CỐ ĐÃ ĐƯỢC GIẢI QUYẾT — đã dỡ bỏ lệnh sơ tán" },
-  "banner.reason.severity":       { en: "Severity bumped: {prev} -> {next}", vi: "Mức độ nghiêm trọng được nâng lên: {prev} → {next}" /* G1: "được nâng lên" (4-reviewer corrected, was "tăng"); pending Nancy */ },
-  "banner.reason.evacLifted":     { en: "Evacuation order LIFTED", vi: "ĐÃ DỠ BỎ lệnh sơ tán" },
-  "banner.reason.evacReinstated": { en: "Evacuation order REINSTATED", vi: "BAN HÀNH LẠI lệnh sơ tán" /* G1: "Ban hành lại"=re-issue (4-reviewer corrected, was "Khôi phục"=restore); pending Nancy */ },
-  "banner.reason.evacExpanded":   { en: "Evacuation zone EXPANDED", vi: "MỞ RỘNG khu vực sơ tán" },
-  "banner.reason.injuries":       { en: "First reported injuries: {n}", vi: "Lần đầu báo cáo người bị thương: {n}" /* G1: "người bị thương"=injured-only (4-reviewer corrected, was "thương vong"=casualties incl. deaths); pending Nancy */ },
-  "banner.reason.newStatements":  { en: "{n} new official statement(s)", vi: "{n} thông cáo chính thức mới" },
-  "banner.reason.residentsShifted": { en: "Evacuation residents shifted: {prev} -> {next} ({delta})", vi: "Số cư dân sơ tán thay đổi: {prev} → {next} ({delta})" },
-  "severity.low":      { en: "low",      vi: "thấp" /* G1: not yet Nancy-verified */ },
-  "severity.moderate": { en: "moderate", vi: "trung bình" /* G1: not yet Nancy-verified */ },
-  "severity.high":     { en: "high",     vi: "cao" /* G1: not yet Nancy-verified */ },
-  "severity.critical": { en: "critical", vi: "nguy kịch" /* G1: 3/4 reviewers OK; 1 suggested "nguy cấp" (situation vs medical); pending Nancy */ },
-  "time.justNow": { en: "just now", vi: "vừa xong" },
-  "time.minAgo": { en: "{n} min ago", vi: "{n} phút trước" },
-  "loading.firstData": { en: "Waiting for first data. Auto-retry in 30s.", vi: "Đang đợi dữ liệu đầu tiên. Tự động thử lại sau 30 giây." },
+  "banner.reason.resolved":       { en: "INCIDENT RESOLVED — evacuation lifted" },
+  "banner.reason.severity":       { en: "Severity bumped: {prev} -> {next}" /* G1: "được nâng lên" (4-reviewer corrected, was "tăng"); pending Nancy */ },
+  "banner.reason.evacLifted":     { en: "Evacuation order LIFTED" },
+  "banner.reason.evacReinstated": { en: "Evacuation order REINSTATED" /* G1: "Ban hành lại"=re-issue (4-reviewer corrected, was "Khôi phục"=restore); pending Nancy */ },
+  "banner.reason.evacExpanded":   { en: "Evacuation zone EXPANDED" },
+  "banner.reason.injuries":       { en: "First reported injuries: {n}" /* G1: "người bị thương"=injured-only (4-reviewer corrected, was "thương vong"=casualties incl. deaths); pending Nancy */ },
+  "banner.reason.newStatements":  { en: "{n} new official statement(s)" },
+  "banner.reason.residentsShifted": { en: "Evacuation residents shifted: {prev} -> {next} ({delta})" },
+  "severity.low":      { en: "low" /* G1: not yet Nancy-verified */ },
+  "severity.moderate": { en: "moderate" /* G1: not yet Nancy-verified */ },
+  "severity.high":     { en: "high" /* G1: not yet Nancy-verified */ },
+  "severity.critical": { en: "critical" /* G1: 3/4 reviewers OK; 1 suggested "nguy cấp" (situation vs medical); pending Nancy */ },
+  "time.justNow": { en: "just now" },
+  "time.minAgo": { en: "{n} min ago" },
+  "loading.firstData": { en: "Waiting for first data. Auto-retry in 30s." },
   /* G1 placeholder — new keys for tab restructure */
-  "timeline.title": { en: "Incident timeline", vi: "Dòng thời gian sự cố" /* G1 placeholder */ },
-  "timeline.empty": { en: "No events match filters", vi: "Không có sự kiện khớp bộ lọc" /* G1 placeholder */ },
-  "timeline.events": { en: "{n} events", vi: "{n} sự kiện" /* G1 placeholder */ },
-  "timeline.showAll": { en: "Show full timeline ({n} more)" },
-  "timeline.showMajor": { en: "Show key events only" },
-  "resources.shelters": { en: "Shelters", vi: "Nơi trú ẩn" /* G1 placeholder */ },
-  "resources.government": { en: "Government", vi: "Chính phủ" /* G1 placeholder */ },
-  "resources.safety": { en: "Safety", vi: "An toàn" /* G1 placeholder */ },
-  "resources.community": { en: "Community", vi: "Cộng đồng" /* G1 placeholder */ },
-  "resources.call": { en: "Call", vi: "Gọi" /* G1 placeholder */ },
-  "resources.visit": { en: "Visit", vi: "Truy cập" /* G1 placeholder */ },
-  "filter.all": { en: "All", vi: "Tất cả" /* G1 placeholder */ },
+  "resources.shelters": { en: "Shelters" /* G1 placeholder */ },
+  "resources.government": { en: "Government" /* G1 placeholder */ },
+  "resources.safety": { en: "Safety" /* G1 placeholder */ },
+  "resources.community": { en: "Community" /* G1 placeholder */ },
+  "resources.call": { en: "Call" /* G1 placeholder */ },
+  "resources.visit": { en: "Visit" /* G1 placeholder */ },
+  "filter.all": { en: "All" /* G1 placeholder */ },
   /* ===== NEWS TAB i18n ===== */
-  "news.filter.all": { en: "All", vi: "Tất cả" },
-  "news.filter.official": { en: "Official", vi: "Chính thức" },
-  "news.filter.articles": { en: "Articles", vi: "Báo chí" },
-  "news.filter.videos": { en: "Videos", vi: "Video" },
-  "news.badge.official": { en: "OFFICIAL", vi: "CHÍNH THỨC" },
-  "news.badge.article": { en: "ARTICLE", vi: "BÁO CHÍ" },
-  "news.badge.video": { en: "VIDEO", vi: "VIDEO" },
-  "news.currentSituation": { en: "Current situation", vi: "Tình hình hiện tại" },
+  "news.filter.all": { en: "All" },
+  "news.filter.official": { en: "Official" },
+  "news.filter.articles": { en: "Articles" },
+  "news.filter.videos": { en: "Videos" },
+  "news.badge.official": { en: "OFFICIAL" },
+  "news.badge.article": { en: "ARTICLE" },
+  "news.badge.video": { en: "VIDEO" },
+  "news.currentSituation": { en: "Current situation" },
   /* ===== INFO TAB i18n ===== */
-  "info.tankCrack": { en: "Crack observed", vi: "Có vết nứt" },
-  "info.tankCrackY": { en: "Yes — relieving pressure", vi: "Có — đang giải áp" },
-  "info.tankTemp": { en: "Tank temperature", vi: "Nhiệt độ bồn" },
-  "info.tankTempV": { en: "Stabilizing", vi: "Đang ổn định" },
-  "info.evacResidents": { en: "Residents in zone", vi: "Cư dân trong vùng" },
-  "info.evacBoundary": { en: "Boundary", vi: "Ranh giới" },
-  "info.whereToGo": { en: "Where to go · nearest shelters", vi: "Nơi đến · trú ẩn gần nhất" },
-  "info.allShelters": { en: "All 9 shelters", vi: "Toàn bộ 9 nơi" },
-  "info.liveList": { en: "Live list at ggcity.org/emergency", vi: "Danh sách trực tiếp tại ggcity.org/emergency" },
-  "info.directions": { en: "Directions ↗", vi: "Chỉ đường ↗" },
-  "info.rvOnly": { en: "RV only", vi: "Chỉ RV" },
-  "info.schoolsClosed": { en: "School closures", vi: "Trường đóng cửa" },
-  "info.allSchools": { en: "See all 12", vi: "Xem tất cả 12" },
-  "info.whoMade": { en: "Who made this", vi: "Ai làm trang này" },
-  "info.builtBy": { en: "Built by volunteers Mike & Nancy. Not affiliated with OCFA, City of Garden Grove, or any agency. We collect no data.", vi: "Mike và Nancy thực hiện. Không liên kết với OCFA, Garden Grove hay cơ quan nào. Chúng tôi không thu thập dữ liệu." },
-  "info.unofficial.seal": { en: "INFORMATIONAL · UNOFFICIAL", vi: "THAM KHẢO · KHÔNG CHÍNH THỨC" },
-  "info.sourcesH": { en: "Sources & methodology", vi: "Nguồn & phương pháp" }
+  "info.tankCrack": { en: "Crack observed" },
+  "info.tankCrackY": { en: "Yes — relieving pressure" },
+  "info.tankTemp": { en: "Tank temperature" },
+  "info.tankTempV": { en: "Stabilizing" },
+  "info.evacResidents": { en: "Residents in zone" },
+  "info.evacBoundary": { en: "Boundary" },
+  "info.whereToGo": { en: "Where to go · nearest shelters" },
+  "info.allShelters": { en: "All 9 shelters" },
+  "info.liveList": { en: "Live list at ggcity.org/emergency" },
+  "info.directions": { en: "Directions ↗" },
+  "info.rvOnly": { en: "RV only" },
+  "info.schoolsClosed": { en: "School closures" },
+  "info.allSchools": { en: "See all 12" },
+  "info.whoMade": { en: "Who made this" },
+  "info.builtBy": { en: "Built by volunteers Mike & Nancy. Not affiliated with OCFA, City of Garden Grove, or any agency. We collect no data." },
+  "info.unofficial.seal": { en: "INFORMATIONAL · UNOFFICIAL" },
+  "info.sourcesH": { en: "Sources & methodology" }
 };
 
 // G1 language-access gate: a language is `ready: true` only AFTER a fluent native speaker
@@ -1959,8 +1923,7 @@ var STRINGS = {
 // back to English automatically; the picker routes vi-seekers to fallbackUrl (official human
 // Vietnamese) meanwhile. Guarded by eval/test_language_access.py. See docs/LANGUAGE_ACCESS.md.
 var LANGS = [
-  { code: "en", label: "English",    flag: FLAG_US, locale: "en-US", ready: true },
-  { code: "vi", label: "Tiếng Việt", flag: FLAG_VN, locale: "vi-VN", ready: false, fallbackUrl: "https://ggcity.org/emergency" }
+  { code: "en", label: "English", flag: FLAG_US, locale: "en-US", ready: true }
 ];
 function readyLangs() { return LANGS.filter(function(l) { return l.ready; }); }
 function langByCode(code) {
@@ -2084,7 +2047,6 @@ function setLang(lang) {
   if (lastSnap) render(lastSnap);
   if (configCache) { renderInfoTab(); renderResources(); renderInfoShelters(); if (lastSnap) updateInfoData(lastSnap); }
   renderNewsFilterChips();
-  if (timelineData) renderTimeline();
   if (configCache && fixedPointMarkers.length) recolorFixedPoints();
 }
 currentLang = detectLang();
@@ -2102,8 +2064,6 @@ var windTimer = null;
 var lastObservationTime = null;
 var refreshCountdown = 30;
 var countdownTimer = null;
-var timelineData = null;
-var activeFilters = { days: [], categories: [] };
 function $(id) { return document.getElementById(id); }
 
 /* ============ THEME ============ */
@@ -2333,21 +2293,6 @@ function pointInPolygon(pt, polygon) {
 var activeNewsFilter = "all";
 var lastFeed = [];
 
-/* ============ NEWS SUB-TABS ============ */
-function switchNewsSubtab(name) {
-  var tabs = document.querySelectorAll(".news-subtab");
-  var panels = document.querySelectorAll(".news-subpanel");
-  for (var i = 0; i < tabs.length; i++) {
-    var isActive = tabs[i].id === "news-subtab-" + name;
-    tabs[i].classList.toggle("active", isActive);
-    tabs[i].setAttribute("aria-selected", isActive ? "true" : "false");
-  }
-  for (var j = 0; j < panels.length; j++) {
-    panels[j].classList.toggle("active", panels[j].id === "news-subpanel-" + name);
-  }
-}
-window.switchNewsSubtab = switchNewsSubtab;
-
 function switchInfoSubtab(name) {
   var tabs = document.querySelectorAll(".info-subtab");
   var panels = document.querySelectorAll(".info-subpanel");
@@ -2481,22 +2426,17 @@ function renderInfoTab() {
   html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val" id="info-boundary-val" style="font-size:11px;max-width:55%;text-align:right">--</span></div>';
   html += '</div>'; // end status panel
 
-  // RESOURCES panel — where to go, school closures, community resources
+  // RESOURCES panel — shelters (+ community + official) first, then school closures
   html += '<div class="info-subpanel" id="info-subpanel-resources" role="tabpanel" aria-labelledby="info-subtab-resources">';
 
-  // Shelters section
-  html += '<div class="info-section" style="margin-top:4px"><div class="info-section-title">' + t("info.whereToGo") + '</div></div>';
-  html += '<div id="info-shelter-list"></div>';
-  html += '<div style="padding:6px 14px">';
-  html += '<a href="https://ggcity.org/emergency" target="_blank" rel="noopener" style="font-size:11px;color:var(--sa-celadon);text-decoration:none">' + t("info.liveList") + ' ↗</a>';
-  html += '</div>';
+  // Shelters + community resources + official sources (populated by renderResources;
+  // leads with the single "Evacuation shelters" list — the former duplicate
+  // "nearest shelters" block was merged away).
+  html += '<div id="resources-content" style="margin-top:4px"></div>';
 
-  // School closures
+  // School closures (after the shelter content, so the shelter sections stay together)
   html += '<div class="info-section"><div class="info-section-title">' + t("info.schoolsClosed") + '</div></div>';
   html += '<div class="info-schools-grid" id="info-schools-grid"></div>';
-
-  // Community resources (populated by renderResources)
-  html += '<div id="resources-content"></div>';
   html += '</div>'; // end resources panel
 
   // ABOUT panel — who made this, Vietnamese sign-post, sources
@@ -2511,15 +2451,6 @@ function renderInfoTab() {
   html += '<p style="font-size:12px;margin-top:8px"><a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>';
   html += ' · <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>';
   html += '</div>';
-
-  // Vietnamese sign-post (D2): English-only body routing vi-seekers to the city's
-  // official human Vietnamese updates. The only Vietnamese string is the verified
-  // LANGS label; vi stays ready:false (G1 — no machine-translated safety copy).
-  html += '<aside class="vi-signpost" role="note">';
-  html += '<strong lang="vi">Tiếng Việt</strong>';
-  html += '<p>' + t("signpost.vi.body") + '</p>';
-  html += '<a href="https://ggcity.org/emergency" target="_blank" rel="noopener">' + t("signpost.vi.cta") + '</a>';
-  html += '</aside>';
 
   // Sources (collapsed)
   html += '<details>';
@@ -2710,126 +2641,6 @@ function recolorFixedPoints() {
   });
 }
 
-/* ============ TIMELINE ============ */
-var CATEGORY_LABELS = {
-  initial_response: "Initial Response",
-  tank_status: "Tank Status",
-  official_statement: "Official Statement",
-  evacuation: "Evacuation",
-  community_impact: "Community Impact",
-  school_closure: "School Closure",
-  government_action: "Government Action",
-  air_quality: "Air Quality",
-  media_coverage: "Media Coverage"
-};
-var DAY_LABELS = {
-  1: "Day 1 · Thu 5/21",
-  2: "Day 2 · Fri 5/22",
-  3: "Day 3 · Sat 5/23",
-  4: "Day 4 · Sun 5/24",
-  5: "Day 5 · Mon 5/25"
-};
-
-// T11: the timeline defaults to critical/major event categories so the feed isn't
-// overwhelming; the archive toggle reveals the full record (nothing is deleted).
-var TIMELINE_MAJOR = ["evacuation", "initial_response", "official_statement", "government_action", "air_quality"];
-var timelineShowAll = false;
-
-function toggleTimelineArchive() {
-  timelineShowAll = !timelineShowAll;
-  renderTimeline();
-}
-window.toggleTimelineArchive = toggleTimelineArchive;
-
-function toggleFilter(type, value) {
-  var arr = activeFilters[type];
-  var idx = arr.indexOf(value);
-  if (idx === -1) arr.push(value); else arr.splice(idx, 1);
-  renderTimeline();
-}
-window.toggleFilter = toggleFilter;
-
-function renderFilterChips(containerId) {
-  var container = $(containerId);
-  if (!container || !timelineData) return;
-  var days = [];
-  var cats = [];
-  timelineData.events.forEach(function(e) {
-    if (days.indexOf(e.day) === -1) days.push(e.day);
-    if (cats.indexOf(e.category) === -1) cats.push(e.category);
-  });
-  days.sort();
-  var html = '';
-  days.forEach(function(d) {
-    var active = activeFilters.days.indexOf(d) !== -1 ? ' active' : '';
-    html += '<button class="filter-chip' + active + '" onclick="toggleFilter(\'days\',' + d + ')">' + (DAY_LABELS[d] || 'Day ' + d) + '</button>';
-  });
-  html += '<div class="filter-divider"></div>';
-  cats.forEach(function(c) {
-    var active = activeFilters.categories.indexOf(c) !== -1 ? ' active' : '';
-    html += '<button class="filter-chip' + active + '" onclick="toggleFilter(\'categories\',\'' + c + '\')">' + (CATEGORY_LABELS[c] || c) + '</button>';
-  });
-  container.innerHTML = html;
-}
-
-function renderTimelineEvents(feedId, countId) {
-  var feed = $(feedId);
-  var countEl = $(countId);
-  if (!feed || !timelineData) return;
-  var curating = !timelineShowAll && !activeFilters.categories.length;
-  var events = timelineData.events.filter(function(e) {
-    if (activeFilters.days.length && activeFilters.days.indexOf(e.day) === -1) return false;
-    if (activeFilters.categories.length && activeFilters.categories.indexOf(e.category) === -1) return false;
-    // T11 curation: hide minor categories by default; the archive toggle reveals all.
-    if (curating && TIMELINE_MAJOR.indexOf(e.category) === -1) return false;
-    return true;
-  });
-  if (countEl) countEl.textContent = t("timeline.events", { n: events.length });
-  if (!events.length) {
-    feed.innerHTML = '<div class="timeline-empty">' + t("timeline.empty") + '</div>';
-    return;
-  }
-  feed.innerHTML = events.map(function(e) {
-    var time = e.timestamp_local ? fmtAbsDateTime(e.timestamp_local) : fmtAbsDateTime(e.timestamp_utc);
-    var catLabel = CATEGORY_LABELS[e.category] || e.category;
-    return '<div class="timeline-event">' +
-      '<div class="timeline-event-header">' +
-        '<span class="timeline-event-time">' + time + '</span>' +
-        '<span class="timeline-event-cat">' + catLabel + '</span>' +
-      '</div>' +
-      '<div class="timeline-event-title">' + e.title + '</div>' +
-      (e.description ? '<div class="timeline-event-desc">' + e.description + '</div>' : '') +
-      (e.source_url ? '<a class="timeline-event-source" href="' + e.source_url + '" target="_blank" rel="noopener">' + (e.source_name || 'source') + ' ↗</a>' : '') +
-    '</div>';
-  }).join("");
-
-  // T11 archive toggle: count events the curation hides (respecting any active day filter)
-  var hiddenCount = !activeFilters.categories.length ? timelineData.events.filter(function(e) {
-    if (activeFilters.days.length && activeFilters.days.indexOf(e.day) === -1) return false;
-    return TIMELINE_MAJOR.indexOf(e.category) === -1;
-  }).length : 0;
-  if (timelineShowAll || hiddenCount > 0) {
-    feed.innerHTML += '<button type="button" class="timeline-archive-toggle" onclick="toggleTimelineArchive()">' +
-      (timelineShowAll ? t("timeline.showMajor") : t("timeline.showAll", { n: hiddenCount })) + '</button>';
-  }
-}
-
-function renderTimeline() {
-  renderFilterChips("filter-chips");
-  renderTimelineEvents("timeline-feed", "timeline-count");
-}
-
-async function loadTimeline() {
-  try {
-    var resp = await fetch("timeline.json?t=" + Date.now(), {cache:"no-store"});
-    if (!resp.ok) throw new Error("timeline.json HTTP " + resp.status);
-    timelineData = await resp.json();
-    renderTimeline();
-  } catch (e) {
-    console.warn("timeline load failed:", e);
-  }
-}
-
 /* ============ RESOURCES TAB ============ */
 function renderResources() {
   var html = '';
@@ -2852,7 +2663,6 @@ function renderResources() {
       html += '<div class="resources-section-title">' + t(catKey) + '</div>';
       html += '<div class="resources-grid">';
       catResources.forEach(function(r) {
-        var titleVi = (currentLang === "vi" && r.title_vi) ? '<div class="cr-title-vi">' + r.title_vi + '</div>' : '';
         var actions = '<div class="cr-actions">';
         if (r.phone) actions += '<a class="cr-action cr-action-phone" href="tel:' + r.phone.replace(/[^+\d]/g, '') + '">☎ ' + r.phone + '</a>';
         if (r.url) actions += '<a class="cr-action cr-action-url" href="' + r.url + '" target="_blank" rel="noopener">' + t("resources.visit") + ' ↗</a>';
@@ -2860,7 +2670,6 @@ function renderResources() {
         html += '<div class="community-resource-card">' +
           '<span class="cr-cat-chip cr-cat-' + cat + '">' + t(catKey) + '</span>' +
           '<div class="cr-title">' + r.title + '</div>' +
-          titleVi +
           '<div class="cr-desc">' + (r.description || '') + '</div>' +
           actions +
         '</div>';
@@ -2942,19 +2751,25 @@ function renderHeroStatus(snap) {
   var tank = (snap && snap.tank) || {};
   var incident = (snap && snap.incident) || {};
 
-  var evacStatus = $("hero-evac-status");
-  if (evacStatus) {
-    evacStatus.textContent = evac.lifted ? (t("hero.status.lifted") || "Lifted") : (t("hero.status.active") || "Active");
+  // Show only cells with meaningful data; hide empty "--" cells to free vertical space.
+  function setCell(id, value) {
+    var el = $(id);
+    if (!el) return;
+    var has = value != null && value !== "" && value !== "--";
+    el.textContent = has ? value : "--";
+    var item = el.closest(".hero-status-item");
+    // .hero-status-item sets display:flex, which overrides the [hidden] attribute,
+    // so toggle display directly to actually remove empty cells.
+    if (item) item.style.display = has ? "" : "none";
   }
 
-  var count = $("hero-res-count");
-  if (count) count.textContent = evac.residents != null ? fmtNumber(evac.residents) : "--";
-
-  var temp = $("hero-tank-temp");
-  if (temp) temp.textContent = tank.temp_f != null ? tank.temp_f + "\u00B0F" : "--";
-
-  var dayCounter = $("hero-day-counter");
-  if (dayCounter) dayCounter.textContent = incident.day_count || "--";
+  var evacText = evac.lifted === true ? (t("hero.status.lifted") || "Lifted")
+               : evac.lifted === false ? (t("hero.status.active") || "Active")
+               : null;
+  setCell("hero-evac-status", evacText);
+  setCell("hero-res-count", evac.residents != null ? fmtNumber(evac.residents) : null);
+  setCell("hero-tank-temp", tank.temp_f != null ? tank.temp_f + "\u00B0F" : null);
+  setCell("hero-day-counter", incident.day_count != null ? incident.day_count : null);
 }
 
 /* ============ MAIN RENDER ============ */
@@ -3131,7 +2946,6 @@ async function fetchStatus() {
 applyLang();
 loadConfig().then(function() {
   fetchStatus();
-  loadTimeline();
 });
 setInterval(fetchStatus, REFRESH_MS);
 

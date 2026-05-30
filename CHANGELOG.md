@@ -2,6 +2,26 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.18] — 2026-05-30 (English-only safety reframe + UX overhaul)
+
+### Changed — English-only by design (G1, most conservative form)
+- **Removed all Vietnamese + the language toggle.** The app ships English only: the toggle UI, the `vi` `LANGS` entry, the in-product Vietnamese sign-post, all 145 `vi:` STRINGS values, and the VN flag are gone. Safety decision — we never author or surface a translation we can't reliably verify (an unofficial mistranslation of an evacuation instruction can get someone killed); limited-English residents are routed to officials, who publish their own verified Vietnamese / Spanish / Korean per-update. Supersedes the v0.16 "held pending verification" posture.
+- **Eval reframed.** Deleted `test_vietnamese_held_with_official_fallback`; added `test_english_only`, which fails the build if any non-English language appears in `LANGS` (eval stays **48/48**). Reframed README / CLAUDE / cover-letter / evidence-summary / submission-checklist / `LANGUAGE_ACCESS.md` to the English-only narrative.
+
+### Changed — Map / News / Info UX
+- **Top half compacted.** The hero hides empty status cells; the safety strip is a tighter 2-line block with labeled routing ("Emergency 911 · Official ggcity.org/emergency · City info (714) 628-7085"), dropping the unlabeled "OCFA". The disclosure + official routing are preserved (binding).
+- **Wind overlay shrunk to ≤¼** its prior footprint; the "weather data, not safety guidance" note moves to a tooltip.
+- **Timeline removed.** The News tab is a single sourced feed (official statements + articles + videos) with its filter chips; the Updates | Timeline sub-tab bar is gone.
+- **Info → Resources** merges the former duplicate "nearest shelters" + "Evacuation shelters" into one shelter list, with School closures after it.
+- **Info → Status** is a centered ~760px column on desktop (no longer stranded across the full width).
+- **Info sub-tabs stick** to the top while scrolling.
+
+### Changed — docs / process
+- **Eval count corrected** to 48 across reviewer-facing docs (was stated as 47).
+- **`DISTRIBUTION.md`** no longer markets removed features (address checker, blast-radius/plume map).
+- **`docs/DEPLOYMENT_READINESS.md`** is the single source of truth for launch state, replacing the stale `plan/EXECUTION_PLAN.md` + `loop/LOOP_STATE.md` sentinels.
+- service-worker `CACHE_NAME` bumped `v8 → v9`.
+
 ## [v0.17] — 2026-05-29 (design-complete gate + hosting fix)
 
 ### Design-complete gate (Map + News + Info + Timeline + tablet)

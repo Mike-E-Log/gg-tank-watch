@@ -2,7 +2,7 @@
 
 I'm applying with a portfolio piece that demonstrates scalable oversight and AI control in a real deployment: **GG Tank Watch**, an emergency information dashboard serving ~50,000 evacuated residents during the Garden Grove chemical tank incident.
 
-**Live:** https://gg-tank-watch.vercel.app (running, bilingual English / Tiếng Việt). **Run the harness:** `python eval/run_all.py --skip integration` (47/47, exits 0). The repo trail below maps each safety principle to its code and tests.
+**Live:** https://gg-tank-watch.vercel.app (running; English, routing non-English speakers to officials). **Run the harness:** `python eval/run_all.py --skip integration` (48/48, exits 0). The repo trail below maps each safety principle to its code and tests.
 
 The thesis: responsible AI and helpful AI are the same lane. Every safety constraint in GG Tank Watch made the product more trustworthy and more useful — the alignment tax was zero.
 
@@ -34,6 +34,6 @@ The honest coverage reporting is itself a safety property: the system knows what
 
 ## Why this matters
 
-GG Tank Watch is a worked example of Anthropic's core insight: helpful, harmless, and honest are complementary. The safety constraints made the product more trustworthy, which made it more useful. The bilingual access framework (`docs/LANGUAGE_ACCESS.md`) targets the 57% of local Vietnamese speakers who are limited-English-proficient — the people most at risk and least served by English-only channels.
+GG Tank Watch is a worked example of Anthropic's core insight: helpful, harmless, and honest are complementary. The safety constraints made the product more trustworthy, which made it more useful. The hardest call was language: this is Little Saigon, with the nation's highest Vietnamese limited-English rate (57%) — the residents most at risk. But an unverifiable machine translation of an evacuation instruction can get someone killed, so the conduit refuses to author or surface translations it can't reliably verify, and routes non-English speakers to the officials who publish verified copy (`docs/LANGUAGE_ACCESS.md`). Choosing not to ship is itself the safety decision.
 
 This is what scalable oversight looks like when it ships: not a research paper, but a dashboard that 50,000 real people needed, built so it fails visibly stale and never confidently wrong.

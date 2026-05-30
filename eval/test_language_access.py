@@ -1,15 +1,15 @@
 """Language-access safety gate (G1) — build-failing guard.
 
-A language is marked `ready: true` in dashboard.html's LANGS array only AFTER a
-fluent native speaker has verified its safety copy. Until then it must stay
-`ready: false`, so t() falls back to verified English — unverified machine/AI
-translation of life-safety copy must never ship to residents.
+Safety posture (2026-05-30): the app ships ENGLISH ONLY. We do not surface
+translations — machine, AI, or others' — of life-safety copy without reliable
+human verification, so the app carries no non-English language. Residents who
+need another language are routed to officials, who publish their own verified
+translations. This is the most conservative form of G1.
 
-This guard turns the G1 policy into an enforced control rather than a promise:
-it fails the build if any non-English language is flipped to ready:true without
-being added to VERIFIED_LANGS below. It is the falsifier the 2026-05-29 research
-recommended (docs/research/2026-05-29-vi-anthropic-lens-research.md); see also
-docs/LANGUAGE_ACCESS.md.
+These guards turn that policy into enforced controls rather than promises:
+the build fails if any non-English language appears in LANGS (test_english_only),
+or if a ready:true language is not in the fluent-verified allowlist
+(test_no_unverified_language_ships). See docs/LANGUAGE_ACCESS.md.
 """
 
 from __future__ import annotations
@@ -59,16 +59,17 @@ def test_no_unverified_language_ships():
     }
 
 
-def test_vietnamese_held_with_official_fallback():
-    """Vietnamese must be held (ready:false) and route to official human Vietnamese."""
+def test_english_only():
+    """Safety choice (2026-05-30): the app ships English only — no non-English
+    (and therefore no unverifiable machine/AI-translated) safety copy. Routing to
+    officials covers other languages; officials publish their own verified copy."""
     html = DASHBOARD.read_text(encoding="utf-8")
-    langs = dict(_parse_langs(html))
-    assert "vi" in langs, "vi entry missing from LANGS"
-    assert langs["vi"] is False, "vi must be ready:false until fluent-native verification (G1)"
-    m = re.search(r'code:\s*"vi"[^\n]*fallbackUrl:\s*"([^"]+)"', html)
-    assert m, "vi must carry a fallbackUrl routing vi-seekers to official human Vietnamese"
-    assert "ggcity.org" in m.group(1), "vi fallbackUrl should point to the official city emergency page"
-    return {"passed": True, "details": "vi held; fallback=" + m.group(1), "metrics": {}}
+    codes = [code for code, _ in _parse_langs(html)]
+    assert codes == ["en"], (
+        "app must be English-only — non-English safety copy is not shipped without "
+        "reliable human translation (G1). Found language code(s): " + ", ".join(codes)
+    )
+    return {"passed": True, "details": "languages=" + ",".join(codes), "metrics": {"languages": len(codes)}}
 
 
 # Keys introduced for the v0.17 sign-post / new chrome must stay English-only
@@ -76,10 +77,8 @@ def test_vietnamese_held_with_official_fallback():
 # string must NOT carry a vi value yet" — the falsifier that makes an MT VI leak
 # into a new key fail the build.
 ENGLISH_ONLY_KEYS = {
-    "signpost.vi.body", "signpost.vi.cta",
     "share.copied", "wind.source", "wind.disclaimer", "wind.unavailable",
     "info.subtab.status", "info.subtab.resources", "info.subtab.about",
-    "timeline.showAll", "timeline.showMajor",
 }
 
 
