@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-31T10:08:14Z",
-  "data_as_of_iso": "2026-05-31T10:08:14Z",
-  "next_check_at_iso": "2026-05-31T10:38:14Z",
-  "stale_after_iso": "2026-05-31T10:48:14Z",
+  "last_updated_iso": "2026-05-31T13:13:49Z",
+  "data_as_of_iso": "2026-05-31T13:13:49Z",
+  "next_check_at_iso": "2026-05-31T13:43:49Z",
+  "stale_after_iso": "2026-05-31T13:53:49Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
@@ -32,7 +32,7 @@
     {
       "agency": "City of Garden Grove (FAQ)",
       "time_iso": "2026-05-30T00:00:00Z",
-      "text": "All evacuation orders related to the hazardous materials incident have been lifted. Orange County health officials have confirmed there are no air quality or other health concerns in the area. Public safety and health agencies confirmed there was no release of chemicals that would warrant specific cleaning or safety precautions for residents. The safety zone around the involved tank has been reduced to 150 feet.",
+      "text": "All evacuation orders related to the hazardous materials incident have been lifted. Orange County health officials have confirmed there are no air quality or other health concerns in the area. The safety zone around the involved tank has been reduced to 150 feet.",
       "source_url": "https://ggcity.org/hazmat-incident/faq"
     },
     {
@@ -46,32 +46,42 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-31T14:35:00Z"
+      "fetched_iso": "2026-05-31T13:13:48Z"
     },
     {
       "url": "https://ggcity.org/hazmat-incident/faq",
       "title": "Frequently Asked Questions | City of Garden Grove",
-      "fetched_iso": "2026-05-31T14:35:00Z"
+      "fetched_iso": "2026-05-31T13:13:48Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
-      "fetched_iso": "2026-05-31T14:35:00Z"
+      "fetched_iso": "2026-05-31T13:13:48Z"
     },
     {
       "url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-evacuation-lawsuit/",
       "title": "Lawsuits mount after Orange County chemical tank failure, evacuations",
-      "fetched_iso": "2026-05-31T14:35:00Z"
+      "fetched_iso": "2026-05-31T13:13:48Z"
     },
     {
       "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
       "title": "California Senate passes SB 954, which will rein in industrial exemptions after Garden Grove hazmat crisis",
-      "fetched_iso": "2026-05-31T14:35:00Z"
+      "fetched_iso": "2026-05-31T13:13:48Z"
     },
     {
       "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
-      "title": "GKN Aerospace chemical leak exposes regulatory gaps — CalMatters",
-      "fetched_iso": "2026-05-31T14:35:00Z"
+      "title": "GKN Aerospace chemical leak exposes regulatory gaps",
+      "fetched_iso": "2026-05-31T13:13:48Z"
+    },
+    {
+      "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
+      "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed",
+      "fetched_iso": "2026-05-31T13:13:48Z"
+    },
+    {
+      "url": "https://laist.com/news/climate-environment/whats-next-chemical-tank-plant-garden-grove-cleanup-lawsuits-concerns-residents-orange-county",
+      "title": "What's next for neighbors living near Garden Grove factory",
+      "fetched_iso": "2026-05-31T13:13:48Z"
     }
   ],
   "schools_closed": [
@@ -183,7 +193,7 @@
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
-      "4a0c4c776907967d",
+      "3c9b13432835cbe4",
       "f39668d5f2396acc"
     ],
     "last_residents_shift_iso": null
