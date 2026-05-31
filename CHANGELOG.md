@@ -2,6 +2,12 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.19] — 2026-05-31 (mobile map zoom-out range)
+
+### Changed
+- **Mobile map zooms out further.** On phones (viewport < 768px) the MapLibre `minZoom` floor drops from 10 to 8, so residents can pinch out to see the evacuation zone in its regional (Orange County) context; desktop keeps the tighter zoom-10 floor. Reuses the existing `window.innerWidth >= 768` viewport split. Adds one eval guard (`test_map_mobile_zoom`); the suite stays green.
+- service-worker `CACHE_NAME` bumped `v15 → v16` so cached users receive the updated dashboard shell.
+
 ## [v0.18] — 2026-05-30 (English-only safety reframe + UX overhaul)
 
 ### Changed — English-only by design (G1, most conservative form)
