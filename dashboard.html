@@ -1511,6 +1511,17 @@
 var REFRESH_MS = 30000;
 var NORMAL_TITLE = "GG Tank Watch";
 var BREAKING_TITLE = "\u{1F534} BREAKING — GG Tank Watch";
+// Honest relative-age string for the freshness label. Clamps negative deltas
+// (client clock skew) to "just now" so a fast client never shows "in 3 min".
+function relativeAge(fromMs, nowMs) {
+  var deltaMin = Math.floor((nowMs - fromMs) / 60000);
+  if (deltaMin <= 0) return "just now";
+  if (deltaMin < 60) return deltaMin + " min ago";
+  var hr = Math.floor(deltaMin / 60);
+  if (hr < 24) return hr + " hr ago";
+  var days = Math.floor(hr / 24);
+  return days + (days === 1 ? " day ago" : " days ago");
+}
 
 var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><g fill="#f59e0b"><circle cx="12" cy="12" r="5"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(0 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(45 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(90 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(135 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(180 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(225 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(270 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(315 12 12)"/></g></svg>';
 var ICON_MOON = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z" fill="#94a3b8"/></svg>';
@@ -1539,8 +1550,8 @@ var STRINGS = {
   "info.subtab.resources": { en: "Resources" },
   "info.subtab.about": { en: "About" },
   "updated.loading": { en: "loading..." },
-  "updated.freshness": { en: "As of {t}" },
-  "updated.title": { en: "Auto-updates about every 20 minutes. Last update {t}." },
+  "updated.freshness": { en: "Last updated {t}" },
+  "updated.title": { en: "Last checked {t}." },
   "topbar.unofficial": { en: "UNOFFICIAL" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
   "safety.strip.info": { en: "Informational only — not official." },
@@ -1627,8 +1638,6 @@ var STRINGS = {
   "news.media.article": { en: "📰 article" },
   "banner.schema.title": { en: "⚠️ Schema changed" },
   "banner.schema.msg": { en: "Reload this page." },
-  "banner.stale.title": { en: "⚠️ Stale" },
-  "banner.stale.msg": { en: "Last update {n} min ago" },
   "banner.offline.title": { en: "Offline" },
   "banner.offline.msg": { en: "Last fetch failed" },
   "banner.offline.detail": { en: "Could not load status.json — {err}" },
@@ -2453,27 +2462,31 @@ function render(snap) {
   }
   var updEl = $("updated-text");
   var freshLabel = $("freshness-label");
-  var _d = snap.last_updated_iso ? new Date(snap.last_updated_iso) : null;
+  // Honesty (eng review D1): the visible label reflects data_as_of_iso (when we
+  // last learned something NEW), never last_updated_iso (pipeline write time) —
+  // so a stalled feed reads its true age instead of looking fresh. last_updated
+  // (system liveness) goes in the hover tooltip. Fall back to last_updated only
+  // when data_as_of is absent, so the label is never blank.
+  var _asOf = snap.data_as_of_iso ? new Date(snap.data_as_of_iso)
+            : (snap.last_updated_iso ? new Date(snap.last_updated_iso) : null);
+  var _checked = snap.last_updated_iso ? new Date(snap.last_updated_iso) : _asOf;
   var _dateOpts = (typeof window !== "undefined" && window.innerWidth >= 768)
     ? {month:"numeric", day:"numeric", year:"numeric"}  // desktop has room for the full date
     : {month:"numeric", day:"numeric"};                 // mobile drops the year to avoid the clip
-  var clock = _d ? _d.toLocaleDateString("en-US", _dateOpts) + ", " + _d.toLocaleTimeString("en-US", TIME_OPTS) : "—";
-  if (freshLabel) freshLabel.textContent = t("updated.freshness", { t: clock });
-  if (updEl) updEl.title = t("updated.title", { t: clock });
+  var clock = _asOf ? _asOf.toLocaleDateString("en-US", _dateOpts) + ", " + _asOf.toLocaleTimeString("en-US", TIME_OPTS) : "—";
+  var ageStr = _asOf ? relativeAge(_asOf.getTime(), Date.now()) : null;
+  var label = ageStr ? clock + " (" + ageStr + ")" : clock;
+  if (freshLabel) freshLabel.textContent = t("updated.freshness", { t: label });
+  if (updEl && _checked) {
+    var _checkedClock = _checked.toLocaleDateString("en-US", {month:"numeric", day:"numeric", year:"numeric"})
+      + ", " + _checked.toLocaleTimeString("en-US", TIME_OPTS);
+    updEl.title = t("updated.title", { t: _checkedClock });
+  }
 
   var now = new Date();
   var resolved = !!(snap.incident && snap.incident.resolved_iso);
   var banners = [];
   if (!lastFetchOK) banners.push({kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.msg")});
-  // Staleness: data is past its stale_after_iso (data_as_of + MAX_AGE). Independent
-  // of offline/breaking — an honest signal that the feed stopped updating, even on a
-  // resolved incident. Reuses the existing .banner-stale + banner.stale.* i18n.
-  var staleAfter = snap.stale_after_iso ? new Date(snap.stale_after_iso) : null;
-  if (staleAfter && now > staleAfter) {
-    var dataAsOf = snap.data_as_of_iso ? new Date(snap.data_as_of_iso) : null;
-    var minsAgo = dataAsOf ? Math.floor((now - dataAsOf) / 60000) : "?";
-    banners.push({kind:"stale", title: t("banner.stale.title"), message: t("banner.stale.msg", {n: minsAgo})});
-  }
   // Suppress the breaking/update banner once the incident is resolved: a resolved
   // demo carries no live "breaking" state (the writer also clears it post-resolution
   // — see update_status.py post-resolution invariant + test_t6). Defensive both-sides.
