@@ -2421,20 +2421,7 @@ async function refreshWind() {
   var stationId = (configCache.map && configCache.map.weather_station) || "KFUL";
   lastWind = await fetchWind(stationId);
   updateWindDisplay(lastWind);
-  recolorFixedPoints();
   scheduleWindRefresh();
-}
-
-function recolorFixedPoints() {
-  if (!configCache || !fixedPointMarkers.length) return;
-  var fac = configCache.map.facility;
-  fixedPointMarkers.forEach(function(m) {
-    var fp = m.__fp;
-    var dMi = haversineMi(fp.lat, fp.lon, fac.lat, fac.lon);
-    var brDeg = bearingDeg(fac.lat, fac.lon, fp.lat, fp.lon);
-    m.setStyle({fillColor: "#6366f1"});
-    m.setTooltipContent("<strong>" + fp.label + "</strong><br><span style=\"font-size:11px;opacity:0.8\">" + dMi.toFixed(1) + " mi · " + cardinalFromDeg(brDeg) + "</span>");
-  });
 }
 
 /* ============ RESOURCES TAB ============ */

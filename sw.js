@@ -1,4 +1,4 @@
-var CACHE_NAME = "gg-tank-v14";
+var CACHE_NAME = "gg-tank-v15";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
@@ -70,6 +70,11 @@ self.addEventListener("fetch", function (event) {
     return;
   }
 
-  // Pass through external requests (NOAA, fonts)
-  event.respondWith(fetch(event.request));
+  // Cross-origin requests (OpenFreeMap map style/tiles/glyphs/sprites, NOAA wind,
+  // fonts): do NOT intercept. Falling through without event.respondWith() lets the
+  // browser fetch them natively. Wrapping them in respondWith(fetch(event.request))
+  // made the service worker the failure point: Firefox rejects the re-dispatched
+  // cross-origin fetch ("CORS request did not succeed" / NetworkError), so the map
+  // style + glyph tiles never loaded and the map blanked on reload — but only on
+  // reload, because the SW does not control the page until after the first load.
 });
