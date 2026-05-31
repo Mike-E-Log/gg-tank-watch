@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-30T22:08:51Z",
-  "data_as_of_iso": "2026-05-30T22:08:51Z",
-  "next_check_at_iso": "2026-05-30T22:38:51Z",
-  "stale_after_iso": "2026-05-30T22:48:51Z",
+  "last_updated_iso": "2026-05-31T01:09:37Z",
+  "data_as_of_iso": "2026-05-31T01:09:37Z",
+  "next_check_at_iso": "2026-05-31T01:39:37Z",
+  "stale_after_iso": "2026-05-31T01:49:37Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Day 10 recovery: ggcity.org confirms no air quality or health concerns — officials state no release requiring specific cleaning for residents. 150-ft exclusion zone around GKN tanks; EPA/OC Health/SCAQMD/GKN coordinating cleanup plan (timeline TBD). DA criminal investigation active; 37+ lawsuits filed. City discloses $728K preliminary OCFA costs. CalMatters: MMA not covered by CalARP — GKN had no required risk management plan. OC United Way fund open; SBA EIDL: EOCLiaison@ocsheriff.gov. City impact survey: ggcity.org/hazmat-incident/survey. No GKN reimbursement process established.",
+    "status_headline": "Day 11 recovery: All evacuation orders lifted; 150-ft exclusion zone maintained at GKN tanks. EPA/OC Health/SCAQMD/GKN developing cleanup/removal plan (timeline TBD). Community coalition launched 'GKN Out of Garden Grove' arms embargo campaign demanding permanent plant closure; GKN is sole F-35 canopy supplier — aerospace industry monitoring supply disruption. DA criminal investigation active; 100+ plaintiffs in mass tort. City impact survey: ggcity.org/hazmat-incident/survey. OC United Way resilience fund open.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
@@ -58,37 +58,42 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-30T23:30:00Z"
+      "fetched_iso": "2026-05-31T00:30:00Z"
     },
     {
       "url": "https://ggcity.org/hazmat-incident/faq",
       "title": "Frequently Asked Questions | City of Garden Grove",
-      "fetched_iso": "2026-05-30T23:30:00Z"
-    },
-    {
-      "url": "https://ggcity.org/hazmat-incident/activities",
-      "title": "City Emergency Response Activities by Department | City of Garden Grove",
-      "fetched_iso": "2026-05-30T23:30:00Z"
+      "fetched_iso": "2026-05-31T00:30:00Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
-      "fetched_iso": "2026-05-30T23:30:00Z"
+      "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount — ABC7 LA",
+      "fetched_iso": "2026-05-31T00:30:00Z"
     },
     {
       "url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/",
-      "title": "What's next for Garden Grove's chemical tank crisis as victims grapple with financial fallouts",
-      "fetched_iso": "2026-05-30T23:30:00Z"
+      "title": "What's next for Garden Grove's chemical tank crisis as victims grapple with financial fallouts — NBC LA",
+      "fetched_iso": "2026-05-31T00:30:00Z"
     },
     {
-      "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
-      "title": "A chemical tank nearly exploded. California's rules may not have required more.",
-      "fetched_iso": "2026-05-30T23:30:00Z"
+      "url": "https://laist.com/news/climate-environment/whats-next-chemical-tank-plant-garden-grove-cleanup-lawsuits-concerns-residents-orange-county",
+      "title": "What's next for neighbors living near Garden Grove factory at center of chemical scare — LAist",
+      "fetched_iso": "2026-05-31T00:30:00Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
-      "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-05-30T23:30:00Z"
+      "title": "Garden Grove chemical leak — Wikipedia",
+      "fetched_iso": "2026-05-31T00:30:00Z"
+    },
+    {
+      "url": "https://vietrise.org/press-release-grove-community-launches-arms-embargo-gkn-out-of-garden-grove-campaign-following-chemical-disaster/",
+      "title": "Grove Community Launches 'Arms Embargo: GKN Out of Garden Grove' Campaign — VietRISE",
+      "fetched_iso": "2026-05-31T00:30:00Z"
+    },
+    {
+      "url": "https://www.aviationpros.com/aircraft-maintenance-technology/engines-parts/news/55380357/aerospace-company-behind-garden-grove-chemical-leak-scare-faces-court-cases-supply-disruption",
+      "title": "Aerospace company behind Garden Grove chemical leak scare faces court cases, supply disruption — Aviation Pros",
+      "fetched_iso": "2026-05-31T00:30:00Z"
     }
   ],
   "schools_closed": [
@@ -193,10 +198,10 @@
     }
   ],
   "air_quality": null,
-  "breaking": true,
-  "breaking_reason": "1 new official statement(s)",
-  "breaking_since_iso": "2026-05-30T22:08:51Z",
-  "breaking_level": "info",
+  "breaking": false,
+  "breaking_reason": null,
+  "breaking_since_iso": null,
+  "breaking_level": null,
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
