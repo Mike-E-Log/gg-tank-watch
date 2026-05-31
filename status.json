@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-31T07:09:34Z",
-  "data_as_of_iso": "2026-05-31T07:09:34Z",
-  "next_check_at_iso": "2026-05-31T07:39:34Z",
-  "stale_after_iso": "2026-05-31T07:49:34Z",
+  "last_updated_iso": "2026-05-31T10:08:14Z",
+  "data_as_of_iso": "2026-05-31T10:08:14Z",
+  "next_check_at_iso": "2026-05-31T10:38:14Z",
+  "stale_after_iso": "2026-05-31T10:48:14Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Day 11 recovery: All evacuations lifted; 150-ft exclusion zone at GKN tanks. Cleanup/removal plan in development by EPA, OC Health, SCAQMD, and GKN (timeline pending). DA criminal investigation active; 44+ lawsuits filed; GKN compensation process not established. CA Senate passed SB 954 to tighten industrial CEQA exemptions. Community resources: ggcity.org/hazmat-incident/survey, OC United Way resilience fund.",
+    "status_headline": "Day 11 recovery: All evacuations lifted; 150-ft exclusion zone at GKN tanks. Cleanup/removal plan in development by EPA, OC Health, SCAQMD, and GKN (timeline pending). DA criminal investigation active; 44+ lawsuits filed; GKN compensation process not yet established. CA SB 954 (CEQA industrial exemption reform) passed Senate 22-10, heads to Assembly. Resources: ggcity.org/hazmat-incident/survey, OC United Way resilience fund.",
     "severity": "low",
     "resolved_iso": "2026-05-28T02:30:00Z"
   },
@@ -30,22 +30,10 @@
   },
   "official_statements": [
     {
-      "agency": "OCFA / Unified Command",
-      "time_iso": "2026-05-28T02:30:00Z",
-      "text": "No chemical leak, no threat of explosion, no threat of fire, and no risk to the public from the damaged GKN Aerospace tank. All evacuation orders are lifted.",
-      "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/"
-    },
-    {
       "agency": "City of Garden Grove (FAQ)",
       "time_iso": "2026-05-30T00:00:00Z",
       "text": "All evacuation orders related to the hazardous materials incident have been lifted. Orange County health officials have confirmed there are no air quality or other health concerns in the area. Public safety and health agencies confirmed there was no release of chemicals that would warrant specific cleaning or safety precautions for residents. The safety zone around the involved tank has been reduced to 150 feet.",
       "source_url": "https://ggcity.org/hazmat-incident/faq"
-    },
-    {
-      "agency": "OCFA Deputy Incident Commander Mike Yeun",
-      "time_iso": "2026-05-30T17:00:00Z",
-      "text": "We will work with Orange County Health, and the EPA will work with the company on the removal of the waste.",
-      "source_url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/"
     },
     {
       "agency": "City of Garden Grove / OCFA",
@@ -58,37 +46,32 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-31T12:00:00Z"
+      "fetched_iso": "2026-05-31T14:35:00Z"
     },
     {
       "url": "https://ggcity.org/hazmat-incident/faq",
       "title": "Frequently Asked Questions | City of Garden Grove",
-      "fetched_iso": "2026-05-31T12:00:00Z"
+      "fetched_iso": "2026-05-31T14:35:00Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount — ABC7 LA",
-      "fetched_iso": "2026-05-31T12:00:00Z"
+      "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
+      "fetched_iso": "2026-05-31T14:35:00Z"
     },
     {
-      "url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/",
-      "title": "What's next for Garden Grove's chemical tank crisis as victims grapple with financial fallouts — NBC LA",
-      "fetched_iso": "2026-05-31T12:00:00Z"
+      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-evacuation-lawsuit/",
+      "title": "Lawsuits mount after Orange County chemical tank failure, evacuations",
+      "fetched_iso": "2026-05-31T14:35:00Z"
     },
     {
-      "url": "https://voiceofoc.org/2026/05/are-californias-toxic-regulators-strong-enough-to-protect-local-neighborhoods/",
-      "title": "Are California Toxic Regulators Strong Enough to Protect Local Neighborhoods? — Voice of OC",
-      "fetched_iso": "2026-05-31T12:00:00Z"
+      "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
+      "title": "California Senate passes SB 954, which will rein in industrial exemptions after Garden Grove hazmat crisis",
+      "fetched_iso": "2026-05-31T14:35:00Z"
     },
     {
       "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
-      "title": "A chemical tank nearly exploded. California rules may not have required more. — CalMatters",
-      "fetched_iso": "2026-05-31T12:00:00Z"
-    },
-    {
-      "url": "https://laist.com/news/climate-environment/whats-next-chemical-tank-plant-garden-grove-cleanup-lawsuits-concerns-residents-orange-county",
-      "title": "What's next for neighbors living near Garden Grove factory — LAist",
-      "fetched_iso": "2026-05-31T12:00:00Z"
+      "title": "GKN Aerospace chemical leak exposes regulatory gaps — CalMatters",
+      "fetched_iso": "2026-05-31T14:35:00Z"
     }
   ],
   "schools_closed": [
@@ -116,7 +99,7 @@
     {
       "outlet": "ABC7 Los Angeles",
       "title": "Crews find crack in tank, gain positive intel that could shift response strategy",
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19163069/",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-zone/19152918/entry/19163069/",
       "published_iso": "2026-05-25T01:10:00Z",
       "is_video": false
     },
@@ -200,9 +183,7 @@
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
-      "bca255af272a6ea0",
       "4a0c4c776907967d",
-      "5503616407d429bc",
       "f39668d5f2396acc"
     ],
     "last_residents_shift_iso": null
