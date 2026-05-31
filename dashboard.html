@@ -488,13 +488,6 @@
       .hero-status-value { font-size: 18px; }
     }
 
-    .wind-arrow-sm {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      transition: transform 0.4s ease;
-    }
-
     /* ===== DATA FLASH MICRO-INTERACTION ===== */
     @keyframes data-flash-anim {
       0% { background-color: var(--sa-celadon-3); }
@@ -611,27 +604,6 @@
     .maplibregl-ctrl-bottom-left,
     .maplibregl-ctrl-bottom-right { display: none; }
     .maplibregl-ctrl-group button { width: 40px; height: 40px; }
-    .map-wind {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 90px;
-      box-sizing: border-box;
-      background: var(--sa-surface);
-      border: 1px solid var(--sa-border);
-      border-radius: 6px;
-      padding: 3px 6px;
-      font-size: 9px;
-      color: var(--sa-text-2);
-      box-shadow: var(--sa-shadow);
-      text-align: right;
-      line-height: 1.25;
-      z-index: 2;
-    }
-    .map-wind-reading { display: block; }
-    #wind-arrow-map { vertical-align: middle; }
-    #wind-text-map { white-space: normal; }
-    .wind-source { display: block; margin-top: 1px; font-size: 8px; font-weight: 600; color: var(--sa-text-3); }
     .map-legend {
       position: absolute;
       bottom: 72px; /* clear the action button band (~68px) so the full-width CTA doesn't bury the legend on mobile */
@@ -1381,7 +1353,7 @@
       .sa-wave-bg { background-image: none; }
       .tab-bar, .tab-content { display: none !important; }
       .refresh-bar, .banners, .topbar-btn, .lang-picker,
-      .map-wind, .map-legend, .skip-link { display: none !important; }
+      .map-legend, .skip-link { display: none !important; }
       .safety-strip { background: none; border: 1px solid #ccc; }
       .print-only { display: block !important; }
       .print-content {
@@ -1490,14 +1462,7 @@
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
         <div class="map-outer" id="map-outer">
-          <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations and the current wind direction marked."></div>
-          <div class="map-wind" id="map-wind-overlay" title="Weather data, not safety guidance">
-            <div class="map-wind-reading">
-              <svg class="wind-arrow-sm" id="wind-arrow-map" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1 L13 14 L8 11 L3 14 Z"/></svg>
-              <span id="wind-text-map">--</span>
-            </div>
-            <span class="wind-source" data-i18n="wind.source">Wind — NOAA</span>
-          </div>
+          <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations marked."></div>
           <div class="map-legend" role="group" aria-label="Map legend">
             <div class="legend-row"><span class="legend-icon legend-icon-evac" aria-hidden="true"></span> <span data-i18n="legend.evac">Evac zone</span></div>
             <div class="legend-row"><span class="legend-icon legend-icon-shelter" aria-hidden="true"></span> <span data-i18n="legend.shelter">Shelter</span></div>
@@ -1562,8 +1527,6 @@ function deepFix(o) {
   if (o && typeof o === "object") { for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) o[k] = deepFix(o[k]); return o; }
   return o;
 }
-var WIND_BASE_MS = 60000;
-var WIND_MAX_MS = 480000;
 
 /* ============ I18N (EN / VI) ============ */
 var STRINGS = {
@@ -1573,9 +1536,6 @@ var STRINGS = {
   "theme.dark": { en: "Dark" },
   "theme.light": { en: "Light" },
   "share.copied": { en: "Copied to clipboard" },
-  "wind.source": { en: "Wind — NOAA" },
-  "wind.disclaimer": { en: "weather data, not safety guidance" },
-  "wind.unavailable": { en: "Wind data unavailable" },
   "info.subtab.status": { en: "Status" },
   "info.subtab.resources": { en: "Resources" },
   "info.subtab.about": { en: "About" },
@@ -1642,8 +1602,6 @@ var STRINGS = {
   "common.no": { en: "no" },
   "info.method.title": { en: "Methodology & trust" },
   "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing." },
-  "info.method.wind": { en: "<strong>Wind data:</strong> Live observations from NOAA station KFUL (Fullerton Municipal Airport), polled every 60 seconds." },
-
   "info.method.eval": { en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests and LLM-as-judge rubrics for design and data quality.' },
   "info.method.disclaimer": { en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.' },
   "info.about.title": { en: "Who made this" },
@@ -1805,10 +1763,6 @@ var lastZoneStatus = null;
 var titleToggle = null;
 var lastFetchOK = true;
 var configCache = null;
-var lastWind = null;
-var windInterval = WIND_BASE_MS;
-var windTimer = null;
-var lastObservationTime = null;
 var refreshCountdown = 30;
 var countdownTimer = null;
 function $(id) { return document.getElementById(id); }
@@ -1879,9 +1833,6 @@ function relativeTime(iso) {
   var diffH = Math.floor(diffMin / 60);
   if (diffH < 24) return then.toLocaleTimeString(currentLocale(), TIME_OPTS);
   return then.toLocaleDateString(currentLocale(), {weekday:"short"}) + " " + then.toLocaleTimeString(currentLocale(), TIME_OPTS);
-}
-function fmtAbsTime(iso) {
-  return iso ? new Date(iso).toLocaleTimeString(currentLocale(), TIME_OPTS) : "—";
 }
 function fmtAbsDateTime(iso) {
   if (!iso) return "—";
@@ -1973,42 +1924,6 @@ function stopBreakingTitle() {
   document.title = NORMAL_TITLE;
 }
 
-
-/* ============ MAP (static image — no tile server dependency) ============ */
-
-function updateWindDisplay(wind) {
-  if (!wind) return;
-  var heading = (wind.directionDeg + 180) % 360;
-  ["wind-arrow", "wind-arrow-map"].forEach(function(id) {
-    var el = $(id);
-    if (el) {
-      // F4: hide the directional arrow when there is no real observation (default fallback).
-      el.style.visibility = wind.fallback ? "hidden" : "visible";
-      el.style.transform = "rotate(" + heading + "deg)";
-    }
-  });
-  var windCompact = cardinalFromDeg(wind.directionDeg) + "→" + cardinalFromDeg(heading) + " " + Math.round(wind.speedMph) + "mph";
-  var el = $("wind-compact");
-  if (el) el.textContent = windCompact;
-  ["wind-text-map"].forEach(function(id) {
-    var mapEl = $(id);
-    if (mapEl) {
-      if (wind.fallback) {
-        // F4: the hardcoded default (NOAA fetch failed, no cached observation) must
-        // never read as a live measurement. Show an explicit unavailable state.
-        mapEl.textContent = t("wind.unavailable");
-      } else {
-        var obs = wind.observedAt ? " (obs " + fmtAbsTime(wind.observedAt) + ")" : "";
-        mapEl.textContent = windCompact + obs;
-      }
-    }
-  });
-}
-
-function cardinalFromDeg(deg) {
-  var dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
-  return dirs[Math.round(((deg % 360) / 22.5)) % 16];
-}
 
 /* ============ SAFETY CHECK ============ */
 function haversineMi(lat1, lon1, lat2, lon2) {
@@ -2244,7 +2159,6 @@ function renderInfoTab() {
   html += '<summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>';
   html += '<div class="info-who-body" style="padding-bottom:12px">';
   html += '<p>' + t("info.method.pipeline") + '</p>';
-  html += '<p>' + t("info.method.wind") + '</p>';
   html += '<p>' + t("info.method.eval") + '</p>';
   html += '<p>' + t("info.method.disclaimer") + '</p>';
   html += '</div>';
@@ -2379,49 +2293,6 @@ async function hydrateMissingThumbnails() {
       (playOverlay ? playOverlay.outerHTML : '');
     card.dataset.needsOg = "false";
   }
-}
-
-/* ============ WIND ============ */
-async function fetchWind(stationId) {
-  try {
-    var url = "https://api.weather.gov/stations/" + stationId + "/observations/latest";
-    var resp = await fetch(url, {headers: {"User-Agent": "GG-Dashboard/1.0 (emergency-awareness)"}});
-    if (!resp.ok) throw new Error("HTTP " + resp.status);
-    var data = await resp.json();
-    var props = data.properties || {};
-    var dirDeg = props.windDirection && props.windDirection.value;
-    var spdKmh = props.windSpeed && props.windSpeed.value;
-    if (dirDeg === null || dirDeg === undefined) throw new Error("no wind direction");
-    var observedAt = props.timestamp;
-    lastObservationTime = observedAt;
-    var wind = {
-      directionDeg: dirDeg,
-      speedMph: spdKmh != null ? spdKmh * 0.621371 : 5,
-      observedAt: observedAt,
-      station: stationId
-    };
-    localStorage.setItem("gg-wind", JSON.stringify({wind: wind, fetchedAt: Date.now()}));
-    windInterval = WIND_BASE_MS;
-    return wind;
-  } catch (e) {
-    console.warn("wind fetch failed:", e);
-    windInterval = Math.min(windInterval * 2, WIND_MAX_MS);
-    var cached = JSON.parse(localStorage.getItem("gg-wind") || "null");
-    return cached ? cached.wind : { directionDeg: 270, speedMph: 5, observedAt: null, station: stationId, fallback: true };
-  }
-}
-
-function scheduleWindRefresh() {
-  if (windTimer) clearTimeout(windTimer);
-  windTimer = setTimeout(refreshWind, windInterval);
-}
-
-async function refreshWind() {
-  if (!configCache) return;
-  var stationId = (configCache.map && configCache.map.weather_station) || "KFUL";
-  lastWind = await fetchWind(stationId);
-  updateWindDisplay(lastWind);
-  scheduleWindRefresh();
 }
 
 /* ============ RESOURCES TAB ============ */
@@ -2740,7 +2611,6 @@ async function loadConfig() {
     renderInfoTab();
     renderResources();
     renderInfoShelters();
-    refreshWind();
     return configCache;
   } catch (e) {
     console.warn("config load failed:", e);

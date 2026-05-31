@@ -77,7 +77,7 @@ def test_english_only():
 # string must NOT carry a vi value yet" — the falsifier that makes an MT VI leak
 # into a new key fail the build.
 ENGLISH_ONLY_KEYS = {
-    "share.copied", "wind.source", "wind.disclaimer", "wind.unavailable",
+    "share.copied",
     "info.subtab.status", "info.subtab.resources", "info.subtab.about",
 }
 
