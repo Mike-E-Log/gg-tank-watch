@@ -2819,7 +2819,7 @@ function _ggSwapMapStyle(dark) {
       : "https://tiles.openfreemap.org/styles/liberty",
     center: [-118.0088, 33.7930],
     zoom: 12.5,
-    minZoom: 10,
+    minZoom: window.innerWidth >= 768 ? 10 : 8,  // mobile can pinch out further for regional context
     maxZoom: 17,
     attributionControl: false
   });
