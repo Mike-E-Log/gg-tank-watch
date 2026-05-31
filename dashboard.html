@@ -2774,8 +2774,10 @@ async function loadConfig() {
     renderResources();
     renderInfoShelters();
     refreshWind();
+    return configCache;
   } catch (e) {
     console.warn("config load failed:", e);
+    return null;  // configReady resolves to null -> map skips overlays rather than throwing
   }
 }
 
@@ -2795,7 +2797,12 @@ async function fetchStatus() {
 
 /* ============ KICKOFF ============ */
 applyLang();
-loadConfig().then(function() {
+// Single shared config fetch: loadConfig() runs once (cache-busted, no-store) and
+// resolves with the parsed config. The map (map.on("load")) awaits this SAME promise
+// instead of re-fetching /config.json, so the page and the map can't show divergent
+// config and there's no fetch-vs-map-load race.
+var configReady = loadConfig();
+configReady.then(function() {
   fetchStatus();
 });
 setInterval(fetchStatus, REFRESH_MS);
@@ -2855,7 +2862,8 @@ function _ggSwapMapStyle(dark) {
   _ggMap = map;  // assign at construction so resize() (dashboard.html:2829) and the observers below fire before on('load') completes
 
   map.on("load", function() {
-    fetch("/config.json").then(function(r) { return r.json(); }).then(function(cfg) {
+    configReady.then(function(cfg) {
+      if (!cfg) return;  // config failed to load; leave the base map without overlays
       var poly = cfg.map.evac_polygon;
       var coords = poly.map(function(p) { return [p[1], p[0]]; });
       coords.push(coords[0]);
