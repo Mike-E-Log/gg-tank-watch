@@ -162,7 +162,7 @@
     .topbar {
       position: relative;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 8px;
       padding: 10px 14px;
       background: var(--sa-surface);
@@ -210,15 +210,28 @@
       .topbar-wordmark { font-size: 16.5px; }
     }
     .topbar-wordmark-tank { color: var(--sa-celadon); }
-    .topbar-spacer { flex: 1 1 auto; }
-    /* desktop: lead is transparent — pill + wordmark act as direct topbar children (layout unchanged). Mobile re-flexes it below. */
-    .topbar-lead { display: contents; }
+    /* lead = left identity column: [pill + wordmark] over [dateline] */
+    .topbar-lead {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .topbar-lead-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    /* freshness = left-aligned dateline under the wordmark, all widths */
     .topbar-freshness {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      flex: 0 1 auto;
       min-width: 0;
+      max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
       font-family: "IBM Plex Mono", monospace;
@@ -226,26 +239,13 @@
       color: var(--sa-text-2);
       white-space: nowrap;
     }
-    @media (max-width: 599px) {
-      /* mobile: freshness on its own full-width line so it never clips in the crowded topbar */
-      .topbar { flex-wrap: wrap; }
-      .topbar-freshness { order: 1; width: 100%; display: block; text-align: right; overflow: visible; }
-      /* The wordmark can be wide. .topbar-lead (pill + wordmark) takes flex:1 1 0,
-         so its line-break hypothetical width is 0 — flex-wrap never pushes the controls
-         cluster onto a second line. The controls stay pinned top-right on row 1; the
-         pill and wordmark stack INSIDE the lead instead. flex-shrink alone can't do this:
-         flex-wrap breaks lines at unshrunk sizes, so the controls would wrap before the
-         pill ever shrinks. */
-      .topbar-lead { display: flex; flex: 1 1 0; min-width: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
-      /* wordmark always on its own line below the pill (flex-basis 100% forces a wrap), so
-         its position never shifts between EN and VI — that shift was the source of the jump. */
-      .topbar-wordmark { flex: 0 0 100%; }
-      .topbar-spacer { display: none; }
-      .topbar-controls { align-self: flex-start; }
-      .unofficial-pill { white-space: normal; text-align: center; }
-    }
     @media (min-width: 768px) {
       .topbar-freshness { font-size: 11.5px; }
+    }
+    @media (max-width: 599px) {
+      /* narrow: wordmark drops to its own line below the pill */
+      .topbar-lead-row { flex-wrap: wrap; gap: 4px 8px; }
+      .topbar-lead-row .topbar-wordmark { flex: 0 0 100%; }
     }
     .topbar-btn {
       display: inline-flex;
@@ -1401,13 +1401,14 @@
   <div class="app sa-wave-bg">
     <div class="refresh-bar"><div class="refresh-bar-fill" id="refresh-bar" style="width:100%"></div></div>
 
-    <header class="topbar">
+    <header class="topbar topbar--masthead">
       <div class="topbar-lead">
-        <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
-        <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
+        <div class="topbar-lead-row">
+          <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
+          <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
+        </div>
+        <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
       </div>
-      <span class="topbar-spacer"></span>
-      <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
       <div class="topbar-controls">
         <button id="share-btn" class="topbar-btn" type="button" aria-label="Share this page" title="Share">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
