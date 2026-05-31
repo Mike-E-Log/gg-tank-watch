@@ -493,6 +493,15 @@ def build_snapshot(prev: dict | None, facts: dict, config: dict) -> dict:
     else:
         breaking, breaking_reason, breaking_since, breaking_level = prev_breaking, prev_breaking_reason, prev_breaking_since, prev_breaking_level
 
+    # [#3 follow-up 2026-05-30] Post-resolution invariant: a resolved incident
+    # carries NO live "breaking" state on any tick AFTER the resolution
+    # transition. The transition tick itself (prev not resolved -> now resolved)
+    # still fires urgent above (see detect_breaking + test_t5); this only clears
+    # on subsequent ticks, so a routine recovery statement can't re-arm the
+    # "UPDATE - N new official statement" banner and status.json stays honest.
+    if incident.get("resolved_iso") and prev_incident.get("resolved_iso") and breaking:
+        breaking, breaking_reason, breaking_since, breaking_level = False, None, None, None
+
     # Compute timestamps
     from datetime import timedelta
     now_dt = datetime.now(timezone.utc)

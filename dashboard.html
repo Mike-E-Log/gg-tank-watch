@@ -2624,9 +2624,23 @@ function render(snap) {
   if (freshLabel) freshLabel.textContent = t("updated.freshness", { t: clock });
   if (updEl) updEl.title = t("updated.title", { t: clock });
 
+  var now = new Date();
+  var resolved = !!(snap.incident && snap.incident.resolved_iso);
   var banners = [];
   if (!lastFetchOK) banners.push({kind:"offline", title: t("banner.offline.title"), message: t("banner.offline.msg")});
-  if (snap.breaking) {
+  // Staleness: data is past its stale_after_iso (data_as_of + MAX_AGE). Independent
+  // of offline/breaking — an honest signal that the feed stopped updating, even on a
+  // resolved incident. Reuses the existing .banner-stale + banner.stale.* i18n.
+  var staleAfter = snap.stale_after_iso ? new Date(snap.stale_after_iso) : null;
+  if (staleAfter && now > staleAfter) {
+    var dataAsOf = snap.data_as_of_iso ? new Date(snap.data_as_of_iso) : null;
+    var minsAgo = dataAsOf ? Math.floor((now - dataAsOf) / 60000) : "?";
+    banners.push({kind:"stale", title: t("banner.stale.title"), message: t("banner.stale.msg", {n: minsAgo})});
+  }
+  // Suppress the breaking/update banner once the incident is resolved: a resolved
+  // demo carries no live "breaking" state (the writer also clears it post-resolution
+  // — see update_status.py post-resolution invariant + test_t6). Defensive both-sides.
+  if (snap.breaking && !resolved) {
     var level = snap.breaking_level || "urgent";
     var newestStmtIso = (snap.official_statements || []).reduce(function(max, s) {
       var ti = s.time_iso || "";
@@ -2662,7 +2676,7 @@ function render(snap) {
 
   var you = snap.you || {};
   var zone = you.zone_status || "unknown";
-  var resolved = !!(snap.incident && snap.incident.resolved_iso);
+  // `resolved` is computed at the top of render() (hoisted for the banner guard).
   if (resolved) {
     var evacLegEl = document.querySelector('.map-legend [data-i18n="legend.evac"]');
     if (evacLegEl) {
