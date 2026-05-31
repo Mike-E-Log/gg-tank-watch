@@ -20,7 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-This dashboard's data, blast-zone estimates, and plume visualization are
-informational only — NOT authoritative emergency guidance. Refer to official
-sources (Orange County Fire Authority, ggcity.org/emergency, Genasys EVAC,
-Ready OC) for evacuation information.
+This dashboard's data and status summaries are informational only — NOT
+authoritative emergency guidance. Refer to official sources (Orange County Fire
+Authority, ggcity.org/emergency, Genasys EVAC, Ready OC) for evacuation
+information.
