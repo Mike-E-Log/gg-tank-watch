@@ -157,6 +157,55 @@ def test_t5_incident_resolved_fires_urgent():
     }
 
 
+def test_t6_post_resolution_statement_no_breaking():
+    """After the incident is ALREADY resolved (resolved_iso set on a prior tick),
+    a routine new official statement must NOT re-arm breaking. The resolution
+    TRANSITION (test_t5) still fires urgent; this guards every tick AFTER it,
+    so status.json never carries breaking:true on a long-resolved incident."""
+    _reset_sandbox()
+    # Tick 1: baseline (not resolved) WITH an initial statement, so a later
+    # statement is genuinely novel (novel-vs-empty is not "breaking", like t1).
+    _tick({
+        "tank_temp_f": 100, "evacuation_residents": 50000, "evacuation_lifted": False,
+        "sources_checked": [{"url": "https://ocfa.org/s1"}],
+        "official_statements": [
+            {"agency": "OCFA", "time_iso": "2026-05-24T10:00:00Z",
+             "text": "initial statement", "source_url": "https://ocfa.org/s1"}
+        ],
+    })
+    # Tick 2: resolution transition (fires urgent — identical to test_t5)
+    _tick({
+        "evacuation_lifted": True,
+        "incident_resolved_iso": "2026-05-24T12:00:00Z",
+        "status_headline": "all clear",
+        "sources_checked": [
+            {"url": "https://ocfa.org/all-clear"},
+            {"url": "https://latimes.com/all-clear"},
+        ],
+    })
+    # Tick 3: incident ALREADY resolved (still corroborated, so lifted stays
+    # True and no REINSTATED toggle fires) + a brand-new official statement.
+    # The novel statement is the ONLY new signal; it must NOT re-arm breaking.
+    exit_code, snap = _tick({
+        "evacuation_lifted": True,
+        "incident_resolved_iso": "2026-05-24T12:00:00Z",
+        "status_headline": "recovery update",
+        "sources_checked": [
+            {"url": "https://ocfa.org/recovery"},
+            {"url": "https://latimes.com/recovery"},
+        ],
+        "official_statements": [
+            {"agency": "OCFA", "time_iso": "2026-05-24T18:00:00Z",
+             "text": "exclusion zone reduced to 150 ft", "source_url": "https://ocfa.org/recovery"}
+        ],
+    })
+    return {
+        "passed": exit_code == 0 and snap is not None and snap["breaking"] is False,
+        "details": f"breaking={snap and snap.get('breaking')}, level={snap and snap.get('breaking_level')}, reason={snap and snap.get('breaking_reason')}",
+        "metrics": {"breaking": snap and snap.get("breaking")},
+    }
+
+
 def test_new_statement_fires_info_not_urgent():
     """A new official statement (hash novel vs prev) should fire INFO breaking, not URGENT."""
     _reset_sandbox()
