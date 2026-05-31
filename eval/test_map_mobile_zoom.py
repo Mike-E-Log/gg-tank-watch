@@ -1,12 +1,9 @@
-"""Guard for the mobile map zoom-out range.
+"""Guard for the map zoom-out floor.
 
-Mobile viewports get a lower MapLibre `minZoom` floor than desktop so residents
-on a phone can pinch out far enough to see the evacuation zone in its regional
-context. Desktop keeps the tighter floor (it has the screen room to stay close).
-
-The split reuses the codebase's existing viewport convention
-(`window.innerWidth >= 768`, see dashboard.html updateInfoData()): desktop floor
-zoom 10, mobile floor zoom 8.
+The map's MapLibre `minZoom` floor is a uniform zoom 8 on every viewport, so a
+desktop user can zoom out for regional context exactly as far as a phone user
+can pinch out. (Earlier the floor was viewport-gated -- desktop z10, mobile z8 --
+but that kept desktop from zooming out as far as mobile, which residents wanted.)
 
 Pure text guard; no JS runtime needed (the harness has none).
 """
@@ -18,18 +15,23 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DASHBOARD = REPO_ROOT / "dashboard.html"
 
 
-def test_mobile_minzoom_floor_is_lower_than_desktop():
-    """The map's minZoom must be viewport-gated: zoom 8 on mobile (< 768px),
-    zoom 10 on desktop -- so mobile can zoom out further than desktop."""
+def test_minzoom_floor_is_uniform_z8():
+    """The map's minZoom must be a flat zoom 8 on all viewports -- not gated to a
+    tighter desktop floor -- so desktop can zoom out as far as mobile."""
     norm = "".join(DASHBOARD.read_text(encoding="utf-8").split())
+    uniform = "minZoom:8," in norm
     gated = "minZoom:window.innerWidth>=768?10:8" in norm
-    static_floor = "minZoom:10," in norm
-    passed = gated and not static_floor
+    desktop_floor = "minZoom:10," in norm
+    passed = uniform and not gated and not desktop_floor
     return {
         "passed": passed,
-        "details": "minZoom is viewport-gated (mobile floor z8, desktop floor z10)"
+        "details": "minZoom is a uniform z8 floor (desktop zooms out as far as mobile)"
         if passed
-        else "expected `minZoom: window.innerWidth >= 768 ? 10 : 8` and no static "
-        "`minZoom: 10,`; mobile cannot zoom out further than desktop",
-        "metrics": {"viewport_gated": int(gated), "static_floor_present": int(static_floor)},
+        else "expected a flat `minZoom: 8,` with no viewport gating and no static "
+        "`minZoom: 10,`; desktop cannot zoom out as far as mobile",
+        "metrics": {
+            "uniform_z8": int(uniform),
+            "viewport_gated": int(gated),
+            "desktop_floor_present": int(desktop_floor),
+        },
     }
