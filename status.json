@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-06-01T04:08:30Z",
-  "data_as_of_iso": "2026-06-01T04:08:30Z",
-  "next_check_at_iso": "2026-06-01T04:38:30Z",
-  "stale_after_iso": "2026-06-01T04:48:30Z",
+  "last_updated_iso": "2026-06-01T07:09:47Z",
+  "data_as_of_iso": "2026-06-01T07:09:47Z",
+  "next_check_at_iso": "2026-06-01T07:39:47Z",
+  "stale_after_iso": "2026-06-01T07:49:47Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Resolved May 26 — all evacuations lifted. Site cleanup continues under OC Health; a 150-ft exclusion zone remains. Reimbursement info at gknaerospace.com.",
+    "status_headline": "Resolved May 26 — all evacuations lifted. OC Health-led cleanup continues with 150-ft exclusion zone around GKN tanks. Claims info at gknaerospace.com. DA criminal investigation and 44+ civil lawsuits ongoing.",
     "severity": "low",
     "resolved_iso": "2026-05-27T02:30:00Z"
   },
@@ -37,7 +37,7 @@
     },
     {
       "agency": "City of Garden Grove",
-      "time_iso": "2026-05-30T12:00:00Z",
+      "time_iso": "2026-05-30T21:00:00Z",
       "text": "All evacuation orders related to the hazardous materials incident have been lifted. Orange County health officials have confirmed there are no air quality or other health concerns in the area. The safety zone around the involved tank has been reduced to 150 feet.",
       "source_url": "https://ggcity.org/emergency"
     }
@@ -46,37 +46,42 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-06-01T04:00:00Z"
+      "fetched_iso": "2026-06-01T07:08:00Z"
     },
     {
       "url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident",
-      "title": "GKN Aerospace HazMat incident | Orange County",
-      "fetched_iso": "2026-06-01T04:00:00Z"
+      "title": "GKN Aerospace HazMat Incident | Orange County",
+      "fetched_iso": "2026-06-01T07:08:00Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
       "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-06-01T04:00:00Z"
+      "fetched_iso": "2026-06-01T07:08:00Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
-      "fetched_iso": "2026-06-01T04:00:00Z"
+      "fetched_iso": "2026-06-01T07:08:00Z"
     },
     {
       "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
       "title": "California Senate passes SB 954 to rein in industrial CEQA exemptions after Garden Grove hazmat crisis",
-      "fetched_iso": "2026-06-01T04:00:00Z"
+      "fetched_iso": "2026-06-01T07:08:00Z"
     },
     {
       "url": "https://ktla.com/news/orange-county/garden-grove-chemical-tank-evacuation-lawsuit/",
       "title": "Lawsuits mount after Orange County chemical tank failure, evacuations",
-      "fetched_iso": "2026-06-01T04:00:00Z"
+      "fetched_iso": "2026-06-01T07:08:00Z"
     },
     {
       "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
       "title": "GKN Aerospace chemical leak exposes regulatory gaps",
-      "fetched_iso": "2026-06-01T04:00:00Z"
+      "fetched_iso": "2026-06-01T07:08:00Z"
+    },
+    {
+      "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
+      "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed",
+      "fetched_iso": "2026-06-01T07:08:00Z"
     }
   ],
   "schools_closed": [
