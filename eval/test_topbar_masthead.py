@@ -24,6 +24,7 @@ REQUIRED = (
     "archive-pill",                                  # archive pivot: ARCHIVE pill added beside UNOFFICIAL
     ">ARCHIVE<",                                     # pill text
     '"archive.label"',                               # fixed historical-archive label (replaces live freshness)
+    "topbar-pills",                                  # owner reorder: pills wrapped in a row below the wordmark
 )
 
 # Tokens that must NO LONGER appear (the orphan layout + the dead spacer).
@@ -75,4 +76,32 @@ def test_dateline_is_inside_lead_before_controls():
         if ok
         else f"bad source order leadrow={i_leadrow} fresh={i_fresh} controls={i_controls}",
         "metrics": {"leadrow": i_leadrow, "fresh": i_fresh, "controls": i_controls},
+    }
+
+
+def test_wordmark_leads_above_pills():
+    """Owner request (2026-06-01): the GG Tank Watch wordmark leads the masthead,
+    rendered ABOVE the UNOFFICIAL/ARCHIVE pills (was: pills above the wordmark).
+    Anchored on the markup spans, not the `.topbar-wordmark {` CSS rule earlier
+    in the file, so this measures DOM order, not stylesheet order. With the
+    lead-row stacked as a flex column (no `order:`/reverse), DOM order == the
+    rendered top-to-bottom order; the visual stacking is confirmed by Edge QA."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    i_leadrow = text.find('<div class="topbar-lead-row">')
+    i_wordmark = text.find('<span class="topbar-wordmark">', i_leadrow)
+    i_unofficial = text.find(">UNOFFICIAL<", i_leadrow)
+    i_archive = text.find(">ARCHIVE<", i_leadrow)
+    ok = -1 < i_leadrow < i_wordmark < i_unofficial and i_wordmark < i_archive
+    return {
+        "passed": ok,
+        "details": "order: lead-row < wordmark < pills (UNOFFICIAL, ARCHIVE)"
+        if ok
+        else f"bad order leadrow={i_leadrow} wordmark={i_wordmark} "
+        f"unofficial={i_unofficial} archive={i_archive}",
+        "metrics": {
+            "leadrow": i_leadrow,
+            "wordmark": i_wordmark,
+            "unofficial": i_unofficial,
+            "archive": i_archive,
+        },
     }

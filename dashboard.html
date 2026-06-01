@@ -227,7 +227,7 @@
       .topbar-wordmark { font-size: 16.5px; }
     }
     .topbar-wordmark-tank { color: var(--sa-celadon); }
-    /* lead = left identity column: [pill + wordmark] over [dateline] */
+    /* lead = left identity column: [wordmark over pills] over [dateline] */
     .topbar-lead {
       display: flex;
       flex-direction: column;
@@ -238,9 +238,15 @@
     }
     .topbar-lead-row {
       display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      min-width: 0;
+    }
+    .topbar-pills {
+      display: flex;
       align-items: center;
       gap: 8px;
-      min-width: 0;
     }
     /* freshness = left-aligned dateline under the wordmark, all widths */
     .topbar-freshness {
@@ -258,11 +264,6 @@
     }
     @media (min-width: 768px) {
       .topbar-freshness { font-size: 11.5px; }
-    }
-    @media (max-width: 599px) {
-      /* narrow: wordmark drops to its own line below the pill */
-      .topbar-lead-row { flex-wrap: wrap; gap: 4px 8px; }
-      .topbar-lead-row .topbar-wordmark { flex: 0 0 100%; }
     }
     .topbar-btn {
       display: inline-flex;
@@ -1430,9 +1431,11 @@
     <header class="topbar topbar--masthead">
       <div class="topbar-lead">
         <div class="topbar-lead-row">
-          <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
-          <span class="archive-pill" id="archive-pill" data-i18n="topbar.archive" data-i18n-title="topbar.archive.title" title="Frozen historical record of the May 21–26, 2026 emergency">ARCHIVE</span>
           <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
+          <div class="topbar-pills">
+            <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
+            <span class="archive-pill" id="archive-pill" data-i18n="topbar.archive" data-i18n-title="topbar.archive.title" title="Frozen historical record of the May 21–26, 2026 emergency">ARCHIVE</span>
+          </div>
         </div>
         <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="archive.label">Historical archive · May 21–26, 2026</span></span>
       </div>
