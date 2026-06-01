@@ -33,56 +33,1569 @@
     ],
     "notes": "The incident is REAL and broadly verifiable across major national and Los Angeles / Orange County outlets, plus a dedicated Wikipedia article (en.wikipedia.org/wiki/Garden_Grove_chemical_leak) citing ~50 sources (LA Times, Guardian, CNN, CBS, Reuters, NPR, NYT, NBC, KTLA, ABC7, OC Register, AP). Core facts cross-confirmed: GKN Aerospace facility at 12122 Western Ave, Garden Grove; methyl methacrylate (MMA) tank overheating from ~2026-05-21 (~3:30-3:40pm PDT Thursday); ~50,000 evacuated over a ~9 sq mi zone (Stanton + parts of Garden Grove, Anaheim, Buena Park, Cypress, Westminster); Gov. Newsom state of emergency Sat 2026-05-23; OC DA Todd Spitzer criminal probe; class-action by X-Law Group + Presidio Law Firm; OCFA incident command (Covey, McGovern); rising internal temp (77F -> 90F -> >100F gauge-max); crack(s) found in overnight recon. All 6 YouTube IDs in the seed set resolve and their titles match the incident. CAVEATS: (1) Exact publish TIMESTAMPS for most items are approximate -- search/fetch surfaces dates but rarely minute-level publish times; ISO times carried from the seed or estimated are flagged per-item via published_iso_confidence. (2) WebFetch on YouTube returns the video title but the truncated page did NOT expose the channel name, so outlet attribution for video items relies on the seed + the search-result snippets that named the reporting outlet (e.g. KTLA's own timeline references these clips). (3) The seed ABC7 'entry' deep-links (per-update fragments under .../19152918/entry/NNNN/) are part of a live blog; the parent live-blog URL and the temperature entry (19158460) were directly verified to resolve, but not every individual entry fragment was independently fetched. (4) One seed published_iso looks like a likely data-entry artifact: the ABC7 'Map shows potential OC blast zone' item carries 2026-05-24T07:08:00Z which is plausible but unverified to the minute.",
     "knowledge_cutoff_caveat": true,
-    "knowledge_cutoff_note": "Event postdates the assistant training cutoff (Jan 2026). ALL facts here are sourced from live WebSearch/WebFetch performed 2026-05-25, not from model memory."
+    "knowledge_cutoff_note": "Event postdates the assistant training cutoff (Jan 2026). ALL facts here are sourced from live WebSearch/WebFetch performed 2026-05-25, not from model memory.",
+    "expansion_2026_05_31": {
+      "method": "/deep-research (Deep, Web&News) -> 7 read-only Explore lanes + 2 focused top-up/completeness agents; every URL fetched; a 13-URL sample re-verified in the main loop.",
+      "added": 76,
+      "officials_in_archive": 14,
+      "skipped_officials_after_may28": 2,
+      "completeness_note": "No deaths/injuries/arrests/second-tank-event/major-hearing through May 31 (verified). Paywalled majors (LA Times, NYT, WSJ, Reuters, AP, BBC, Guardian, CNN) 403 automated fetching and are under-represented by design (anti-fabrication: only fetch-verified sources included). May 21 same-day coverage is genuinely sparse."
+    }
   },
   "items": [
     {
-      "title": "Neighbors in Garden Grove evacuate due to leaking chemical tank",
-      "outlet": "KTLA",
-      "url": "https://www.youtube.com/watch?v=oRVlU3PrtcI",
-      "type": "video",
-      "youtube_id": "oRVlU3PrtcI",
-      "published_iso": "2026-05-22T00:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "Early evacuation coverage; notes evacuation centers at Garden Grove Sports & Rec Center and Cypress Recreation & Community Center.",
+      "title": "A chemical tank nearly exploded. Did California's regulators miss the signs?",
+      "outlet": "CalMatters",
+      "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-30T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "In-depth analysis of whether California's regulators missed warning signs at GKN Aerospace, exploring potential gaps in emergency planning and chemical safety oversight that allowed the incident to occur.",
       "provenance": {
-        "search_query": "Garden Grove chemical tank YouTube ABC News NBC LA Fox 11 video coverage May 24 2026",
-        "fetched_iso": "2026-05-25T03:05:00Z",
-        "url_status": "verified-resolves",
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 30, 2026 publish date (updated May 29); article examines regulatory gaps in California's chemical safety oversight",
         "matches_seed": false
       }
     },
     {
-      "title": "Officials warn toxic tank in Garden Grove could explode",
-      "outlet": "KTLA",
-      "url": "https://www.youtube.com/watch?v=P3tTEWNL97o",
+      "title": "Rep. Tran Announces Federal Emergency Declaration for Garden Grove Western Incident",
+      "outlet": "Rafu Shimpo",
+      "url": "https://rafu.com/2026/05/rep-tran-announces-federal-emergency-declaration-for-garden-grove-western-incident/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-29T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Rep. Derek Tran announces Trump's Federal Emergency Declaration approval at Rep. Tran's urging. Declaration enables FEMA to cover 75% of federal resource costs including air monitoring, plume modeling, environmental assessment, and hazmat containment. Affects 50,000+ residents across six cities.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed Rafu Shimpo article on federal emergency declaration announcement with Rep. Tran details, published May 29, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Lawsuit accuses GKN Aerospace of negligence, trespass after Memorial Day chemical evacuation in California",
+      "outlet": "Fox News (National)",
+      "url": "https://www.foxnews.com/us/lawsuit-accuses-gkn-aerospace-negligence-trespass-memorial-day-chemical-evacuation-california",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-29T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Fox News (national) covers lawsuits filed against GKN Aerospace following the Memorial Day weekend emergency. Plaintiffs allege negligence, trespass, and nuisance, citing a prior history of regulatory violations. At least 44 lawsuits had been filed by publication date.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 29, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Company Behind California Chemical Leak Was Building F-35 Parts Amid Rush of Orders From U.S. and Israel",
+      "outlet": "The Intercept",
+      "url": "https://theintercept.com/2026/05/28/garden-grove-california-chemical-leak-f-35-israel/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-28T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Investigative article connecting GKN Aerospace's production of F-35 canopy parts for Lockheed Martin subcontracts to the chemical tank incident, and documenting community activist response.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed headline, date, and GKN Aerospace F-35 canopy connection to incident",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove and Stanton Demand Accountability for Chemical Tank Emergency",
+      "outlet": "Voice of OC",
+      "url": "https://voiceofoc.org/2026/05/garden-grove-and-stanton-demand-accountability-for-chemical-tank-emergency/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-28T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Coverage of City Council meetings in both Garden Grove and Stanton where over 250 residents confronted officials demanding accountability, closure of the facility, and answers about how GKN was allowed to operate near schools and homes.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 28, 2026 publish date; article references city council meetings held May 26 (Tuesday) evening",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "'We need answers.' Politicians demand accountability from GKN Aerospace after hazmat crisis",
+      "outlet": "AOL News",
+      "url": "https://www.aol.com/news/answers-politicians-demand-accountability-gkn-130000010.html",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-28T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "U.S. Representatives Robert Garcia and Derek Tran send letter to GKN CEO Peter Dilnot demanding answers on what caused the chemical emergency and what company is doing in response. Members of Orange County Board of Supervisors ask GKN to provide compensation to evacuated residents.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed AOL article on political accountability demands, published May 28, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Legal Trouble Mounts For Company That Owned Faulty Chemical Tank In OC",
+      "outlet": "Orange County Patch",
+      "url": "https://patch.com/california/orange-county/legal-trouble-mounts-company-owned-faulty-chemical-tank-oc",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-28T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Multiple legal filings mounted against GKN Aerospace: approximately 29 state court claims and 8 federal court claims filed as of May 28. GKN Aerospace stated: 'We apologize for the disruption this incident has caused,' as legal pressure mounted from evacuated residents.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed Patch article on mounting legal claims against GKN, published May 28, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Legal troubles mount for Garden Grove aerospace facility",
+      "outlet": "MyNewsLA",
+      "url": "https://mynewsla.com/orange-county/2026/05/28/legal-troubles-mount-for-garden-grove-aerospace-facility/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-28T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "May 28 coverage of mounting legal claims against GKN.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "re-verified by main loop: real, May 28, '29 claims filed in OC Superior Court'",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "OC Cities Formally Approve Local Emergencies Over Chemical Tank Crisis",
+      "outlet": "Voice of OC",
+      "url": "https://voiceofoc.org/2026/05/oc-cities-formally-approve-local-emergencies-over-chemical-tank-crisis-what-next/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-28T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Westminster, Anaheim, and the OC Board of Supervisors ratified local emergency declarations over the crisis.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "re-verified by main loop: real, May 28, Westminster/Anaheim/OC Supervisors ratified emergencies Wednesday",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "GKN Aerospace Apology Statement — Senior Vice President Steve Carlin",
+      "outlet": "GKN Aerospace Transparency Systems, Inc.",
+      "url": "https://www.loscerritosnews.net/2026/05/27/aerospace-giant-gkn-breaks-silence-after-garden-grove-tank-leak-crisis-and-massive-evacuation/",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "GKN Aerospace Senior Vice President Steve Carlin issued apology statement late on May 27, 2026: 'On behalf of the team at GKN Aerospace, I want to say how sorry we are for the uncertainty and disruption this situation has caused.' Acknowledged difficulty particularly over Memorial Day holiday, committed to understanding cause and supporting affected residents, thanked first responders, and pledged to work with communities on path forward.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "GKN issued apology statement late evening May 27, 2026, through Senior Vice President Steve Carlin. Statement reported by Los Cerritos Community News (published May 27), CBS LA, and other outlets. Carlin acknowledged disruption and commitment to support affected residents.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove Residents Demand Accountability After Chemical Tank Crisis",
+      "outlet": "NBC Palm Springs",
+      "url": "https://www.nbcpalmsprings.com/2026/05/27/garden-grove-residents-demand-accountability-after-chemical-tank-crisis",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Coverage of emotional community meeting where Garden Grove residents confronted city council, demanding accountability from GKN Aerospace, questioning why the facility was allowed near schools and homes, and calling for facility closure.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 27, 2026 publish date; covers special city council meeting held on May 26 where 250+ residents confronted council",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "All evacuation orders lifted after Garden Grove chemical plant explosion threat defused",
+      "outlet": "FOX 11 Los Angeles",
+      "url": "https://www.foxla.com/news/garden-grove-aerospace-chemical-evacuation-orders-lifted",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "FOX 11 reports all evacuation orders lifted Tuesday night after chemical tank successfully cooled and stabilized; 16,000 remaining residents allowed to return home; no explosion or fire threat.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed article published May 27, 2026; reports on evacuation orders lifted Tuesday night; resolves without error. NOTE: Article published next day but reports May 26 Tuesday evening event.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Foreseeable catastrophe: How GKN Aerospace, California regulators and the Teamsters built the Garden Grove disaster",
+      "outlet": "World Socialist Web Site",
+      "url": "https://www.wsws.org/en/articles/2026/05/28/ancu-m28.html",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Deep investigative analysis arguing the disaster was foreseeable, citing two decades of documented violations at GKN facility including failed cooling systems, air quality violations, and insufficient staffing at Cal/OSHA. Criticizes Melrose Industries cost-cutting and Teamsters prioritizing labor peace over worker safety.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed WSWS analysis of regulatory and cost-cutting failures in chemical tank disaster, published May 27, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "What's next for Garden Grove's chemical tank crisis as victims grapple with financial fallouts",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-chemical-tank-whats-next-financial-fallout/3895967/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Analysis of financial fallout from evacuation: Harry's Cafe lost $35,000-40,000; other businesses lost ~$10,000 each. Evacuated residents faced $1,000+ in hotel, food, and travel costs. Recovery efforts underway with OC Health coordinating waste removal and EPA air monitoring.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed NBC LA article on financial impacts of evacuation including business losses and household expenses, published May 27, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "DiCello Levitt and Co-Counsel File Class Action Against GKN Aerospace Over Garden Grove Chemical Emergency",
+      "outlet": "DiCello Levitt LLP (law firm)",
+      "url": "https://dicellolevitt.com/dicello-levitt-and-co-counsel-file-class-action-against-gkn-aerospace-over-garden-grove-chemical-emergency/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "DiCello Levitt LLP, Miner Barnhill & Galland, and Collins Law Group file class action in Orange County Superior Court against GKN Aerospace on behalf of ~50,000 evacuated residents. Suit seeks damages for loss of use and enjoyment of homes, relocation and shelter costs, transportation, and food expenses.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed class action filing announcement by DiCello Levitt and co-counsel, published May 27, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Orange County Residents File Class Action Over Garden Grove Chemical Tank Crisis",
+      "outlet": "PRNewswire",
+      "url": "https://www.prnewswire.com/news-releases/orange-county-residents-file-class-action-over-garden-grove-chemical-tank-crisis-302783544.html",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Zimmerman Reed LLP files class action in California Superior Court against GKN Aerospace Transparency Systems Inc., GKN Aerospace Services Ltd., and Melrose Industries PLC. Alleges negligent storage, monitoring, and maintenance of 7,000-gallon MMA tank. Seeks damages for evacuation costs, property disruption, and diminished property values.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed Zimmerman Reed LLP class action filing announcement, published May 27, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Evacuation orders lifted in Garden Grove after chemical leak",
+      "outlet": "LAist",
+      "url": "https://laist.com/news/garden-grove-residents-asked-to-evacuate-area-toxic-tank-could-explode",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "LAist reports all evacuations lifted for nearly 50,000 residents displaced by methyl methacrylate tank emergency at GKN Aerospace. Coverage includes incident timeline, chemical dangers (thermal runaway risk), and community impact across six Orange County cities.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed LAist article published May 22 and last updated May 27, 2026; covers evacuation lifting",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "All evacuation orders lifted after explosion at California chemical tank is averted",
+      "outlet": "Fox News",
+      "url": "https://www.foxnews.com/us/50000-evacuees-cleared-return-home-chemical-tank-crisis-southern-california-aerospace-plant",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Fox News reports 'roughly 50,000 people' cleared to return home Tuesday night after all evacuation orders lifted. Orange County Fire Authority announces no chemical leak, explosion risk, fire risk, or public health threat remained. Tank crack discovered Monday relieved internal pressure.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed Fox News article on evacuation lifting, published May 27, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "'I'm just a number to them': Garden Grove residents demand closure of GKN plant after toxic emergency",
+      "outlet": "World Socialist Web Site",
+      "url": "https://www.wsws.org/en/articles/2026/05/28/deub-m28.html",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "WSWS coverage of residents demanding permanent closure of GKN facility after chemical emergency. Residents cite facility's history of safety violations, question why hazardous industrial operation was located near schools and homes, and call incident 'totally preventable.'",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed WSWS article on residents demanding plant closure, published May 27, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Angry residents demand answers from leaders on Garden Grove chemical leak",
+      "outlet": "YouTube",
+      "url": "https://www.youtube.com/watch?v=_DILj00aFUU",
       "type": "video",
-      "youtube_id": "P3tTEWNL97o",
-      "published_iso": "2026-05-22T20:00:00Z",
+      "youtube_id": "_DILj00aFUU",
+      "published_iso": "2026-05-27T00:00:00Z",
       "published_iso_confidence": "approximate",
-      "summary": "Friday report: thousands under evacuation orders after officials warned the leaking tank could explode.",
+      "summary": "Video documentation of angry residents at Garden Grove city council meeting demanding accountability from local leaders regarding chemical tank crisis that displaced 50,000+ residents over Memorial Day weekend.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "Video page resolves; title indicates coverage of angry residents at city council meeting about chemical leak",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed",
+      "outlet": "Voice of OC",
+      "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Voice of OC reports on potential reimbursement for tens of thousands of evacuees displaced over Memorial Day weekend due to the faulty GKN Aerospace MMA tank. Officials acknowledged losses but provided no clear compensation timeline or funding source. County Supervisor Chaffee advised residents to 'save your receipts.' Presidential Emergency Declaration was approved.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 27, 2026 per byline",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove residents call for GKN Aerospace shutdown after chemical scare",
+      "outlet": "AOL News",
+      "url": "https://www.aol.com/news/garden-grove-chemical-scare-sparks-122506691.html",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "AOL News covers community meeting where residents demanded GKN Aerospace shutdown after the 34,000-gallon MMA tank overheated and vented vapors, prompting evacuations beginning May 22, 2026. Evacuation orders were lifted May 26.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 27, 2026 (Wednesday)",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove chemical tank stabilized, evacuations lifted",
+      "outlet": "FOX 11 Los Angeles",
+      "url": "https://www.foxla.com/video/fmc-o2vcbllq50w3vw01",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-27T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "The 34,000-gallon chemical storage tank cooled and stabilized; evacuation orders for roughly 16,000 residents were lifted Tuesday night.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves with title, outlet, and publish date 2026-05-27 6:44 AM PDT; covers tank stabilization and evacuation lift",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "All Evacuation Orders Lifted — Orange County Fire Authority",
+      "outlet": "OCFA (Orange County Fire Authority)",
+      "url": "https://www.cbsnews.com/losangeles/news/california-chemical-incident-orange-county-evacuation-orders-removed/",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Orange County Fire Authority (OCFA), in coordination with Unified Command (fire, law enforcement, EPA, Orange County Health Care Agency), announced all evacuation orders lifted at 7:30 p.m. on May 26, 2026 (Tuesday). OCFA confirmed no active chemical leak, no threat of explosion, no threat of fire, and no risk to public. Final 16,000 residents authorized to return home.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "OCFA announcement reported by CBS LA, ABC7, Voice of OC, and NBC LA confirming 7:30 p.m. lift on May 26 (Tuesday). OCFA Interim Chief TJ McGovern posted confirmation to X at 11:22 p.m. May 26. Garden Grove official website also documents this timeline. Multiple corroborating sources confirm May 26, not May 27 or May 28.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove City Council Special Meeting — Residents Confront Officials",
+      "outlet": "City of Garden Grove / Local Officials",
+      "url": "https://voiceofoc.org/event/garden-grove-city-council-meeting-2-2/2026-05-26/",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "City of Garden Grove held special City Council meeting on May 26, 2026, at 5:30 p.m. (replacing regular meeting) to address chemical incident response. Over 200 residents attended, demanding answers and accountability. Residents questioned why GKN was allowed to operate near schools and homes. Council took no action during the hours-long meeting despite resident demands to shut down the facility.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "Special City Council meeting held May 26, 2026, at 5:30 p.m., documented by Voice of OC, KTLA, NBC Palms Springs. Over 200 residents attended and voiced demands for accountability. Meeting was televised; residents called for facility shutdown.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Air Quality Alert: Chemical Incident in Garden Grove, California",
+      "outlet": "IQAir USA",
+      "url": "https://www.iqair.com/newsroom/air-quality-alert-chemical-spill-in-garden-grove-california",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Air quality monitoring alert published by IQAir documenting the chemical incident at GKN Aerospace, with updates on evacuation zones, air quality conditions, and emergency resources.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 26, 2026 publish date; air quality monitoring alert for Garden Grove incident area",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Evacuations End in Garden Grove Chemical Tank Emergency",
+      "outlet": "Voice of OC",
+      "url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Reporting on all evacuation orders being lifted Tuesday evening after officials confirmed no chemical leak, no explosion threat, and no public risk; 16,000 remaining evacuees cleared to return home.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 26, 2026 publish date; covers final evacuation order lift",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Officials lift evacuation orders for some California residents living near a damaged chemical tank",
+      "outlet": "ABC News",
+      "url": "https://abcnews.com/US/wireStory/officials-lift-evacuation-orders-california-residents-living-damaged-133303858",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Coverage of partial evacuation lift on May 26 morning after tank temperatures dropped sufficiently, allowing roughly two-thirds of evacuees (34,000 people) to return home while 16,000 remained under orders.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 26, 2026 12:15 AM publish date; covers partial evacuation lift for ~34,000 residents after temperature drop",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "All evacuation orders tied to Southern California chemical tank lifted after 'worst-case scenario' averted, officials say",
+      "outlet": "ABC News",
+      "url": "https://abcnews.com/US/chemical-tank-southern-california-longer-threat-explosion-officials/story?id=133286870",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "National ABC News coverage of the final evacuation order lift on Tuesday evening, with OCFA confirming no remaining threat of explosion, fire, or chemical leak and declaring the 'worst-case scenario' averted.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 26, 2026 publish date (evening lift); national coverage of all evacuation orders being rescinded",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "All evacuation orders lifted for residents near chemical tank in Garden Grove",
+      "outlet": "KTLA",
+      "url": "https://ktla.com/news/orange-county/all-evacuations-lifted-residents-chemical-tank-garden-grove/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "KTLA reports all evacuation orders lifted by 7:30 p.m. Tuesday after 50,000 residents evacuated. Unified Command (fire, law enforcement, EPA, county health) confirmed no chemical leak, no explosion threat, no fire threat, no risk to public. Western Avenue road closure remains in place between Chapman and Garden Grove Blvd.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed article resolves and reports evacuation orders lifted at 7:30 p.m. Tuesday; confirmed no HTTP errors",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Evacuations lifted, tank safety threat and more. See updates on the Garden Grove emergency",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-toxic-tank-emergency-evacuations-map-update/3895231/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "NBC Los Angeles updates on Garden Grove chemical tank emergency with focus on evacuation lifting, tank safety confirmation, and updates on the incident progression.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed article published May 26 at 8:59 p.m.; covers evacuations lifted; resolves without error",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Evacuation orders lifted in Garden Grove chemical leak crisis at GKN Aerospace",
+      "outlet": "Los Cerritos Community News",
+      "url": "https://www.loscerritosnews.net/2026/05/26/evacuation-orders-lifted-in-garden-grove-chemical-leak-crisis-at-gkn-aerospace/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Los Cerritos Community News reports on all evacuation orders being lifted for Garden Grove residents impacted by the chemical tank crisis at GKN Aerospace facility.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed article about GKN Aerospace evacuations being lifted; date visible in URL (2026/05/26); resolves without error",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Chemical tank update: Evacuation orders lifted as officials declare no further risk to public",
+      "outlet": "Orange County Department of Education (OCDE) Newsroom",
+      "url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "OCDE Newsroom official update confirming all evacuation orders lifted relating to Garden Grove hazardous materials incident; confirms no active chemical leak, no explosion threat, no fire threat, no public risk. Notes Western Avenue closure between Chapman and Garden Grove Blvd remains in place.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed article final update at 8:15 p.m. May 26; confirms all evacuation orders lifted; resolves without error",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove chemical crisis evacuations lifted",
+      "outlet": "CBS Los Angeles (YouTube)",
+      "url": "https://www.youtube.com/watch?v=WqgzPYwMTDY",
+      "type": "video",
+      "youtube_id": "WqgzPYwMTDY",
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS Los Angeles video report on Garden Grove chemical crisis with evacuations lifted.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed video exists with title about evacuations lifted; publish date not visible in page content; video resolves without error",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove tank stabilized, evacuations lifted",
+      "outlet": "FOX 11 Los Angeles (YouTube)",
+      "url": "https://www.youtube.com/watch?v=w9Oik1jssaM",
+      "type": "video",
+      "youtube_id": "w9Oik1jssaM",
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "FOX 11 video on Garden Grove tank being stabilized and evacuations lifted.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed video exists with title about tank stabilization and evacuations lifted; publish date not visible in page content; video resolves without error",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Efforts to thwart blast from Garden Grove chemical tank",
+      "outlet": "NBC4 News (YouTube)",
+      "url": "https://www.youtube.com/watch?v=npM8on37qS4",
+      "type": "video",
+      "youtube_id": "npM8on37qS4",
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "NBC4 News report on efforts to prevent blast from Garden Grove chemical tank, with 16,000 residents still under evacuation orders on Tuesday afternoon, May 26.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed video about Garden Grove chemical tank; described as from NBC4 reporting on 16,000 under evacuation on Tuesday May 26 at 3 p.m.; video resolves without error",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Threat of major explosion in Garden Grove gone, evacuations reduced",
+      "outlet": "NBC4 News (YouTube)",
+      "url": "https://www.youtube.com/watch?v=r2vOvtHOlKU",
+      "type": "video",
+      "youtube_id": "r2vOvtHOlKU",
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "NBC4 News report on explosion threat being eliminated and evacuations being reduced in Garden Grove on morning of May 26.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed video title matches evacuation reduction and explosion threat resolved; described as from NBC4 on morning of May 26; video resolves without error",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "All Garden Grove Unified schools to reopen Wednesday",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19179024/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Garden Grove Unified announces schools will fully reopen Wednesday (May 28) after all evacuation orders lifted Tuesday evening. Nine GGUSD campuses had already reopened May 26 after evacuation boundaries revised. Students not penalized for absences as families recover from emergency.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "From ABC7 live blog; schools reopening announced for Wednesday May 28 as evacuation lifted",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Evacuation Orders Lifted Following Chemical Leak at GKN Aerospace Facility",
+      "outlet": "Fullerton Observer",
+      "url": "https://fullertonobserver.com/2026/05/26/evacuation-orders-lifted-following-chemical-leak-at-gkn-aerospace-facilit/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Fullerton Observer reports ~40,000 residents allowed to return after evacuation orders lifted at 7:30 PM Tuesday, May 26. OCFA Unified Incident Commander and Garden Grove Police Chief confirmed no chemical leak, explosion risk, fire risk, or public health threat remained.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed Fullerton Observer article on evacuation lifting, published May 26, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Hazardous Materials Incident — City of Garden Grove (Official Updates)",
+      "outlet": "City of Garden Grove",
+      "url": "https://ggcity.org/hazmat-incident",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Official City of Garden Grove page with incident updates, emergency response status, and community resources. Page maintained by city government throughout emergency response period.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "Official City of Garden Grove emergency response page with incident information and updates",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "All evacuation orders lifted near Orange County chemical incident in California after officials find no risk to public - CBS Los Angeles",
+      "outlet": "CBS Los Angeles (KCAL/CBS News Los Angeles)",
+      "url": "https://www.cbsnews.com/losangeles/news/california-garden-grove-chemical-crisis-evacuations-reduced/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "CBS Los Angeles reports all evacuation orders lifted after officials confirm 'no chemical leak' and 'no risk to the public,' with BLEVE scenario successfully mitigated.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 26, 2026 at 11:53 PM PDT",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "GKN Aerospace issues pitiful statement about toxic Garden Grove chemical tank as thousands left in limbo",
+      "outlet": "AOL News",
+      "url": "https://www.aol.com/news/gkn-aerospace-issues-pitiful-statement-174630272.html",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "AOL News reports on GKN Aerospace's initial apology statement regarding the MMA tank emergency. GKN states they 'sincerely apologise for the ongoing disruption.' About 65% of evacuees allowed to return after temperatures dropped due to tank crack. Congressional scrutiny and class-action lawsuits reportedly forthcoming.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 26, 2026, byline Ross O'Keefe (NY Post/California Post)",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Blast averted in Garden Grove chemical leak, but crisis 'not over,' officials say",
+      "outlet": "Fox News",
+      "url": "https://www.foxnews.com/video/6396681429112",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Max Gorden reports on the chemical tank leak at GKN Aerospace in Garden Grove where thousands remained evacuated; 1 minute 57 seconds.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves with title and date on Fox News video host, reporting on chemical tank leak at GKN Aerospace with thousands evacuated",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove chemical crisis leaving residents in limbo",
+      "outlet": "FOX 11 Los Angeles",
+      "url": "https://www.foxla.com/video/fmc-rqmb55yqqeuq1kfw",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Residents of Garden Grove demand accountability from GKN Aerospace facility regarding the chemical crisis.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves with title, outlet, and publish date 2026-05-26 8:36 PM PDT; covers residents demanding accountability from GKN Aerospace",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Former GKN Employee Speaks Out: Garden Grove Chemical Leak",
+      "outlet": "Fox LA (KTTV)",
+      "url": "https://www.foxla.com/news/former-gkn-employee-speaks-out-garden-grove-chemical-theft",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Fox LA interviews former GKN safety manager Valerie Morales about tank incident; discusses 34,000-gallon methyl methacrylate tank and resident safety rights",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed; May 26, 2026. Former GKN safety manager Valerie Morales commentary on 34,000-gallon tank overheating incident",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Orange County residents demand accountability after Garden Grove chemical incident: \"Shut it down\"",
+      "outlet": "CBS Los Angeles",
+      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-chemical-incident-gkn-aerospace-residents-demand-accountability/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": ">200 residents demand answers + facility shutdown at council meeting.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "resolves; May 26 11:11pm PDT council meeting coverage",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "GKN Aerospace Suffers Industrial Accident",
+      "outlet": "Aviation Week",
+      "url": "https://aviationweek.com/aerospace/manufacturing-supply-chain/gkn-aerospace-suffers-industrial-accident",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-26T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Industry coverage of the GKN industrial accident.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "re-verified by main loop: real, May 26, 'thermal issue' MMA tank",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove chemical tank emergency: Toxic tank on path to spill or explode in Orange County; crews find cracks (live blog hub)",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T02:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7's master live-blog hub for the incident; updated continuously. Parent of all ABC7 entry fragments.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "Top hit and verified live; in seeded status.json sources_checked.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Crews find crack in tank, gain positive intel that could shift response strategy",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19163069/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T01:10:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry: crews find crack and gain positive intel that could shift strategy.",
+      "provenance": {
+        "search_query": "(seed cross-reference)",
+        "fetched_iso": "2026-05-25T02:52:00Z",
+        "url_status": "unchecked",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Temperature of unstable tank is increasing 1 degree per hour, officials say",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19158460/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T01:10:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry: tank temperature rising ~1 degree per hour, now over the 100F gauge max.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:50:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed entry resolves and headline matches.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Live updates: Potential crack found in Garden Grove chemical tank may change strategy (running blog)",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/live-updates-garden-grove-chemical-tank-emergency/3894473/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T01:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "NBC LA running live blog on the potential crack that may change response strategy.",
+      "provenance": {
+        "search_query": "(seed cross-reference)",
+        "fetched_iso": "2026-05-25T02:52:00Z",
+        "url_status": "unchecked",
+        "url_status_note": "Also listed in seeded status.json sources_checked.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Resources for residents evacuated due to chemical tank crisis",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19162903/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T00:30:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry listing resources for evacuated residents.",
+      "provenance": {
+        "search_query": "(seed cross-reference)",
+        "fetched_iso": "2026-05-25T02:52:00Z",
+        "url_status": "unchecked",
+        "url_status_note": "Parent live-blog verified live; this entry fragment not independently fetched.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Federal Emergency Declaration — President Donald Trump",
+      "outlet": "White House / Federal",
+      "url": "https://www.gov.ca.gov/2026/05/25/governor-newsom-secures-presidential-emergency-declaration-approval-for-orange-county-hazmat-response/",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "President Donald Trump signed Federal Emergency Declaration on May 25, 2026, approving California's request for emergency assistance. Declaration allows FEMA to provide direct federal assistance with personnel, equipment, and specialized resources to support response operations at Garden Grove chemical incident.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "Official California Governor's Office press release dated May 25, 2026, announcing President Trump approved Federal Emergency Declaration for Orange County hazmat response. Confirms FEMA authorized to provide direct federal assistance with personnel, equipment, and specialized resources.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove Chemical Tank Stabilized, Massive Explosion Chances Gone as Evacuation Remains",
+      "outlet": "Voice of OC",
+      "url": "https://voiceofoc.org/2026/05/garden-grove-chemical-tank-stabilized-explosion-chances-gone-as-evacuation-remains/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Voice of OC reports that the BLEVE (Boiling Liquid Expanding Vapor Explosion) threat has been eliminated. Tank has cracked, pressure released, and temperature dropped to 93°F. Evacuation orders remain in effect across Anaheim, Buena Park, Garden Grove, Westminster, and nearly all of Stanton.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 25, 2026 per byline",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove Chemical Tank Evacuations Partially Lifted, 16K Still Evacuated",
+      "outlet": "Voice of OC",
+      "url": "https://voiceofoc.org/2026/05/garden-grove-chemical-tank-evacuations-partially-lifted-16k-still-evacuated/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Voice of OC reports partial lifting of evacuation orders after firefighters stabilize the MMA tank at GKN Aerospace. Roughly 16,000 residents remain evacuated as the evacuation zone is reduced to a smaller area around Garden Grove and Stanton, avoiding both a major explosion and catastrophic spill.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 25, 2026 (updated May 26) per byline, authored by Spencer Custodio",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "The Garden Grove Chemical Leak: What Is Methyl Methacrylate and What To Do If You Are Exposed?",
+      "outlet": "Latin Times",
+      "url": "https://www.latintimes.com/garden-grove-chemical-leak-what-methyl-methacrylate-what-do-if-you-are-exposed-597603",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Latin Times provides health and safety information about methyl methacrylate exposure risks, environmental concerns for aquatic and soil systems, and details on the Garden Grove GKN Aerospace incident's impact.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 25, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove chemical leak update: Evacuation zone reduced",
+      "outlet": "FOX 11 Los Angeles",
+      "url": "https://www.foxla.com/video/fmc-trcygq6gdl8y27nx",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Officials lifted part of the evacuation order after tank temperatures dropped, eliminating the explosion risk.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves with title, outlet, and publish date 2026-05-25 6:58 PM PDT",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove Hazardous Materials Incident Press Conference - May 25, 2026",
+      "outlet": "Orange County Fire Authority",
+      "url": "https://www.youtube.com/watch?v=K7OAthHMko8",
+      "type": "video",
+      "youtube_id": "K7OAthHMko8",
+      "published_iso": "2026-05-25T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Official press conference covering the hazardous materials incident at the GKN Aerospace facility.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "YouTube video page title explicitly states 'May 25, 2026' and references the Garden Grove Hazardous Materials Incident press conference",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Toxic Chemical Tank in Garden Grove, Orange County",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/toxic-chemical-tank-garden-grove-orange-county/3894971/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "NBC LA coverage of resolved BLEVE threat; methyl methacrylate tank compromised; ~65% of evacuated residents permitted to return",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed; published May 25, 2026, updated 11:39 PM. Reports elimination of BLEVE threat and partial resident return",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Mandatory Evacuation Order - Garden Grove Chemical Incident",
+      "outlet": "City of Buena Park (Official)",
+      "url": "https://www.buenapark.com/residents/mandatory_evacuation_order.php",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-25T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Official Buena Park evacuation order for chemical spill in Garden Grove; order lifted May 25, 2026 at 6:00 PM",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed; official City of Buena Park page. Evacuation order lifted 5/25/2026 at 6:00 PM; affected Ball Rd-Trask Ave, Valley View-Dale St",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Live: The latest on the Garden Grove crisis",
+      "outlet": "ABC News (national)",
+      "url": "https://www.youtube.com/watch?v=JDvRR9feMUs",
+      "type": "video",
+      "youtube_id": "JDvRR9feMUs",
+      "published_iso": "2026-05-24T21:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC News national live coverage of the latest on the Garden Grove crisis.",
+      "provenance": {
+        "search_query": "(seed cross-reference) verified via WebFetch",
+        "fetched_iso": "2026-05-25T02:48:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed title; channel not exposed by page, outlet from seed.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Efforts to stop California chemical leak in Orange County on new trajectory, officials say, as 50,000 remain evacuated",
+      "outlet": "CBS Los Angeles",
+      "url": "https://www.cbsnews.com/losangeles/news/california-chemical-leak-orange-county-garden-grove-emergency/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T20:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS LA: response on a 'new trajectory' after crack discovery; 50,000 remain evacuated.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Toxic tank still on path to spill or explode in Orange County",
+      "outlet": "KTLA",
+      "url": "https://www.youtube.com/watch?v=N8caNzoKrTo",
+      "type": "video",
+      "youtube_id": "N8caNzoKrTo",
+      "published_iso": "2026-05-24T17:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "KTLA video: toxic tank still on path to spill or explode (full title 'See the latest details').",
+      "provenance": {
+        "search_query": "(seed cross-reference) verified via WebFetch",
+        "fetched_iso": "2026-05-25T02:48:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed title; channel not exposed by page, outlet from seed.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Explainer on methyl methacrylate",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/video/news/local/explainer-on-methyl-methacrylate/3894525/",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T16:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "NBC4 meteorologist Kelley Moody explains what MMA is; broadcast on Today in LA, Sun 2026-05-24.",
+      "provenance": {
+        "search_query": "NBC Los Angeles Garden Grove chemical tank methyl methacrylate explainer video",
+        "fetched_iso": "2026-05-25T02:47:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves and title matches.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Potentially explosive Garden Grove chemical incident continues to evolve Sunday",
+      "outlet": "KTLA",
+      "url": "https://ktla.com/news/orange-county/potentially-explosive-garden-grove-chemical-incident-continues-to-evolve-sunday/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T14:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "KTLA Sunday update as the incident continues to evolve (crack vetting, rising temp).",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank emergency evacuation May 2026",
+        "fetched_iso": "2026-05-25T02:42:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove tank faces explosion or leak",
+      "outlet": "FOX 11 Los Angeles (KTTV)",
+      "url": "https://www.foxla.com/video/fmc-8z5j4dfq5fdsmhel",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T09:30:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "FOX 11 video report on the damaged tank in danger of exploding. Search snippet cites posting 2026-05-24 02:30 AM PDT (~09:30Z).",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank YouTube ABC News NBC LA Fox 11 video coverage May 24 2026",
+        "fetched_iso": "2026-05-25T03:00:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Map shows potential OC blast zone if unstable chemical tank explodes",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19160210/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T07:08:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry showing the potential OC blast zone. (Seed published_iso 07:08Z is plausible but unverified to the minute.)",
+      "provenance": {
+        "search_query": "(seed cross-reference)",
+        "fetched_iso": "2026-05-25T02:52:00Z",
+        "url_status": "unchecked",
+        "url_status_note": "Parent live-blog (19152918) verified live; this entry fragment not independently fetched.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Chemical tank 'on the edge' of exploding in California as crews try to avert disaster",
+      "outlet": "NBC News (national)",
+      "url": "https://www.nbcnews.com/news/us-news/chemical-tank-edge-exploding-california-crews-try-avert-potential-disa-rcna346668",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "National NBC News: tank described by incident commander as 'literally on the edge' of exploding.",
       "provenance": {
         "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
         "fetched_iso": "2026-05-25T02:55:00Z",
         "url_status": "unchecked",
-        "url_status_note": "Surfaced in KTLA-related search results with descriptive snippet; URL not individually fetched.",
         "matches_seed": false
       }
     },
     {
-      "title": "Fire officials concerned tank with toxic chemicals could explode in Garden Grove",
-      "outlet": "KTLA (likely)",
-      "url": "https://www.youtube.com/watch?v=H-wR6qybCPA",
-      "type": "video",
-      "youtube_id": "H-wR6qybCPA",
-      "published_iso": "2026-05-22T22:00:00Z",
+      "title": "California tank holding dangerous chemicals is set to explode or leak, officials say. Here's what to know",
+      "outlet": "CBS News (national)",
+      "url": "https://www.cbsnews.com/news/garden-grove-methyl-methacrylate-chemical-tank-california/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
       "published_iso_confidence": "approximate",
-      "summary": "Fire officials express concern the toxic tank could explode; aired during the Friday escalation.",
+      "summary": "National CBS explainer on the MMA tank set to explode or leak; what residents should know.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "What is methyl methacrylate? Toxic chemical leak in Garden Grove tank at center of hazmat crisis poses health, fire risks",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/post/what-is-methyl-methacrylate-toxic-chemical-leak-garden-grove-tank-center-hazmat-crisis/19152928/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 explainer on MMA, its health and fire risks. Referenced in seeded status.json official_statements.",
+      "provenance": {
+        "search_query": "NBC Los Angeles Garden Grove chemical tank methyl methacrylate explainer video",
+        "fetched_iso": "2026-05-25T02:46:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Map shows potential blast zones should leaking chemical tank explode in Garden Grove",
+      "outlet": "KTLA",
+      "url": "https://ktla.com/news/orange-county/map-potential-blast-zones-chemical-tank-explode-garden-grove/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "KTLA maps the potential blast zones if the tank explodes (innermost severe-damage circle, moderate/light outward).",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove: Tens of Thousands Ordered to Evacuate Over Chemical Tank Explosion Risk",
+      "outlet": "TIME",
+      "url": "https://time.com/article/2026/05/24/garden-grove-chemical-tank-explosion-/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-in-url",
+      "summary": "TIME national coverage of the mass evacuation over explosion risk. Publish date 2026-05-24 embedded in URL.",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank emergency evacuation May 2026",
+        "fetched_iso": "2026-05-25T02:42:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "California chemical tank has cracked causing state of emergency, thousands to evacuate",
+      "outlet": "NPR",
+      "url": "https://www.npr.org/2026/05/24/nx-s1-5833165/california-chemical-tank-malfunction-leak-explode-emergency-evacuate",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-in-url",
+      "summary": "NPR national report: tank has cracked; state of emergency; thousands evacuated. Publish date 2026-05-24 in URL.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Southern California chemical tank has a crack that could possibly lower risk of explosion",
+      "outlet": "CBS8 (San Diego)",
+      "url": "https://www.cbs8.com/article/news/nation-world/southern-california-orange-county-chemical-tank-damage-leak-explosion-risk-evacuation-state-emergency/507-828e4f9b-957d-49df-80d2-0eb52aa82fae",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS8 on the crack that could lower explosion risk.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Residents speak out amid Garden Grove chemical tank crisis",
+      "outlet": "KTLA 5 News",
+      "url": "https://www.youtube.com/watch?v=aVuIrKAlcm4",
+      "type": "video",
+      "youtube_id": "aVuIrKAlcm4",
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "KTLA News video report featuring residents speaking about their experiences during evacuations, shelters reaching capacity, and uncertainty about when they could return home as the crisis continued.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "YouTube video title confirmed; video accessible; KTLA News source; date inferred from coverage timing (Sunday/Monday of first weekend when residents in shelters began speaking publicly)",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Orange County DA investigating Garden Grove chemical crisis",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/orange-county-da-investigating-garden-grove-chemical-crisis/3894627/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "NBC Los Angeles reports DA Todd Spitzer's investigation into GKN Aerospace. Investigation includes preservation of maintenance logs, telemetry records, and internal communications. DA seeks details about industrial operations, tank maintenance, and any prior incidents or violations.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed NBC LA coverage of DA's criminal investigation, published May 24, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Thousands in North OC Remain Evacuated as Firefighters Find Potential Crack in Chemical Tank",
+      "outlet": "Voice of OC",
+      "url": "https://voiceofoc.org/2026/05/thousands-in-north-oc-remain-evacuated-as-firefighters-find-potential-crack-in-chemical-tank/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Voice of OC covers the discovery of a potential crack in the GKN Aerospace MMA tank during an overnight firefighter operation. The crack may be relieving internal pressure, potentially averting a catastrophic explosion. Tens of thousands remain evacuated across parts of Anaheim, Garden Grove, Buena Park, Cypress, and Westminster.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves, content about crack discovery; dated May 24, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "California deploys nearly 800 first responders, experts for Orange County chemical leak response - CBS Los Angeles",
+      "outlet": "CBS Los Angeles (KCAL/CBS News Los Angeles)",
+      "url": "https://www.cbsnews.com/losangeles/news/california-emergency-personnel-deployed-orange-county-garden-grove-chemical-leak/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "CBS Los Angeles reports California deployment of nearly 800 first responders and emergency personnel in response to the GKN Aerospace MMA chemical tank incident.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 24, 2026 at 7:24 PM PDT, byline Dean Fioresi",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove chemical threat: 40,000 evacuated as overheated tank faces explosion or leak",
+      "outlet": "FOX 11 Los Angeles (KTTV)",
+      "url": "https://www.foxla.com/news/garden-grove-chemical-threat-overheated-tank-evacuations",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "FOX 11 Los Angeles reports on the Garden Grove GKN Aerospace MMA tank crisis, with 40,000 residents evacuated as officials warn of explosion or leak scenarios. Details the problem with the valve in the tank's refrigeration system and the tank bulging outward.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 24, 2026 at 2:33 AM PDT",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Timeline: Orange County chemical tank crisis",
+      "outlet": "AOL News",
+      "url": "https://www.aol.com/articles/timeline-orange-county-chemical-tank-211745000.html",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "AOL News provides a timeline of the Garden Grove GKN Aerospace methyl methacrylate chemical tank incident from initial leak through evacuation and response phases.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves; dated May 24, 2026 at 9:17 PM UTC",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove chemical crisis enters Day 4",
+      "outlet": "FOX 11 Los Angeles",
+      "url": "https://www.foxla.com/video/fmc-8y9buchpxb5o987k",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Firefighters work overnight in the Garden Grove chemical crisis to prevent an explosion risk.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves with title, outlet, and publish date 2026-05-24 10:26 PM PDT",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "4 of 5 evacuation centers in Orange County reach capacity over Garden Grove incident",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/video/news/local/4-of-5-evacuation-centers-in-orange-county-reach-capacity-over-garden-grove-incident/3894530/",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Four of five evacuation sites had already reached capacity as Garden Grove residents sought shelter following evacuation orders.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves with headline about evacuation centers reaching capacity over Garden Grove incident. Report by Annette Arreola for Today in LA on Sunday, May 24, 2026",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove Evacuation Resources: Uber, Shelters & Emergency Info",
+      "outlet": "CBS Los Angeles",
+      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-evacuation-resources-uber-shelters-emergency-info/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "CBS LA resource guide for evacuated residents: shelter locations, Uber transportation assistance, emergency information",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed; May 24, 2026, 9:20 PM PDT. Resources for ~50,000 displaced residents",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Health Advisory: Information on Methyl Methacrylate (MMA)",
+      "outlet": "OC Health Care Agency",
+      "url": "https://ochealthinfo.com/cd-news-alert/health-advisory-information-methyl-methacrylate-mma",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-24T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "OC Health Care Agency health advisory on MMA exposure symptoms and guidance during the Garden Grove evacuation.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "re-verified by main loop: real OC HCA advisory, dated May 24, ties to GG mandatory evac + MMA release",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Orange County DA launches probe into toxic chemical leak in California: \"We are not getting satisfactory answers\"",
+      "outlet": "CBS Los Angeles",
+      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-gkn-aerospace-chemical-leak-investigation-orange-county-district-attorney-whistleblowers/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T22:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS LA on DA Spitzer's investigation and call for GKN whistleblowers. Referenced in seeded status.json.",
+      "provenance": {
+        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
+        "fetched_iso": "2026-05-25T02:40:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "California Gov. Newsom declares state of emergency for Orange County chemical leak as DA launches probe into its cause",
+      "outlet": "CBS Los Angeles",
+      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-chemical-leak-plans-orange-county-california-evacuations/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T21:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "CBS LA: Newsom declares state of emergency; OC DA Spitzer launches probe into the cause.",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank Newsom state of emergency Orange County news",
+        "fetched_iso": "2026-05-25T02:44:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "State of emergency declared amid potentially explosive Orange County chemical incident",
+      "outlet": "KTLA",
+      "url": "https://ktla.com/news/state-of-emergency-garden-grove-chemical-incident/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T20:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "KTLA on Newsom's Saturday state-of-emergency declaration for Orange County.",
+      "provenance": {
+        "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
+        "fetched_iso": "2026-05-25T02:55:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "What to know 48 hours into toxic chemical tank crisis in Orange County",
+      "outlet": "ABC News (national)",
+      "url": "https://www.youtube.com/watch?v=oGNppVWDiug",
+      "type": "video",
+      "youtube_id": "oGNppVWDiug",
+      "published_iso": "2026-05-23T20:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC News national video recap ~48 hours into the crisis.",
+      "provenance": {
+        "search_query": "(seed cross-reference) verified via WebFetch",
+        "fetched_iso": "2026-05-25T02:48:00Z",
+        "url_status": "verified-resolves",
+        "url_status_note": "WebFetch confirmed title; channel not exposed by page, outlet from seed.",
+        "matches_seed": true,
+        "seed_match_key": "url"
+      }
+    },
+    {
+      "title": "Newsom declares state of emergency in OC, makes additional shelter sites available",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19157546/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T19:30:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry on Newsom's state-of-emergency declaration and additional shelter sites.",
+      "provenance": {
+        "search_query": "Garden Grove chemical tank Newsom state of emergency Orange County news",
+        "fetched_iso": "2026-05-25T02:44:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Thousands still evacuated amid Orange County toxic chemical leak that could lead to explosion",
+      "outlet": "KTLA",
+      "url": "https://www.youtube.com/watch?v=76zNi9GB88Y",
+      "type": "video",
+      "youtube_id": "76zNi9GB88Y",
+      "published_iso": "2026-05-23T18:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Saturday Sky5 report (KTLA's Rich Prickett) on continued evacuations over the leaking 34,000-gallon tank.",
       "provenance": {
         "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
         "fetched_iso": "2026-05-25T03:05:00Z",
         "url_status": "verified-resolves",
-        "url_status_note": "Title confirmed via WebFetch; channel name not exposed by YouTube page, outlet inferred from search context.",
+        "url_status_note": "Title confirmed via WebFetch; outlet/reporter (KTLA, Rich Prickett, Sky5) from search snippet.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove chemical leak: Tank's internal temperature increasing",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gas-leak-temperature/3894210/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T16:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "NBC LA on the tank's rising internal temperature.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "unchecked",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Temperature in chemical storage tank has increased, not cooled, OCFA says",
+      "outlet": "ABC7 Los Angeles",
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19157063/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T15:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "ABC7 live-blog entry: OCFA says tank temperature increased rather than cooled.",
+      "provenance": {
+        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
+        "fetched_iso": "2026-05-25T02:43:00Z",
+        "url_status": "unchecked",
         "matches_seed": false
       }
     },
@@ -118,23 +1631,6 @@
         "fetched_iso": "2026-05-25T02:40:00Z",
         "url_status": "unchecked",
         "url_status_note": "Top organic search hit; KTLA domain confirmed live via other fetched KTLA pages.",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "Thousands still evacuated amid Orange County toxic chemical leak that could lead to explosion",
-      "outlet": "KTLA",
-      "url": "https://www.youtube.com/watch?v=76zNi9GB88Y",
-      "type": "video",
-      "youtube_id": "76zNi9GB88Y",
-      "published_iso": "2026-05-23T18:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "Saturday Sky5 report (KTLA's Rich Prickett) on continued evacuations over the leaking 34,000-gallon tank.",
-      "provenance": {
-        "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
-        "fetched_iso": "2026-05-25T03:05:00Z",
-        "url_status": "verified-resolves",
-        "url_status_note": "Title confirmed via WebFetch; outlet/reporter (KTLA, Rich Prickett, Sky5) from search snippet.",
         "matches_seed": false
       }
     },
@@ -220,38 +1716,6 @@
       }
     },
     {
-      "title": "Garden Grove tank faces explosion or leak",
-      "outlet": "FOX 11 Los Angeles (KTTV)",
-      "url": "https://www.foxla.com/video/fmc-8z5j4dfq5fdsmhel",
-      "type": "video",
-      "youtube_id": null,
-      "published_iso": "2026-05-24T09:30:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "FOX 11 video report on the damaged tank in danger of exploding. Search snippet cites posting 2026-05-24 02:30 AM PDT (~09:30Z).",
-      "provenance": {
-        "search_query": "Garden Grove chemical tank YouTube ABC News NBC LA Fox 11 video coverage May 24 2026",
-        "fetched_iso": "2026-05-25T03:00:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "Chemical tank 'on the edge' of exploding in California as crews try to avert disaster",
-      "outlet": "NBC News (national)",
-      "url": "https://www.nbcnews.com/news/us-news/chemical-tank-edge-exploding-california-crews-try-avert-potential-disa-rcna346668",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-24T00:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "National NBC News: tank described by incident commander as 'literally on the edge' of exploding.",
-      "provenance": {
-        "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
-        "fetched_iso": "2026-05-25T02:55:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
       "title": "Southern California crews prepare for possible toxic tank explosion",
       "outlet": "NBC News (national)",
       "url": "https://www.nbcnews.com/news/us-news/california-evacuation-chemical-explosion-rcna346582",
@@ -284,404 +1748,239 @@
       }
     },
     {
-      "title": "California tank holding dangerous chemicals is set to explode or leak, officials say. Here's what to know",
-      "outlet": "CBS News (national)",
-      "url": "https://www.cbsnews.com/news/garden-grove-methyl-methacrylate-chemical-tank-california/",
-      "type": "article",
+      "title": "State of Emergency Proclamation — Governor Gavin Newsom",
+      "outlet": "State of California / Governor's Office",
+      "url": "https://www.gov.ca.gov/2026/05/23/governor-newsom-proclaims-state-of-emergency-in-orange-county-in-response-to-ongoing-chemical-incident-in-garden-grove-makes-additional-shelter-sites-available/",
+      "type": "official",
       "youtube_id": null,
-      "published_iso": "2026-05-24T00:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "National CBS explainer on the MMA tank set to explode or leak; what residents should know.",
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Governor Gavin Newsom issued state of emergency proclamation for Orange County on May 23, 2026, directing Cal OES and all state agencies to support Orange County and affected jurisdictions. Made state-owned properties and fairgrounds available as emergency shelter for evacuated residents.",
       "provenance": {
-        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
-        "fetched_iso": "2026-05-25T02:40:00Z",
-        "url_status": "unchecked",
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "Official California Governor's Office press release dated May 23, 2026, titled 'Governor Newsom proclaims state of emergency in Orange County in response to ongoing chemical incident in Garden Grove, makes additional shelter sites available.' Directs Cal OES and state agencies to support Orange County.",
         "matches_seed": false
       }
     },
     {
-      "title": "What is methyl methacrylate? Toxic chemical leak in Garden Grove tank at center of hazmat crisis poses health, fire risks",
-      "outlet": "ABC7 Los Angeles",
-      "url": "https://abc7.com/post/what-is-methyl-methacrylate-toxic-chemical-leak-garden-grove-tank-center-hazmat-crisis/19152928/",
-      "type": "article",
+      "title": "Criminal Investigation Launched — Orange County District Attorney",
+      "outlet": "Orange County District Attorney's Office",
+      "url": "https://ocdistrictattorney.gov/press/orange-county-district-attorney-anonymous-tip-hotline-online-reporting-form-seeks-information-regarding-may-21-2026-hazardous-materials-incident-at-gkn-aerospace-transparency-systems-inc-in-garde/",
+      "type": "official",
       "youtube_id": null,
-      "published_iso": "2026-05-24T00:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "ABC7 explainer on MMA, its health and fire risks. Referenced in seeded status.json official_statements.",
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Orange County District Attorney Todd Spitzer announced criminal investigation into the May 21, 2026 hazardous materials incident at GKN Aerospace on May 23, 2026. DA ordered GKN to preserve all records (maintenance logs, telemetry, communications). Established anonymous tip hotline 714-347-8714 and online form. Investigation expanded May 26 to include price gouging and predatory attorney practices.",
       "provenance": {
-        "search_query": "NBC Los Angeles Garden Grove chemical tank methyl methacrylate explainer video",
-        "fetched_iso": "2026-05-25T02:46:00Z",
-        "url_status": "unchecked",
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "Official OC District Attorney press release issued May 23, 2026, announcing criminal investigation and establishing anonymous tip hotline (714-347-8714). DA Todd Spitzer statements confirm investigation began Friday (May 22) with drone surveys and dossier preservation order issued to GKN. Expanded investigation announced May 26.",
         "matches_seed": false
       }
     },
     {
-      "title": "Explainer on methyl methacrylate",
-      "outlet": "NBC Los Angeles",
-      "url": "https://www.nbclosangeles.com/video/news/local/explainer-on-methyl-methacrylate/3894525/",
+      "title": "Class Action Lawsuit Filed — X-Law Group and Presidio Law Firm",
+      "outlet": "X-Law Group P.C. / Presidio Law Firm LLP",
+      "url": "https://ktla.com/news/orange-county/class-action-lawsuit-filed-chemical-leak-crisis-garden-grove/",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Class action lawsuit filed on May 23, 2026, by The X-Law Group P.C. and Presidio Law Firm LLP against GKN Aerospace on behalf of residents in evacuation zone. Alleges negligence, trespass, strict liability for ultrahazardous activity, and failure to properly inspect/maintain storage systems. Seeks damages for displacement, hotel stays, property loss, business disruption, and diminished property values.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "Multiple news outlets (KTLA, NBC LA, MSN) report class action lawsuit filed May 23, 2026 by X-Law Group P.C. and Presidio Law Firm LLP on behalf of two residents in evacuation zone. Alleges negligence, trespass, and strict liability for ultrahazardous activity.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "State of Emergency Declared Over OC Chemical Tank at Risk of Exploding",
+      "outlet": "Voice of OC",
+      "url": "https://voiceofoc.org/2026/05/state-of-emergency-declared-over-oc-chemical-tank-at-risk-of-exploding/",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Coverage of California Governor Gavin Newsom's state of emergency declaration for Orange County, mobilizing state resources as internal tank temperatures climbed roughly 1 degree per hour and 50,000 residents remained evacuated.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 23, 2026 publish date and Gov. Newsom's state of emergency declaration",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove evacuations expanded amid threat of chemical explosion",
+      "outlet": "FOX 11 Los Angeles",
+      "url": "https://www.foxla.com/video/fmc-p116ar577fn9hzfp",
       "type": "video",
       "youtube_id": null,
-      "published_iso": "2026-05-24T16:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "NBC4 meteorologist Kelley Moody explains what MMA is; broadcast on Today in LA, Sun 2026-05-24.",
+      "published_iso": "2026-05-23T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Roughly 40,000 residents remain under evacuation orders due to a compromised chemical storage tank threatening to leak toxic materials or explode.",
       "provenance": {
-        "search_query": "NBC Los Angeles Garden Grove chemical tank methyl methacrylate explainer video",
-        "fetched_iso": "2026-05-25T02:47:00Z",
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves with title, outlet, and publish date 2026-05-23 7:44 AM PDT",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Fire officials concerned tank with toxic chemicals could explode in Garden Grove",
+      "outlet": "KTLA (likely)",
+      "url": "https://www.youtube.com/watch?v=H-wR6qybCPA",
+      "type": "video",
+      "youtube_id": "H-wR6qybCPA",
+      "published_iso": "2026-05-22T22:00:00Z",
+      "published_iso_confidence": "approximate",
+      "summary": "Fire officials express concern the toxic tank could explode; aired during the Friday escalation.",
+      "provenance": {
+        "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
+        "fetched_iso": "2026-05-25T03:05:00Z",
         "url_status": "verified-resolves",
-        "url_status_note": "WebFetch confirmed page resolves and title matches.",
-        "matches_seed": true,
-        "seed_match_key": "url"
-      }
-    },
-    {
-      "title": "Map shows potential blast zones should leaking chemical tank explode in Garden Grove",
-      "outlet": "KTLA",
-      "url": "https://ktla.com/news/orange-county/map-potential-blast-zones-chemical-tank-explode-garden-grove/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-24T00:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "KTLA maps the potential blast zones if the tank explodes (innermost severe-damage circle, moderate/light outward).",
-      "provenance": {
-        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
-        "fetched_iso": "2026-05-25T02:40:00Z",
-        "url_status": "unchecked",
+        "url_status_note": "Title confirmed via WebFetch; channel name not exposed by YouTube page, outlet inferred from search context.",
         "matches_seed": false
       }
     },
     {
-      "title": "Map shows potential OC blast zone if unstable chemical tank explodes",
-      "outlet": "ABC7 Los Angeles",
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19160210/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-24T07:08:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "ABC7 live-blog entry showing the potential OC blast zone. (Seed published_iso 07:08Z is plausible but unverified to the minute.)",
-      "provenance": {
-        "search_query": "(seed cross-reference)",
-        "fetched_iso": "2026-05-25T02:52:00Z",
-        "url_status": "unchecked",
-        "url_status_note": "Parent live-blog (19152918) verified live; this entry fragment not independently fetched.",
-        "matches_seed": true,
-        "seed_match_key": "url"
-      }
-    },
-    {
-      "title": "Newsom declares state of emergency in OC, makes additional shelter sites available",
-      "outlet": "ABC7 Los Angeles",
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19157546/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-23T19:30:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "ABC7 live-blog entry on Newsom's state-of-emergency declaration and additional shelter sites.",
-      "provenance": {
-        "search_query": "Garden Grove chemical tank Newsom state of emergency Orange County news",
-        "fetched_iso": "2026-05-25T02:44:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "State of emergency declared amid potentially explosive Orange County chemical incident",
+      "title": "Officials warn toxic tank in Garden Grove could explode",
       "outlet": "KTLA",
-      "url": "https://ktla.com/news/state-of-emergency-garden-grove-chemical-incident/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-23T20:00:00Z",
+      "url": "https://www.youtube.com/watch?v=P3tTEWNL97o",
+      "type": "video",
+      "youtube_id": "P3tTEWNL97o",
+      "published_iso": "2026-05-22T20:00:00Z",
       "published_iso_confidence": "approximate",
-      "summary": "KTLA on Newsom's Saturday state-of-emergency declaration for Orange County.",
+      "summary": "Friday report: thousands under evacuation orders after officials warned the leaking tank could explode.",
       "provenance": {
         "search_query": "KTLA Garden Grove toxic tank YouTube video Orange County",
         "fetched_iso": "2026-05-25T02:55:00Z",
         "url_status": "unchecked",
+        "url_status_note": "Surfaced in KTLA-related search results with descriptive snippet; URL not individually fetched.",
         "matches_seed": false
       }
     },
     {
-      "title": "California Gov. Newsom declares state of emergency for Orange County chemical leak as DA launches probe into its cause",
-      "outlet": "CBS Los Angeles",
-      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-chemical-leak-plans-orange-county-california-evacuations/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-23T21:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "CBS LA: Newsom declares state of emergency; OC DA Spitzer launches probe into the cause.",
-      "provenance": {
-        "search_query": "Garden Grove chemical tank Newsom state of emergency Orange County news",
-        "fetched_iso": "2026-05-25T02:44:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "Orange County DA launches probe into toxic chemical leak in California: \"We are not getting satisfactory answers\"",
-      "outlet": "CBS Los Angeles",
-      "url": "https://www.cbsnews.com/losangeles/news/garden-grove-gkn-aerospace-chemical-leak-investigation-orange-county-district-attorney-whistleblowers/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-23T22:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "CBS LA on DA Spitzer's investigation and call for GKN whistleblowers. Referenced in seeded status.json.",
-      "provenance": {
-        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
-        "fetched_iso": "2026-05-25T02:40:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "Garden Grove: Tens of Thousands Ordered to Evacuate Over Chemical Tank Explosion Risk",
-      "outlet": "TIME",
-      "url": "https://time.com/article/2026/05/24/garden-grove-chemical-tank-explosion-/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-24T00:00:00Z",
-      "published_iso_confidence": "date-in-url",
-      "summary": "TIME national coverage of the mass evacuation over explosion risk. Publish date 2026-05-24 embedded in URL.",
-      "provenance": {
-        "search_query": "Garden Grove chemical tank emergency evacuation May 2026",
-        "fetched_iso": "2026-05-25T02:42:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "California chemical tank has cracked causing state of emergency, thousands to evacuate",
-      "outlet": "NPR",
-      "url": "https://www.npr.org/2026/05/24/nx-s1-5833165/california-chemical-tank-malfunction-leak-explode-emergency-evacuate",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-24T00:00:00Z",
-      "published_iso_confidence": "date-in-url",
-      "summary": "NPR national report: tank has cracked; state of emergency; thousands evacuated. Publish date 2026-05-24 in URL.",
-      "provenance": {
-        "search_query": "GKN Aerospace Garden Grove chemical tank methyl methacrylate evacuation",
-        "fetched_iso": "2026-05-25T02:40:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "Southern California chemical tank has a crack that could possibly lower risk of explosion",
-      "outlet": "CBS8 (San Diego)",
-      "url": "https://www.cbs8.com/article/news/nation-world/southern-california-orange-county-chemical-tank-damage-leak-explosion-risk-evacuation-state-emergency/507-828e4f9b-957d-49df-80d2-0eb52aa82fae",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-24T00:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "CBS8 on the crack that could lower explosion risk.",
-      "provenance": {
-        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
-        "fetched_iso": "2026-05-25T02:43:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "Potentially explosive Garden Grove chemical incident continues to evolve Sunday",
+      "title": "Neighbors in Garden Grove evacuate due to leaking chemical tank",
       "outlet": "KTLA",
-      "url": "https://ktla.com/news/orange-county/potentially-explosive-garden-grove-chemical-incident-continues-to-evolve-sunday/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-24T14:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "KTLA Sunday update as the incident continues to evolve (crack vetting, rising temp).",
-      "provenance": {
-        "search_query": "Garden Grove chemical tank emergency evacuation May 2026",
-        "fetched_iso": "2026-05-25T02:42:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "What to know 48 hours into toxic chemical tank crisis in Orange County",
-      "outlet": "ABC News (national)",
-      "url": "https://www.youtube.com/watch?v=oGNppVWDiug",
+      "url": "https://www.youtube.com/watch?v=oRVlU3PrtcI",
       "type": "video",
-      "youtube_id": "oGNppVWDiug",
-      "published_iso": "2026-05-23T20:00:00Z",
+      "youtube_id": "oRVlU3PrtcI",
+      "published_iso": "2026-05-22T00:00:00Z",
       "published_iso_confidence": "approximate",
-      "summary": "ABC News national video recap ~48 hours into the crisis.",
+      "summary": "Early evacuation coverage; notes evacuation centers at Garden Grove Sports & Rec Center and Cypress Recreation & Community Center.",
       "provenance": {
-        "search_query": "(seed cross-reference) verified via WebFetch",
-        "fetched_iso": "2026-05-25T02:48:00Z",
+        "search_query": "Garden Grove chemical tank YouTube ABC News NBC LA Fox 11 video coverage May 24 2026",
+        "fetched_iso": "2026-05-25T03:05:00Z",
         "url_status": "verified-resolves",
-        "url_status_note": "WebFetch confirmed title; channel not exposed by page, outlet from seed.",
-        "matches_seed": true,
-        "seed_match_key": "url"
-      }
-    },
-    {
-      "title": "Temperature in chemical storage tank has increased, not cooled, OCFA says",
-      "outlet": "ABC7 Los Angeles",
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19157063/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-23T15:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "ABC7 live-blog entry: OCFA says tank temperature increased rather than cooled.",
-      "provenance": {
-        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
-        "fetched_iso": "2026-05-25T02:43:00Z",
-        "url_status": "unchecked",
         "matches_seed": false
       }
     },
     {
-      "title": "Garden Grove chemical leak: Tank's internal temperature increasing",
+      "title": "School Closure Notice — Orange County Department of Education",
+      "outlet": "OCDE (Orange County Department of Education)",
+      "url": "https://newsroom.ocde.us/several-garden-grove-unified-school-campuses-closed-following-chemical-leak-response/",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-22T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Orange County Department of Education and Garden Grove Unified School District (GGUSD) closed 12 GGUSD campuses beginning May 22, 2026, and continuing through last day of school on May 27 due to evacuation and containment efforts. Westminster School District also evacuated 4 schools (Eastwood ES, Fryberger ES, Meairs ES, Sequoia ES). Nine GGUSD schools reopened May 26; three remained closed.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "OCDE newsroom confirms 12 GGUSD campuses closed beginning May 22 due to chemical incident. Multiple school districts reported closures: Garden Grove USD, Westminster School District, and others. Reopening staggered: 9 schools reopened May 26; 3 remained closed through May 27.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Orange County Chemical Emergency: 'A Leaking Tank or a Tank That Blows Up'",
+      "outlet": "Voice of OC",
+      "url": "https://voiceofoc.org/2026/05/orange-county-chemical-emergency-a-leaking-tank-or-a-tank-that-blows-up/",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-22T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Reporting on day two (Friday) of the chemical crisis, documenting OCFA's stark warning that the tank would 'leak or blow up,' with 50,000 residents evacuating across North Orange County.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 22, 2026 publish date; covers Friday's escalation after Thursday incident began",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Evacuation orders reissued after Garden Grove chemical leak",
+      "outlet": "FOX 11 Los Angeles",
+      "url": "https://www.foxla.com/video/fmc-zn94nrydpeq6gd5n",
+      "type": "video",
+      "youtube_id": null,
+      "published_iso": "2026-05-22T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Evacuation orders reissued for Garden Grove; temporary shelter established at Stanton City Hall for displaced residents.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed page resolves with title, outlet, and publish date 2026-05-22 8:14 AM PDT",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Initial Evacuation Order — Garden Grove Police Department",
+      "outlet": "City of Garden Grove",
+      "url": "https://ggcity.org/emergency",
+      "type": "official",
+      "youtube_id": null,
+      "published_iso": "2026-05-21T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "OCFA and Garden Grove Police Department issued initial evacuation order at 6:37 p.m. on May 21, 2026, for residential areas bounded by Garden Grove Blvd. to Orangewood, Monarch to Beach Blvd. Order was rescinded at 8:01 p.m. the same evening, then reissued at 9:00 a.m. May 22 due to faulty tank valve.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "City of Garden Grove official emergency page documents evacuation timeline: initial order 6:37 p.m. May 21, rescinded 8:01 p.m. same night, reissued 9:00 a.m. May 22, expanded May 22 at 1:00 p.m.",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Hazardous chemical leak forces second round of evacuations in Garden Grove, Stanton",
+      "outlet": "FOX 11 Los Angeles",
+      "url": "https://www.foxla.com/news/hazardous-materials-alert-forces-evacuations-garden-grove-before-orders-lifted",
+      "type": "article",
+      "youtube_id": null,
+      "published_iso": "2026-05-21T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "Same-day evening coverage of the Thursday incident at GKN Aerospace, documenting the overheating methyl methacrylate tank with faulty valve and initial evacuation orders in Garden Grove and Stanton.",
+      "provenance": {
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed May 21, 2026 publish date (same-day coverage of incident); covers initial 34,000-gallon tank incident and inoperable valve",
+        "matches_seed": false
+      }
+    },
+    {
+      "title": "Garden Grove Hazmat Response & Chemical Leak",
       "outlet": "NBC Los Angeles",
-      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gas-leak-temperature/3894210/",
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-hazmat-response-leak/3893550/",
       "type": "article",
       "youtube_id": null,
-      "published_iso": "2026-05-23T16:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "NBC LA on the tank's rising internal temperature.",
+      "published_iso": "2026-05-21T00:00:00Z",
+      "published_iso_confidence": "date-confirmed",
+      "summary": "NBC LA early reporting on GKN Aerospace methyl methacrylate tank threat, warning of potential 'largest hazmat incident in California history'",
       "provenance": {
-        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
-        "fetched_iso": "2026-05-25T02:43:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "Live: The latest on the Garden Grove crisis",
-      "outlet": "ABC News (national)",
-      "url": "https://www.youtube.com/watch?v=JDvRR9feMUs",
-      "type": "video",
-      "youtube_id": "JDvRR9feMUs",
-      "published_iso": "2026-05-24T21:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "ABC News national live coverage of the latest on the Garden Grove crisis.",
-      "provenance": {
-        "search_query": "(seed cross-reference) verified via WebFetch",
-        "fetched_iso": "2026-05-25T02:48:00Z",
-        "url_status": "verified-resolves",
-        "url_status_note": "WebFetch confirmed title; channel not exposed by page, outlet from seed.",
-        "matches_seed": true,
-        "seed_match_key": "url"
-      }
-    },
-    {
-      "title": "Toxic tank still on path to spill or explode in Orange County",
-      "outlet": "KTLA",
-      "url": "https://www.youtube.com/watch?v=N8caNzoKrTo",
-      "type": "video",
-      "youtube_id": "N8caNzoKrTo",
-      "published_iso": "2026-05-24T17:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "KTLA video: toxic tank still on path to spill or explode (full title 'See the latest details').",
-      "provenance": {
-        "search_query": "(seed cross-reference) verified via WebFetch",
-        "fetched_iso": "2026-05-25T02:48:00Z",
-        "url_status": "verified-resolves",
-        "url_status_note": "WebFetch confirmed title; channel not exposed by page, outlet from seed.",
-        "matches_seed": true,
-        "seed_match_key": "url"
-      }
-    },
-    {
-      "title": "Efforts to stop California chemical leak in Orange County on new trajectory, officials say, as 50,000 remain evacuated",
-      "outlet": "CBS Los Angeles",
-      "url": "https://www.cbsnews.com/losangeles/news/california-chemical-leak-orange-county-garden-grove-emergency/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-24T20:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "CBS LA: response on a 'new trajectory' after crack discovery; 50,000 remain evacuated.",
-      "provenance": {
-        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
-        "fetched_iso": "2026-05-25T02:43:00Z",
-        "url_status": "unchecked",
-        "matches_seed": false
-      }
-    },
-    {
-      "title": "Resources for residents evacuated due to chemical tank crisis",
-      "outlet": "ABC7 Los Angeles",
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19162903/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-25T00:30:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "ABC7 live-blog entry listing resources for evacuated residents.",
-      "provenance": {
-        "search_query": "(seed cross-reference)",
-        "fetched_iso": "2026-05-25T02:52:00Z",
-        "url_status": "unchecked",
-        "url_status_note": "Parent live-blog verified live; this entry fragment not independently fetched.",
-        "matches_seed": true,
-        "seed_match_key": "url"
-      }
-    },
-    {
-      "title": "Live updates: Potential crack found in Garden Grove chemical tank may change strategy (running blog)",
-      "outlet": "NBC Los Angeles",
-      "url": "https://www.nbclosangeles.com/news/local/live-updates-garden-grove-chemical-tank-emergency/3894473/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-25T01:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "NBC LA running live blog on the potential crack that may change response strategy.",
-      "provenance": {
-        "search_query": "(seed cross-reference)",
-        "fetched_iso": "2026-05-25T02:52:00Z",
-        "url_status": "unchecked",
-        "url_status_note": "Also listed in seeded status.json sources_checked.",
-        "matches_seed": true,
-        "seed_match_key": "url"
-      }
-    },
-    {
-      "title": "Crews find crack in tank, gain positive intel that could shift response strategy",
-      "outlet": "ABC7 Los Angeles",
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19163069/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-25T01:10:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "ABC7 live-blog entry: crews find crack and gain positive intel that could shift strategy.",
-      "provenance": {
-        "search_query": "(seed cross-reference)",
-        "fetched_iso": "2026-05-25T02:52:00Z",
-        "url_status": "unchecked",
-        "matches_seed": true,
-        "seed_match_key": "url"
-      }
-    },
-    {
-      "title": "Temperature of unstable tank is increasing 1 degree per hour, officials say",
-      "outlet": "ABC7 Los Angeles",
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19158460/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-25T01:10:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "ABC7 live-blog entry: tank temperature rising ~1 degree per hour, now over the 100F gauge max.",
-      "provenance": {
-        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
-        "fetched_iso": "2026-05-25T02:50:00Z",
-        "url_status": "verified-resolves",
-        "url_status_note": "WebFetch confirmed entry resolves and headline matches.",
-        "matches_seed": true,
-        "seed_match_key": "url"
-      }
-    },
-    {
-      "title": "Garden Grove chemical tank emergency: Toxic tank on path to spill or explode in Orange County; crews find cracks (live blog hub)",
-      "outlet": "ABC7 Los Angeles",
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "type": "article",
-      "youtube_id": null,
-      "published_iso": "2026-05-25T02:00:00Z",
-      "published_iso_confidence": "approximate",
-      "summary": "ABC7's master live-blog hub for the incident; updated continuously. Parent of all ABC7 entry fragments.",
-      "provenance": {
-        "search_query": "ABC7 Garden Grove chemical tank live updates crack temperature",
-        "fetched_iso": "2026-05-25T02:43:00Z",
-        "url_status": "verified-resolves",
-        "url_status_note": "Top hit and verified live; in seeded status.json sources_checked.",
+        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
+        "fetched_iso": "2026-06-01T03:40:00Z",
+        "url_status": "agent-verified-resolves",
+        "url_status_note": "WebFetch confirmed; article published May 21, 2026, updated May 23, 2026. Early coverage of incident with methyl methacrylate tank warning",
         "matches_seed": false
       }
     }
@@ -764,5 +2063,11 @@
       "verification": "verified-resolves",
       "detail": "STRONGEST verification: WebFetch confirmed BOTH the exact title AND the channel ('N18G' = News18). Fully matches seed."
     }
-  ]
+  ],
+  "policy": {
+    "frozen": true,
+    "window": "2026-05-21/2026-05-28",
+    "collection_going_forward": "officials-only",
+    "note": "This Coverage Archive is the FROZEN historical record of the Garden Grove GKN Aerospace incident: both news coverage AND official statements for the May 21-28 window. The incident resolved May 26, 2026. Collection going forward is officials-only -- new official statements arrive via the rolling status.json official_statements thread; general news is no longer ingested. Officials-only after resolution keeps the dashboard a conduit to authoritative sources, not a litigation/op-ed aggregator."
+  }
 }
