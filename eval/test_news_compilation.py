@@ -79,7 +79,16 @@ def test_archive_officials_have_source_url():
 
 
 def test_collection_policy_documented():
+    """Frozen archive: the policy documents the freeze and carries NO forward-posture.
+    The old `collection_going_forward: "officials-only"` (key + note) read as ongoing
+    collection; the data has 0 items after the all-clear boundary, officials included,
+    so any 'going forward' framing is stale. Rejects it instead of merely requiring the
+    'officials-only' string (2026-06-01, batch 4 / T14)."""
     a = _archive()
-    blob = (json.dumps(a.get("audit", {})) + json.dumps(a.get("policy", {}))).lower()
-    ok = "officials-only" in blob and ("frozen" in blob or "freeze" in blob)
-    return {"passed": ok, "details": f"freeze + officials-only policy documented in archive: {ok}"}
+    pol = a.get("policy", {})
+    blob = (json.dumps(a.get("audit", {})) + json.dumps(pol)).lower()
+    frozen_documented = "frozen" in blob or "freeze" in blob
+    no_forward_posture = "going_forward" not in json.dumps(pol).lower() and "going forward" not in blob
+    ok = frozen_documented and no_forward_posture
+    return {"passed": ok,
+            "details": f"frozen documented={frozen_documented}, no forward-posture={no_forward_posture}"}

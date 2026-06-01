@@ -18,7 +18,7 @@ GG Tank Watch is a community information conduit. We amplify, translate, and rou
 
 7. **Corrections.** When we get something wrong, we correct it promptly. The correction is visible (not a silent edit). If the error was safety-relevant, we note the correction prominently.
 
-8. **Translation integrity.** Safety-critical copy is never machine-translated into a language that ships as if verified. A non-English language goes live only after a fluent native speaker verifies it; until then the UI falls back to English (Vietnamese is currently held — AI-drafted, awaiting fluent verification). Translations are marked unofficial and link to the original English source.
+8. **Translation integrity.** Safety-critical copy is never machine-translated into a language that ships as if verified. A non-English language goes live only after a fluent native speaker verifies it; until then the UI falls back to English. Vietnamese was held pending that bar, then removed entirely on 2026-05-30 — no fluent verifier was secured before the incident resolved — so the app is English-only by design. Any translation is marked unofficial and links to the original English source.
 
 ## Enforcement
 

@@ -2,6 +2,16 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.20] — 2026-06-01 (frozen-archive honesty sweep)
+
+### Changed
+- **Policy metadata reframed to the frozen state.** `data/news_archive.json` `policy` drops the forward-posture `collection_going_forward: "officials-only"` (read as ongoing collection) for `collection_ended: "2026-05-27T02:30:00Z"`; the note now says collection ended at the all-clear with nothing added after — official statements included — which matches the data (all 92 items are dated ≤ May 26). `test_collection_policy_documented` now rejects forward-posture framing instead of merely requiring the `officials-only` string.
+- **Stale forward-posture prose cleaned.** `CODE_OF_CONDUCT.md` (Vietnamese "currently held — awaiting verification" → removed 2026-05-30, English-only by design), `LANGUAGE_ACCESS.md` ("maintained for every future incident update" → "for the life of an incident", no future-incident assumption), and `DISTRIBUTION.md` (Open Question 3 "Nancy to confirm" → Phase 0 concluded at the May 26 all-clear).
+- service-worker `CACHE_NAME` bumped `v40 → v41`.
+
+### Removed
+- **Dead present-tense hero strings.** The unused `hero.lead` / `hero.summary.default` i18n keys ("Active chemical-tank emergency…", "…Follow official orders") — never rendered, live-emergency framing inconsistent with the frozen archive. Guarded by the new `test_no_active_emergency_copy`.
+
 ## [v0.19] — 2026-05-31 (mobile map zoom-out range)
 
 ### Changed

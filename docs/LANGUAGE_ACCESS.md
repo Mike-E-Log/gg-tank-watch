@@ -75,7 +75,7 @@ following hold — anything less stays English-only:
 - A **fluent native speaker** verifies every safety-critical string (the prior
   Vietnamese attempt failed this bar: the reviewer was not a fluent Vietnamese speaker
   and checked only a few strings), ideally backed by **funded certified translation**.
-- The translation is **maintained** for every future incident update, not a one-time
+- The translation is **maintained** for the life of an incident, not a one-time
   pass — stale safety copy in another language is its own hazard.
 - It clears attorney review alongside the rest of the pre-launch gate.
 
