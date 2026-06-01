@@ -51,24 +51,6 @@ def test_situation_headline_concise_and_resolved():
             "details": f"len={len(h)} concise={concise} resolved={conveys_resolved} no_editorial={no_editorial}"}
 
 
-def test_situation_renders_as_bulleted_list():
-    """Layout (user follow-up 2026-06-01): the 'Current situation' block renders the headline as
-    a labeled header + bullet points (matching the news-archive note), not one run-on paragraph.
-    The single authoritative status_headline string is split into bullets at the render layer
-    (no data-model change), so the status.json honesty/length guards above are unaffected."""
-    text = DASHBOARD.read_text(encoding="utf-8")
-    has_list_css = ".news-situation-list" in text
-    i = text.find('$("news-situation")')
-    region = text[i:i + 700] if i >= 0 else ""
-    builds_list = "news-situation-list" in region
-    builds_items = 'createElement("li")' in region or "createElement('li')" in region
-    splits_headline = ".split(" in region
-    ok = has_list_css and builds_list and builds_items and splits_headline
-    return {"passed": ok,
-            "details": "current-situation renders as labeled header + bullets" if ok
-            else f"list_css={has_list_css} builds_list={builds_list} items={builds_items} splits={splits_headline}"}
-
-
 def test_about_panel_organized_into_sections():
     """The Info > About panel must be organized into consistent info-section blocks (like the
     Status/Resources panels) and SURFACE the responsible-AI methodology + official routing +

@@ -305,11 +305,6 @@
     .archive-note-list { margin: 0 0 5px; padding-left: 16px; }
     .archive-note-list li { margin: 0 0 2px; }
     .archive-note-cur { display: block; }
-    .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); background: var(--sa-gold-2); }
-    .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2); margin-bottom: 3px; }
-    .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--sa-text); margin: 0; }
-    .news-situation-list { margin: 0; padding-left: 16px; }
-    .news-situation-list li { font-size: 13px; line-height: 1.45; color: var(--sa-text); margin: 0 0 2px; }
     .info-roads-defer { font-size: 12px; color: var(--sa-text-2); line-height: 1.45; }
     .info-roads-defer a { color: var(--sa-celadon); }
 
@@ -1539,7 +1534,6 @@
       <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
         <div class="news-subpanel active" id="news-subpanel-updates">
           <div class="news-archive-note" data-i18n-html="news.archive.note"></div>
-          <div id="news-situation" class="news-situation" hidden></div>
           <div class="news-filter-chips" id="news-filter-chips"></div>
           <div id="news-feed"></div>
         </div>
@@ -1634,8 +1628,7 @@ var STRINGS = {
   "news.statements.count": { en: "{n} official statement{s}" },
   "news.coverage": { en: "Coverage" },
   "news.feed.title": { en: "News & updates" },
-  "news.archive.note": { en: "<span class='archive-note-h'>News archive · May 21–26, 2026 emergency</span><ul class='archive-note-list'><li>Collected only while residents were evacuated</li><li>A snapshot — not complete or live</li><li>After evacuation lifted: official statements only</li></ul><span class='archive-note-cur'>Current info: ggcity.org/emergency or 911</span>" },
-  "news.situation.label": { en: "Current situation" },
+  "news.archive.note": { en: "<span class='archive-note-h'>News archive · May 21–26, 2026 emergency</span><ul class='archive-note-list'><li>A snapshot collected while residents were evacuated — not complete, not live</li><li>A frozen record; nothing was added after the emergency ended</li></ul><span class='archive-note-cur'>For current information: ggcity.org/emergency or 911</span>" },
   "news.type.official": { en: "🏛 Official" },
   "news.type.article": { en: "📰 Article" },
   "news.type.video": { en: "▶ Video" },
@@ -1731,7 +1724,6 @@ var STRINGS = {
   "news.badge.official": { en: "OFFICIAL" },
   "news.badge.article": { en: "ARTICLE" },
   "news.badge.video": { en: "VIDEO" },
-  "news.currentSituation": { en: "Current situation" },
   /* ===== INFO TAB i18n ===== */
   "info.tankCrack": { en: "Crack observed" },
   "info.tankCrackY": { en: "Yes — relieving pressure" },
@@ -2454,8 +2446,7 @@ function renderHeroStatus(snap) {
 
   // Resolved-state recovery hero: the active-evac metrics (residents 0, blank
   // tank temp, absent day counter) are misleading once the evacuation is lifted.
-  // Show a compact resolved status instead; the recovery headline is surfaced via
-  // the news-situation block. Reuses existing fields only — no day-count, no parse.
+  // Show a compact resolved status instead. Reuses existing fields only — no day-count, no parse.
   if (incident.resolved_iso) {
     var heroRow = document.querySelector("#hero .hero-status-row");
     if (heroRow) {
@@ -2606,38 +2597,6 @@ function render(snap) {
   lastFeed = feed;
   renderNewsFilterChips();
   renderFilteredFeed();
-
-  var sitText = (snap.incident && snap.incident.status_headline) || "";
-  var sitEl = $("news-situation");
-  if (sitEl) {
-    if (sitText) {
-      sitEl.innerHTML = "";
-      var sitLabel = document.createElement("div");
-      sitLabel.className = "news-situation-label";
-      sitLabel.textContent = t("news.situation.label");
-      sitEl.appendChild(sitLabel);
-      var sitPoints = sitText.split(/[.;]\s+/).map(function (s) { return s.replace(/[.;]+$/, "").trim(); }).filter(Boolean);
-      if (sitPoints.length >= 2) {
-        var sitList = document.createElement("ul");
-        sitList.className = "news-situation-list";
-        sitPoints.forEach(function (p) {
-          var li = document.createElement("li");
-          li.textContent = p;
-          sitList.appendChild(li);
-        });
-        sitEl.appendChild(sitList);
-      } else {
-        var sitP = document.createElement("p");
-        sitP.className = "news-situation-text";
-        sitP.textContent = sitText;
-        sitEl.appendChild(sitP);
-      }
-      sitEl.hidden = false;
-    } else {
-      sitEl.hidden = true;
-      sitEl.innerHTML = "";
-    }
-  }
 
   renderPrintContent(snap);
 }

@@ -56,25 +56,28 @@ def test_archive_note_discloses_snapshot():
             else f"banner over-implies completeness: snapshot={'snapshot' in val} not_complete={not_complete}"}
 
 
-def test_archive_note_states_window_and_cutoff_rationale():
-    """Clarity + honesty (user follow-up 2026-06-01): the banner must state the collection
-    window (May 21-26, 2026) AND explain the cutoff — after the evacuation was lifted,
-    official statements only. Non-official news was gathered only during the active emergency;
-    once officials lifted the evacuation the conduit stops aggregating general news
-    (post-incident accountability/litigation is out of scope). The date range is anchored as a
-    phrase ('21-26') so a typo can't slip a bare '26'; the evacuation-lifted clause anchors the
-    cutoff explanation. The literal term 'all-clear' is forbidden (user follow-up 2026-06-01:
-    simplify, drop jargon) — the cutoff is phrased plainly as the lifted evacuation order."""
+def test_archive_note_frozen_no_ongoing_collection():
+    """Fully-historical pivot (2026-06-01): the archive is a FROZEN record of the May 21-26
+    emergency. The banner must state the collection window AND frame it as a frozen, not-live
+    record — but must NOT imply collection continues after the window. The old copy's
+    'After evacuation lifted: official statements only' clause both (a) used 'official statements
+    only' jargon and (b) created a 21-26-vs-ongoing contradiction (the window says collection
+    stopped on the 26th; the clause says officials kept arriving). New contract: state the
+    window, frame it as frozen/not-live, drop the cutoff/ongoing-collection clause and its
+    jargon. 'all-clear' stays forbidden (user follow-up 2026-06-01: simplify, drop jargon)."""
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
     val = (m.group(1) if m else "").lower()
     states_window = ("21–26" in val or "21-26" in val) and "2026" in val
-    explains_cutoff = "official statements" in val and "lifted" in val
+    frozen_framing = "frozen" in val or "not live" in val
+    no_ongoing_jargon = "official statements only" not in val
+    no_cutoff_contradiction = "after evacuation lifted" not in val and "going forward" not in val
     forbids_jargon = "all-clear" not in val
-    ok = states_window and explains_cutoff and forbids_jargon
+    ok = states_window and frozen_framing and no_ongoing_jargon and no_cutoff_contradiction and forbids_jargon
     return {"passed": ok,
-            "details": "banner states May 21-26 window + lifted-evacuation cutoff, no 'all-clear'" if ok
-            else f"window={states_window} explains_cutoff={explains_cutoff} forbids_jargon={forbids_jargon}"}
+            "details": "banner: May 21-26 window + frozen/not-live framing, no ongoing-collection clause" if ok
+            else (f"window={states_window} frozen={frozen_framing} no_jargon={no_ongoing_jargon} "
+                  f"no_contradiction={no_cutoff_contradiction} no_allclear={forbids_jargon}")}
 
 
 def test_archive_note_structured_header_and_bullets():
