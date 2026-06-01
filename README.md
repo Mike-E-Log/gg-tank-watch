@@ -11,7 +11,7 @@
 
 ## For Anthropic reviewers
 
-This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 48 tests, exits 0).
+This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 75 tests, exits 0).
 
 ### Safety architecture (30-second scan)
 
@@ -32,13 +32,13 @@ Full diagram and test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTR
 python eval/run_all.py --skip integration
 ```
 
-Expected output (48 tests, all green):
+Expected output (75 tests, all green):
 
 ```
-  behavioral       41/41   (100.0% pass)
+  behavioral       68/68   (100.0% pass)
   schema            7/7    (100.0% pass)
 ----------------------------------------------------------------
-  TOTAL            48/48   (100.0% pass)
+  TOTAL            75/75   (100.0% pass)
 ```
 
 Test categories: 5-state behavioral sequence (writer state machine) · corroboration gate · provenance · freshness · date sanity · severity derivation · gatherer failure contract · encoding integrity · schema validation. Results append to `eval/scores.jsonl` for regression tracking.
@@ -69,6 +69,17 @@ A single HTML file with no framework and no build step, serving a safety-critica
 | **Statements sidebar** | Sticky, scrollable, newest-first, with `Newest` + `Recent` badges. Source links on each |
 | **Auto-refresh** | Dashboard polls `status.json` every 30 s. A contributor runs the refresh job on demand — roughly every 20–30 min during the active incident — to re-gather facts and rewrite `status.json` (see [Data sync](#data-sync--how-statusjson-stays-fresh)). Wind refreshes every 5 min from NOAA's free API |
 | **Theme** | Light default with dark toggle, saved per browser |
+
+## Coverage Archive (News tab)
+
+The News tab is a resolved-state **Coverage Archive** — a historical record of how the May 2026 incident was reported, not a live feed. A persistent note at the top of the tab says exactly that and routes to officials. Like the rest of the dashboard, it aggregates official statements and news coverage and *authors no directives of its own*: officials lead the list (the conduit principle), news coverage follows.
+
+It is honest by construction:
+
+- **Real sources, no fabrication.** Coverage is read from [`data/news_archive.json`](data/news_archive.json) — 39 items (29 articles, 10 videos) across 17 national, Los Angeles, and Orange County outlets, each carrying per-item provenance (search query, fetch status, known caveats). The full verification method, queries, outlets consulted, and caveats are written up in [`data/NEWS_ARCHIVE_AUDIT.md`](data/NEWS_ARCHIVE_AUDIT.md). [`eval/test_provenance.py`](eval/test_provenance.py) fails the build if a statement's source URL wasn't actually fetched.
+- **No false time precision.** Most publish timestamps are approximate (search surfaces the date, rarely the minute), so archive items render **date-only** unless the exact publish time is verified. A resolved record never drifts to "3 months ago," and it never shows a precision it doesn't have.
+- **English only, by design.** Safety copy is never surfaced in a language we can't reliably verify; residents with limited English are routed to officials, who publish their own verified translations ([`docs/LANGUAGE_ACCESS.md`](docs/LANGUAGE_ACCESS.md), guarded by `eval/test_language_access.py`).
+- **Resolved, and it says so.** The incident resolved 2026-05-28. The archive note, the global status, and the absolute dates leave no room to misread it as live.
 
 ## Why I built it
 
