@@ -8,7 +8,7 @@
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
         { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://img.youtube.com https://api.microlink.io https://tiles.openfreemap.org blob:; connect-src 'self' https://api.weather.gov https://api.microlink.io https://tiles.openfreemap.org; worker-src 'self' blob:; frame-src https://www.youtube.com https://www.youtube-nocookie.com" }
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://img.youtube.com https://i.ytimg.com https://api.microlink.io https://tiles.openfreemap.org blob:; connect-src 'self' https://api.weather.gov https://api.microlink.io https://tiles.openfreemap.org; worker-src 'self' blob:; frame-src https://www.youtube.com https://www.youtube-nocookie.com" }
       ]
     },
     {
