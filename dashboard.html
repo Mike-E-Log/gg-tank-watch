@@ -1184,6 +1184,32 @@
       border-width: 8px 0 8px 14px;
       border-color: transparent transparent transparent #fff;
     }
+    /* Branded placeholder for videos with no poster (non-YouTube: NBC, FOX). Self-contained,
+       no OG-scrape dependency — shows the play affordance over a tinted card with the outlet. */
+    .feed-card-branded-placeholder {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 8px;
+      background: linear-gradient(135deg, var(--sa-celadon-3), var(--sa-gold-2));
+    }
+    html.theme-dark .feed-card-branded-placeholder {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    }
+    .feed-card-branded-outlet {
+      position: relative;
+      z-index: 1;
+      max-width: 100%;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--sa-text-2);
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
     /* ===== INFO TAB (redesigned) ===== */
     .info-layout {
@@ -2114,12 +2140,15 @@ function buildFeedCardsHtml(feed) {
     // present, graceful placeholder + play affordance otherwise). No duration badge:
     // the live feed carries no duration field.
     var thumbHtml = it.isVideo
-      ? '<div class="feed-card-thumb' + (it.thumb ? '' : ' placeholder-video') + '">' +
-          (it.thumb ? '<img loading="lazy" src="' + it.thumb + '" alt="">' : '') +
-          '<span class="feed-card-play" aria-hidden="true"></span>' +
-        '</div>'
+      ? (it.thumb
+          ? '<div class="feed-card-thumb"><img loading="lazy" src="' + it.thumb + '" alt="">' +
+              '<span class="feed-card-play" aria-hidden="true"></span></div>'
+          : '<div class="feed-card-thumb placeholder-video feed-card-branded-placeholder">' +
+              '<span class="feed-card-play" aria-hidden="true"></span>' +
+              '<span class="feed-card-branded-outlet">' + escAttr(it.source || "") + '</span>' +
+            '</div>')
       : '';
-    return '<a class="feed-card' + (it.isVideo ? ' feed-card-video' : '') + newestClass + '" href="' + it.url + '" target="_blank" rel="noopener" style="text-decoration:none;display:block" data-needs-og="' + (!it.thumb) + '" data-url="' + escapedUrl + '">' + meta +
+    return '<a class="feed-card' + (it.isVideo ? ' feed-card-video' : '') + newestClass + '" href="' + it.url + '" target="_blank" rel="noopener" style="text-decoration:none;display:block" data-needs-og="' + (!it.thumb && !it.isVideo) + '" data-url="' + escapedUrl + '">' + meta +
       thumbHtml +
       '<div class="feed-card-title">' + (it.title || t("news.untitled")) + '</div>' +
       '<span style="font-size:11px;color:var(--sa-text-3)">' + it.source + '</span>' +
@@ -2486,12 +2515,15 @@ function render(snap) {
   var _asOf = snap.data_as_of_iso ? new Date(snap.data_as_of_iso)
             : (snap.last_updated_iso ? new Date(snap.last_updated_iso) : null);
   var _checked = snap.last_updated_iso ? new Date(snap.last_updated_iso) : _asOf;
-  var _dateOpts = (typeof window !== "undefined" && window.innerWidth >= 768)
+  var _isDesktop = (typeof window !== "undefined" && window.innerWidth >= 768);
+  var _dateOpts = _isDesktop
     ? {month:"numeric", day:"numeric", year:"numeric"}  // desktop has room for the full date
     : {month:"numeric", day:"numeric"};                 // mobile drops the year to avoid the clip
   var clock = _asOf ? _asOf.toLocaleDateString("en-US", _dateOpts) + ", " + _asOf.toLocaleTimeString("en-US", TIME_OPTS) : "—";
   var ageStr = _asOf ? relativeAge(_asOf.getTime(), Date.now()) : null;
-  var label = ageStr ? clock + " (" + ageStr + ")" : clock;
+  // Mobile: show the relative age alone (the absolute clock stays in the tooltip set below)
+  // so the dateline can't overflow and clip "(N ago)". Desktop keeps the clock + age.
+  var label = (!_isDesktop && ageStr) ? ageStr : (ageStr ? clock + " (" + ageStr + ")" : clock);
   if (freshLabel) freshLabel.textContent = t("updated.freshness", { t: label });
   if (updEl && _checked) {
     var _checkedClock = _checked.toLocaleDateString("en-US", {month:"numeric", day:"numeric", year:"numeric"})
@@ -2575,7 +2607,7 @@ function render(snap) {
         return { when: it.published_iso || "", type: isVid ? "video" : "article",
                  source: it.outlet || "—", title: it.title || t("news.untitled"),
                  url: it.url || "", isVideo: isVid,
-                 thumb: it.youtube_id ? ("https://i.ytimg.com/vi/" + it.youtube_id + "/hqdefault.jpg") : "",
+                 thumb: it.youtube_id ? ("https://i.ytimg.com/vi/" + it.youtube_id + "/hqdefault.jpg") : (it.thumbnail_url || ""),
                  isArchive: true, confidence: it.published_iso_confidence || "" };
       })
     : (snap.videos || []).map(function(v) {
