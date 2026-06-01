@@ -20,8 +20,10 @@ REQUIRED = (
     "unofficial-pill",                               # pill kept (load-bearing trust signal)
     ">UNOFFICIAL<",                                  # pill text kept
     "min-width: 44px",                               # theme-toggle touch target kept
-    'id="updated-text"',                             # freshness id kept (JS binds here)
-    '"updated.freshness": { en: "Last updated',      # honest label kept
+    'id="updated-text"',                             # freshness slot id kept
+    "archive-pill",                                  # archive pivot: ARCHIVE pill added beside UNOFFICIAL
+    ">ARCHIVE<",                                     # pill text
+    '"archive.label"',                               # fixed historical-archive label (replaces live freshness)
 )
 
 # Tokens that must NO LONGER appear (the orphan layout + the dead spacer).

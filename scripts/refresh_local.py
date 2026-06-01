@@ -1,6 +1,10 @@
-"""Local, subscription-billed refresh of status.json.
+"""ARCHIVED — retired for the fully-historical pivot (do not run).
 
-This is the CURRENTLY-ACTIVE data-sync path. It runs on a contributor's machine
+status.json is now a FROZEN May 26, 2026 archive snapshot. This refresher must NOT run
+— it would re-introduce live timestamps and post-26th data. main() exits with an error;
+the body below is kept for reference / possible emergency re-activation only.
+
+(Historical) This was the subscription-billed data-sync path. It ran on a contributor's machine
 (left on) and bills the Claude **subscription** instead of metered API credits:
 it gathers current incident facts via `claude -p` with the OAuth subscription
 (ANTHROPIC_API_KEY unset) and the WebSearch tool, runs the existing writer, and
@@ -139,6 +143,10 @@ def commit_and_push() -> None:
 
 
 def main() -> int:
+    # ARCHIVED: status.json is a frozen historical snapshot (May 26, 2026). Refuse to run
+    # so a stray invocation can't un-freeze it with live data (fully-historical archive pivot).
+    print("ARCHIVED: refresh_local.py is retired — status.json is a frozen archive. Aborting.", file=sys.stderr)
+    return 1
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true", help="gather + write status.json, skip git")
     args = ap.parse_args()

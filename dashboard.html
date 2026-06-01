@@ -194,9 +194,26 @@
       cursor: help;
       flex: 0 0 auto;
     }
+    .archive-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      background: var(--sa-celadon-2);
+      border: 1px solid var(--sa-celadon);
+      color: var(--sa-celadon);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      cursor: help;
+      flex: 0 0 auto;
+    }
     @media (min-width: 768px) {
       /* desktop restores the original roomier pill padding (compaction is mobile-only) */
-      .unofficial-pill { padding: 4px 8px; }
+      .unofficial-pill, .archive-pill { padding: 4px 8px; }
     }
     .topbar-wordmark {
       font-weight: 800;
@@ -1448,9 +1465,10 @@
       <div class="topbar-lead">
         <div class="topbar-lead-row">
           <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
+          <span class="archive-pill" id="archive-pill" data-i18n="topbar.archive" data-i18n-title="topbar.archive.title" title="Frozen historical record of the May 21–26, 2026 emergency">ARCHIVE</span>
           <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
         </div>
-        <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="updated.loading">loading...</span></span>
+        <span class="topbar-freshness" id="updated-text"><span id="freshness-label" data-i18n="archive.label">Historical archive · May 21–26, 2026</span></span>
       </div>
       <div class="topbar-controls">
         <button id="share-btn" class="topbar-btn" type="button" aria-label="Share this page" title="Share">
@@ -1553,21 +1571,9 @@
   <div class="print-only print-content" id="print-content"></div>
 
 <script>
-var REFRESH_MS = 30000;
+var REFRESH_MS = null;  // archive pivot (T2): polling disabled — status.json is a frozen snapshot
 var NORMAL_TITLE = "GG Tank Watch";
 var BREAKING_TITLE = "\u{1F534} BREAKING — GG Tank Watch";
-// Honest relative-age string for the freshness label. Clamps negative deltas
-// (client clock skew) to "just now" so a fast client never shows "in 3 min".
-function relativeAge(fromMs, nowMs) {
-  var deltaMin = Math.floor((nowMs - fromMs) / 60000);
-  if (deltaMin <= 0) return "just now";
-  if (deltaMin < 60) return deltaMin + " min ago";
-  var hr = Math.floor(deltaMin / 60);
-  if (hr < 24) return hr + " hr ago";
-  var days = Math.floor(hr / 24);
-  return days + (days === 1 ? " day ago" : " days ago");
-}
-
 var ICON_SUN = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><g fill="#f59e0b"><circle cx="12" cy="12" r="5"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(0 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(45 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(90 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(135 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(180 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(225 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(270 12 12)"/><path d="M12 1 Q13.4 4 12 5.6 Q10.6 4 12 1Z" transform="rotate(315 12 12)"/></g></svg>';
 var ICON_MOON = '<svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z" fill="#94a3b8"/></svg>';
 var FLAG_US = '<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><g fill="#b22234"><rect width="30" height="2" y="0"/><rect width="30" height="2" y="4"/><rect width="30" height="2" y="8"/><rect width="30" height="2" y="12"/><rect width="30" height="2" y="16"/></g><rect width="13" height="10" fill="#3c3b6e"/></svg>';
@@ -1594,11 +1600,11 @@ var STRINGS = {
   "info.subtab.status": { en: "Status" },
   "info.subtab.resources": { en: "Resources" },
   "info.subtab.about": { en: "About" },
-  "updated.loading": { en: "loading..." },
-  "updated.freshness": { en: "Last updated {t}" },
-  "updated.title": { en: "Last checked {t}." },
   "topbar.unofficial": { en: "UNOFFICIAL" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
+  "topbar.archive": { en: "ARCHIVE" },
+  "topbar.archive.title": { en: "Frozen historical record of the May 21–26, 2026 emergency. For current info, see ggcity.org/emergency." },
+  "archive.label": { en: "Historical archive · May 21–26, 2026" },
   "safety.strip.info": { en: "Informational only — not official." },
   "safety.strip.official": { en: "Official source:" },
   "safety.strip.terms": { en: "Terms" },
@@ -1858,6 +1864,13 @@ window.switchTab = switchTab;
 
 /* ============ REFRESH COUNTDOWN ============ */
 function startRefreshCountdown() {
+  // Archive pivot (T2): no polling on a frozen snapshot — skip the countdown and
+  // hide the (now meaningless) refresh progress bar.
+  if (!REFRESH_MS) {
+    var rb = $("refresh-bar");
+    if (rb) rb.style.width = "0%";
+    return;
+  }
   var total = Math.round(REFRESH_MS / 1000);
   refreshCountdown = total;
   if (countdownTimer) clearInterval(countdownTimer);
@@ -2488,31 +2501,10 @@ function render(snap) {
     setBanners([{kind:"stale", title: t("banner.schema.title"), message: t("banner.schema.msg")}]);
     return;
   }
-  var updEl = $("updated-text");
-  var freshLabel = $("freshness-label");
-  // Honesty (eng review D1): the visible label reflects data_as_of_iso (when we
-  // last learned something NEW), never last_updated_iso (pipeline write time) —
-  // so a stalled feed reads its true age instead of looking fresh. last_updated
-  // (system liveness) goes in the hover tooltip. Fall back to last_updated only
-  // when data_as_of is absent, so the label is never blank.
-  var _asOf = snap.data_as_of_iso ? new Date(snap.data_as_of_iso)
-            : (snap.last_updated_iso ? new Date(snap.last_updated_iso) : null);
-  var _checked = snap.last_updated_iso ? new Date(snap.last_updated_iso) : _asOf;
-  var _isDesktop = (typeof window !== "undefined" && window.innerWidth >= 768);
-  var _dateOpts = _isDesktop
-    ? {month:"numeric", day:"numeric", year:"numeric"}  // desktop has room for the full date
-    : {month:"numeric", day:"numeric"};                 // mobile drops the year to avoid the clip
-  var clock = _asOf ? _asOf.toLocaleDateString("en-US", _dateOpts) + ", " + _asOf.toLocaleTimeString("en-US", TIME_OPTS) : "—";
-  var ageStr = _asOf ? relativeAge(_asOf.getTime(), Date.now()) : null;
-  // Mobile: show the relative age alone (the absolute clock stays in the tooltip set below)
-  // so the dateline can't overflow and clip "(N ago)". Desktop keeps the clock + age.
-  var label = (!_isDesktop && ageStr) ? ageStr : (ageStr ? clock + " (" + ageStr + ")" : clock);
-  if (freshLabel) freshLabel.textContent = t("updated.freshness", { t: label });
-  if (updEl && _checked) {
-    var _checkedClock = _checked.toLocaleDateString("en-US", {month:"numeric", day:"numeric", year:"numeric"})
-      + ", " + _checked.toLocaleTimeString("en-US", TIME_OPTS);
-    updEl.title = t("updated.title", { t: _checkedClock });
-  }
+  // Archive pivot (T1): the freshness slot is a FIXED historical-archive label
+  // (data-i18n="archive.label", set in the static masthead markup). The live
+  // "Last updated {age}" computation was removed so a frozen snapshot never reads
+  // as actively updating.
 
   var now = new Date();
   var resolved = !!(snap.incident && snap.incident.resolved_iso);
@@ -2738,7 +2730,7 @@ var archiveReady = loadArchive();
 Promise.all([configReady, archiveReady]).then(function() {
   fetchStatus();
 });
-setInterval(fetchStatus, REFRESH_MS);
+if (REFRESH_MS) { setInterval(fetchStatus, REFRESH_MS); }  // archive pivot (T2): no polling when frozen
 
 /* ============ MAPLIBRE MAP ============ */
 var _ggMap = null;

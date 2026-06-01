@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-06-01T16:11:24Z",
-  "data_as_of_iso": "2026-06-01T16:11:24Z",
-  "next_check_at_iso": "2026-06-01T16:41:24Z",
-  "stale_after_iso": "2026-06-01T16:51:24Z",
+  "last_updated_iso": "2026-05-27T02:30:00Z",
+  "data_as_of_iso": "2026-05-27T02:30:00Z",
+  "next_check_at_iso": "2099-01-01T00:00:00Z",
+  "stale_after_iso": "2099-01-01T00:00:00Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Resolved — cleanup active; 150-ft exclusion zone. CUPA leads removal, SCAQMD air monitoring ongoing. Claims: gknaerospace.com. SB 954 (CEQA safety reform) in CA Assembly. DA + Cal/OSHA probes open; 44+ lawsuits.",
+    "status_headline": "Resolved May 26, 2026 — all evacuations lifted.",
     "severity": "low",
     "resolved_iso": "2026-05-27T02:30:00Z"
   },
@@ -28,60 +28,47 @@
     "zone_status": "outside_downwind",
     "address_checker_url": "https://ggcity.org/emergency"
   },
-  "official_statements": [
-    {
-      "agency": "Orange County Health Care Agency / CUPA",
-      "time_iso": "2026-05-29T12:00:00Z",
-      "text": "Beginning May 29, 2026, the Orange County Health Care Agency (HCA), serving as the County's Certified Unified Program Agency (CUPA), will lead multi-agency site cleanup and waste removal activities related to the incident, working closely with GKN Aerospace. During the cleanup process, air monitoring will be conducted at the GKN Aerospace fence line and in the community under the oversight of South Coast Air Quality Management District (AQMD).",
-      "source_url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident"
-    },
-    {
-      "agency": "City of Garden Grove",
-      "time_iso": "2026-05-30T21:00:00Z",
-      "text": "All evacuation orders related to the hazardous materials incident have been lifted. Orange County health officials have confirmed there are no air quality or other health concerns in the area. The safety zone around the involved tank has been reduced to 150 feet.",
-      "source_url": "https://ggcity.org/emergency"
-    }
-  ],
+  "official_statements": [],
   "sources_checked": [
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-06-01T16:08:00Z"
+      "fetched_iso": "2026-05-26T23:00:00Z"
     },
     {
       "url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident",
       "title": "GKN Aerospace HazMat Incident | Orange County",
-      "fetched_iso": "2026-06-01T16:08:00Z"
+      "fetched_iso": "2026-05-26T23:00:00Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
-      "fetched_iso": "2026-06-01T16:08:00Z"
+      "fetched_iso": "2026-05-26T23:00:00Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
       "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-06-01T16:08:00Z"
+      "fetched_iso": "2026-05-26T23:00:00Z"
     },
     {
       "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
       "title": "GKN Aerospace chemical leak exposes regulatory gaps - CalMatters",
-      "fetched_iso": "2026-06-01T16:08:00Z"
+      "fetched_iso": "2026-05-26T23:00:00Z"
     },
     {
       "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
       "title": "California Senate passes SB 954 - New Santa Ana",
-      "fetched_iso": "2026-06-01T16:08:00Z"
+      "fetched_iso": "2026-05-26T23:00:00Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
       "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed - Voice of OC",
-      "fetched_iso": "2026-06-01T16:08:00Z"
+      "fetched_iso": "2026-05-26T23:00:00Z"
     },
     {
       "url": "https://sd38.senate.ca.gov/news/senate-passes-sen-blakespears-legislation-balance-ceqa-reforms-needed-environmental-and-worker",
       "title": "Senate Passes Sen. Blakespear SB 954 | CA Senate District 38",
-      "fetched_iso": "2026-06-01T16:08:00Z"
+      "fetched_iso": "2026-05-26T23:00:00Z"
     }
   ],
   "schools_closed": [
@@ -192,10 +179,7 @@
   "breaking_level": null,
   "_meta": {
     "injuries": 0,
-    "statement_hashes": [
-      "3c7bd9171ffccfbe",
-      "f41e9834b25e7d25"
-    ],
+    "statement_hashes": [],
     "last_residents_shift_iso": null
   }
 }
