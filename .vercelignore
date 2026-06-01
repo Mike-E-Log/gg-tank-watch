@@ -9,7 +9,8 @@ C--Users-redacted-OneDrive-Desktop-GG-tank-updates
 eval
 scripts
 docs
-data
+data/*
+!data/news_archive.json
 __pycache__
 *.md
 LICENSE
