@@ -80,6 +80,40 @@ def test_archive_note_frozen_no_ongoing_collection():
                   f"no_contradiction={no_cutoff_contradiction} no_allclear={forbids_jargon}")}
 
 
+def test_archive_note_current_line_tightened():
+    """User follow-up (2026-06-01): the closing current-info line is tightened from the
+    verbose "For current information: …" to "Current info: …" (shorter than the original)
+    while KEEPING the concrete ggcity.org/emergency + 911 routing — being concrete requires
+    the URL, so the de-dup yields to clarity. Guards the tight copy and that the verbose
+    lead-in does not creep back."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
+    val = m.group(1) if m else ""
+    tight = "Current info: ggcity.org/emergency or 911" in val
+    no_verbose = "For current information" not in val
+    ok = bool(val) and tight and no_verbose
+    return {"passed": ok,
+            "details": "closing line tightened to 'Current info: …', verbose lead-in gone" if ok
+            else f"tight={tight} verbose_gone={no_verbose}"}
+
+
+def test_archive_note_bullets_fit_one_line():
+    """User follow-up (2026-06-01): each archive-note bullet must fit on one line on mobile
+    (no wrap). Char-count proxy (<=50) for the ~53-char one-line fit measured at 390px; the
+    actual render is confirmed by Edge visual QA. Guards against bullets growing back to
+    wrapping length."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
+    val = m.group(1) if m else ""
+    bullets = re.findall(r"<li>(.*?)</li>", val)
+    MAX = 50
+    too_long = [b for b in bullets if len(b) > MAX]
+    ok = bool(bullets) and not too_long
+    return {"passed": ok,
+            "details": f"all {len(bullets)} bullets <= {MAX} chars (one-line)" if ok
+            else "bullet(s) over {}: ".format(MAX) + " | ".join(f"{len(b)}ch:{b[:36]}" for b in too_long)}
+
+
 def test_archive_note_structured_header_and_bullets():
     """Layout (user follow-up 2026-06-01): the archive note is organized into a labeled header
     + bulleted lines, not one run-on block of back-to-back sentences. Rendered as HTML via
