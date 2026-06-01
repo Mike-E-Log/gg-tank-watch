@@ -17,9 +17,9 @@ DASHBOARD = REPO_ROOT / "dashboard.html"
 def test_branded_placeholder_css_and_markup_present():
     text = DASHBOARD.read_text(encoding="utf-8")
     css = ".feed-card-branded-placeholder {" in text
-    markup = '<span class="feed-card-branded-outlet">' in text
+    markup = '<span class="feed-card-branded-label">' in text
     return {"passed": css and markup,
-            "details": f"branded-placeholder css={css} outlet-label markup={markup}"}
+            "details": f"branded-placeholder css={css} watch-on-label markup={markup}"}
 
 
 def test_archive_map_honors_thumbnail_url():
