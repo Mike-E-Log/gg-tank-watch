@@ -956,7 +956,18 @@
       "source_url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
       "source_name": "CalMatters",
       "category": "government_action"
+    },
+    {
+      "id": "evt-20260601-001",
+      "timestamp_utc": "2026-06-01T04:00:00Z",
+      "timestamp_local": "2026-05-31T21:00:00-07:00",
+      "day": 12,
+      "title": "OC directs all reimbursement claims to GKN Aerospace at gknaerospace.com",
+      "description": "Orange County's official GKN Aerospace hazmat incident page (ocgov.com/gkn-aerospace-hazmat-incident) now directs all questions involving reimbursement, individual claims, and personal claims to GKN Aerospace at www.gknaerospace.com — a formal shift from earlier uncertainty when no claims process existed (as of Day 9, May 29). OC Health CUPA-led multi-agency cleanup remains active at the site, SCAQMD fence-line air monitoring is ongoing, a 150-ft exclusion zone encircles the GKN tanks, and the DA criminal investigation is open. 44+ lawsuits have been filed in OC Superior Court and federal court.",
+      "source_url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident",
+      "source_name": "Orange County",
+      "category": "community_impact"
     }
   ],
-  "generated_at": "2026-05-30T19:19:59Z"
+  "generated_at": "2026-06-01T04:08:30Z"
 }
