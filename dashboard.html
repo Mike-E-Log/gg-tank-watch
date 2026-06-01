@@ -1186,18 +1186,29 @@
       border-color: transparent transparent transparent #fff;
     }
     /* Branded placeholder for videos with no poster (non-YouTube: NBC, FOX). Self-contained,
-       no OG-scrape dependency — shows the play affordance over a tinted card with the outlet. */
+       no OG-scrape dependency — stacks the play affordance over a "Watch on <outlet> ↗" label
+       so the card reads as a deliberate link-out, not a broken/empty thumbnail. */
     .feed-card-branded-placeholder {
       display: flex;
-      align-items: flex-end;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
+      gap: 8px;
       padding: 8px;
       background: linear-gradient(135deg, var(--sa-celadon-3), var(--sa-gold-2));
     }
     html.theme-dark .feed-card-branded-placeholder {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
     }
-    .feed-card-branded-outlet {
+    /* Override the absolute centering so the play sits in the flex column above the label;
+       relative keeps it a positioning context for its ::after triangle. */
+    .feed-card-branded-placeholder .feed-card-play {
+      position: relative;
+      top: auto;
+      left: auto;
+      transform: none;
+    }
+    .feed-card-branded-label {
       position: relative;
       z-index: 1;
       max-width: 100%;
@@ -1613,11 +1624,12 @@ var STRINGS = {
   "news.statements.count": { en: "{n} official statement{s}" },
   "news.coverage": { en: "Coverage" },
   "news.feed.title": { en: "News & updates" },
-  "news.archive.note": { en: "Archived coverage — not live. The reports below are from the May 2026 incident (now resolved). For current emergencies, see ggcity.org/emergency or call 911." },
+  "news.archive.note": { en: "Archived coverage — a snapshot of reporting captured during the May 2026 incident (now resolved); a selection, not a complete or live record. For current information, see ggcity.org/emergency or call 911." },
   "news.situation.label": { en: "Current situation" },
   "news.type.official": { en: "🏛 Official" },
   "news.type.article": { en: "📰 Article" },
   "news.type.video": { en: "▶ Video" },
+  "news.watchOn": { en: "Watch on" },
   "info.group.status": { en: "Incident status" },
   "info.tank.title": { en: "Tank" },
   "info.tank.crack": { en: "Crack observed" },
@@ -1837,6 +1849,7 @@ function switchTab(tabId) {
     tab.classList.add("active");
     tab.setAttribute("aria-selected", "true");
   }
+  try { localStorage.setItem("gg-active-tab", tabId); } catch (e) {}
   var appEl = document.querySelector('.app');
 }
 window.switchTab = switchTab;
@@ -2058,7 +2071,6 @@ function renderFilteredFeed() {
   });
   var newsFeedEl = $("news-feed");
   if (newsFeedEl) newsFeedEl.innerHTML = buildFeedCardsHtml(filtered);
-  hydrateMissingThumbnails();
 }
 
 // Collapse a live-blog URL to its base so different /entry/<id>/ fragments
@@ -2136,7 +2148,6 @@ function buildFeedCardsHtml(feed) {
       '</div>';
     }
 
-    var escapedUrl = (it.url || "").replace(/"/g, "&quot;");
     // Video items render as a 16:9 thumbnail card (thumb from youtube hqdefault when
     // present, graceful placeholder + play affordance otherwise). No duration badge:
     // the live feed carries no duration field.
@@ -2146,10 +2157,10 @@ function buildFeedCardsHtml(feed) {
               '<span class="feed-card-play" aria-hidden="true"></span></div>'
           : '<div class="feed-card-thumb placeholder-video feed-card-branded-placeholder">' +
               '<span class="feed-card-play" aria-hidden="true"></span>' +
-              '<span class="feed-card-branded-outlet">' + escAttr(it.source || "") + '</span>' +
+              '<span class="feed-card-branded-label">' + t("news.watchOn") + ' ' + escAttr(it.source || "") + ' ↗</span>' +
             '</div>')
       : '';
-    return '<a class="feed-card' + (it.isVideo ? ' feed-card-video' : '') + newestClass + '" href="' + it.url + '" target="_blank" rel="noopener" style="text-decoration:none;display:block" data-needs-og="' + (!it.thumb && !it.isVideo) + '" data-url="' + escapedUrl + '">' + meta +
+    return '<a class="feed-card' + (it.isVideo ? ' feed-card-video' : '') + newestClass + '" href="' + it.url + '" target="_blank" rel="noopener" style="text-decoration:none;display:block">' + meta +
       thumbHtml +
       '<div class="feed-card-title">' + (it.title || t("news.untitled")) + '</div>' +
       '<span style="font-size:11px;color:var(--sa-text-3)">' + it.source + '</span>' +
@@ -2297,56 +2308,6 @@ function renderInfoShelters() {
       '<a class="info-shelter-dir" href="' + gmaps + '" target="_blank" rel="noopener">' + t("info.directions") + '</a>' +
     '</div>';
   }).join("");
-}
-
-/* ============ OG IMAGE FETCH ============ */
-var OG_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
-var ogPending = new Map();
-var ogFailed = new Set();
-
-async function fetchOgImage(url) {
-  var cacheKey = "og:" + url;
-  try {
-    var cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
-    if (cached && (Date.now() - cached.fetchedAt) < OG_CACHE_TTL_MS) return cached.imageUrl;
-  } catch (e) {}
-  if (ogFailed.has(url)) return null;
-  if (ogPending.has(url)) return ogPending.get(url);
-  var promise = (async function() {
-    try {
-      var apiUrl = "https://api.microlink.io/?url=" + encodeURIComponent(url);
-      var resp = await fetch(apiUrl, { cache: "force-cache" });
-      if (!resp.ok) throw new Error("microlink " + resp.status);
-      var data = await resp.json();
-      var imageUrl = (data && data.data && data.data.image && data.data.image.url) || null;
-      if (imageUrl) {
-        try { localStorage.setItem(cacheKey, JSON.stringify({ imageUrl: imageUrl, fetchedAt: Date.now() })); } catch (e) {}
-      } else { ogFailed.add(url); }
-      return imageUrl;
-    } catch (e) { ogFailed.add(url); return null; }
-  })();
-  ogPending.set(url, promise);
-  var result = await promise;
-  ogPending.delete(url);
-  return result;
-}
-
-async function hydrateMissingThumbnails() {
-  var cards = document.querySelectorAll("[data-needs-og='true']");
-  for (var i = 0; i < cards.length; i++) {
-    var card = cards[i];
-    var url = card.dataset.url;
-    if (!url) continue;
-    var imageUrl = await fetchOgImage(url);
-    if (!imageUrl) continue;
-    var thumb = card.querySelector(".news-thumb");
-    if (!thumb) continue;
-    var playOverlay = thumb.querySelector(".news-thumb-play");
-    thumb.classList.remove("placeholder-video", "placeholder-article");
-    thumb.innerHTML = '<img loading="lazy" src="' + imageUrl + '" alt="">' +
-      (playOverlay ? playOverlay.outerHTML : '');
-    card.dataset.needsOg = "false";
-  }
 }
 
 /* ============ RESOURCES TAB ============ */
@@ -2639,7 +2600,6 @@ function render(snap) {
     }
   }
 
-  hydrateMissingThumbnails();
   renderPrintContent(snap);
 }
 
@@ -2720,6 +2680,8 @@ async function fetchStatus() {
 
 /* ============ KICKOFF ============ */
 applyLang();
+// Reloading on News/Info bounced back to Map (the HTML default); restore the last active tab.
+try { var _savedTab = localStorage.getItem("gg-active-tab"); if (_savedTab && ["map", "news", "info"].indexOf(_savedTab) >= 0) switchTab(_savedTab); } catch (e) {}
 // Single shared config fetch: loadConfig() runs once (cache-busted, no-store) and
 // resolves with the parsed config. The map (map.on("load")) awaits this SAME promise
 // instead of re-fetching /config.json, so the page and the map can't show divergent

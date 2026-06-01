@@ -41,3 +41,15 @@ def test_archive_note_routes_official_no_authority_chrome():
     forbidden = any(bad in val.lower() for bad in ["verified", "official source", "government"])
     return {"passed": bool(val) and routes and not forbidden,
             "details": f"routes={routes} forbidden_terms_present={forbidden} len={len(val)}"}
+
+
+def test_archive_note_discloses_snapshot():
+    """Honesty: the banner must disclose the archive is a curated snapshot/selection, not a
+    complete or live record (it covers only part of the May 2026 incident window)."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
+    val = (m.group(1) if m else "").lower()
+    discloses = "snapshot" in val and "not a complete" in val
+    return {"passed": discloses,
+            "details": "banner discloses snapshot + non-completeness" if discloses
+            else f"banner over-implies completeness: snapshot={'snapshot' in val} not_complete={'not a complete' in val}"}
