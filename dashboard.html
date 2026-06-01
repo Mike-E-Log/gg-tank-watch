@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>GG Tank Watch</title>
-  <meta name="description" content="GG Tank Watch — unofficial, volunteer-built dashboard from the May 2026 Garden Grove chemical-tank emergency (resolved May 28). A live demonstration of responsible AI in a safety-critical domain. For current info, ggcity.org/emergency.">
+  <meta name="description" content="GG Tank Watch — unofficial, volunteer-built dashboard from the May 2026 Garden Grove chemical-tank emergency (resolved May 26). A live demonstration of responsible AI in a safety-critical domain. For current info, ggcity.org/emergency.">
   <link rel="canonical" href="https://gg-tank-watch.vercel.app/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GG Tank Watch">
@@ -1618,7 +1618,7 @@ var STRINGS = {
   "legend.evac.resolved": { en: "Former evac area" },
   "legend.shelter": { en: "Shelter" },
   "map.check_zone": { en: "Check Address (Official Tool)" },
-  "info.resolved.banner": { en: "Incident resolved May 28, 2026 — all evacuations lifted. The shelters and school closures below are historical; for current information see ggcity.org/emergency. This dashboard remains live as a demonstration of the system." },
+  "info.resolved.banner": { en: "Incident resolved {date} — all evacuations lifted. The shelters and school closures below are historical; for current information see ggcity.org/emergency. This dashboard remains live as a demonstration of the system." },
   "map.tooltip.evac": { en: "Evacuation zone" },
   "map.tooltip.you": { en: "You" },
   "news.statements.count": { en: "{n} official statement{s}" },
@@ -2242,9 +2242,17 @@ function updateInfoData(snap) {
   // race the config-driven renderResources()).
   var resolvedNote = $("resources-resolved-note");
   if (resolvedNote) {
-    resolvedNote.innerHTML = (snap.incident && snap.incident.resolved_iso)
-      ? '<div class="resolved-note" role="note">' + t("info.resolved.banner") + '</div>'
-      : '';
+    var _ri = snap.incident && snap.incident.resolved_iso;
+    if (_ri) {
+      // Derive the all-clear date from resolved_iso, formatted in the incident's local
+      // (Pacific) time, so the banner can't drift from the data the way a hardcoded
+      // literal did (the old "May 28" was a day off from the verified May 26 lift).
+      var _rd = new Date(_ri);
+      var _rdStr = isNaN(_rd.getTime()) ? "" : _rd.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", year: "numeric", month: "long", day: "numeric" });
+      resolvedNote.innerHTML = '<div class="resolved-note" role="note">' + t("info.resolved.banner").replace("{date}", _rdStr) + '</div>';
+    } else {
+      resolvedNote.innerHTML = '';
+    }
   }
 
   var crackEl = $("info-crack-val");
