@@ -56,19 +56,21 @@ def test_archive_note_discloses_snapshot():
 
 
 def test_archive_note_states_window_and_cutoff_rationale():
-    """Clarity + honesty (user follow-up 2026-05-31): the banner must state the collection
-    window (May 21-26, 2026 = onset to the official all-clear) AND explain the cutoff — after
-    the all-clear, official statements only. Non-official news was gathered only during the
-    active emergency; once officials lifted the evacuation the conduit stops aggregating
-    general news (post-all-clear accountability/litigation is out of scope). The date range is
-    anchored as a phrase ('21-26') so a typo can't slip a bare '26'; 'all-clear' anchors the
-    cutoff explanation."""
+    """Clarity + honesty (user follow-up 2026-06-01): the banner must state the collection
+    window (May 21-26, 2026) AND explain the cutoff — after the evacuation was lifted,
+    official statements only. Non-official news was gathered only during the active emergency;
+    once officials lifted the evacuation the conduit stops aggregating general news
+    (post-incident accountability/litigation is out of scope). The date range is anchored as a
+    phrase ('21-26') so a typo can't slip a bare '26'; the evacuation-lifted clause anchors the
+    cutoff explanation. The literal term 'all-clear' is forbidden (user follow-up 2026-06-01:
+    simplify, drop jargon) — the cutoff is phrased plainly as the lifted evacuation order."""
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
     val = (m.group(1) if m else "").lower()
     states_window = ("21–26" in val or "21-26" in val) and "2026" in val
-    explains_cutoff = "all-clear" in val and "official statements" in val
-    ok = states_window and explains_cutoff
+    explains_cutoff = "official statements" in val and "lifted" in val
+    forbids_jargon = "all-clear" not in val
+    ok = states_window and explains_cutoff and forbids_jargon
     return {"passed": ok,
-            "details": "banner states May 21-26 window + all-clear cutoff rationale" if ok
-            else f"window={states_window} explains_cutoff={explains_cutoff}"}
+            "details": "banner states May 21-26 window + lifted-evacuation cutoff, no 'all-clear'" if ok
+            else f"window={states_window} explains_cutoff={explains_cutoff} forbids_jargon={forbids_jargon}"}
