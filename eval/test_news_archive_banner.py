@@ -53,3 +53,22 @@ def test_archive_note_discloses_snapshot():
     return {"passed": discloses,
             "details": "banner discloses snapshot + non-completeness" if discloses
             else f"banner over-implies completeness: snapshot={'snapshot' in val} not_complete={'not a complete' in val}"}
+
+
+def test_archive_note_states_window_and_officials_only():
+    """Clarity + honesty (user follow-up 2026-05-31): the banner must make the coverage cutoff
+    clear — the incident window is May 21-28, 2026, and GOING FORWARD only official statements
+    are added. It must NOT make the false 'no general news after May 28' claim: the frozen
+    archive itself carries 3 aftermath articles dated May 29-30 (CalMatters, Rafu Shimpo, Fox
+    News), so the cutoff is about FORWARD collection, not a content date-boundary. The date
+    range is anchored as a phrase ('21-28') so a 'May 21-27' typo can't slip through a bare
+    '28' substring (which also appears in '2026')."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
+    val = (m.group(1) if m else "").lower()
+    states_window = ("21–28" in val or "21-28" in val) and "2026" in val
+    officials_only = "official statements" in val and "going forward" in val
+    ok = states_window and officials_only
+    return {"passed": ok,
+            "details": "banner states 21-28 2026 window + officials-only going forward" if ok
+            else f"window={states_window} officials_only_fwd={officials_only}"}
