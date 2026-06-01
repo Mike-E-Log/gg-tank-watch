@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-06-01T10:10:17Z",
-  "data_as_of_iso": "2026-06-01T10:10:17Z",
-  "next_check_at_iso": "2026-06-01T10:40:17Z",
-  "stale_after_iso": "2026-06-01T10:50:17Z",
+  "last_updated_iso": "2026-06-01T13:13:46Z",
+  "data_as_of_iso": "2026-06-01T13:13:46Z",
+  "next_check_at_iso": "2026-06-01T13:43:46Z",
+  "stale_after_iso": "2026-06-01T13:53:46Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
@@ -32,7 +32,7 @@
     {
       "agency": "Orange County Health Care Agency / CUPA",
       "time_iso": "2026-05-29T12:00:00Z",
-      "text": "Beginning May 29, 2026, the Orange County Health Care Agency (HCA), serving as the County’s Certified Unified Program Agency (CUPA), will lead multi-agency site cleanup and waste removal activities related to the incident, working closely with GKN Aerospace. During the cleanup process, air monitoring will be conducted at the GKN Aerospace fence line and in the community under the oversight of South Coast Air Quality Management District (AQMD).",
+      "text": "Beginning May 29, 2026, the Orange County Health Care Agency (HCA), serving as the County's Certified Unified Program Agency (CUPA), will lead multi-agency site cleanup and waste removal activities related to the incident, working closely with GKN Aerospace. During the cleanup process, air monitoring will be conducted at the GKN Aerospace fence line and in the community under the oversight of South Coast Air Quality Management District (AQMD).",
       "source_url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident"
     },
     {
@@ -46,32 +46,37 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-06-01T10:20:00Z"
+      "fetched_iso": "2026-06-01T13:30:00Z"
     },
     {
       "url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident",
       "title": "GKN Aerospace HazMat Incident | Orange County",
-      "fetched_iso": "2026-06-01T10:20:00Z"
+      "fetched_iso": "2026-06-01T13:30:00Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove tank crisis updates: Orange County evacuees return home",
-      "fetched_iso": "2026-06-01T10:20:00Z"
+      "fetched_iso": "2026-06-01T13:30:00Z"
     },
     {
-      "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
-      "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed",
-      "fetched_iso": "2026-06-01T10:20:00Z"
+      "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
+      "title": "Garden Grove chemical leak - Wikipedia",
+      "fetched_iso": "2026-06-01T13:30:00Z"
     },
     {
       "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
       "title": "GKN Aerospace chemical leak exposes regulatory gaps - CalMatters",
-      "fetched_iso": "2026-06-01T10:20:00Z"
+      "fetched_iso": "2026-06-01T13:30:00Z"
     },
     {
       "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
       "title": "California Senate passes SB 954 - New Santa Ana",
-      "fetched_iso": "2026-06-01T10:20:00Z"
+      "fetched_iso": "2026-06-01T13:30:00Z"
+    },
+    {
+      "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
+      "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed - Voice of OC",
+      "fetched_iso": "2026-06-01T13:30:00Z"
     }
   ],
   "schools_closed": [
@@ -183,7 +188,7 @@
   "_meta": {
     "injuries": 0,
     "statement_hashes": [
-      "b732a9de517ad582",
+      "3c7bd9171ffccfbe",
       "f41e9834b25e7d25"
     ],
     "last_residents_shift_iso": null
