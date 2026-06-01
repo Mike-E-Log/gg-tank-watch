@@ -35,20 +35,20 @@ def test_resolved_note_concise_routes_and_discloses():
                        f"routes={routes} no_overclaim={no_overclaim}"}
 
 
-def test_situation_headline_concise_and_useful():
-    """The 'current situation' headline (status.json incident.status_headline) shown above the
-    News feed must be CONCISE (<=220 chars) and resident-useful: convey the resolved state and
-    the on-the-ground recovery fact, not a long litigation/legislation digest (accountability
-    content is out of conduit scope, consistent with the May 26 collection cutoff)."""
+def test_situation_headline_concise_and_resolved():
+    """Archive pivot: status.json incident.status_headline is a MINIMAL resolved line —
+    concise (<=220), conveys the resolved/lifted state, and carries NO post-26th editorial
+    synthesis (cleanup/lawsuits/investigation/monitoring/removal). The 'Current situation'
+    box is being removed; the field stays honest and frozen."""
     d = json.loads(STATUS.read_text(encoding="utf-8"))
     h = (d.get("incident", {}).get("status_headline") or "")
     low = h.lower()
     concise = 0 < len(h) <= 220
     conveys_resolved = "resolved" in low or "lifted" in low
-    useful = any(w in low for w in ["cleanup", "reimburse", "exclusion zone"])
-    ok = concise and conveys_resolved and useful
+    no_editorial = not any(w in low for w in ["cleanup", "lawsuit", "investigation", "monitoring", "removal"])
+    ok = concise and conveys_resolved and no_editorial
     return {"passed": ok,
-            "details": f"len={len(h)} concise={concise} conveys_resolved={conveys_resolved} useful={useful}"}
+            "details": f"len={len(h)} concise={concise} resolved={conveys_resolved} no_editorial={no_editorial}"}
 
 
 def test_situation_renders_as_bulleted_list():

@@ -1,7 +1,8 @@
-var CACHE_NAME = "gg-tank-v33";
+var CACHE_NAME = "gg-tank-v34";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
+  "/status.json",
   "/config.json",
   "/data/news_archive.json",
   "/manifest.json",
@@ -34,20 +35,22 @@ self.addEventListener("activate", function (event) {
 self.addEventListener("fetch", function (event) {
   var url = new URL(event.request.url);
 
-  // Network-first for status.json (always try fresh data)
+  // Cache-first for status.json: it is now a FROZEN archive snapshot (May 26, 2026),
+  // so serve the cached copy instantly and only hit the network on a cache miss.
   if (url.pathname.endsWith("/status.json")) {
     event.respondWith(
-      fetch(event.request)
-        .then(function (response) {
+      caches.match(event.request).then(function (cached) {
+        if (cached) { return cached; }
+        return fetch(event.request).then(function (response) {
           var clone = response.clone();
           caches.open(CACHE_NAME).then(function (cache) {
             cache.put(event.request, clone);
           });
           return response;
-        })
-        .catch(function () {
-          return caches.match(event.request);
-        })
+        });
+      }).catch(function () {
+        return caches.match(event.request);
+      })
     );
     return;
   }

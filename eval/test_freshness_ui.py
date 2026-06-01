@@ -1,11 +1,9 @@
-"""UI-honesty guards for the freshness label (2026-05-31).
+"""UI-honesty guards for the freshness slot (archive pivot, 2026-06-01).
 
-The visible timestamp must read "Last updated {clock} ({N} ago)" sourced from
-data_as_of_iso (when we last learned something new), NOT last_updated_iso
-(pipeline write time) -- otherwise a stalled feed looks fresh (the F4/F6 class
-that test_freshness.py guards on the backend). All resident-facing "stale" /
-"fresh" / "As of" vocabulary is removed, and the false "auto-updates every 20
-minutes" cadence claim is gone. Pure text guards; no JS runtime needed.
+The dashboard is now a FROZEN historical archive: the masthead freshness slot shows a
+fixed archive label (archive.label), not a live "Last updated {age}" sourced from
+data_as_of_iso. No resident-facing "stale"/"As of"/false-cadence vocab may appear, and
+the live-age render path must be gone. Pure text guards; no JS runtime needed.
 """
 from pathlib import Path
 
@@ -14,46 +12,34 @@ CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DASHBOARD = REPO_ROOT / "dashboard.html"
 
-# Resident-facing strings that must NO LONGER appear after this change.
+# Resident-facing strings that must NOT appear (stale/fresh/live-cadence framing).
 FORBIDDEN = (
-    '"updated.freshness": { en: "As of',          # old freshness label
+    '"updated.freshness": { en: "As of',          # old "As of" freshness label
     "banner.stale.title",                          # removed stale-banner i18n key
     "banner.stale.msg",                            # removed stale-banner i18n key
-    "Auto-updates about every 20 minutes",         # false cadence claim (cron dormant)
+    "Auto-updates about every 20 minutes",         # false cadence claim
     "⚠️ Stale",                          # the "Stale" banner title text
-)
-
-# Tokens that MUST be present (the honest replacement + a kept dependency).
-REQUIRED = (
-    '"updated.freshness": { en: "Last updated',    # new honest label
-    "relativeAge",                                 # the relative-age helper
-    "data_as_of_iso",                              # freshness label binds to info-age
-    ".banner-stale",                               # CSS kept -- schema banner reuses it
+    'freshLabel.textContent = t("updated.freshness"',  # the removed live-age render path
 )
 
 
 def test_no_stale_fresh_vocab_in_dashboard():
-    """No 'As of' / 'Stale' / false-cadence vocab may remain in dashboard.html."""
+    """No 'As of' / 'Stale' / false-cadence vocab, and no live-age render path."""
     text = DASHBOARD.read_text(encoding="utf-8")
     survivors = [tok for tok in FORBIDDEN if tok in text]
     return {
         "passed": not survivors,
-        "details": "no stale/fresh/As-of vocab in dashboard.html"
+        "details": "no stale/fresh/live-age framing in dashboard.html"
         if not survivors
         else "forbidden string(s) still present: " + " | ".join(survivors),
         "metrics": {"survivors": len(survivors)},
     }
 
 
-def test_freshness_label_honest_and_dependencies_intact():
-    """The honest 'Last updated' label, relativeAge helper, data_as_of binding,
-    and the kept .banner-stale CSS (schema-banner dep) must all be present."""
+def test_freshness_slot_is_frozen_archive_label():
+    """The freshness slot binds to the fixed archive label, not a live timestamp."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    missing = [tok for tok in REQUIRED if tok not in text]
-    return {
-        "passed": not missing,
-        "details": "honest label + deps present"
-        if not missing
-        else "required token(s) missing: " + " | ".join(missing),
-        "metrics": {"missing": len(missing)},
-    }
+    bound = 'id="freshness-label" data-i18n="archive.label"' in text
+    has_key = '"archive.label"' in text
+    return {"passed": bound and has_key,
+            "details": f"freshness-label bound to archive.label={bound}, key present={has_key}"}
