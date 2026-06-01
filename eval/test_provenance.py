@@ -168,7 +168,7 @@ def test_feed_renders_source_attribution():
     checks = {
         "feed meta shows source": "it.source" in html,
         "feed meta shows relative time": "relativeTime(it.when)" in html,
-        "sources_checked shows fetched time": "fetched_iso" in html and "relativeTime(s.fetched_iso)" in html,
+        "sources_checked shows fetched date": "fetched_iso" in html and "fmtAbsDateOnly(s.fetched_iso)" in html,
     }
     failed = [k for k, v in checks.items() if not v]
     return {

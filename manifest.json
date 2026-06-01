@@ -1,7 +1,7 @@
 {
   "name": "GG Tank Watch",
   "short_name": "GG Tank",
-  "description": "Unofficial dashboard from the resolved Garden Grove chemical-tank emergency — a live demonstration of responsible AI in a safety-critical domain.",
+  "description": "Unofficial historical archive of the May 21–26, 2026 Garden Grove chemical-tank emergency.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#faf8f5",

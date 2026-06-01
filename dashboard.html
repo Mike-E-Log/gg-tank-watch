@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>GG Tank Watch</title>
-  <meta name="description" content="GG Tank Watch — unofficial, volunteer-built dashboard from the May 2026 Garden Grove chemical-tank emergency (resolved May 26). A live demonstration of responsible AI in a safety-critical domain. For current info, ggcity.org/emergency.">
+  <meta name="description" content="GG Tank Watch — unofficial, volunteer-built historical archive of the May 21–26, 2026 Garden Grove chemical-tank emergency. For current information, visit ggcity.org/emergency.">
   <link rel="canonical" href="https://gg-tank-watch.vercel.app/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GG Tank Watch">
   <meta property="og:title" content="GG Tank Watch — Garden Grove tank emergency (resolved)">
-  <meta property="og:description" content="Unofficial, volunteer-built dashboard from the resolved Garden Grove chemical-tank emergency — now a live demonstration of responsible AI in a safety-critical domain. Routes to official sources; current info at ggcity.org/emergency.">
+  <meta property="og:description" content="Unofficial, volunteer-built historical archive of the May 21–26, 2026 Garden Grove chemical-tank emergency. Routes to official sources; current information at ggcity.org/emergency.">
   <meta property="og:url" content="https://gg-tank-watch.vercel.app/">
   <meta property="og:image" content="https://gg-tank-watch.vercel.app/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="GG Tank Watch — unofficial situational awareness for the Garden Grove tank emergency">
+  <meta property="og:image:alt" content="GG Tank Watch — historical archive of the Garden Grove tank emergency (May 21–26, 2026)">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="GG Tank Watch — Garden Grove tank emergency (resolved)">
-  <meta name="twitter:description" content="Unofficial, volunteer-built dashboard from the resolved Garden Grove tank emergency — a live demo of responsible AI in a safety-critical domain. Verify at ggcity.org/emergency.">
+  <meta name="twitter:description" content="Unofficial, volunteer-built historical archive of the May 21–26, 2026 Garden Grove tank emergency. Verify current information at ggcity.org/emergency.">
   <meta name="twitter:image" content="https://gg-tank-watch.vercel.app/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -663,35 +663,6 @@
       border-radius: 50%;
       background: #444;
     }
-    .static-map-actions {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 10px 16px;
-      text-align: center;
-      z-index: 2;
-      pointer-events: none;
-    }
-    .static-map-actions a { pointer-events: auto; }
-    .zone-check-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 12px 24px;
-      background: var(--sa-celadon);
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      line-height: 1.25;
-      border-radius: 8px;
-      text-decoration: none;
-      width: 100%;
-      max-width: 400px;
-    }
-    .zone-check-btn:hover { opacity: 0.9; }
     .static-map-attribution {
       position: absolute;
       bottom: 2px;
@@ -1524,9 +1495,6 @@
             <div class="legend-row"><span class="legend-icon legend-icon-shelter" aria-hidden="true"></span> <span data-i18n="legend.shelter">Shelter</span></div>
             <div class="legend-row"><span class="legend-icon legend-icon-facility" aria-hidden="true"></span> Facility</div>
           </div>
-          <div class="static-map-actions">
-            <a href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener" class="zone-check-btn" data-i18n="map.check_zone">Check Address (Official Tool)</a>
-          </div>
           <div class="static-map-attribution">&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></div>
         </div>
       </div>
@@ -1602,7 +1570,7 @@ var STRINGS = {
   "safety.strip.info": { en: "Informational only — not official." },
   "safety.strip.official": { en: "Official source:" },
   "safety.strip.terms": { en: "Terms" },
-  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with official channels." },
+  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with ggcity.org/emergency or 911." },
   "hero.severity.label": { en: "Incident severity:" },
   "hero.status.evacuation": { en: "Evacuation" },
   "hero.status.residents": { en: "Residents affected" },
@@ -1621,8 +1589,7 @@ var STRINGS = {
   "legend.evac": { en: "Evac zone" },
   "legend.evac.resolved": { en: "Former evac area" },
   "legend.shelter": { en: "Shelter" },
-  "map.check_zone": { en: "Check Address (Official Tool)" },
-  "info.resolved.banner": { en: "Resolved {date} — all evacuations lifted. Shelters and school closures below are historical; current info at ggcity.org/emergency. A live demonstration of the system." },
+  "info.resolved.banner": { en: "Resolved {date} — all evacuations lifted. Shelters and school closures below are historical; current information at ggcity.org/emergency." },
   "map.tooltip.evac": { en: "Evacuation zone" },
   "map.tooltip.you": { en: "You" },
   "news.statements.count": { en: "{n} official statement{s}" },
@@ -1643,7 +1610,7 @@ var STRINGS = {
   "info.evac.boundary": { en: "Boundary" },
   "info.shelters.title": { en: "Evacuation shelters" },
   "info.shelters.cta": {
-    en: '&#128719; <strong>Live list at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; the city is the source of truth; the list below is a snapshot.'
+    en: '&#128719; <strong>Shelter list at <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a></strong> &mdash; the city is the source of truth; the list below is a historical snapshot from the resolved incident.'
   },
   "info.shelters.directions": { en: "Directions ↗" },
   "info.shelters.empty": {
@@ -1657,7 +1624,7 @@ var STRINGS = {
   "common.yes": { en: "yes" },
   "common.no": { en: "no" },
   "info.method.title": { en: "Methodology & trust" },
-  "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact is cross-referenced against multiple sources before publishing." },
+  "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status was updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact was cross-referenced against multiple sources before publishing." },
   "info.method.eval": { en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests and LLM-as-judge rubrics for design and data quality.' },
   "info.method.disclaimer": { en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.' },
   "info.about.title": { en: "Who made this" },
@@ -1668,7 +1635,7 @@ var STRINGS = {
   "info.about.a11ylink": { en: "Accessibility" },
   "info.group.closures": { en: "Closures" },
   "info.roads.title": { en: "Road closures" },
-  "info.roads.defer": { en: 'Roads inside the evacuation zone are closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for current road closures.' },
+  "info.roads.defer": { en: 'Roads inside the evacuation zone were closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for closure history.' },
   "info.group.official": { en: "Official sources" },
   "info.official.note": { en: "No single source should be your only one. Subscribe to official alerts and check multiple channels." },
   "info.official.city": { en: "City of Garden Grove emergency page" },
@@ -1726,14 +1693,14 @@ var STRINGS = {
   "news.badge.video": { en: "VIDEO" },
   /* ===== INFO TAB i18n ===== */
   "info.tankCrack": { en: "Crack observed" },
-  "info.tankCrackY": { en: "Yes — relieving pressure" },
+  "info.tankCrackY": { en: "Yes — relieved pressure" },
   "info.tankTemp": { en: "Tank temperature" },
-  "info.tankTempV": { en: "Stabilizing" },
+  "info.tankTempV": { en: "Stabilized" },
   "info.evacResidents": { en: "Residents in zone" },
   "info.evacBoundary": { en: "Boundary" },
   "info.whereToGo": { en: "Where to go · nearest shelters" },
   "info.allShelters": { en: "All 9 shelters" },
-  "info.liveList": { en: "Live list at ggcity.org/emergency" },
+  "info.liveList": { en: "Shelter records at ggcity.org/emergency" },
   "info.directions": { en: "Directions ↗" },
   "info.rvOnly": { en: "RV only" },
   "info.schoolsClosed": { en: "School closures" },
@@ -2304,7 +2271,7 @@ function updateInfoData(snap) {
   if (sourceList) {
     if (sources.length) {
       sourceList.innerHTML = sources.map(function(s) {
-        var checked = s.fetched_iso ? ' <span class="source-time">' + t("info.sources.checked") + ' ' + relativeTime(s.fetched_iso) + '</span>' : '';
+        var checked = s.fetched_iso ? ' <span class="source-time">' + t("info.sources.checked") + ' ' + fmtAbsDateOnly(s.fetched_iso) + '</span>' : '';
         return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + checked + '</a>';
       }).join("");
     } else {
@@ -2835,7 +2802,7 @@ function _ggSwapMapStyle(dark) {
       if (!btn) return;
       var data = {
         title: 'GG Tank Watch',
-        text: 'Live situational awareness for the Garden Grove tank emergency — routes you to official sources.',
+        text: 'Historical archive of the May 21–26, 2026 Garden Grove tank emergency — routes you to official sources.',
         url: location.href
       };
       btn.addEventListener('click', async function () {
