@@ -55,20 +55,20 @@ def test_archive_note_discloses_snapshot():
             else f"banner over-implies completeness: snapshot={'snapshot' in val} not_complete={'not a complete' in val}"}
 
 
-def test_archive_note_states_window_and_officials_only():
-    """Clarity + honesty (user follow-up 2026-05-31): the banner must make the coverage cutoff
-    clear — the incident window is May 21-28, 2026, and GOING FORWARD only official statements
-    are added. It must NOT make the false 'no general news after May 28' claim: the frozen
-    archive itself carries 3 aftermath articles dated May 29-30 (CalMatters, Rafu Shimpo, Fox
-    News), so the cutoff is about FORWARD collection, not a content date-boundary. The date
-    range is anchored as a phrase ('21-28') so a 'May 21-27' typo can't slip through a bare
-    '28' substring (which also appears in '2026')."""
+def test_archive_note_states_window_and_cutoff_rationale():
+    """Clarity + honesty (user follow-up 2026-05-31): the banner must state the collection
+    window (May 21-26, 2026 = onset to the official all-clear) AND explain the cutoff — after
+    the all-clear, official statements only. Non-official news was gathered only during the
+    active emergency; once officials lifted the evacuation the conduit stops aggregating
+    general news (post-all-clear accountability/litigation is out of scope). The date range is
+    anchored as a phrase ('21-26') so a typo can't slip a bare '26'; 'all-clear' anchors the
+    cutoff explanation."""
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
     val = (m.group(1) if m else "").lower()
-    states_window = ("21–28" in val or "21-28" in val) and "2026" in val
-    officials_only = "official statements" in val and "going forward" in val
-    ok = states_window and officials_only
+    states_window = ("21–26" in val or "21-26" in val) and "2026" in val
+    explains_cutoff = "all-clear" in val and "official statements" in val
+    ok = states_window and explains_cutoff
     return {"passed": ok,
-            "details": "banner states 21-28 2026 window + officials-only going forward" if ok
-            else f"window={states_window} officials_only_fwd={officials_only}"}
+            "details": "banner states May 21-26 window + all-clear cutoff rationale" if ok
+            else f"window={states_window} explains_cutoff={explains_cutoff}"}

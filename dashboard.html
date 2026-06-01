@@ -373,7 +373,7 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-    .safety-strip-info { font-weight: 700; color: var(--sa-text); }
+    .safety-strip-info { font-weight: 700; color: var(--sa-text); display: flex; align-items: center; justify-content: center; min-height: 24px; }
     .safety-strip-sources {
       display: flex;
       flex-wrap: wrap;
@@ -392,10 +392,7 @@
       white-space: nowrap;
       display: inline-flex;
       align-items: center;
-      min-height: 32px;
-    }
-    @media (min-width: 600px) {
-      .safety-strip-sources a { min-height: 0; }
+      min-height: 24px;
     }
     .safety-strip-sources a:hover { text-decoration: underline; }
     .safety-strip-sep { color: var(--sa-text-3); }
@@ -1619,13 +1616,13 @@ var STRINGS = {
   "legend.evac.resolved": { en: "Former evac area" },
   "legend.shelter": { en: "Shelter" },
   "map.check_zone": { en: "Check Address (Official Tool)" },
-  "info.resolved.banner": { en: "Incident resolved {date} — all evacuations lifted. The shelters and school closures below are historical; for current information see ggcity.org/emergency. This dashboard remains live as a demonstration of the system." },
+  "info.resolved.banner": { en: "Resolved {date} — all evacuations lifted. Shelters and school closures below are historical; current info at ggcity.org/emergency. A live demonstration of the system." },
   "map.tooltip.evac": { en: "Evacuation zone" },
   "map.tooltip.you": { en: "You" },
   "news.statements.count": { en: "{n} official statement{s}" },
   "news.coverage": { en: "Coverage" },
   "news.feed.title": { en: "News & updates" },
-  "news.archive.note": { en: "Archived coverage — a snapshot of reporting on the May 21–28, 2026 incident (resolved May 26) and its immediate aftermath; a selection, not a complete or live record. This archive is now frozen — going forward, only official statements are added, not general news. For current information, see ggcity.org/emergency or call 911." },
+  "news.archive.note": { en: "Archived during the May 21–26, 2026 emergency — news gathered only while residents were evacuated, from the tank failure to the May 26 all-clear. A snapshot, not a complete or live record. After the all-clear: official statements only. Current info: ggcity.org/emergency or 911." },
   "news.situation.label": { en: "Current situation" },
   "news.type.official": { en: "🏛 Official" },
   "news.type.article": { en: "📰 Article" },
@@ -1737,8 +1734,6 @@ var STRINGS = {
   "info.rvOnly": { en: "RV only" },
   "info.schoolsClosed": { en: "School closures" },
   "info.allSchools": { en: "See all 12" },
-  "info.whoMade": { en: "Who made this" },
-  "info.builtBy": { en: "Built by volunteers Mike & Nancy. Not affiliated with OCFA, City of Garden Grove, or any agency. We collect no data." },
   "info.unofficial.seal": { en: "INFORMATIONAL · UNOFFICIAL" },
   "info.sourcesH": { en: "Sources & methodology" }
 };
@@ -2207,27 +2202,34 @@ function renderInfoTab() {
   html += '<div class="info-schools-grid" id="info-schools-grid"></div>';
   html += '</div>'; // end resources panel
 
-  // ABOUT panel — who made this, sources
+  // ABOUT panel — organized into consistent info-section blocks (matching Status/Resources):
+  // who made it, how it works (responsible-AI methodology surfaced, not buried), disclaimer +
+  // links, then the collapsed source list.
   html += '<div class="info-subpanel" id="info-subpanel-about" role="tabpanel" aria-labelledby="info-subtab-about">';
 
   // Who made this
-  html += '<div class="info-section"><div class="info-section-title">' + t("info.whoMade") + '</div></div>';
+  html += '<div class="info-section"><div class="info-section-title">' + t("info.about.title") + '</div></div>';
   html += '<div class="info-who-body">';
-  html += '<p>' + t("info.builtBy") + '</p>';
+  html += '<p>' + t("info.about.body") + '</p>';
   html += '<div class="info-seal">' + t("info.unofficial.seal") + '</div>';
-  html += '<p style="font-size:11px;color:var(--sa-text-3);line-height:1.4">' + t("disclosure.ai") + '</p>';
-  html += '<p style="font-size:12px;margin-top:8px"><a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>';
-  html += ' · <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>';
+  html += '<p style="font-size:12px;color:var(--sa-text-2);margin-top:8px">' + t("info.about.official") + '</p>';
   html += '</div>';
 
-  // Sources (collapsed)
-  html += '<details>';
-  html += '<summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>';
-  html += '<div class="info-who-body" style="padding-bottom:12px">';
+  // How it works — methodology & trust (surfaces the AI disclosure + pipeline + eval)
+  html += '<div class="info-section"><div class="info-section-title">' + t("info.method.title") + '</div></div>';
+  html += '<div class="info-who-body">';
+  html += '<p style="font-size:11px;color:var(--sa-text-3);line-height:1.4">' + t("disclosure.ai") + '</p>';
   html += '<p>' + t("info.method.pipeline") + '</p>';
   html += '<p>' + t("info.method.eval") + '</p>';
   html += '<p>' + t("info.method.disclaimer") + '</p>';
+  html += '<p style="font-size:12px;margin-top:8px">' +
+    '<a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>' +
+    ' · <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>';
   html += '</div>';
+
+  // Sources checked (collapsed — the full source list)
+  html += '<details>';
+  html += '<summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>';
   html += '<div id="info-source-list" style="padding:0 14px 12px"></div>';
   html += '</details>';
   html += '</div>'; // end about panel
