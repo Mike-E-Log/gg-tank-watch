@@ -1,8 +1,9 @@
-var CACHE_NAME = "gg-tank-v21";
+var CACHE_NAME = "gg-tank-v22";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
   "/config.json",
+  "/data/news_archive.json",
   "/manifest.json",
   "/lib/maplibre-gl.js",
   "/lib/maplibre-gl.css"

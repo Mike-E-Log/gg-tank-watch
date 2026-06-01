@@ -283,6 +283,7 @@
       opacity: 0; transition: opacity .2s ease; pointer-events: none;
     }
     .share-toast.show { opacity: 1; }
+    .news-archive-note { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); background: var(--sa-bg); color: var(--sa-text-2); font-size: 12px; line-height: 1.45; }
     .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); background: var(--sa-gold-2); }
     .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2); margin-bottom: 3px; }
     .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--sa-text); margin: 0; }
@@ -1477,6 +1478,7 @@
 
       <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
         <div class="news-subpanel active" id="news-subpanel-updates">
+          <div class="news-archive-note" data-i18n="news.archive.note"></div>
           <div id="news-situation" class="news-situation" hidden></div>
           <div class="news-filter-chips" id="news-filter-chips"></div>
           <div id="news-feed"></div>
@@ -1584,6 +1586,7 @@ var STRINGS = {
   "news.statements.count": { en: "{n} official statement{s}" },
   "news.coverage": { en: "Coverage" },
   "news.feed.title": { en: "News & updates" },
+  "news.archive.note": { en: "Archived coverage — not live. The reports below are from the May 2026 incident (now resolved). For current emergencies, see ggcity.org/emergency or call 911." },
   "news.situation.label": { en: "Current situation" },
   "news.type.official": { en: "🏛 Official" },
   "news.type.article": { en: "📰 Article" },
@@ -1850,6 +1853,18 @@ function fmtAbsDateTime(iso) {
   var time = d.toLocaleTimeString(currentLocale(), TIME_OPTS);
   return date + ", " + time;
 }
+function fmtAbsDateOnly(iso) {
+  if (!iso) return "";
+  var d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString(currentLocale(), { year: "numeric", month: "short", day: "numeric" });
+}
+// Archive items: honest absolute time. Verified publish time -> date+time; otherwise
+// date-only (no false precision, no "~"); no time at all when the date is unknown.
+function fmtArchiveWhen(it) {
+  if (!it.when) return "";
+  return it.confidence === "verified" ? fmtAbsDateTime(it.when) : fmtAbsDateOnly(it.when);
+}
 function yesNo(v) {
   if (v === true)  return '<span class="yes">' + t("common.yes") + '</span>';
   if (v === false) return '<span class="no">' + t("common.no") + '</span>';
@@ -2070,7 +2085,7 @@ function buildFeedCardsHtml(feed) {
     var badgeLabel = it.type === "official" ? t("news.badge.official")
                    : it.type === "video" ? t("news.badge.video")
                    : t("news.badge.article");
-    var when = it.when ? relativeTime(it.when) : "";
+    var when = it.isArchive ? fmtArchiveWhen(it) : (it.when ? relativeTime(it.when) : "");
     var isNewest = !!it.isNewest;
     var whenMs = it.when ? (now - new Date(it.when).getTime()) : Infinity;
     var isRecent = !isNewest && whenMs < 120 * 60 * 1000;
@@ -2554,10 +2569,23 @@ function render(snap) {
   (snap.official_statements || []).forEach(function(s) {
     feed.push({ when: s.time_iso || "", type: "official", source: s.agency || "—", text: s.text || "", url: s.source_url || "", isVideo: false, thumb: "" });
   });
-  (snap.videos || []).forEach(function(v) {
-    var isVid = !!(v.youtube_id) || v.is_video === true;
-    feed.push({ when: v.published_iso || "", type: isVid ? "video" : "article", source: v.outlet || "—", title: v.title || t("news.untitled"), url: v.url || "", isVideo: isVid, thumb: v.thumbnail_url || "" });
-  });
+  var coverage = (archiveCache && Array.isArray(archiveCache.items) && archiveCache.items.length)
+    ? archiveCache.items.map(function(it) {
+        var isVid = !!it.youtube_id || it.type === "video";
+        return { when: it.published_iso || "", type: isVid ? "video" : "article",
+                 source: it.outlet || "—", title: it.title || t("news.untitled"),
+                 url: it.url || "", isVideo: isVid,
+                 thumb: it.youtube_id ? ("https://i.ytimg.com/vi/" + it.youtube_id + "/hqdefault.jpg") : "",
+                 isArchive: true, confidence: it.published_iso_confidence || "" };
+      })
+    : (snap.videos || []).map(function(v) {
+        var isVid = !!(v.youtube_id) || v.is_video === true;
+        return { when: v.published_iso || "", type: isVid ? "video" : "article",
+                 source: v.outlet || "—", title: v.title || t("news.untitled"),
+                 url: v.url || "", isVideo: isVid, thumb: v.thumbnail_url || "",
+                 isArchive: false, confidence: "" };
+      });
+  coverage.forEach(function(it) { feed.push(it); });
   feed = curateNewsFeed(feed);
 
   lastFeed = feed;
@@ -2616,6 +2644,18 @@ function buildFeedHtml(feed, snap) {
 }
 
 /* ============ FETCH ORCHESTRATION ============ */
+var archiveCache = null;
+async function loadArchive() {
+  try {
+    var resp = await fetch("data/news_archive.json?t=" + Date.now(), {cache:"no-store"});
+    if (!resp.ok) throw new Error("news_archive.json HTTP " + resp.status);
+    archiveCache = await resp.json();
+  } catch (e) {
+    console.warn("archive load failed:", e);
+    archiveCache = null;  // render() falls back to snap.videos[]
+  }
+  return archiveCache;
+}
 async function loadConfig() {
   try {
     var resp = await fetch("config.json?t=" + Date.now(), {cache:"no-store"});
@@ -2652,7 +2692,8 @@ applyLang();
 // instead of re-fetching /config.json, so the page and the map can't show divergent
 // config and there's no fetch-vs-map-load race.
 var configReady = loadConfig();
-configReady.then(function() {
+var archiveReady = loadArchive();
+Promise.all([configReady, archiveReady]).then(function() {
   fetchStatus();
 });
 setInterval(fetchStatus, REFRESH_MS);
