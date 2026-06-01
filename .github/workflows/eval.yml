@@ -23,8 +23,12 @@ jobs:
         # a real snapshot to validate against, so produce one by running the
         # writer with sample facts. Also doubles as a smoke test that the
         # writer itself imports + runs end-to-end on a fresh checkout.
+        # The seed must read as a RESOLVED snapshot the data-guards accept:
+        # resolved/recovery headline + no midnight-UTC timestamps (which render
+        # a day early in Pacific). See eval/test_info_disclosures.py and
+        # eval/test_news_date_display.py.
         run: |
-          echo '{"tank_temp_f":100,"tank_crack_observed":true,"evacuation_residents":50000,"evacuation_lifted":false,"evacuation_expanded":false,"evacuation_area_sq_mi":9,"evacuation_boundary_text":"CI sample","status_headline":"CI seed","injuries":0,"official_statements":[{"agency":"CI","time_iso":"2026-05-25T00:00:00Z","text":"CI seed statement","source_url":"https://example.invalid/"}],"sources_checked":[{"url":"https://example.invalid/","title":"CI","fetched_iso":"2026-05-25T00:00:00Z"}],"schools_closed":["CI"]}' | python scripts/update_status.py
+          echo '{"tank_temp_f":100,"tank_crack_observed":true,"evacuation_residents":50000,"evacuation_lifted":false,"evacuation_expanded":false,"evacuation_area_sq_mi":9,"evacuation_boundary_text":"CI sample","status_headline":"Resolved: evacuations lifted; cleanup underway","injuries":0,"official_statements":[{"agency":"CI","time_iso":"2026-05-25T12:00:00Z","text":"CI seed statement","source_url":"https://example.invalid/"}],"sources_checked":[{"url":"https://example.invalid/","title":"CI","fetched_iso":"2026-05-25T12:00:00Z"}],"schools_closed":["CI"]}' | python scripts/update_status.py
 
       - name: Run eval suite (skip integration; no internet contract in CI)
         run: |
