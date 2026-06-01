@@ -2064,10 +2064,11 @@ function newsBaseKey(url) {
   return u.replace(/\/+$/, "");
 }
 
-// One clean feed: newest-first, collapse live-blog clutter (keep newest N per
-// base URL, officials never dropped), then officials-first while keeping the
-// globally-newest item flagged so the "Newest" badge tracks time, not position.
-var NEWS_MAX_PER_BASE = 2;
+// One clean feed: newest-first, then officials-first while keeping the globally-
+// newest item flagged so the "Newest" badge tracks time, not position. The frozen
+// archive shows every collected entry, so the per-base cap is effectively lifted
+// (was 2 to de-clutter live-blog runs in the live feed); officials never dropped.
+var NEWS_MAX_PER_BASE = 99;
 function curateNewsFeed(feed) {
   feed.sort(function(a, b) {
     var ta = a.when ? new Date(a.when).getTime() : 0;
