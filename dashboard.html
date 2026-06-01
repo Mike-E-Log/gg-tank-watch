@@ -348,6 +348,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       text-align: center;
       gap: 2px;
       padding: 5px 14px;
@@ -1624,7 +1625,7 @@ var STRINGS = {
   "news.statements.count": { en: "{n} official statement{s}" },
   "news.coverage": { en: "Coverage" },
   "news.feed.title": { en: "News & updates" },
-  "news.archive.note": { en: "Archived coverage — a snapshot of reporting captured during the May 2026 incident (now resolved); a selection, not a complete or live record. For current information, see ggcity.org/emergency or call 911." },
+  "news.archive.note": { en: "Archived coverage — a snapshot of reporting on the May 21–28, 2026 incident (resolved May 26) and its immediate aftermath; a selection, not a complete or live record. This archive is now frozen — going forward, only official statements are added, not general news. For current information, see ggcity.org/emergency or call 911." },
   "news.situation.label": { en: "Current situation" },
   "news.type.official": { en: "🏛 Official" },
   "news.type.article": { en: "📰 Article" },
@@ -2124,7 +2125,7 @@ function buildFeedCardsHtml(feed) {
     var badgeLabel = it.type === "official" ? t("news.badge.official")
                    : it.type === "video" ? t("news.badge.video")
                    : t("news.badge.article");
-    var when = it.isArchive ? fmtArchiveWhen(it) : (it.when ? relativeTime(it.when) : "");
+    var when = (it.isArchive || it.type === "official") ? fmtArchiveWhen(it) : (it.when ? relativeTime(it.when) : "");
     var isNewest = !!it.isNewest;
     var whenMs = it.when ? (now - new Date(it.when).getTime()) : Infinity;
     var isRecent = !isNewest && whenMs < 120 * 60 * 1000;
