@@ -2573,6 +2573,14 @@ function render(snap) {
   });
   var coverage = (archiveCache && Array.isArray(archiveCache.items) && archiveCache.items.length)
     ? archiveCache.items.map(function(it) {
+        // Historical official statements (May 21-28) render as official cards, same as the
+        // rolling status.json officials; the summary carries the statement text.
+        if (it.type === "official") {
+          return { when: it.published_iso || "", type: "official",
+                   source: it.outlet || "—", text: it.summary || it.title || "",
+                   url: it.url || "", isVideo: false, thumb: "",
+                   isArchive: true, confidence: it.published_iso_confidence || "" };
+        }
         var isVid = !!it.youtube_id || it.type === "video";
         return { when: it.published_iso || "", type: isVid ? "video" : "article",
                  source: it.outlet || "—", title: it.title || t("news.untitled"),
