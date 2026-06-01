@@ -1,6 +1,6 @@
 # GG Tank Watch
 
-**A single-page situational-awareness dashboard built during the May 2026 Garden Grove methyl methacrylate tank emergency** — a real, ongoing chemical incident that evacuated ~50,000 residents in a 9-square-mile zone of Orange County, California. I was a downwind-adjacent resident; I built this for myself.
+**A single-page situational-awareness dashboard I built during the May 2026 Garden Grove methyl methacrylate tank emergency** — a real chemical incident that evacuated ~50,000 residents in a 9-square-mile zone of Orange County, California. I was a downwind-adjacent resident; I built it for myself. The emergency resolved on May 26, 2026, and this is now a frozen historical archive of it — no longer updated.
 
 [![Status](https://img.shields.io/badge/status-shipped-success)](#)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -63,11 +63,11 @@ A single HTML file with no framework and no build step, serving a safety-critica
 | | |
 |---|---|
 | **Single glance** | Hero status board: the current-situation lead plus the key facts — evacuation status, residents affected, last verified update — without scrolling |
-| **Live map** | MapLibre GL + OpenFreeMap vector tiles (light / dark). The evacuation-zone boundary, the GKN Aerospace facility marker, shelter locations, and live NOAA wind direction |
+| **Map** | MapLibre GL + OpenFreeMap vector tiles (light / dark). The evacuation-zone boundary, the GKN Aerospace facility marker, and shelter locations |
 | **Official sources** | Routes to the authoritative channels — ggcity.org/emergency, OCFA, Genasys EVAC, OC Alert — with the reminder that no single source should be your only one |
 | **Update banner** | URGENT (red, pulsing, beep) for act-now changes; UPDATE (amber, no beep) for informational. Click → scrolls sidebar to highlight the newest statement |
 | **Statements sidebar** | Sticky, scrollable, newest-first, with `Newest` + `Recent` badges. Source links on each |
-| **Auto-refresh** | Dashboard polls `status.json` every 30 s. A contributor runs the refresh job on demand — roughly every 20–30 min during the active incident — to re-gather facts and rewrite `status.json` (see [Data sync](#data-sync--how-statusjson-stays-fresh)). Wind refreshes every 5 min from NOAA's free API |
+| **Update mechanism (archived)** | During the incident the dashboard polled `status.json` every 30 s, and a contributor ran the refresh job on demand — roughly every 20–30 min — to re-gather facts and rewrite `status.json` (see [Data sync](#data-sync--how-statusjson-stays-fresh)). The pipeline is now frozen |
 | **Theme** | Light default with dark toggle, saved per browser |
 
 ## Coverage Archive (News tab)
@@ -76,10 +76,10 @@ The News tab is a resolved-state **Coverage Archive** — a historical record of
 
 It is honest by construction:
 
-- **Real sources, no fabrication.** Coverage is read from [`data/news_archive.json`](data/news_archive.json) — 39 items (29 articles, 10 videos) across 17 national, Los Angeles, and Orange County outlets, each carrying per-item provenance (search query, fetch status, known caveats). The full verification method, queries, outlets consulted, and caveats are written up in [`data/NEWS_ARCHIVE_AUDIT.md`](data/NEWS_ARCHIVE_AUDIT.md). [`eval/test_provenance.py`](eval/test_provenance.py) fails the build if a statement's source URL wasn't actually fetched.
+- **Real sources, no fabrication.** Coverage is read from [`data/news_archive.json`](data/news_archive.json) — 92 items (56 articles, 23 videos, 13 official statements) across 44 outlets, each carrying per-item provenance (search query, fetch status, known caveats). The verification method, queries, and caveats from the initial compilation are written up in [`data/NEWS_ARCHIVE_AUDIT.md`](data/NEWS_ARCHIVE_AUDIT.md); the per-item provenance in the JSON is authoritative for the full frozen set. [`eval/test_provenance.py`](eval/test_provenance.py) fails the build if a statement's source URL wasn't actually fetched, and [`eval/test_readme_archive_count.py`](eval/test_readme_archive_count.py) fails it if these counts drift from the data.
 - **No false time precision.** Most publish timestamps are approximate (search surfaces the date, rarely the minute), so archive items render **date-only** unless the exact publish time is verified. A resolved record never drifts to "3 months ago," and it never shows a precision it doesn't have.
 - **English only, by design.** Safety copy is never surfaced in a language we can't reliably verify; residents with limited English are routed to officials, who publish their own verified translations ([`docs/LANGUAGE_ACCESS.md`](docs/LANGUAGE_ACCESS.md), guarded by `eval/test_language_access.py`).
-- **Resolved, and it says so.** The incident resolved 2026-05-28. The archive note, the global status, and the absolute dates leave no room to misread it as live.
+- **Resolved, and it says so.** The incident resolved May 26, 2026. The archive note, the global status, and the absolute dates leave no room to misread it as live.
 
 ## Why I built it
 
@@ -109,6 +109,8 @@ The emergency was multi-day and evolving. The available signals — news live-bl
 │  start_dashboard.bat  → python -m http.server + opens browser       │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+
+> **Historical pipeline** — shown as it ran during the May 2026 emergency. It is now frozen: the dashboard no longer polls, the refresh job is retired, and the NOAA wind fetch was removed (single-station readings were unreliable).
 
 **No backend, no database, no auth, no build step.** Two files of real code (Python writer + HTML/JS reader), JSON as the message bus, browser as the runtime. The whole thing is double-clickable.
 

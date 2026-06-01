@@ -15,8 +15,11 @@ FORBIDDEN = ["official source", "verified", "government"]
 
 def _en_string(key):
     text = DASHBOARD.read_text(encoding="utf-8")
-    m = re.search(r'"' + re.escape(key) + r'":\s*\{\s*en:\s*"([^"]*)"', text)
-    return m.group(1) if m else ""
+    # i18n values use either double or single quotes (e.g. roads.defer / shelters.cta embed
+    # double-quoted <a href="..."> so they are single-quoted). Match the opening quote and
+    # capture up to its matching close.
+    m = re.search(r'"' + re.escape(key) + r'":\s*\{\s*en:\s*(["\'])(.*?)\1', text)
+    return m.group(2) if m else ""
 
 
 def test_resolved_note_concise_routes_and_discloses():
@@ -29,10 +32,13 @@ def test_resolved_note_concise_routes_and_discloses():
     historical = "historical" in val.lower()
     routes = "ggcity.org/emergency" in val
     no_overclaim = not any(b in val.lower() for b in FORBIDDEN)
-    ok = concise and shows_date and historical and routes and no_overclaim
+    # Archive pivot (T10): drop the "A live demonstration of the system" tail — an archive is
+    # not a live demo, and the phrase reads as if the app is still actively running.
+    no_live_demo = "live demonstration" not in val.lower()
+    ok = concise and shows_date and historical and routes and no_overclaim and no_live_demo
     return {"passed": ok,
             "details": f"len={len(val)} concise={concise} date={shows_date} historical={historical} "
-                       f"routes={routes} no_overclaim={no_overclaim}"}
+                       f"routes={routes} no_overclaim={no_overclaim} no_live_demo={no_live_demo}"}
 
 
 def test_situation_headline_concise_and_resolved():
@@ -69,3 +75,53 @@ def test_about_panel_organized_into_sections():
     }
     ok = all(checks.values())
     return {"passed": ok, "details": str(checks)}
+
+
+def test_method_pipeline_past_tense():
+    """T10: the data-pipeline description reads in PAST tense (the incident is resolved and
+    polling has been frozen since Batch 1). 'was updated' / 'was cross-referenced', not present."""
+    val = _en_string("info.method.pipeline")
+    low = val.lower()
+    past = "was updated" in low or "was cross-referenced" in low
+    not_present = "status updated every" not in low
+    return {"passed": past and not_present,
+            "details": f"past_tense={past} no_present_tense={not_present}"}
+
+
+def test_sources_checked_uses_absolute_date():
+    """T10 (deferred fix): the 'sources checked' age renders an ABSOLUTE date (fmtAbsDateOnly),
+    not a drifting relativeTime 'N days ago' — a frozen archive must not age its own provenance."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    uses_abs = "fmtAbsDateOnly(s.fetched_iso)" in text
+    no_relative = "relativeTime(s.fetched_iso)" not in text
+    return {"passed": uses_abs and no_relative,
+            "details": f"uses_fmtAbsDateOnly={uses_abs} no_relativeTime={no_relative}"}
+
+
+def test_tank_facts_past_tense():
+    """T10: tank-state labels read past tense (the crack relieved pressure / temp stabilized
+    DURING the resolved incident), not as an ongoing process."""
+    crack = _en_string("info.tankCrackY").lower()
+    temp = _en_string("info.tankTempV").lower()
+    ok = ("relieved" in crack and "relieving" not in crack
+          and "stabilized" in temp and "stabilizing" not in temp)
+    return {"passed": ok, "details": f"crack={crack!r} temp={temp!r}"}
+
+
+def test_shelters_cta_no_live_framing():
+    """T10: the shelters CTA still routes to officials but must NOT call the list 'Live' — it is
+    a historical snapshot from the resolved incident."""
+    val = _en_string("info.shelters.cta")
+    routes = "ggcity.org/emergency" in val
+    no_live = "live list" not in val.lower()
+    return {"passed": routes and no_live, "details": f"routes={routes} no_live_list={no_live}"}
+
+
+def test_info_routing_strings_past_tense():
+    """T10: the remaining Info routing strings drop active-emergency present tense
+    (liveList 'Live list' -> records; roads.defer 'are closed' -> 'were closed')."""
+    live_list = _en_string("info.liveList").lower()
+    roads = _en_string("info.roads.defer").lower()
+    ok = "live list" not in live_list and "are closed" not in roads
+    return {"passed": ok,
+            "details": f"liveList_has_'live list'={'live list' in live_list} roads_has_'are closed'={'are closed' in roads}"}

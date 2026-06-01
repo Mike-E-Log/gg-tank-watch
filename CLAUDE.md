@@ -2,9 +2,9 @@
 
 ## Portfolio Framing
 
-This project is a **live demonstration of responsible AI deployment in a safety-critical domain**, built for the Anthropic Fellows Program portfolio (rolling, May/July 2026 cohorts).
+This project is a **frozen historical archive of a resolved May 2026 emergency that demonstrates responsible AI deployment in a safety-critical domain**, built for the Anthropic Fellows Program portfolio (rolling, May/July 2026 cohorts).
 
-The thesis: responsible AI and helpful AI are the same lane. GG Tank Watch serves ~50,000 evacuated residents during a real chemical emergency by amplifying official information — and every design choice demonstrates an Anthropic safety principle in production, not in theory.
+The thesis: responsible AI and helpful AI are the same lane. GG Tank Watch was built to serve ~50,000 evacuated residents during a real chemical emergency by amplifying official information — and every design choice demonstrates an Anthropic safety principle in production, not in theory. It is now a frozen historical archive of that resolved incident.
 
 ## Anthropic Safety Principles (BINDING — governs all decisions)
 

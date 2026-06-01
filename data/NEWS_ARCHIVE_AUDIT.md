@@ -4,6 +4,8 @@
 **Method:** WebSearch + WebFetch verification (live, 2026-05-25)
 **Knowledge-cutoff caveat:** YES — this incident postdates the assistant's training cutoff (Jan 2026). Every fact below is sourced from live web search/fetch performed on 2026-05-25, **not** from model memory.
 
+> **Update (2026-06-01):** this document records the **initial** compilation method and source set. The frozen archive was later expanded to **92 items (56 articles, 23 videos, 13 official statements) across 44 outlets**; the per-item `provenance` in [`news_archive.json`](news_archive.json), plus its top-level `audit` and `policy` blocks, are the authoritative machine-readable record for the current frozen set.
+
 ---
 
 ## 1. Bottom line: is the coverage real?

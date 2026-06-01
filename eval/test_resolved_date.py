@@ -23,9 +23,16 @@ def test_resolved_iso_is_may26_pacific():
 
 def test_meta_resolved_date_corrected():
     t = DASH.read_text(encoding="utf-8")
-    ok = "resolved May 26" in t and "resolved May 28" not in t
+    # Archive pivot (T9): the meta/OG/twitter/share copy now frames the incident as the
+    # "May 21-26, 2026" window (ending at the verified May 26 all-clear) rather than a literal
+    # "resolved May 26" phrase. The old May 28 drift must never reappear in user-facing copy.
+    # (A code comment ~2234 legitimately mentions "May 28" while explaining the fix, so this
+    # targets the specific drift phrases, not the bare date.)
+    no_may28_drift = "resolved May 28" not in t and "May 28, 2026" not in t
+    frames_window = "21–26" in t or "21-26" in t or "resolved May 26" in t
+    ok = no_may28_drift and frames_window
     return {"passed": ok,
-            "details": f"meta has 'resolved May 26'={'resolved May 26' in t}; still has 'resolved May 28'={'resolved May 28' in t}"}
+            "details": f"no_may28_drift={no_may28_drift} frames_window={frames_window}"}
 
 
 def test_resolved_banner_derives_date_in_pacific():
