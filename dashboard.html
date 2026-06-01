@@ -2077,9 +2077,13 @@ function renderFilteredFeed() {
 
 // Collapse a live-blog URL to its base so different /entry/<id>/ fragments
 // (ABC7 running blogs) share one key. Query/hash stripped; non-live-blog URLs
-// (YouTube, NBC video pages) keep their full path and stay distinct.
+// (NBC video pages) keep their full path and stay distinct. YouTube clips all
+// live at /watch and differ only by ?v=, so they must be keyed by video id —
+// stripping the query would otherwise collapse every distinct video into one.
 function newsBaseKey(url) {
   if (!url) return "";
+  var yt = url.match(/[?&]v=([\w-]{11})/);
+  if (yt) return "youtube:" + yt[1];
   var u = url.split("#")[0].split("?")[0];
   u = u.replace(/\/entry\/[^/]+\/?$/, "/");
   return u.replace(/\/+$/, "");
