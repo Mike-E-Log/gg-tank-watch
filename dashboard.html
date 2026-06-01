@@ -291,6 +291,8 @@
     .news-situation { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); background: var(--sa-gold-2); }
     .news-situation-label { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2); margin-bottom: 3px; }
     .news-situation-text { font-size: 13px; line-height: 1.45; color: var(--sa-text); margin: 0; }
+    .news-situation-list { margin: 0; padding-left: 16px; }
+    .news-situation-list li { font-size: 13px; line-height: 1.45; color: var(--sa-text); margin: 0 0 2px; }
     .info-roads-defer { font-size: 12px; color: var(--sa-text-2); line-height: 1.45; }
     .info-roads-defer a { color: var(--sa-celadon); }
 
@@ -2613,9 +2615,27 @@ function render(snap) {
   var sitEl = $("news-situation");
   if (sitEl) {
     if (sitText) {
-      sitEl.innerHTML = '<div class="news-situation-label"></div><p class="news-situation-text"></p>';
-      sitEl.querySelector(".news-situation-label").textContent = t("news.situation.label");
-      sitEl.querySelector(".news-situation-text").textContent = sitText;
+      sitEl.innerHTML = "";
+      var sitLabel = document.createElement("div");
+      sitLabel.className = "news-situation-label";
+      sitLabel.textContent = t("news.situation.label");
+      sitEl.appendChild(sitLabel);
+      var sitPoints = sitText.split(/[.;]\s+/).map(function (s) { return s.replace(/[.;]+$/, "").trim(); }).filter(Boolean);
+      if (sitPoints.length >= 2) {
+        var sitList = document.createElement("ul");
+        sitList.className = "news-situation-list";
+        sitPoints.forEach(function (p) {
+          var li = document.createElement("li");
+          li.textContent = p;
+          sitList.appendChild(li);
+        });
+        sitEl.appendChild(sitList);
+      } else {
+        var sitP = document.createElement("p");
+        sitP.className = "news-situation-text";
+        sitP.textContent = sitText;
+        sitEl.appendChild(sitP);
+      }
       sitEl.hidden = false;
     } else {
       sitEl.hidden = true;
