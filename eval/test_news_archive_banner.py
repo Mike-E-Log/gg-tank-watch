@@ -49,10 +49,11 @@ def test_archive_note_discloses_snapshot():
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
     val = (m.group(1) if m else "").lower()
-    discloses = "snapshot" in val and "not a complete" in val
+    not_complete = "not complete" in val or "not a complete" in val
+    discloses = "snapshot" in val and not_complete
     return {"passed": discloses,
             "details": "banner discloses snapshot + non-completeness" if discloses
-            else f"banner over-implies completeness: snapshot={'snapshot' in val} not_complete={'not a complete' in val}"}
+            else f"banner over-implies completeness: snapshot={'snapshot' in val} not_complete={not_complete}"}
 
 
 def test_archive_note_states_window_and_cutoff_rationale():
@@ -74,3 +75,20 @@ def test_archive_note_states_window_and_cutoff_rationale():
     return {"passed": ok,
             "details": "banner states May 21-26 window + lifted-evacuation cutoff, no 'all-clear'" if ok
             else f"window={states_window} explains_cutoff={explains_cutoff} forbids_jargon={forbids_jargon}"}
+
+
+def test_archive_note_structured_header_and_bullets():
+    """Layout (user follow-up 2026-06-01): the archive note is organized into a labeled header
+    + bulleted lines, not one run-on block of back-to-back sentences. Rendered as HTML via
+    data-i18n-html so the structure survives localization; guards against silently collapsing
+    back to a single paragraph."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    renders_html = 'data-i18n-html="news.archive.note"' in text
+    m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
+    val = m.group(1) if m else ""
+    has_bullets = val.count("<li>") >= 2
+    has_header = "archive-note-h" in val
+    ok = renders_html and has_bullets and has_header
+    return {"passed": ok,
+            "details": "archive note = labeled header + bulleted lines (data-i18n-html)" if ok
+            else f"renders_html={renders_html} bullets={val.count('<li>')} header={has_header}"}
