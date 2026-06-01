@@ -624,7 +624,7 @@
     .maplibregl-ctrl-group button { width: 40px; height: 40px; }
     .map-legend {
       position: absolute;
-      bottom: 72px; /* clear the action button band (~68px) so the full-width CTA doesn't bury the legend on mobile */
+      bottom: 8px; /* corner inset; the bottom location-checker CTA this used to clear was removed in the archive pivot (#86) */
       left: 8px;
       background: var(--sa-surface);
       border: 1px solid var(--sa-border);
