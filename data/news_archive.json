@@ -1682,7 +1682,7 @@
   "policy": {
     "frozen": true,
     "window": "2026-05-21/2026-05-26",
-    "collection_going_forward": "officials-only",
-    "note": "This Coverage Archive is the FROZEN historical record of the Garden Grove GKN Aerospace incident. Independent news was collected only during the active emergency -- from the May 21 tank failure to the May 26 all-clear, when officials lifted all evacuations. After the all-clear, only official statements are retained; collection going forward is officials-only, arriving via the rolling status.json official_statements thread. The conduit stops aggregating general news once residents are safe and routes to authoritative sources -- it is not a litigation/op-ed aggregator. Post-all-clear accountability and litigation coverage is intentionally out of scope."
+    "collection_ended": "2026-05-27T02:30:00Z",
+    "note": "This Coverage Archive is the FROZEN historical record of the Garden Grove GKN Aerospace incident. Independent news was collected only during the active emergency -- from the May 21 tank failure to the May 26 all-clear, when officials lifted all evacuations. Collection ended at the all-clear; nothing was added after that boundary, official statements included. The conduit stopped aggregating general news once residents were safe and routed to authoritative sources -- it is not a litigation/op-ed aggregator. Post-all-clear accountability and litigation coverage is intentionally out of scope."
   }
 }
