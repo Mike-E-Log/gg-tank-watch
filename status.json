@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-06-02T04:08:32Z",
+  "last_updated_iso": "2026-06-02T07:11:54Z",
   "data_as_of_iso": "2026-05-27T02:30:00Z",
-  "next_check_at_iso": "2099-01-01T00:00:00Z",
-  "stale_after_iso": "2099-01-01T00:00:00Z",
+  "next_check_at_iso": "2026-06-02T07:41:54Z",
+  "stale_after_iso": "2026-05-27T03:10:00Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
