@@ -89,7 +89,7 @@ def test_archive_note_current_line_tightened():
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
     val = m.group(1) if m else ""
-    tight = "Current info: ggcity.org/emergency or 911" in val
+    tight = "Current info: 911 or ggcity.org/emergency" in val
     no_verbose = "For current information" not in val
     ok = bool(val) and tight and no_verbose
     return {"passed": ok,
