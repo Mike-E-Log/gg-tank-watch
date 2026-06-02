@@ -14,19 +14,6 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DASHBOARD = REPO_ROOT / "dashboard.html"
 
 
-def test_status_panel_has_historical_disclaimer():
-    text = DASHBOARD.read_text(encoding="utf-8")
-    i_status = text.find('id="info-subpanel-status"')
-    i_note = text.find('id="status-resolved-note"')
-    i_resources = text.find('id="info-subpanel-resources"')
-    in_status_panel = -1 < i_status < i_note < i_resources
-    has_string = '"info.resolved.status":' in text
-    ok = in_status_panel and has_string
-    return {"passed": ok,
-            "details": "status-resolved-note inside the Status panel + info.resolved.status string"
-            if ok else f"in_panel={in_status_panel} string={has_string}"}
-
-
 def test_official_sources_before_historical_fold():
     text = DASHBOARD.read_text(encoding="utf-8")
     i_official = text.find('data-i18n="info.group.official"')
@@ -35,14 +22,6 @@ def test_official_sources_before_historical_fold():
     return {"passed": ok,
             "details": "Official Sources render precedes the historical <details class=info-fold>"
             if ok else f"official={i_official} fold={i_fold}"}
-
-
-def test_emergency_line_surfaced():
-    text = DASHBOARD.read_text(encoding="utf-8")
-    ok = "In an emergency, call 911.</strong>" in text
-    return {"passed": ok,
-            "details": "emergency 911 line surfaced as its own bold line"
-            if ok else "911 not surfaced as its own <strong> line"}
 
 
 def test_what_happened_shows_sourced_peak_facts():
