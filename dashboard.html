@@ -1719,10 +1719,13 @@ var STRINGS = {
   /* ===== INFO TAB i18n ===== */
   "info.tankCrack": { en: "Crack observed" },
   "info.tankCrackY": { en: "Yes — relieved pressure" },
-  "info.tankTemp": { en: "Tank temperature" },
+  "info.tankTemp": { en: "Peak tank temperature" },
   "info.tankTempV": { en: "Stabilized" },
-  "info.evacResidents": { en: "Residents in zone" },
-  "info.evacBoundary": { en: "Boundary" },
+  "info.evacResidents": { en: "Peak evacuation" },
+  "info.evacBoundary": { en: "Evacuation zone (peak)" },
+  "info.tankTempArchive": { en: "~100°F (gauge max), then stabilized" },
+  "info.peakEvac": { en: "~50,000 people" },
+  "info.zonePeak": { en: "~9 sq mi: Garden Grove + Anaheim, Buena Park, Cypress, Stanton, Westminster" },
   "info.whereToGo": { en: "Where to go · nearest shelters" },
   "info.allShelters": { en: "All 9 shelters" },
   "info.liveList": { en: "Shelter records at ggcity.org/emergency" },
@@ -2195,9 +2198,11 @@ function renderInfoTab() {
   // Incident status section
   html += '<div class="info-section"><div class="info-section-title">' + t("info.group.status") + '</div></div>';
   html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankCrack") + '</span><span class="info-kv-val" id="info-crack-val">--</span></div>';
-  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankTemp") + '</span><span class="info-kv-val sa-mono" id="info-temp-val">--</span></div>';
-  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacResidents") + '</span><span class="info-kv-val sa-mono" id="info-residents-val">--</span></div>';
-  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val" id="info-boundary-val" style="font-size:11px;max-width:55%;text-align:right">--</span></div>';
+  // Peak facts are STATIC archive copy sourced from timeline.json (the resolved snapshot
+  // clears temp_f/residents/boundary_text, so binding to it would show a misleading 0/--).
+  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankTemp") + '</span><span class="info-kv-val">' + t("info.tankTempArchive") + '</span></div>';
+  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacResidents") + '</span><span class="info-kv-val">' + t("info.peakEvac") + '</span></div>';
+  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val" style="font-size:11px;text-align:right">' + t("info.zonePeak") + '</span></div>';
   html += '</div>'; // end status panel
 
   // RESOURCES panel — shelters (+ community + official) first, then school closures
@@ -2251,7 +2256,6 @@ function renderInfoTab() {
 
 function updateInfoData(snap) {
   var tank = snap.tank || {};
-  var evac = snap.evacuation || {};
 
   // Resolved-state historical banner atop Resources (status-driven so it doesn't
   // race the config-driven renderResources()).
@@ -2275,15 +2279,6 @@ function updateInfoData(snap) {
 
   var crackEl = $("info-crack-val");
   if (crackEl) crackEl.innerHTML = tank.crack_observed ? '<span class="yes">' + t("info.tankCrackY") + '</span>' : "—";
-
-  var tempEl = $("info-temp-val");
-  if (tempEl) tempEl.textContent = (tank.temp_f != null) ? tank.temp_f + "°F · " + t("info.tankTempV") : "—";
-
-  var resEl = $("info-residents-val");
-  if (resEl) resEl.textContent = fmtNumber(evac.residents);
-
-  var boundEl = $("info-boundary-val");
-  if (boundEl) boundEl.textContent = evac.boundary_text || "—";
 
   // Schools
   var schoolsGrid = $("info-schools-grid");
