@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-06-02T01:07:45Z",
+  "last_updated_iso": "2026-06-02T04:08:32Z",
   "data_as_of_iso": "2026-05-27T02:30:00Z",
   "next_check_at_iso": "2099-01-01T00:00:00Z",
   "stale_after_iso": "2099-01-01T00:00:00Z",
@@ -33,47 +33,52 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-06-02T01:07:33Z"
+      "fetched_iso": "2026-06-02T04:08:00Z"
     },
     {
       "url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident",
       "title": "GKN Aerospace HazMat incident | Orange County",
-      "fetched_iso": "2026-06-02T01:07:33Z"
+      "fetched_iso": "2026-06-02T04:08:00Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
       "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-06-02T01:07:33Z"
+      "fetched_iso": "2026-06-02T04:08:00Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
-      "fetched_iso": "2026-06-02T01:07:33Z"
+      "fetched_iso": "2026-06-02T04:08:00Z"
     },
     {
-      "url": "https://www.cbsnews.com/losangeles/news/orange-county-residents-file-lawsuit-gkn-aerospace-chemical-tank/",
-      "title": "Dozens of Orange County residents file lawsuit against GKN Aerospace - CBS LA",
-      "fetched_iso": "2026-06-02T01:07:33Z"
+      "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
+      "title": "California Senate passes SB 954, rein in industrial exemptions after Garden Grove hazmat crisis",
+      "fetched_iso": "2026-06-02T04:08:00Z"
     },
     {
       "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
       "title": "GKN Aerospace chemical leak exposes regulatory gaps - CalMatters",
-      "fetched_iso": "2026-06-02T01:07:33Z"
+      "fetched_iso": "2026-06-02T04:08:00Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
       "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed - Voice of OC",
-      "fetched_iso": "2026-06-02T01:07:33Z"
+      "fetched_iso": "2026-06-02T04:08:00Z"
     },
     {
-      "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
-      "title": "California Senate passes SB 954 - New Santa Ana",
-      "fetched_iso": "2026-06-02T01:07:33Z"
+      "url": "https://ktla.com/news/orange-county/garden-grove-chemical-scare-gkn-aerospace/",
+      "title": "Garden Grove residents call for GKN Aerospace shutdown after chemical scare - KTLA",
+      "fetched_iso": "2026-06-02T04:08:00Z"
     },
     {
-      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
-      "title": "Criminal investigation expands into chemical tank crisis in Garden Grove - NBC LA",
-      "fetched_iso": "2026-06-02T01:07:33Z"
+      "url": "https://laist.com/news/climate-environment/whats-next-chemical-tank-plant-garden-grove-cleanup-lawsuits-concerns-residents-orange-county",
+      "title": "LAist: Whats next for Garden Grove chemical tank plant - cleanup lawsuits",
+      "fetched_iso": "2026-06-02T04:08:00Z"
+    },
+    {
+      "url": "https://lamag.com/news/outraged-residents-of-garden-grove-sue-gkn-aerospace-over-chemical-tank-failure/",
+      "title": "Outraged Residents of Garden Grove Sue GKN Aerospace Over Chemical Tank Failure - LA Mag",
+      "fetched_iso": "2026-06-02T04:08:00Z"
     }
   ],
   "schools_closed": [
