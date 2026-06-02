@@ -301,10 +301,6 @@
       opacity: 0; transition: opacity .2s ease; pointer-events: none;
     }
     .share-toast.show { opacity: 1; }
-    .news-archive-note { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); background: var(--sa-bg); color: var(--sa-text-2); font-size: 12px; line-height: 1.45; }
-    .archive-note-h { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2); margin-bottom: 5px; }
-    .archive-note-list { margin: 0 0 5px; padding-left: 16px; }
-    .archive-note-list li { margin: 0 0 2px; }
     .info-roads-defer { font-size: 12px; color: var(--sa-text-2); line-height: 1.45; }
     .info-roads-defer a { color: var(--sa-celadon); }
 
@@ -610,7 +606,6 @@
 
     /* ===== MAP PANEL ===== */
     #panel-map { overflow: hidden; display: flex; flex-direction: column; }
-    .map-historical-note { margin: 8px; }
     .map-outer {
       position: relative;
       flex: 1;
@@ -1314,21 +1309,15 @@
     }
     .info-shelter-dir:hover { text-decoration: underline; }
     .info-schools-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px;
+      display: flex;
+      flex-direction: column;
       padding: 0 14px 10px;
     }
-    @media (min-width: 768px) { .info-schools-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (min-width: 1000px) { .info-schools-grid { grid-template-columns: repeat(4, 1fr); } }
     .info-school-card {
-      background: var(--sa-surface);
-      border: 1px solid var(--sa-border);
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--sa-text);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--sa-border);
+      font-size: 13px;
+      color: var(--sa-text-2);
     }
     .info-seal {
       display: inline-flex;
@@ -1474,34 +1463,13 @@
     <div class="banners" id="banners" aria-live="assertive" aria-atomic="false"></div>
 
     <div class="app-chrome">
-    <section class="hero-status" id="hero">
-      <div class="hero-status-row">
-        <div class="hero-status-item">
-          <span class="hero-status-label" data-i18n="hero.status.evacuation">Evacuation</span>
-          <span class="hero-status-value" id="hero-evac-status">--</span>
-        </div>
-        <div class="hero-status-item">
-          <span class="hero-status-label" data-i18n="hero.status.residents">Residents affected</span>
-          <span class="hero-status-value" id="hero-res-count">--</span>
-        </div>
-        <div class="hero-status-item">
-          <span class="hero-status-label" data-i18n="hero.status.tankTemp">Tank temp</span>
-          <span class="hero-status-value" id="hero-tank-temp">--</span>
-        </div>
-        <div class="hero-status-item">
-          <span class="hero-status-label" data-i18n="hero.status.day">Day</span>
-          <span class="hero-status-value" id="hero-day-counter">--</span>
-        </div>
-      </div>
-    </section>
-
-
     <div class="safety-strip" role="note">
       <span class="safety-strip-info">
         <span data-i18n="safety.strip.info">Informational only &#x2014; not official.</span>
         <span class="safety-strip-sep">&#xB7;</span>
         <a class="safety-strip-terms" href="terms.html" data-i18n="safety.strip.terms">Terms</a>
       </span>
+      <span id="banner-resolved" class="safety-strip-resolved"></span>
       <div class="safety-strip-sources">
         <span data-i18n="safety.strip.route">Current info:</span>
         <a href="tel:911">911</a>
@@ -1518,7 +1486,6 @@
     <!-- ===== TAB CONTENT ===== -->
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
-        <div class="resolved-note map-historical-note" role="note" data-i18n="map.historical">Historical evacuation zone · orders lifted May 26, 2026</div>
         <div class="map-outer" id="map-outer">
           <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations marked."></div>
           <div class="map-legend" role="group" aria-label="Map legend">
@@ -1532,7 +1499,6 @@
 
       <div class="tab-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news">
         <div class="news-subpanel active" id="news-subpanel-updates">
-          <div class="news-archive-note" data-i18n-html="news.archive.note"></div>
           <div class="news-filter-chips" id="news-filter-chips"></div>
           <div id="news-feed"></div>
         </div>
@@ -1597,7 +1563,6 @@ var STRINGS = {
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
   "topbar.archive": { en: "ARCHIVE" },
   "topbar.archive.title": { en: "Frozen historical record of the May 21–26, 2026 emergency. For current info, see ggcity.org/emergency." },
-  "map.historical": { en: "Historical evacuation zone · orders lifted May 26, 2026" },
   "archive.label": { en: "Historical archive · May 21–26, 2026" },
   "safety.strip.info": { en: "Informational only — not official." },
   "safety.strip.official": { en: "Official source:" },
@@ -1605,14 +1570,6 @@ var STRINGS = {
   "safety.strip.route": { en: "Current info:" },
   "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with ggcity.org/emergency or 911." },
   "hero.severity.label": { en: "Incident severity:" },
-  "hero.status.evacuation": { en: "Evacuation" },
-  "hero.status.residents": { en: "Residents affected" },
-  "hero.status.tankTemp": { en: "Tank temp" },
-  "hero.status.day": { en: "Day" },
-  "hero.status.active": { en: "Active" },
-  "hero.status.lifted": { en: "Lifted" },
-  "hero.status.statusLabel": { en: "Status" },
-  "hero.status.resolved": { en: "Resolved" },
   "hero.summary.loading": { en: "Loading current status…" },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
   "hero.res.label": { en: "residents in evacuation zone" },
@@ -1620,15 +1577,13 @@ var STRINGS = {
   "legend.evac": { en: "Evac zone" },
   "legend.evac.resolved": { en: "Former evac area" },
   "legend.shelter": { en: "Shelter" },
-  "info.resolved.banner": { en: "Resolved {date} — all evacuations lifted. Shelters and school closures below are historical; current information at ggcity.org/emergency." },
-  "info.resolved.status": { en: 'Resolved {date} — all evacuations lifted. This is a historical snapshot, not live; current info: <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.' },
+  "info.resolved.banner": { en: "Resolved {date} — all evacuations lifted. Historical archive." },
   "info.historical.title": { en: "Historical resources" },
   "map.tooltip.evac": { en: "Evacuation zone" },
   "map.tooltip.you": { en: "You" },
   "news.statements.count": { en: "{n} official statement{s}" },
   "news.coverage": { en: "Coverage" },
   "news.feed.title": { en: "News & updates" },
-  "news.archive.note": { en: "<span class='archive-note-h'>News archive · May 21–26, 2026 emergency</span><ul class='archive-note-list'><li>A snapshot — not complete</li><li>A frozen record — not live</li></ul>" },
   "news.type.official": { en: "🏛 Official" },
   "news.type.article": { en: "📰 Article" },
   "news.type.video": { en: "▶ Video" },
@@ -1659,10 +1614,8 @@ var STRINGS = {
   "info.method.title": { en: "Methodology & trust" },
   "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status was updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact was cross-referenced against multiple sources before publishing." },
   "info.method.eval": { en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests and LLM-as-judge rubrics for design and data quality.' },
-  "info.method.disclaimer": { en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource.<br>All content is informational only and may be inaccurate or out of date.<br>Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.<br><strong>In an emergency, call 911.</strong><br>See the full <a href="terms.html">Terms &amp; disclaimer</a>.' },
   "info.about.title": { en: "Who made this" },
   "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
-  "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA." },
   "info.about.termslink": { en: "Read the full Terms & disclaimer" },
   "info.about.a11ylink": { en: "Accessibility" },
   "info.group.closures": { en: "Closures" },
@@ -1806,7 +1759,7 @@ function applyLang() {
   }
   // Re-render hero if we have data
   if (lastSnap) {
-    renderHeroStatus(lastSnap);
+    fillBanner(lastSnap);
   }
 }
 currentLang = detectLang();
@@ -2198,10 +2151,6 @@ function renderInfoTab() {
   // STATUS ("What happened") panel — historical incident snapshot
   html += '<div class="info-subpanel active" id="info-subpanel-status" role="tabpanel" aria-labelledby="info-subtab-status">';
 
-  // Historical disclaimer (status-driven, derived date). Status is the default panel, so it
-  // carries its own archive note rather than relying only on Resources.
-  html += '<div id="status-resolved-note"></div>';
-
   // Incident status section
   html += '<div class="info-section"><div class="info-section-title">' + t("info.group.status") + '</div></div>';
   html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankCrack") + '</span><span class="info-kv-val" id="info-crack-val">--</span></div>';
@@ -2214,7 +2163,6 @@ function renderInfoTab() {
 
   // RESOURCES panel — shelters (+ community + official) first, then school closures
   html += '<div class="info-subpanel" id="info-subpanel-resources" role="tabpanel" aria-labelledby="info-subtab-resources">';
-  html += '<div id="resources-resolved-note"></div>';
 
   // Shelters + community resources + official sources (populated by renderResources;
   // leads with the single "Evacuation shelters" list — the former duplicate
@@ -2236,7 +2184,6 @@ function renderInfoTab() {
   html += '<div class="info-who-body">';
   html += '<p>' + t("info.about.body") + '</p>';
   html += '<div class="info-seal">' + t("info.unofficial.seal") + '</div>';
-  html += '<p style="font-size:12px;color:var(--sa-text-2);margin-top:8px">' + t("info.about.official") + '</p>';
   html += '</div>';
 
   // How it works — methodology & trust (surfaces the AI disclosure + pipeline + eval)
@@ -2245,7 +2192,6 @@ function renderInfoTab() {
   html += '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>';
   html += '<p>' + t("info.method.pipeline") + '</p>';
   html += '<p>' + t("info.method.eval") + '</p>';
-  html += '<p>' + t("info.method.disclaimer") + '</p>';
   html += '<p style="font-size:12px;margin-top:8px">' +
     '<a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>' +
     ' · <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>';
@@ -2263,26 +2209,6 @@ function renderInfoTab() {
 
 function updateInfoData(snap) {
   var tank = snap.tank || {};
-
-  // Resolved-state historical banner atop Resources (status-driven so it doesn't
-  // race the config-driven renderResources()).
-  // Resolved-state historical banners (status-driven so they don't race the config-driven
-  // renderResources()). Derive the all-clear date from resolved_iso in the incident's local
-  // (Pacific) time so the banners can't drift from the data (the old "May 28" was a day off).
-  var _ri = snap.incident && snap.incident.resolved_iso;
-  var _rdStr = "";
-  if (_ri) {
-    var _rd = new Date(_ri);
-    _rdStr = isNaN(_rd.getTime()) ? "" : _rd.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", year: "numeric", month: "long", day: "numeric" });
-  }
-  var statusNote = $("status-resolved-note");
-  if (statusNote) {
-    statusNote.innerHTML = _ri ? '<div class="resolved-note" role="note">' + t("info.resolved.status").replace("{date}", _rdStr) + '</div>' : '';
-  }
-  var resolvedNote = $("resources-resolved-note");
-  if (resolvedNote) {
-    resolvedNote.innerHTML = _ri ? '<div class="resolved-note" role="note">' + t("info.resolved.banner").replace("{date}", _rdStr) + '</div>' : '';
-  }
 
   var crackEl = $("info-crack-val");
   if (crackEl) crackEl.innerHTML = tank.crack_observed ? '<span class="yes">' + t("info.tankCrackY") + '</span>' : "—";
@@ -2447,49 +2373,16 @@ function renderPrintContent(snap) {
 }
 
 /* ============ HERO STATUS RENDER ============ */
-function renderHeroStatus(snap) {
-  var evac = (snap && snap.evacuation) || {};
-  var tank = (snap && snap.tank) || {};
-  var incident = (snap && snap.incident) || {};
-
-  // Resolved-state recovery hero: the active-evac metrics (residents 0, blank
-  // tank temp, absent day counter) are misleading once the evacuation is lifted.
-  // Show a compact resolved status instead. Reuses existing fields only — no day-count, no parse.
-  if (incident.resolved_iso) {
-    var heroRow = document.querySelector("#hero .hero-status-row");
-    if (heroRow) {
-      heroRow.innerHTML =
-        '<div class="hero-status-item">' +
-          '<span class="hero-status-label">' + (t("hero.status.statusLabel") || "Status") + '</span>' +
-          '<span class="hero-status-value">' + (t("hero.status.resolved") || "Resolved") + '</span>' +
-        '</div>' +
-        '<div class="hero-status-item">' +
-          '<span class="hero-status-label">' + (t("hero.status.evacuation") || "Evacuation") + '</span>' +
-          '<span class="hero-status-value">' + (t("hero.status.lifted") || "Lifted") + '</span>' +
-        '</div>';
-    }
-    return;
-  }
-
-  // Show only cells with meaningful data; hide empty "--" cells to free vertical space.
-  function setCell(id, value) {
-    var el = $(id);
-    if (!el) return;
-    var has = value != null && value !== "" && value !== "--";
-    el.textContent = has ? value : "--";
-    var item = el.closest(".hero-status-item");
-    // .hero-status-item sets display:flex, which overrides the [hidden] attribute,
-    // so toggle display directly to actually remove empty cells.
-    if (item) item.style.display = has ? "" : "none";
-  }
-
-  var evacText = evac.lifted === true ? (t("hero.status.lifted") || "Lifted")
-               : evac.lifted === false ? (t("hero.status.active") || "Active")
-               : null;
-  setCell("hero-evac-status", evacText);
-  setCell("hero-res-count", evac.residents != null ? fmtNumber(evac.residents) : null);
-  setCell("hero-tank-temp", tank.temp_f != null ? tank.temp_f + "\u00B0F" : null);
-  setCell("hero-day-counter", incident.day_count != null ? incident.day_count : null);
+// The one banner carries the resolved/all-clear line: fill it from info.resolved.banner with
+// the date derived from resolved_iso in the incident's local (Pacific) time so it can't drift.
+function fillBanner(snap) {
+  var el = $("banner-resolved");
+  if (!el) return;
+  var ri = snap && snap.incident && snap.incident.resolved_iso;
+  if (!ri) { el.innerHTML = ""; return; }
+  var rd = new Date(ri);
+  var rdStr = isNaN(rd.getTime()) ? "" : rd.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", year: "numeric", month: "long", day: "numeric" });
+  el.innerHTML = t("info.resolved.banner").replace("{date}", rdStr);
 }
 
 /* ============ MAIN RENDER ============ */
@@ -2562,7 +2455,7 @@ function render(snap) {
   }
   lastZoneStatus = zone;
 
-  renderHeroStatus(snap);
+  fillBanner(snap);
 
 
 

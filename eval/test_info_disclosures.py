@@ -30,15 +30,15 @@ def test_resolved_note_concise_routes_and_discloses():
     concise = 0 < len(val) <= 180
     shows_date = "{date}" in val
     historical = "historical" in val.lower()
-    routes = "ggcity.org/emergency" in val
     no_overclaim = not any(b in val.lower() for b in FORBIDDEN)
-    # Archive pivot (T10): drop the "A live demonstration of the system" tail — an archive is
-    # not a live demo, and the phrase reads as if the app is still actively running.
     no_live_demo = "live demonstration" not in val.lower()
-    ok = concise and shows_date and historical and routes and no_overclaim and no_live_demo
+    # One-banner pivot (2026-06-01): routing (911/ggcity) lives once in the consolidated
+    # banner's own route line (guarded by test_one_banner), so the resolved line no longer
+    # repeats it. This guard now checks the resolved line is concise, dated, and historical.
+    ok = concise and shows_date and historical and no_overclaim and no_live_demo
     return {"passed": ok,
             "details": f"len={len(val)} concise={concise} date={shows_date} historical={historical} "
-                       f"routes={routes} no_overclaim={no_overclaim} no_live_demo={no_live_demo}"}
+                       f"no_overclaim={no_overclaim} no_live_demo={no_live_demo}"}
 
 
 def test_situation_headline_concise_and_resolved():
@@ -70,7 +70,7 @@ def test_about_panel_organized_into_sections():
         "who_section": "info.about.title" in region,
         "methodology_section": "info.method.title" in region,
         "ai_disclosure_surfaced": "disclosure.ai" in region,
-        "official_routing": "info.about.official" in region,
+        # official routing dropped from About — now carried once by the consolidated banner
         "terms_link": "info.about.termslink" in region,
     }
     ok = all(checks.values())
