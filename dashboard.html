@@ -79,6 +79,7 @@
       background: var(--sa-bg);
       color: var(--sa-text);
       font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+      font-variant-ligatures: none; /* fi/ffi ligature dropped the lowercase-i dot (e.g. "official") on Blink; keep every i dotted */
       font-size: 14px;
       line-height: 1.4;
       overflow: hidden;
@@ -387,7 +388,7 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-    .safety-strip-info { font-weight: 700; font-size: 13px; color: var(--sa-text); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 8px; min-height: 24px; }
+    .safety-strip-info { font-weight: 700; color: var(--sa-text); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 8px; min-height: 24px; }
     .safety-strip-sources {
       display: flex;
       flex-wrap: wrap;
