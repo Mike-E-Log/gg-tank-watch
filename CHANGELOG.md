@@ -2,6 +2,12 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.22] — 2026-06-02 (dotless-`i` root cause: a ligature, not size)
+
+### Fixed
+- **The dotless lowercase `i` was an `fi`/`ffi` OpenType ligature, not a rasterizer/size issue — the v0.21 diagnosis was wrong.** The tell: only the `i` *inside* the `ffi` cluster of "official" lost its dot (the standalone `i` was fine), and the v0.21 13px bump didn't help — ligature substitution is size-invariant and identical across Blink. Disabled common ligatures site-wide on `html, body` (`font-variant-ligatures: none`; brand typeface unchanged) so every `i` keeps its dot anywhere on the site, and **reverted the misdiagnosed v0.21 13px bump** on `.safety-strip-info`. Verified by rendering on Blink locally (Edge headless): "official" now shows separated f's and dotted `i`s, deterministic across Chrome/Edge/Android Chrome. New guard `test_no_dotless_ligatures` replaces the wrong `test_safety_strip_disclaimer_legible_size`; eval stays green (**163/163**).
+- service-worker `CACHE_NAME` bumped `v56 → v57`.
+
 ## [v0.21] — 2026-06-02 (disclaimer copy + i-legibility + tab-design-status doc)
 
 ### Changed

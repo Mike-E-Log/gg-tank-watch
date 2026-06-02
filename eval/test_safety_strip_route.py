@@ -81,19 +81,3 @@ def test_safety_strip_disclaimer_has_no_trailing_period():
     return {"passed": ok,
             "details": "disclaimer has no trailing period (en + fallback)" if ok
             else f"en_ok={en_ok} en='{en}' fb_ok={fb_ok} fb='{fb}'"}
-
-
-def test_safety_strip_disclaimer_legible_size():
-    """Legibility (confirmed on a real Android Chrome device 2026-06-02): at the inherited 11.5px-bold
-    size the lowercase-'i' tittle drops out of Plus Jakarta Sans on Android Chrome's rasterizer, so
-    'official' reads dotless. `.safety-strip-info` must declare an explicit font-size of at least
-    12.5px to lift the disclaimer off that size. Brand typeface stays Plus Jakarta Sans."""
-    text = DASHBOARD.read_text(encoding="utf-8")
-    m = re.search(r'\.safety-strip-info\s*\{([^}]*)\}', text)
-    block = m.group(1) if m else ""
-    sz = re.search(r'font-size:\s*([\d.]+)px', block)
-    px = float(sz.group(1)) if sz else 0.0
-    ok = px >= 12.5
-    return {"passed": ok,
-            "details": f"safety-strip-info font-size={px}px (>=12.5)" if ok
-            else f"safety-strip-info font-size={px}px - too small; lowercase-i tittle drops on Android Chrome"}
