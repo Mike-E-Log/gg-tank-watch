@@ -1804,6 +1804,10 @@ function switchTab(tabId) {
     tab.classList.add("active");
     tab.setAttribute("aria-selected", "true");
   }
+  // The map panel is opacity:0 (not display:none) when inactive, so its GL canvas sits
+  // composited-but-invisible; revealing it on switch can show a stale compositing seam through
+  // the legend. Force a repaint so the canvas re-syncs (resize() re-runs _resizeCanvas + a render).
+  if (tabId === "map" && _ggMap) { setTimeout(function() { _ggMap.resize(); }, 0); }
   try { localStorage.setItem("gg-active-tab", tabId); } catch (e) {}
   var appEl = document.querySelector('.app');
 }
