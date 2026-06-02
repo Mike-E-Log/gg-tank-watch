@@ -302,11 +302,9 @@
     }
     .share-toast.show { opacity: 1; }
     .news-archive-note { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); background: var(--sa-bg); color: var(--sa-text-2); font-size: 12px; line-height: 1.45; }
-    .news-archive-note a { color: var(--sa-celadon); text-decoration: underline; }
     .archive-note-h { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2); margin-bottom: 5px; }
     .archive-note-list { margin: 0 0 5px; padding-left: 16px; }
     .archive-note-list li { margin: 0 0 2px; }
-    .archive-note-cur { display: block; }
     .info-roads-defer { font-size: 12px; color: var(--sa-text-2); line-height: 1.45; }
     .info-roads-defer a { color: var(--sa-celadon); }
 
@@ -393,7 +391,7 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-    .safety-strip-info { font-weight: 700; color: var(--sa-text); display: flex; align-items: center; justify-content: center; min-height: 24px; }
+    .safety-strip-info { font-weight: 700; color: var(--sa-text); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 8px; min-height: 24px; }
     .safety-strip-sources {
       display: flex;
       flex-wrap: wrap;
@@ -421,6 +419,7 @@
       text-decoration: underline;
       text-underline-offset: 2px;
       font-size: 10.5px;
+      font-weight: 400;
       white-space: nowrap;
       flex: 0 0 auto;
     }
@@ -1498,13 +1497,16 @@
 
 
     <div class="safety-strip" role="note">
-      <span class="safety-strip-info" data-i18n="safety.strip.info">Informational only &#x2014; not official.</span>
+      <span class="safety-strip-info">
+        <span data-i18n="safety.strip.info">Informational only &#x2014; not official.</span>
+        <span class="safety-strip-sep">&#xB7;</span>
+        <a class="safety-strip-terms" href="terms.html" data-i18n="safety.strip.terms">Terms</a>
+      </span>
       <div class="safety-strip-sources">
+        <span data-i18n="safety.strip.route">Current info:</span>
         <a href="tel:911">911</a>
         <span class="safety-strip-sep">&#xB7;</span>
         <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>
-        <span class="safety-strip-sep">&#xB7;</span>
-        <a class="safety-strip-terms" href="terms.html" data-i18n="safety.strip.terms">Terms</a>
       </div>
     </div>
 
@@ -1600,6 +1602,7 @@ var STRINGS = {
   "safety.strip.info": { en: "Informational only — not official." },
   "safety.strip.official": { en: "Official source:" },
   "safety.strip.terms": { en: "Terms" },
+  "safety.strip.route": { en: "Current info:" },
   "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with ggcity.org/emergency or 911." },
   "hero.severity.label": { en: "Incident severity:" },
   "hero.status.evacuation": { en: "Evacuation" },
@@ -1625,7 +1628,7 @@ var STRINGS = {
   "news.statements.count": { en: "{n} official statement{s}" },
   "news.coverage": { en: "Coverage" },
   "news.feed.title": { en: "News & updates" },
-  "news.archive.note": { en: "<span class='archive-note-h'>News archive · May 21–26, 2026 emergency</span><ul class='archive-note-list'><li>A snapshot — not complete, not live</li><li>A frozen record; nothing added afterward</li></ul><span class='archive-note-cur'>Current info: <a href='tel:911'>911</a> or <a href='https://ggcity.org/emergency' target='_blank' rel='noopener'>ggcity.org/emergency</a></span>" },
+  "news.archive.note": { en: "<span class='archive-note-h'>News archive · May 21–26, 2026 emergency</span><ul class='archive-note-list'><li>A snapshot — not complete</li><li>A frozen record — not live</li></ul>" },
   "news.type.official": { en: "🏛 Official" },
   "news.type.article": { en: "📰 Article" },
   "news.type.video": { en: "▶ Video" },

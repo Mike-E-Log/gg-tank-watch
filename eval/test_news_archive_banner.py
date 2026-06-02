@@ -33,14 +33,17 @@ def test_archive_note_before_feed():
             "metrics": {"note": i_note, "feed": i_feed}}
 
 
-def test_archive_note_routes_official_no_authority_chrome():
+def test_archive_note_no_authority_chrome():
+    """Honesty: the archive note must never claim authority it doesn't have. Routing to officials
+    was consolidated into the persistent global safety strip (pinned above the feed on every
+    scroll) — see test_safety_strip_route — so this guard no longer requires the route in the
+    archive-note value, only that the note adds no authority chrome."""
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
     val = (m.group(1) if m else "")
-    routes = "ggcity.org/emergency" in val or "911" in val
     forbidden = any(bad in val.lower() for bad in ["verified", "official source", "government"])
-    return {"passed": bool(val) and routes and not forbidden,
-            "details": f"routes={routes} forbidden_terms_present={forbidden} len={len(val)}"}
+    return {"passed": bool(val) and not forbidden,
+            "details": f"forbidden_terms_present={forbidden} len={len(val)}"}
 
 
 def test_archive_note_discloses_snapshot():
@@ -80,28 +83,23 @@ def test_archive_note_frozen_no_ongoing_collection():
                   f"no_contradiction={no_cutoff_contradiction} no_allclear={forbids_jargon}")}
 
 
-def test_archive_note_current_line_tightened():
-    """User follow-up (2026-06-01): the closing current-info line keeps the tightened
-    "Current info: …" label (the verbose "For current information: …" lead-in must not creep
-    back) AND now makes both routes tappable — 911 as a tel: link and ggcity.org/emergency as
-    an external https link — so a resident on a phone reaches officials in one tap instead of
-    retyping. The <a> attributes are single-quoted on purpose: the value regex above is
-    [^"]*-based, so any double quote in this string would truncate val and break every test in
-    this file. Anchored on the full <a> markup (eval-find-hits-css-before-html: bare class
-    names match the inline <style> first)."""
+def test_archive_note_route_consolidated_to_strip():
+    """De-dup (2026-06-02): the route to officials was consolidated into the persistent global
+    safety strip (pinned above the feed on every scroll), so the News archive note no longer
+    carries its own duplicate 'Current info:' line. Guards that the archive-note value holds NO
+    inline route — the strip's labeled route is guarded by test_safety_strip_route. (The strip
+    staying visible during scroll, plus the incident being resolved, is what makes dropping the
+    per-surface route sound; confirmed by a cross-vendor legal read + the pinned-strip layout.)"""
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
     val = m.group(1) if m else ""
-    label = "Current info:" in val
-    tel_link = "<a href='tel:911'>911</a>" in val
-    city_link = ("<a href='https://ggcity.org/emergency'" in val
-                 and "rel='noopener'" in val
-                 and ">ggcity.org/emergency</a>" in val)
-    no_verbose = "For current information" not in val
-    ok = bool(val) and label and tel_link and city_link and no_verbose
+    no_current_line = "Current info:" not in val
+    no_tel = "tel:911" not in val
+    no_city = "ggcity.org/emergency" not in val
+    ok = bool(val) and no_current_line and no_tel and no_city
     return {"passed": ok,
-            "details": "current-info line: tight label + tappable tel:911 + external ggcity link" if ok
-            else f"label={label} tel={tel_link} city={city_link} verbose_gone={no_verbose}"}
+            "details": "archive note carries no duplicate route (consolidated to strip)" if ok
+            else f"no_current_line={no_current_line} no_tel={no_tel} no_city={no_city}"}
 
 
 def test_archive_note_bullets_fit_one_line():
