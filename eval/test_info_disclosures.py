@@ -23,21 +23,27 @@ def _en_string(key):
 
 
 def test_resolved_note_concise_routes_and_discloses():
-    """The Resources resolved-note must be CONCISE (<=180 chars), show the resolution date
-    ({date}), mark the shelters/schools below as historical, route to officials, and avoid
-    authority-claiming language. Minimization requirement made testable via the length cap."""
+    """The resolved banner line must be CONCISE (<=180 chars), show the resolution date
+    ({date}), and avoid authority-claiming language. The historical/archive framing is carried
+    PERSISTENTLY by the topbar masthead (archive.label + ARCHIVE pill, on every tab; guarded by
+    test_topbar_archive_pill / test_freshness_ui), so the resolved line no longer repeats it —
+    "Historical archive." was removed from the banner (user follow-up 2026-06-02). Routing
+    (911/ggcity) lives once in the consolidated banner's own route line (test_one_banner).
+    Minimization requirement made testable via the length cap."""
     val = _en_string("info.resolved.banner")
     concise = 0 < len(val) <= 180
     shows_date = "{date}" in val
-    historical = "historical" in val.lower()
+    # No longer repeats the archive framing the topbar already carries on every tab...
+    no_redundant_archive = "historical archive" not in val.lower()
+    # ...but that framing must still be disclosed somewhere persistent — the topbar label.
+    historical_in_topbar = "historical archive" in _en_string("archive.label").lower()
     no_overclaim = not any(b in val.lower() for b in FORBIDDEN)
     no_live_demo = "live demonstration" not in val.lower()
-    # One-banner pivot (2026-06-01): routing (911/ggcity) lives once in the consolidated
-    # banner's own route line (guarded by test_one_banner), so the resolved line no longer
-    # repeats it. This guard now checks the resolved line is concise, dated, and historical.
-    ok = concise and shows_date and historical and no_overclaim and no_live_demo
+    ok = (concise and shows_date and no_redundant_archive and historical_in_topbar
+          and no_overclaim and no_live_demo)
     return {"passed": ok,
-            "details": f"len={len(val)} concise={concise} date={shows_date} historical={historical} "
+            "details": f"len={len(val)} concise={concise} date={shows_date} "
+                       f"no_redundant_archive={no_redundant_archive} historical_in_topbar={historical_in_topbar} "
                        f"no_overclaim={no_overclaim} no_live_demo={no_live_demo}"}
 
 
