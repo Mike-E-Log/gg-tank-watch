@@ -1489,7 +1489,7 @@
         <div class="map-outer" id="map-outer">
           <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations marked."></div>
           <div class="map-legend" role="group" aria-label="Map legend">
-            <div class="legend-row"><span class="legend-icon legend-icon-evac" aria-hidden="true"></span> <span data-i18n="legend.evac">Evac zone</span></div>
+            <div class="legend-row"><span class="legend-icon legend-icon-evac" aria-hidden="true"></span> <span data-i18n="legend.evac.resolved">Former evac area</span></div>
             <div class="legend-row"><span class="legend-icon legend-icon-shelter" aria-hidden="true"></span> <span data-i18n="legend.shelter">Shelter</span></div>
             <div class="legend-row"><span class="legend-icon legend-icon-facility" aria-hidden="true"></span> Facility</div>
           </div>
@@ -2441,14 +2441,6 @@ function render(snap) {
 
   var you = snap.you || {};
   var zone = you.zone_status || "unknown";
-  // `resolved` is computed at the top of render() (hoisted for the banner guard).
-  if (resolved) {
-    var evacLegEl = document.querySelector('.map-legend [data-i18n="legend.evac"]');
-    if (evacLegEl) {
-      evacLegEl.setAttribute('data-i18n', 'legend.evac.resolved');
-      evacLegEl.textContent = t("legend.evac.resolved");
-    }
-  }
 
   if (!snap.breaking || (snap.breaking_level || "urgent") !== "urgent") {
     window.__lastUrgentReason = null;
