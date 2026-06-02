@@ -45,6 +45,28 @@ def test_emergency_line_surfaced():
             if ok else "911 not surfaced as its own <strong> line"}
 
 
+def test_what_happened_shows_sourced_peak_facts():
+    """The 'What happened' panel surfaces the sourced peak facts (timeline.json: ~100F peak
+    temp, ~50,000 evacuated across ~9 sq mi) instead of the resolved snapshot's cleared
+    0/-- fields. Labels are Peak/zone (honest now that real values exist); values are static
+    so updateInfoData can't overwrite them with the cleared current-state snap."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    labels = ('"info.tankTemp": { en: "Peak tank temperature" }' in text
+              and '"info.evacResidents": { en: "Peak evacuation" }' in text
+              and '"info.evacBoundary": { en: "Evacuation zone (peak)" }' in text)
+    values = ('"info.tankTempArchive": { en: "~100' in text
+              and '"info.peakEvac": { en: "~50,000' in text
+              and '"info.zonePeak": { en:' in text and "9 sq mi" in text)
+    bound = ('t("info.peakEvac")' in text and 't("info.tankTempArchive")' in text
+             and 't("info.zonePeak")' in text)
+    # the cleared current-state bindings must be gone so they can't overwrite the static facts
+    decoupled = 'id="info-residents-val"' not in text and 'id="info-boundary-val"' not in text
+    ok = labels and values and bound and decoupled
+    return {"passed": ok,
+            "details": "What-happened shows sourced peak temp/evac/zone (timeline.json), decoupled from cleared snap"
+            if ok else f"labels={labels} values={values} bound={bound} decoupled={decoupled}"}
+
+
 def test_about_dedup_and_disclosure():
     text = DASHBOARD.read_text(encoding="utf-8")
     sources_retitled = '"info.sourcesH": { en: "Sources checked" }' in text
