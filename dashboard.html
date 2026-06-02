@@ -527,12 +527,6 @@
       pointer-events: none;
       transition: opacity 0.15s ease;
       -webkit-overflow-scrolling: touch;
-      /* Persistent stacking context. opacity<1 creates a stacking context but opacity:1 does
-         NOT, so without this the context dissolves the instant the reveal transition ends (and
-         on reload), letting the compositor re-resolve the MapLibre canvas above the legend — a
-         light-blue water slice through the legend. isolation:isolate keeps .tab-panel a stacking
-         context in every opacity state, so the legend (z-index:2) stays above the canvas. */
-      isolation: isolate;
     }
     .tab-panel.active {
       opacity: 1;
@@ -635,11 +629,6 @@
       font-size: 12px;
       box-shadow: var(--sa-shadow);
       z-index: 2;
-      /* Own compositing layer: the MapLibre WebGL canvas is a GPU layer; without this the
-         legend is a plain painted element and a slice of the canvas (light-blue water) can
-         intermittently composite over it on reload. translateZ(0) forces the compositor to
-         order the legend above the canvas deterministically. */
-      transform: translateZ(0);
     }
     .legend-row {
       display: flex;
@@ -1815,10 +1804,6 @@ function switchTab(tabId) {
     tab.classList.add("active");
     tab.setAttribute("aria-selected", "true");
   }
-  // The map panel is opacity:0 (not display:none) when inactive, so its GL canvas sits
-  // composited-but-invisible; revealing it on switch can show a stale compositing seam through
-  // the legend. Force a repaint so the canvas re-syncs (resize() re-runs _resizeCanvas + a render).
-  if (tabId === "map" && _ggMap) { setTimeout(function() { _ggMap.resize(); }, 0); }
   try { localStorage.setItem("gg-active-tab", tabId); } catch (e) {}
   var appEl = document.querySelector('.app');
 }
