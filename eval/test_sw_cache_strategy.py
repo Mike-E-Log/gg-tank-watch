@@ -7,10 +7,10 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SW = REPO_ROOT / "sw.js"
 
 
-def test_cache_bumped_v45():
+def test_cache_bumped_v46():
     t = SW.read_text(encoding="utf-8")
-    return {"passed": 'CACHE_NAME = "gg-tank-v45"' in t,
-            "details": f"v45 present={'gg-tank-v45' in t}"}
+    return {"passed": 'CACHE_NAME = "gg-tank-v46"' in t,
+            "details": f"v46 present={'gg-tank-v46' in t}"}
 
 
 def test_status_json_cache_first():
