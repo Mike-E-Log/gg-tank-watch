@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-05-27T02:30:00Z",
+  "last_updated_iso": "2026-06-02T01:07:45Z",
   "data_as_of_iso": "2026-05-27T02:30:00Z",
   "next_check_at_iso": "2099-01-01T00:00:00Z",
   "stale_after_iso": "2099-01-01T00:00:00Z",
@@ -9,7 +9,7 @@
     "name": "Garden Grove MMA Tank Leak",
     "facility": "GKN Aerospace, Garden Grove, CA",
     "started_iso": "2026-05-21T22:40:00Z",
-    "status_headline": "Resolved May 26, 2026 — all evacuations lifted.",
+    "status_headline": "Resolved May 26, 2026 — all evacuation orders lifted; 7-day incident closed with no injuries.",
     "severity": "low",
     "resolved_iso": "2026-05-27T02:30:00Z"
   },
@@ -33,42 +33,47 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-05-26T23:00:00Z"
+      "fetched_iso": "2026-06-02T01:07:33Z"
     },
     {
       "url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident",
-      "title": "GKN Aerospace HazMat Incident | Orange County",
-      "fetched_iso": "2026-05-26T23:00:00Z"
-    },
-    {
-      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
-      "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
-      "fetched_iso": "2026-05-26T23:00:00Z"
+      "title": "GKN Aerospace HazMat incident | Orange County",
+      "fetched_iso": "2026-06-02T01:07:33Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
       "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-05-26T23:00:00Z"
+      "fetched_iso": "2026-06-02T01:07:33Z"
+    },
+    {
+      "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
+      "title": "Garden Grove chemical tank update: Cleanup efforts to begin and legal claims mount",
+      "fetched_iso": "2026-06-02T01:07:33Z"
+    },
+    {
+      "url": "https://www.cbsnews.com/losangeles/news/orange-county-residents-file-lawsuit-gkn-aerospace-chemical-tank/",
+      "title": "Dozens of Orange County residents file lawsuit against GKN Aerospace - CBS LA",
+      "fetched_iso": "2026-06-02T01:07:33Z"
     },
     {
       "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
       "title": "GKN Aerospace chemical leak exposes regulatory gaps - CalMatters",
-      "fetched_iso": "2026-05-26T23:00:00Z"
-    },
-    {
-      "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
-      "title": "California Senate passes SB 954 - New Santa Ana",
-      "fetched_iso": "2026-05-26T23:00:00Z"
+      "fetched_iso": "2026-06-02T01:07:33Z"
     },
     {
       "url": "https://voiceofoc.org/2026/05/oc-residents-impacted-by-faulty-chemical-tank-may-get-reimbursed/",
       "title": "OC Residents Impacted by Faulty Chemical Tank May Get Reimbursed - Voice of OC",
-      "fetched_iso": "2026-05-26T23:00:00Z"
+      "fetched_iso": "2026-06-02T01:07:33Z"
     },
     {
-      "url": "https://sd38.senate.ca.gov/news/senate-passes-sen-blakespears-legislation-balance-ceqa-reforms-needed-environmental-and-worker",
-      "title": "Senate Passes Sen. Blakespear SB 954 | CA Senate District 38",
-      "fetched_iso": "2026-05-26T23:00:00Z"
+      "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
+      "title": "California Senate passes SB 954 - New Santa Ana",
+      "fetched_iso": "2026-06-02T01:07:33Z"
+    },
+    {
+      "url": "https://www.nbclosangeles.com/news/local/garden-grove-gkn-chemical-tank-criminal-investigation-todd-spitzer/3895460/",
+      "title": "Criminal investigation expands into chemical tank crisis in Garden Grove - NBC LA",
+      "fetched_iso": "2026-06-02T01:07:33Z"
     }
   ],
   "schools_closed": [
