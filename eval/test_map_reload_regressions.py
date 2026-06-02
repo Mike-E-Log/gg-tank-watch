@@ -42,6 +42,22 @@ def test_sw_does_not_intercept_cross_origin():
     }
 
 
+def test_legend_promoted_to_own_compositing_layer():
+    """2026-06-02 investigation: on reload the GPU compositor intermittently composites a slice
+    of the MapLibre WebGL canvas (light-blue water, lower-left) ABOVE the opaque legend, drawing
+    a light-blue line through it. The legend is z-index:2 but a plain painted element, while the
+    canvas is its own composited layer — mixing the two lets the canvas win on some reload-timing
+    layer churn. Promoting the legend to its own compositing layer (transform: translateZ(0))
+    makes the compositor order it above the canvas deterministically. Guards that promotion stays."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    i = text.find(".map-legend {")
+    j = text.find("}", i) if i >= 0 else -1
+    rule = text[i:j] if (i >= 0 and j > i) else ""
+    promoted = "translateZ(0)" in rule or "will-change: transform" in rule
+    return {"passed": bool(rule) and promoted,
+            "details": f"rule_found={bool(rule)} layer_promoted={promoted}"}
+
+
 def test_no_orphaned_leaflet_marker_code():
     """dashboard.html must not reference the removed Leaflet `fixedPointMarkers`
     global or its `recolorFixedPoints` helper -- they throw ReferenceError and
