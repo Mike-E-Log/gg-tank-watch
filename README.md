@@ -72,7 +72,7 @@ A single HTML file with no framework and no build step, serving a safety-critica
 
 ## Coverage Archive (News tab)
 
-The News tab is a resolved-state **Coverage Archive** — a historical record of how the May 2026 incident was reported, not a live feed. A persistent note at the top of the tab says exactly that and routes to officials. Like the rest of the dashboard, it aggregates official statements and news coverage and *authors no directives of its own*: officials lead the list (the conduit principle), news coverage follows.
+The News tab is a resolved-state **Coverage Archive** — a historical record of how the May 2026 incident was reported, not a live feed. A persistent note at the top of the tab says exactly that, and the page's persistent safety strip routes to officials on every tab. Like the rest of the dashboard, it aggregates official statements and news coverage and *authors no directives of its own*: officials lead the list (the conduit principle), news coverage follows.
 
 It is honest by construction:
 
