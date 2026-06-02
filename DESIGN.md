@@ -100,6 +100,7 @@ The hero shows severity status and situation bullets — never directives.
 | 2026-05-29 | Tablet: comprehensive responsive (600–767 + 768–1023) | All-concerns scope + portfolio stakes warrant proper tablet handling, not a deferral. |
 | 2026-05-29 | News dedupe deferred | Dedupe code is proven in tests but effectively a no-op on the static seed; defer to a post-incident video-sourcing strategy. |
 | 2026-06-01 | Info tab archive-clarity (scope B) | "Status"→"What happened"; Status gets its own derived historical disclaimer; Resources leads with Official Sources, then a collapsed de-carded "Historical resources" fold (shelters + community as dense rows, no card chrome); About fold retitled "Sources checked"; AI disclosure promoted to 12px gold; disclaimer split with "In an emergency, call 911." on its own line. Cross-model review (Codex gpt-5.5 + blind Claude subagent) hard-rejected the card-grid-first Resources panel. Full structural `.info-section` refactor (scope C) deferred. |
+| 2026-06-02 | Map + News design-complete; Info is the remaining alignment work | Map/News patterns are the reference the rest of the app aligns to; the Info tab must adopt that visual language, gain clearer individually-navigable sub-tabs, and use the documented type scale consistently. Exact sub-tab set is a pending design decision. (Also: dropped the trailing period from the safety-strip disclaimer — it reads as a label flowing into "· Terms".) |
 
 ## v0.17 Design-Complete Gate (2026-05-29)
 
@@ -129,3 +130,23 @@ The founder's binding "design-complete" bar, made finite so it can be reached (n
 **Milestone ladder (safety net, not a scope cut — the gate is M3):** M1 Map-foundation (B2+L1+L2+V1+B1) · M2 +D1+D2+video cards · **M3 = full all-concerns (the gate).**
 
 **Binding constraints:** conduit (no authored directives) · G1 (no MT safety copy; vi held) · persistent honesty disclosure · `noindex` ON (vercel.json header). **Verified non-issues:** noindex meta tag, Info "buried disclaimer", `.vercel/project.json` staleness (gitignored).
+
+## Tab Design Status — Map & News complete; Info is the remaining alignment work (2026-06-02)
+
+**Map and News are design-complete.** Their patterns are the reference the rest of the app aligns to — do not restyle them without being asked. The **Info tab is the only tab still being brought up to that bar.**
+
+### Reference patterns (carry these into Info)
+- **Type scale (single source of truth):** body Plus Jakarta Sans 14px / line-height 1.4; data & numbers in IBM Plex Mono (`.mono` / `.sa-mono`, tabular-nums); headings, section titles, and 11–12px labels per the Typography block above. No per-element inline `font-size` overrides.
+- **Sub-navigation chrome:** the underline-accent sub-tab bar (`.info-subtabs` / `.info-subtab`) — equal-width flex buttons, celadon `border-bottom` on `.active`, sticky to the top of the scroll area, 44px min touch target — is the established sub-tab pattern (it reused the original News sub-tab styling). News now renders a single sourced feed with filter chips in the same celadon-accent family.
+- **Surfaces & color:** `--sa-surface` cards on the `--sa-bg` page, `--sa-border` hairlines, celadon (`--sa-celadon`) for active/interactive accents; gold is reserved for the UNOFFICIAL pill and the AI disclosure.
+- **Spacing:** 4px base unit, compact density.
+
+### Info tab — remaining work (the only incomplete tab)
+Info already has **Status | Resources | About** sub-tabs (`renderInfo` in `dashboard.html`). The work left:
+1. **Align style with Map/News** — same type scale, spacing, surface/border treatment, and celadon accents, so the tab reads as one system rather than a different screen.
+2. **Better-organized, individually-navigable sub-tabs** — refine the sub-tab set and content grouping so a resident can jump straight to what they need; the sub-tab bar should match the reference sub-navigation chrome exactly.
+3. **Font/style consistency** — replace the ad-hoc inline `style="font-size:11px/12px"` overrides in the Info content generator with the documented type scale; everything inherits, nothing one-off.
+
+**Status:** PENDING design + planning. The exact sub-tab set and any content moves are a design decision (`/plan-eng-review` → `/plan-design-review` → `/writing-plans` before editing), not yet executed.
+
+> **Lowercase-`i` legibility (diagnosed 2026-06-02).** Confirmed on a real Android Chrome device: at the inherited 11.5px-bold size the lowercase-`i` tittle drops out of Plus Jakarta Sans on Android Chrome's rasterizer, so "official" reads dotless. Fix: `.safety-strip-info` lifted to an explicit 13px (brand typeface unchanged), guarded by `test_safety_strip_disclaimer_legible_size`. Pending on-device verification; if confirmed, sweep the same size lever across any other small-bold text site-wide.

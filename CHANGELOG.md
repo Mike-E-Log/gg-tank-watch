@@ -2,6 +2,16 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.21] — 2026-06-02 (disclaimer copy + i-legibility + tab-design-status doc)
+
+### Changed
+- **Dropped the trailing period from the persistent safety-strip disclaimer** — "Informational only — not official**.**" → "Informational only — not official". The line reads as a label that flows into the "· Terms" link, so the hard stop looked like a stray double-stop. Fixed in both the rendered i18n `en` value and the no-JS fallback `<span>`. Guarded by the new `test_safety_strip_disclaimer_has_no_trailing_period` (eval **161 → 162**, all green).
+- **Fixed the dotless lowercase `i` in the safety-strip disclaimer on Android Chrome.** At the inherited 11.5px-bold size, Plus Jakarta Sans's lowercase-`i` tittle dropped out of Android Chrome's rasterizer, so "official" read dotless (confirmed on a real device). Lifted `.safety-strip-info` to an explicit `font-size: 13px` (brand typeface unchanged); guarded by `test_safety_strip_disclaimer_legible_size`. Pending on-device verification.
+- service-worker `CACHE_NAME` bumped `v55 → v56` so cached residents re-fetch the updated shell.
+
+### Docs
+- **`DESIGN.md` — tab design status.** Recorded that the **Map and News tabs are design-complete** (their patterns are the reference the rest of the app aligns to — don't restyle them without being asked) and that the **Info tab is the sole remaining tab**: its work is to adopt the Map/News visual language, reorganize its content into clearer individually-navigable sub-tabs, and use the documented type scale consistently (no ad-hoc inline `font-size` overrides). The exact sub-tab set is a pending design decision, not yet executed.
+
 ## [v0.20] — 2026-06-01 (frozen-archive honesty sweep)
 
 ### Changed
