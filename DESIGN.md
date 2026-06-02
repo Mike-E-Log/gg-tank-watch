@@ -99,6 +99,7 @@ The hero shows severity status and situation bullets — never directives.
 | 2026-05-29 | Timeline: curate + archive toggle | Keep the data; default-show ~critical/major milestones, archive toggle for forensic depth. Fits the during-incident thesis without dropping history. |
 | 2026-05-29 | Tablet: comprehensive responsive (600–767 + 768–1023) | All-concerns scope + portfolio stakes warrant proper tablet handling, not a deferral. |
 | 2026-05-29 | News dedupe deferred | Dedupe code is proven in tests but effectively a no-op on the static seed; defer to a post-incident video-sourcing strategy. |
+| 2026-06-01 | Info tab archive-clarity (scope B) | "Status"→"What happened"; Status gets its own derived historical disclaimer; Resources leads with Official Sources, then a collapsed de-carded "Historical resources" fold (shelters + community as dense rows, no card chrome); About fold retitled "Sources checked"; AI disclosure promoted to 12px gold; disclaimer split with "In an emergency, call 911." on its own line. Cross-model review (Codex gpt-5.5 + blind Claude subagent) hard-rejected the card-grid-first Resources panel. Full structural `.info-section` refactor (scope C) deferred. |
 
 ## v0.17 Design-Complete Gate (2026-05-29)
 

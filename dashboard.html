@@ -918,6 +918,22 @@
       grid-template-columns: 1fr;
       gap: 10px;
     }
+    /* De-carded historical resources inside the collapsed fold: dense rows, no card chrome,
+       so the archived shelter/community list stops competing with the official routing above. */
+    .info-historical .shelter-card,
+    .info-historical .community-resource-card {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--sa-border);
+      border-radius: 0;
+      box-shadow: none;
+      padding: 8px 0;
+    }
+    .info-historical .shelters-grid,
+    .info-historical .resources-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
 
     /* ===== ABOUT PANEL ===== */
     .about-panel-inner { padding: 0 0 24px; }
@@ -955,6 +971,13 @@
       text-transform: uppercase;
       color: var(--sa-text-3);
       margin-bottom: 6px;
+    }
+    /* Responsible-AI disclosure: surfaced (not a buried footnote) at the gold authority accent. */
+    .info-ai-disclosure {
+      font-size: 12px;
+      color: var(--sa-gold);
+      line-height: 1.45;
+      margin-bottom: 8px;
     }
     .info-row {
       display: flex;
@@ -1562,7 +1585,7 @@ var STRINGS = {
   "theme.dark": { en: "Dark" },
   "theme.light": { en: "Light" },
   "share.copied": { en: "Copied to clipboard" },
-  "info.subtab.status": { en: "Status" },
+  "info.subtab.status": { en: "What happened" },
   "info.subtab.resources": { en: "Resources" },
   "info.subtab.about": { en: "About" },
   "topbar.unofficial": { en: "UNOFFICIAL" },
@@ -1591,6 +1614,8 @@ var STRINGS = {
   "legend.evac.resolved": { en: "Former evac area" },
   "legend.shelter": { en: "Shelter" },
   "info.resolved.banner": { en: "Resolved {date} — all evacuations lifted. Shelters and school closures below are historical; current information at ggcity.org/emergency." },
+  "info.resolved.status": { en: 'Resolved {date} — all evacuations lifted. This is a historical snapshot, not live; current info: <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.' },
+  "info.historical.title": { en: "Historical resources" },
   "map.tooltip.evac": { en: "Evacuation zone" },
   "map.tooltip.you": { en: "You" },
   "news.statements.count": { en: "{n} official statement{s}" },
@@ -1627,12 +1652,11 @@ var STRINGS = {
   "info.method.title": { en: "Methodology & trust" },
   "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status was updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact was cross-referenced against multiple sources before publishing." },
   "info.method.eval": { en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests and LLM-as-judge rubrics for design and data quality.' },
-  "info.method.disclaimer": { en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource. All content is informational only and may be inaccurate or out of date. Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>; in an emergency, call 911. See the full <a href="terms.html">Terms &amp; disclaimer</a>.' },
+  "info.method.disclaimer": { en: '<strong>Disclaimer:</strong> This is a community tool, not an official government resource.<br>All content is informational only and may be inaccurate or out of date.<br>Always verify with <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a>.<br><strong>In an emergency, call 911.</strong><br>See the full <a href="terms.html">Terms &amp; disclaimer</a>.' },
   "info.about.title": { en: "Who made this" },
   "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
   "info.about.official": { en: "For official orders and updates, always use ggcity.org/emergency · 714-628-7085 · OCFA." },
   "info.about.termslink": { en: "Read the full Terms & disclaimer" },
-  "info.about.conductlink": { en: "Information Conduit Code of Conduct" },
   "info.about.a11ylink": { en: "Accessibility" },
   "info.group.closures": { en: "Closures" },
   "info.roads.title": { en: "Road closures" },
@@ -1707,7 +1731,7 @@ var STRINGS = {
   "info.schoolsClosed": { en: "School closures" },
   "info.allSchools": { en: "See all 12" },
   "info.unofficial.seal": { en: "INFORMATIONAL · UNOFFICIAL" },
-  "info.sourcesH": { en: "Sources & methodology" }
+  "info.sourcesH": { en: "Sources checked" }
 };
 
 // English-only by design: this is a life-safety tool and unverified safety copy is a liability,
@@ -2161,8 +2185,12 @@ function renderInfoTab() {
   html += '<button type="button" class="info-subtab" role="tab" id="info-subtab-about" aria-selected="false" aria-controls="info-subpanel-about" onclick="switchInfoSubtab(\'about\')">' + t("info.subtab.about") + '</button>';
   html += '</div>';
 
-  // STATUS panel — incident status
+  // STATUS ("What happened") panel — historical incident snapshot
   html += '<div class="info-subpanel active" id="info-subpanel-status" role="tabpanel" aria-labelledby="info-subtab-status">';
+
+  // Historical disclaimer (status-driven, derived date). Status is the default panel, so it
+  // carries its own archive note rather than relying only on Resources.
+  html += '<div id="status-resolved-note"></div>';
 
   // Incident status section
   html += '<div class="info-section"><div class="info-section-title">' + t("info.group.status") + '</div></div>';
@@ -2202,7 +2230,7 @@ function renderInfoTab() {
   // How it works — methodology & trust (surfaces the AI disclosure + pipeline + eval)
   html += '<div class="info-section"><div class="info-section-title">' + t("info.method.title") + '</div></div>';
   html += '<div class="info-who-body">';
-  html += '<p style="font-size:11px;color:var(--sa-text-3);line-height:1.4">' + t("disclosure.ai") + '</p>';
+  html += '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>';
   html += '<p>' + t("info.method.pipeline") + '</p>';
   html += '<p>' + t("info.method.eval") + '</p>';
   html += '<p>' + t("info.method.disclaimer") + '</p>';
@@ -2227,19 +2255,22 @@ function updateInfoData(snap) {
 
   // Resolved-state historical banner atop Resources (status-driven so it doesn't
   // race the config-driven renderResources()).
+  // Resolved-state historical banners (status-driven so they don't race the config-driven
+  // renderResources()). Derive the all-clear date from resolved_iso in the incident's local
+  // (Pacific) time so the banners can't drift from the data (the old "May 28" was a day off).
+  var _ri = snap.incident && snap.incident.resolved_iso;
+  var _rdStr = "";
+  if (_ri) {
+    var _rd = new Date(_ri);
+    _rdStr = isNaN(_rd.getTime()) ? "" : _rd.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", year: "numeric", month: "long", day: "numeric" });
+  }
+  var statusNote = $("status-resolved-note");
+  if (statusNote) {
+    statusNote.innerHTML = _ri ? '<div class="resolved-note" role="note">' + t("info.resolved.status").replace("{date}", _rdStr) + '</div>' : '';
+  }
   var resolvedNote = $("resources-resolved-note");
   if (resolvedNote) {
-    var _ri = snap.incident && snap.incident.resolved_iso;
-    if (_ri) {
-      // Derive the all-clear date from resolved_iso, formatted in the incident's local
-      // (Pacific) time, so the banner can't drift from the data the way a hardcoded
-      // literal did (the old "May 28" was a day off from the verified May 26 lift).
-      var _rd = new Date(_ri);
-      var _rdStr = isNaN(_rd.getTime()) ? "" : _rd.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", year: "numeric", month: "long", day: "numeric" });
-      resolvedNote.innerHTML = '<div class="resolved-note" role="note">' + t("info.resolved.banner").replace("{date}", _rdStr) + '</div>';
-    } else {
-      resolvedNote.innerHTML = '';
-    }
+    resolvedNote.innerHTML = _ri ? '<div class="resolved-note" role="note">' + t("info.resolved.banner").replace("{date}", _rdStr) + '</div>' : '';
   }
 
   var crackEl = $("info-crack-val");
@@ -2308,13 +2339,29 @@ function renderInfoShelters() {
 /* ============ RESOURCES TAB ============ */
 function renderResources() {
   var html = '';
+  // Official sources LEAD — the route-to-officials action comes first (primary purpose #1),
+  // ahead of the historical support data.
   html += '<div class="resources-section">';
-  html += '<div class="resources-section-title" data-i18n="info.shelters.title">' + t("info.shelters.title") + '</div>';
-  html += '<div class="shelters-cta" data-i18n-html="info.shelters.cta">' + t("info.shelters.cta") + '</div>';
-  html += '<div class="shelters-grid" id="resources-shelters-grid"></div>';
+  html += '<div class="resources-section-title" data-i18n="info.group.official">' + t("info.group.official") + '</div>';
+  html += '<p class="official-sources-note" data-i18n="info.official.note">' + t("info.official.note") + '</p>';
+  html += '<div class="official-links">' +
+    '<a class="official-link" href="https://ggcity.org/emergency" target="_blank" rel="noopener"><span>' + t("info.official.city") + '</span><span class="official-link-tag">Official</span></a>' +
+    '<a class="official-link" href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener"><span>' + t("info.official.zonehaven") + '</span><span class="official-link-tag">Official</span></a>' +
+    '<a class="official-link" href="https://member.everbridge.net/892807736729480/login" target="_blank" rel="noopener"><span>' + t("info.official.alert") + '</span><span class="official-link-tag">Official</span></a>' +
+  '</div>';
   html += '</div>';
 
   html += '<div class="lotus-divider"></div>';
+
+  // Historical support data — collapsed by default + de-carded to dense rows so the archived
+  // shelter/community list stops competing with the official routing above.
+  html += '<details class="info-fold"><summary>' + t("info.historical.title") + '</summary>';
+  html += '<div class="info-historical">';
+
+  html += '<div class="resources-section">';
+  html += '<div class="resources-section-title" data-i18n="info.shelters.title">' + t("info.shelters.title") + '</div>';
+  html += '<div class="shelters-grid" id="resources-shelters-grid"></div>';
+  html += '</div>';
 
   var resources = (configCache && configCache.community_resources) || [];
   if (resources.length) {
@@ -2342,17 +2389,7 @@ function renderResources() {
     });
   }
 
-  html += '<div class="lotus-divider"></div>';
-
-  html += '<div class="resources-section">';
-  html += '<div class="resources-section-title" data-i18n="info.group.official">' + t("info.group.official") + '</div>';
-  html += '<p class="official-sources-note" data-i18n="info.official.note">' + t("info.official.note") + '</p>';
-  html += '<div class="official-links">' +
-    '<a class="official-link" href="https://ggcity.org/emergency" target="_blank" rel="noopener"><span>' + t("info.official.city") + '</span><span class="official-link-tag">Official</span></a>' +
-    '<a class="official-link" href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener"><span>' + t("info.official.zonehaven") + '</span><span class="official-link-tag">Official</span></a>' +
-    '<a class="official-link" href="https://member.everbridge.net/892807736729480/login" target="_blank" rel="noopener"><span>' + t("info.official.alert") + '</span><span class="official-link-tag">Official</span></a>' +
-  '</div>';
-  html += '</div>';
+  html += '</div></details>';
 
   var rcEl = $("resources-content");
   if (rcEl) {
