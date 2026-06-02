@@ -81,20 +81,27 @@ def test_archive_note_frozen_no_ongoing_collection():
 
 
 def test_archive_note_current_line_tightened():
-    """User follow-up (2026-06-01): the closing current-info line is tightened from the
-    verbose "For current information: …" to "Current info: …" (shorter than the original)
-    while KEEPING the concrete ggcity.org/emergency + 911 routing — being concrete requires
-    the URL, so the de-dup yields to clarity. Guards the tight copy and that the verbose
-    lead-in does not creep back."""
+    """User follow-up (2026-06-01): the closing current-info line keeps the tightened
+    "Current info: …" label (the verbose "For current information: …" lead-in must not creep
+    back) AND now makes both routes tappable — 911 as a tel: link and ggcity.org/emergency as
+    an external https link — so a resident on a phone reaches officials in one tap instead of
+    retyping. The <a> attributes are single-quoted on purpose: the value regex above is
+    [^"]*-based, so any double quote in this string would truncate val and break every test in
+    this file. Anchored on the full <a> markup (eval-find-hits-css-before-html: bare class
+    names match the inline <style> first)."""
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r'"news\.archive\.note":\s*\{\s*en:\s*"([^"]*)"', text)
     val = m.group(1) if m else ""
-    tight = "Current info: 911 or ggcity.org/emergency" in val
+    label = "Current info:" in val
+    tel_link = "<a href='tel:911'>911</a>" in val
+    city_link = ("<a href='https://ggcity.org/emergency'" in val
+                 and "rel='noopener'" in val
+                 and ">ggcity.org/emergency</a>" in val)
     no_verbose = "For current information" not in val
-    ok = bool(val) and tight and no_verbose
+    ok = bool(val) and label and tel_link and city_link and no_verbose
     return {"passed": ok,
-            "details": "closing line tightened to 'Current info: …', verbose lead-in gone" if ok
-            else f"tight={tight} verbose_gone={no_verbose}"}
+            "details": "current-info line: tight label + tappable tel:911 + external ggcity link" if ok
+            else f"label={label} tel={tel_link} city={city_link} verbose_gone={no_verbose}"}
 
 
 def test_archive_note_bullets_fit_one_line():
