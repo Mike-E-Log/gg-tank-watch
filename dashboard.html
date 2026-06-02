@@ -611,6 +611,7 @@
 
     /* ===== MAP PANEL ===== */
     #panel-map { overflow: hidden; display: flex; flex-direction: column; }
+    .map-historical-note { margin: 8px; }
     .map-outer {
       position: relative;
       flex: 1;
@@ -1515,6 +1516,7 @@
     <!-- ===== TAB CONTENT ===== -->
     <main class="tab-content" id="main-content">
       <div class="tab-panel active" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
+        <div class="resolved-note map-historical-note" role="note" data-i18n="map.historical">Historical evacuation zone · orders lifted May 26, 2026</div>
         <div class="map-outer" id="map-outer">
           <div id="maplibre-map" role="img" aria-label="Map of the Garden Grove evacuation zone showing the approximate evacuation boundary around the GKN Aerospace facility, with shelter locations marked."></div>
           <div class="map-legend" role="group" aria-label="Map legend">
@@ -1593,6 +1595,7 @@ var STRINGS = {
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
   "topbar.archive": { en: "ARCHIVE" },
   "topbar.archive.title": { en: "Frozen historical record of the May 21–26, 2026 emergency. For current info, see ggcity.org/emergency." },
+  "map.historical": { en: "Historical evacuation zone · orders lifted May 26, 2026" },
   "archive.label": { en: "Historical archive · May 21–26, 2026" },
   "safety.strip.info": { en: "Informational only — not official." },
   "safety.strip.official": { en: "Official source:" },
