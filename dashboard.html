@@ -629,6 +629,11 @@
       font-size: 12px;
       box-shadow: var(--sa-shadow);
       z-index: 2;
+      /* Own compositing layer: the MapLibre WebGL canvas is a GPU layer; without this the
+         legend is a plain painted element and a slice of the canvas (light-blue water) can
+         intermittently composite over it on reload. translateZ(0) forces the compositor to
+         order the legend above the canvas deterministically. */
+      transform: translateZ(0);
     }
     .legend-row {
       display: flex;
