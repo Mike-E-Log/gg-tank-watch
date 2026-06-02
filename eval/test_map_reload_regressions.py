@@ -18,6 +18,7 @@ Two bugs, both confirmed in a live Firefox-mobile console on reload:
 
 Pure text guards; no JS / service-worker runtime needed (the harness has none).
 """
+import re
 from pathlib import Path
 
 CATEGORY = "behavioral"
@@ -56,6 +57,23 @@ def test_legend_promoted_to_own_compositing_layer():
     promoted = "translateZ(0)" in rule or "will-change: transform" in rule
     return {"passed": bool(rule) and promoted,
             "details": f"rule_found={bool(rule)} layer_promoted={promoted}"}
+
+
+def test_tab_panel_keeps_persistent_stacking_context():
+    """2026-06-02 (deepened root cause, adversarially vetted): the light-blue line is the MapLibre
+    WebGL canvas compositing over the legend. The real cause is that .tab-panel's stacking context
+    DISSOLVES at opacity:1 -- per CSS spec opacity<1 creates a stacking context but opacity:1 does
+    not, so at the end of the 0.15s reveal (and on reload) the compositor re-resolves canvas-vs-
+    legend z-order against a non-context parent and the water slice flickers above the legend.
+    isolation:isolate forces .tab-panel to ALWAYS be a stacking context, keeping the legend
+    (z-index:2) above the canvas in every opacity state. This is why the legend-only translateZ
+    (PR #101) and the resize() (PR #100) could not fix it -- neither stabilizes the PARENT context."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    m = re.search(r"\.tab-panel\s*\{[^}]*inset:\s*0[^}]*\}", text)
+    rule = m.group(0) if m else ""
+    isolated = "isolation: isolate" in rule
+    return {"passed": bool(rule) and isolated,
+            "details": f"main_tab_panel_rule_found={bool(rule)} isolation_isolate={isolated}"}
 
 
 def test_no_orphaned_leaflet_marker_code():
