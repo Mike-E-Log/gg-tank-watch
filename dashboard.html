@@ -424,41 +424,6 @@
       .safety-strip-terms { font-size: 11px; }
     }
 
-    /* ===== OFFICIAL SOURCES PANEL ===== */
-    .official-sources-note {
-      font-size: 12px;
-      color: var(--sa-text-3);
-      margin: 0 0 8px;
-      line-height: 1.4;
-    }
-    .official-links { display: flex; flex-direction: column; gap: 6px; }
-    .official-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 10px;
-      border-radius: 6px;
-      background: var(--sa-bg);
-      border: 1px solid var(--sa-border);
-      text-decoration: none;
-      color: var(--sa-text);
-      font-size: 13px;
-      min-height: 48px;
-    }
-    .official-link:hover { border-color: var(--sa-celadon); }
-    .official-link-tag {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: #16a34a;
-      background: #16a34a1a;
-      padding: 2px 6px;
-      border-radius: 4px;
-      flex-shrink: 0;
-    }
-
-
-
     /* ===== NEWS unified feed ===== */
     .feed-item { padding: 10px 12px; border-bottom: 1px solid var(--sa-border); display: block; color: inherit; text-decoration: none; border-top: 2px solid transparent; border-image: linear-gradient(90deg, var(--sa-celadon), transparent) 1; }
     .feed-item-official { cursor: default; }
@@ -473,15 +438,6 @@
     .feed-source:hover { text-decoration: underline; }
 
     /* ===== INFO collapsible groups ===== */
-    .info-fold { border-bottom: 1px solid var(--sa-border); }
-    .info-fold > summary {
-      cursor: pointer; padding: 12px 16px; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.5px; text-transform: uppercase; color: var(--sa-text-2);
-      list-style: none;
-    }
-    .info-fold > summary::-webkit-details-marker { display: none; }
-    .info-fold > summary::after { content: " \25B8"; color: var(--sa-text-3); }
-    .info-fold[open] > summary::after { content: " \25BE"; }
     .info-group-title {
       padding: 12px 16px 0; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
       text-transform: uppercase; color: var(--sa-text-2);
@@ -814,122 +770,11 @@
     }
     .shelters-cta a { color: var(--sa-celadon); text-decoration: none; }
     .shelters-cta a:hover { text-decoration: underline; }
-    .shelters-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 10px;
-    }
-    .shelter-card {
-      background: var(--sa-surface);
-      border: 1px solid var(--sa-border);
-      border-radius: 6px;
-      padding: 12px 14px;
-      box-shadow: var(--sa-shadow);
-      display: flex; flex-direction: column; gap: 4px;
-    }
-    .shelter-card .name { font-size: 14px; font-weight: 700; color: var(--sa-text); line-height: 1.25; }
-    .shelter-card .city { font-size: 12px; color: var(--sa-text-3); }
-    .shelter-card .address {
-      font-size: 11px; color: var(--sa-text-3);
-      font-family: "IBM Plex Mono", ui-monospace, monospace; margin-top: 2px;
-    }
-    .shelter-card .notes-chip {
-      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
-      text-transform: uppercase; padding: 2px 6px; border-radius: 3px;
-      background: var(--sa-moderate); color: white; margin-top: 4px; align-self: flex-start;
-    }
-    .shelter-card .directions {
-      font-size: 12px; color: var(--sa-celadon); text-decoration: none;
-      margin-top: 6px; align-self: flex-start;
-      min-height: 44px; display: inline-flex; align-items: center;
-    }
-    .shelter-card .directions:hover { text-decoration: underline; }
     .shelter-icon { background: none !important; border: none !important; }
     .shelter-marker {
       width: 22px; height: 22px; background: #1B9E77; border: 2px solid white;
       border-radius: 4px; display: flex; align-items: center; justify-content: center;
       font-size: 13px; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-    }
-
-    /* ===== COMMUNITY RESOURCES ===== */
-    .community-resource-card {
-      background: var(--sa-surface);
-      border: 1px solid var(--sa-border);
-      border-radius: 6px;
-      padding: 12px 14px;
-      box-shadow: var(--sa-shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .community-resource-card .cr-title { font-size: 14px; font-weight: 700; color: var(--sa-text); line-height: 1.25; }
-    .community-resource-card .cr-desc { font-size: 12px; color: var(--sa-text-2); line-height: 1.4; }
-    .community-resource-card .cr-actions { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
-    .community-resource-card .cr-action {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      text-decoration: none;
-      min-height: 44px;
-    }
-    .cr-action-phone {
-      background: var(--sa-celadon);
-      color: #fff;
-    }
-    .cr-action-url {
-      background: var(--sa-bg);
-      border: 1px solid var(--sa-border);
-      color: var(--sa-celadon);
-    }
-    .cr-action-url:hover { border-color: var(--sa-celadon); }
-    .cr-cat-chip {
-      font-size: 9px;
-      font-weight: 700;
-      padding: 1px 6px;
-      border-radius: 3px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      align-self: flex-start;
-    }
-    .cr-cat-government { background: var(--sa-celadon-3); color: var(--sa-celadon); }
-    .cr-cat-safety { background: var(--sa-gold-2); color: var(--sa-moderate); }
-    .cr-cat-shelter { background: #d1fae5; color: #1B9E77; }
-    .cr-cat-community { background: var(--sa-gold-2); color: var(--sa-gold); }
-
-    /* ===== RESOURCES TAB ===== */
-    .resources-section { padding: 10px 12px; }
-    .resources-section-title {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--sa-text-3);
-      margin-bottom: 8px;
-    }
-    .resources-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    /* De-carded historical resources inside the collapsed fold: dense rows, no card chrome,
-       so the archived shelter/community list stops competing with the official routing above. */
-    .info-historical .shelter-card,
-    .info-historical .community-resource-card {
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--sa-border);
-      border-radius: 0;
-      box-shadow: none;
-      padding: 8px 0;
-    }
-    .info-historical .shelters-grid,
-    .info-historical .resources-grid {
-      grid-template-columns: 1fr;
-      gap: 0;
     }
 
     /* ===== ABOUT PANEL ===== */
@@ -984,6 +829,8 @@
     }
     .info-row .k { color: var(--sa-text-2); }
     .info-row .v { color: var(--sa-text); font-weight: 500; }
+    .info-fine { font-size: 11px; color: var(--sa-text-3); line-height: 1.4; }
+    .info-desc { font-size: 12px; color: var(--sa-text-2); line-height: 1.4; padding: 8px 12px 0; }
     .info-big { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
     .yes { color: var(--sa-safe); font-weight: 600; }
     .no { color: var(--sa-high); font-weight: 600; }
@@ -1027,9 +874,24 @@
 
     .news-subpanel { display: none; }
     .news-subpanel.active { display: block; }
-    .info-subtabs { display: flex; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid var(--sa-border); background: var(--sa-surface); position: sticky; top: 0; z-index: 3; }
+    .info-subtabs {
+      display: flex; gap: 4px; padding: 8px 12px 0;
+      border-bottom: 1px solid var(--sa-border); background: var(--sa-surface);
+      position: sticky; top: 0; z-index: 3;
+      overflow-x: auto; flex-wrap: nowrap;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .info-subtabs::-webkit-scrollbar { display: none; }
+    /* edge-fade peek: hints there are more tabs to the right */
+    .info-subtabs-wrap { position: relative; }
+    .info-subtabs-wrap::after {
+      content: ''; position: absolute; top: 0; right: 0; width: 24px; height: 100%;
+      pointer-events: none; background: linear-gradient(to right, transparent, var(--sa-surface));
+    }
     .info-subtab {
-      flex: 1; padding: 10px 12px; border: none; background: transparent;
+      flex: 0 0 auto; white-space: nowrap; scroll-snap-align: start;
+      padding: 10px 12px; border: none; background: transparent;
       color: var(--sa-text-2); font-family: inherit; font-size: 13px; font-weight: 600;
       cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
       min-height: 44px; transition: color 0.15s, border-color 0.15s;
@@ -1270,45 +1132,6 @@
     }
     .info-kv-key { color: var(--sa-text-2); }
     .info-kv-val { color: var(--sa-text); font-weight: 600; text-align: right; max-width: 55%; }
-    .info-shelter-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 14px;
-      border-bottom: 1px solid var(--sa-border);
-    }
-    .info-shelter-icon {
-      width: 20px;
-      height: 20px;
-      background: #1B9E77;
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 12px;
-      color: #fff;
-    }
-    .info-shelter-details {
-      flex: 1;
-      min-width: 0;
-    }
-    .info-shelter-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--sa-text);
-    }
-    .info-shelter-meta {
-      font-size: 11px;
-      color: var(--sa-text-3);
-    }
-    .info-shelter-dir {
-      font-size: 11px;
-      color: var(--sa-celadon);
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-    .info-shelter-dir:hover { text-decoration: underline; }
     .info-schools-grid {
       display: flex;
       flex-direction: column;
@@ -1383,7 +1206,6 @@
     @media (min-width: 768px) {
       .news-item { padding: 12px 16px; }
       .info-section { padding: 12px 16px; }
-      .resources-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* ===== PRINT CSS ===== */
@@ -1557,9 +1379,18 @@ var STRINGS = {
   "theme.dark": { en: "Dark" },
   "theme.light": { en: "Light" },
   "share.copied": { en: "Copied to clipboard" },
-  "info.subtab.status": { en: "What happened" },
-  "info.subtab.resources": { en: "Resources" },
+  "info.subtab.summary": { en: "Summary" },
+  "info.subtab.officials": { en: "Officials" },
+  "info.subtab.shelters": { en: "Shelters" },
+  "info.subtab.schools": { en: "Schools" },
+  "info.subtab.recovery": { en: "Recovery" },
   "info.subtab.about": { en: "About" },
+  "info.desc.summary": { en: "What happened during the May 2026 emergency." },
+  "info.desc.officials": { en: "The city and county's own emergency channels." },
+  "info.desc.shelters": { en: "Evacuation shelters that opened during the emergency." },
+  "info.desc.schools": { en: "Schools closed during the emergency." },
+  "info.desc.recovery": { en: "Federal aid, fraud reporting, and the investigation tip line." },
+  "info.desc.about": { en: "How this archive was made, and the sources behind it." },
   "topbar.unofficial": { en: "UNOFFICIAL" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
   "topbar.archive": { en: "ARCHIVE" },
@@ -1579,7 +1410,6 @@ var STRINGS = {
   "legend.evac.resolved": { en: "Former evac area" },
   "legend.shelter": { en: "Former shelter" },
   "info.resolved.banner": { en: "Resolved {date} — all evacuations lifted." },
-  "info.historical.title": { en: "Historical resources" },
   "map.tooltip.evac": { en: "Evacuation zone" },
   "map.tooltip.you": { en: "You" },
   "news.statements.count": { en: "{n} official statement{s}" },
@@ -1612,11 +1442,6 @@ var STRINGS = {
   "info.sources.checked": { en: "checked" },
   "common.yes": { en: "yes" },
   "common.no": { en: "no" },
-  "info.method.title": { en: "Methodology & trust" },
-  "info.method.pipeline": { en: "<strong>Data pipeline:</strong> Status was updated every 30 min via verified web sources (official agency feeds, city websites, news outlets). Each fact was cross-referenced against multiple sources before publishing." },
-  "info.method.eval": { en: '<strong>Evaluation:</strong> This dashboard has a <a href="eval/">test suite</a> including behavioral tests and LLM-as-judge rubrics for design and data quality.' },
-  "info.about.title": { en: "Who made this" },
-  "info.about.body": { en: "Built by two local volunteers, Mike and Nancy, to help our community during the Garden Grove tank emergency. It is not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. Free, no sign-up, no ads — we do not collect your data." },
   "info.about.termslink": { en: "Read the full Terms & disclaimer" },
   "info.about.a11ylink": { en: "Accessibility" },
   "info.group.closures": { en: "Closures" },
@@ -2140,72 +1965,76 @@ function buildFeedCardsHtml(feed) {
 function renderInfoTab() {
   var el = $("info-content");
   if (!el) return;
-  var html = '';
 
-  // Sub-tabs: Status | Resources | About (reuses the News sub-tab pattern)
-  html += '<div class="info-subtabs" role="tablist" aria-label="Info sections">';
-  html += '<button type="button" class="info-subtab active" role="tab" id="info-subtab-status" aria-selected="true" aria-controls="info-subpanel-status" onclick="switchInfoSubtab(\'status\')">' + t("info.subtab.status") + '</button>';
-  html += '<button type="button" class="info-subtab" role="tab" id="info-subtab-resources" aria-selected="false" aria-controls="info-subpanel-resources" onclick="switchInfoSubtab(\'resources\')">' + t("info.subtab.resources") + '</button>';
-  html += '<button type="button" class="info-subtab" role="tab" id="info-subtab-about" aria-selected="false" aria-controls="info-subpanel-about" onclick="switchInfoSubtab(\'about\')">' + t("info.subtab.about") + '</button>';
-  html += '</div>';
+  // Sub-tab chrome + per-panel descriptors are generated from one array so the six
+  // panels read as one system (Summary | Officials | Shelters | Schools | Recovery | About).
+  var TABS = [
+    { id: "summary",   label: t("info.subtab.summary"),   desc: t("info.desc.summary") },
+    { id: "officials", label: t("info.subtab.officials"), desc: t("info.desc.officials") },
+    { id: "shelters",  label: t("info.subtab.shelters"),  desc: t("info.desc.shelters") },
+    { id: "schools",   label: t("info.subtab.schools"),   desc: t("info.desc.schools") },
+    { id: "recovery",  label: t("info.subtab.recovery"),  desc: t("info.desc.recovery") },
+    { id: "about",     label: t("info.subtab.about"),     desc: t("info.desc.about") }
+  ];
 
-  // STATUS ("What happened") panel — historical incident snapshot
-  html += '<div class="info-subpanel active" id="info-subpanel-status" role="tabpanel" aria-labelledby="info-subtab-status">';
+  // Scrollable sub-tab bar (wrap = non-scrolling layer for the right-edge fade peek).
+  var html = '<div class="info-subtabs-wrap"><div class="info-subtabs" role="tablist" aria-label="Info sections">';
+  TABS.forEach(function (tb, i) {
+    html += '<button type="button" class="info-subtab' + (i === 0 ? ' active' : '') +
+      '" role="tab" id="info-subtab-' + tb.id + '" aria-selected="' + (i === 0 ? 'true' : 'false') +
+      '" aria-controls="info-subpanel-' + tb.id + '" onclick="switchInfoSubtab(\'' + tb.id + '\')">' +
+      tb.label + '</button>';
+  });
+  html += '</div></div>';
 
-  // Incident status section
-  html += '<div class="info-section"><div class="info-section-title">' + t("info.group.status") + '</div></div>';
-  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankCrack") + '</span><span class="info-kv-val" id="info-crack-val">--</span></div>';
-  // Peak facts are STATIC archive copy sourced from timeline.json (the resolved snapshot
-  // clears temp_f/residents/boundary_text, so binding to it would show a misleading 0/--).
-  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankTemp") + '</span><span class="info-kv-val">' + t("info.tankTempArchive") + '</span></div>';
-  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacResidents") + '</span><span class="info-kv-val">' + t("info.peakEvac") + '</span></div>';
-  html += '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val" style="font-size:11px;text-align:right">' + t("info.zonePeak") + '</span></div>';
-  html += '</div>'; // end status panel
+  function panel(tb, i, body) {
+    return '<div class="info-subpanel' + (i === 0 ? ' active' : '') +
+      '" id="info-subpanel-' + tb.id + '" role="tabpanel" aria-labelledby="info-subtab-' + tb.id + '">' +
+      '<div class="info-desc">' + tb.desc + '</div>' + body + '</div>';
+  }
 
-  // RESOURCES panel — shelters (+ community + official) first, then school closures
-  html += '<div class="info-subpanel" id="info-subpanel-resources" role="tabpanel" aria-labelledby="info-subtab-resources">';
+  // Summary — sourced peak facts (STATIC archive copy from timeline.json; the resolved
+  // snapshot clears temp_f/residents/boundary, so binding to it would show a misleading 0/--).
+  var summary =
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankCrack") + '</span><span class="info-kv-val" id="info-crack-val">--</span></div>' +
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankTemp") + '</span><span class="info-kv-val">' + t("info.tankTempArchive") + '</span></div>' +
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacResidents") + '</span><span class="info-kv-val">' + t("info.peakEvac") + '</span></div>' +
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val info-fine">' + t("info.zonePeak") + '</span></div>';
 
-  // Shelters + community resources + official sources (populated by renderResources;
-  // leads with the single "Evacuation shelters" list — the former duplicate
-  // "nearest shelters" block was merged away).
-  html += '<div id="resources-content" style="margin-top:4px"></div>';
+  // Officials — the 3 official channels as unified .info-row links (route-to-officials
+  // is the conduit's primary action; "Official" label kept, the old official-link chrome retired).
+  function officialRow(href, label) {
+    return '<a class="info-row" style="text-decoration:none" href="' + href + '" target="_blank" rel="noopener">' +
+      '<span class="k">' + label + '</span><span class="v" style="color:var(--sa-celadon)">Official ↗</span></a>';
+  }
+  var officials =
+    '<p class="info-who-body">' + t("info.official.note") + '</p>' +
+    '<div class="info-section">' +
+    officialRow("https://ggcity.org/emergency", t("info.official.city")) +
+    officialRow("https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12", t("info.official.zonehaven")) +
+    officialRow("https://member.everbridge.net/892807736729480/login", t("info.official.alert")) +
+    '</div>';
 
-  // School closures (after the shelter content, so the shelter sections stay together)
-  html += '<div class="info-section"><div class="info-section-title">' + t("info.schoolsClosed") + '</div></div>';
-  html += '<div class="info-schools-grid" id="info-schools-grid"></div>';
-  html += '</div>'; // end resources panel
+  // Shelters — config.map.shelters (config-driven; filled by renderInfoConfigData).
+  var shelters = '<div id="info-shelters-list"></div>';
 
-  // ABOUT panel — organized into consistent info-section blocks (matching Status/Resources):
-  // who made it, how it works (responsible-AI methodology surfaced, not buried), disclaimer +
-  // links, then the collapsed source list.
-  html += '<div class="info-subpanel" id="info-subpanel-about" role="tabpanel" aria-labelledby="info-subtab-about">';
+  // Schools — closures grid (id retained for updateInfoData + test_info_schools_rows).
+  var schools = '<div class="info-schools-grid" id="info-schools-grid"></div>';
 
-  // Who made this
-  html += '<div class="info-section"><div class="info-section-title">' + t("info.about.title") + '</div></div>';
-  html += '<div class="info-who-body">';
-  html += '<p>' + t("info.about.body") + '</p>';
-  html += '<div class="info-seal">' + t("info.unofficial.seal") + '</div>';
-  html += '</div>';
+  // Recovery — config.community_resources (config-driven; filled by renderInfoConfigData).
+  var recovery = '<div id="info-recovery-list"></div>';
 
-  // How it works — methodology & trust (surfaces the AI disclosure + pipeline + eval)
-  html += '<div class="info-section"><div class="info-section-title">' + t("info.method.title") + '</div></div>';
-  html += '<div class="info-who-body">';
-  html += '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>';
-  html += '<p>' + t("info.method.pipeline") + '</p>';
-  html += '<p>' + t("info.method.eval") + '</p>';
-  html += '<p style="font-size:12px;margin-top:8px">' +
-    '<a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>' +
-    ' · <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>';
-  html += '</div>';
+  // About (lean) — binding AI disclosure + Terms/Accessibility + Sources-checked fold.
+  // Methodology / who-made-it narrative lives in the README, not in-app.
+  var about =
+    '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>' +
+    '<p class="info-fine"><a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>' +
+    ' &middot; <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>' +
+    '<details><summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>' +
+    '<div id="info-source-list" class="info-fine" style="padding:0 14px 12px"></div></details>';
 
-  // Sources checked (collapsed — the full source list)
-  html += '<details>';
-  html += '<summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>';
-  html += '<div id="info-source-list" style="padding:0 14px 12px"></div>';
-  html += '</details>';
-  html += '</div>'; // end about panel
-
-  el.innerHTML = html;
+  var bodies = [summary, officials, shelters, schools, recovery, about];
+  el.innerHTML = html + TABS.map(function (tb, i) { return panel(tb, i, bodies[i]); }).join("");
 }
 
 function updateInfoData(snap) {
@@ -2223,7 +2052,7 @@ function updateInfoData(snap) {
         return '<div class="info-school-card">' + s + '</div>';
       }).join("");
     } else {
-      schoolsGrid.innerHTML = '<div style="grid-column:1/-1;color:var(--sa-text-3);font-size:12px;padding:4px 0">' + t("info.schools.none") + '</div>';
+      schoolsGrid.innerHTML = '<div class="info-fine" style="grid-column:1/-1;padding:4px 0">' + t("info.schools.none") + '</div>';
     }
   }
 
@@ -2237,122 +2066,47 @@ function updateInfoData(snap) {
         return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + checked + '</a>';
       }).join("");
     } else {
-      sourceList.innerHTML = '<span style="color:var(--sa-text-3);font-size:12px">' + t("info.sources.empty") + '</span>';
+      sourceList.innerHTML = '<span class="info-fine">' + t("info.sources.empty") + '</span>';
     }
   }
 }
 
-function renderInfoShelters() {
-  var list = $("info-shelter-list");
-  if (!list) return;
-  var shelters = (configCache && configCache.map && configCache.map.shelters) || [];
-  var top5 = shelters.slice(0, 5);
-  if (!top5.length) {
-    list.innerHTML = '<div style="padding:8px 14px;color:var(--sa-text-3);font-size:12px">' + t("info.shelters.empty") + '</div>';
-    return;
-  }
-  list.innerHTML = top5.map(function(s) {
-    var gmaps = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(s.lat + "," + s.lon);
-    var notesHtml = s.notes ? ' · <span style="color:var(--sa-moderate);font-weight:600">' + s.notes + '</span>' : '';
-    return '<div class="info-shelter-row">' +
-      '<div class="info-shelter-icon">&#127968;</div>' +
-      '<div class="info-shelter-details">' +
-        '<div class="info-shelter-name">' + s.name + '</div>' +
-        '<div class="info-shelter-meta">' + (s.city || '') + notesHtml + '</div>' +
-      '</div>' +
-      '<a class="info-shelter-dir" href="' + gmaps + '" target="_blank" rel="noopener">' + t("info.directions") + '</a>' +
-    '</div>';
-  }).join("");
-}
-
-/* ============ RESOURCES TAB ============ */
-function renderResources() {
-  var html = '';
-  // Official sources LEAD — the route-to-officials action comes first (primary purpose #1),
-  // ahead of the historical support data.
-  html += '<div class="resources-section">';
-  html += '<div class="resources-section-title" data-i18n="info.group.official">' + t("info.group.official") + '</div>';
-  html += '<p class="official-sources-note" data-i18n="info.official.note">' + t("info.official.note") + '</p>';
-  html += '<div class="official-links">' +
-    '<a class="official-link" href="https://ggcity.org/emergency" target="_blank" rel="noopener"><span>' + t("info.official.city") + '</span><span class="official-link-tag">Official</span></a>' +
-    '<a class="official-link" href="https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12" target="_blank" rel="noopener"><span>' + t("info.official.zonehaven") + '</span><span class="official-link-tag">Official</span></a>' +
-    '<a class="official-link" href="https://member.everbridge.net/892807736729480/login" target="_blank" rel="noopener"><span>' + t("info.official.alert") + '</span><span class="official-link-tag">Official</span></a>' +
-  '</div>';
-  html += '</div>';
-
-  html += '<div class="lotus-divider"></div>';
-
-  // Historical support data — collapsed by default + de-carded to dense rows so the archived
-  // shelter/community list stops competing with the official routing above.
-  html += '<details class="info-fold"><summary>' + t("info.historical.title") + '</summary>';
-  html += '<div class="info-historical">';
-
-  html += '<div class="resources-section">';
-  html += '<div class="resources-section-title" data-i18n="info.shelters.title">' + t("info.shelters.title") + '</div>';
-  html += '<div class="shelters-grid" id="resources-shelters-grid"></div>';
-  html += '</div>';
-
-  var resources = (configCache && configCache.community_resources) || [];
-  if (resources.length) {
-    var categories = ["government", "safety", "shelter", "community"];
-    categories.forEach(function(cat) {
-      var catResources = resources.filter(function(r) { return r.category === cat; });
-      if (!catResources.length) return;
-      var catKey = "resources." + cat;
-      html += '<div class="resources-section">';
-      html += '<div class="resources-section-title">' + t(catKey) + '</div>';
-      html += '<div class="resources-grid">';
-      catResources.forEach(function(r) {
-        var actions = '<div class="cr-actions">';
-        if (r.phone) actions += '<a class="cr-action cr-action-phone" href="tel:' + r.phone.replace(/[^+\d]/g, '') + '">☎ ' + r.phone + '</a>';
-        if (r.url) actions += '<a class="cr-action cr-action-url" href="' + r.url + '" target="_blank" rel="noopener">' + t("resources.visit") + ' ↗</a>';
-        actions += '</div>';
-        html += '<div class="community-resource-card">' +
-          '<span class="cr-cat-chip cr-cat-' + cat + '">' + t(catKey) + '</span>' +
-          '<div class="cr-title">' + r.title + '</div>' +
-          '<div class="cr-desc">' + (r.description || '') + '</div>' +
-          actions +
-        '</div>';
-      });
-      html += '</div></div>';
-    });
+/* ============ INFO CONFIG-DRIVEN PANELS (Shelters + Recovery) ============ */
+function renderInfoConfigData() {
+  // Shelters — config.map.shelters as dense .info-row links (config-driven; the
+  // snap-driven Summary/Schools/Sources panels are filled by updateInfoData).
+  var sheltersEl = $("info-shelters-list");
+  if (sheltersEl) {
+    var shelters = (configCache && configCache.map && configCache.map.shelters) || [];
+    if (shelters.length) {
+      sheltersEl.innerHTML = '<div class="info-section">' + shelters.map(function (s) {
+        var gmaps = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(s.lat + "," + s.lon);
+        var loc = s.city ? ' <span class="info-fine">&middot; ' + s.city + '</span>' : '';
+        return '<a class="info-row" style="text-decoration:none" href="' + gmaps + '" target="_blank" rel="noopener">' +
+          '<span class="k">' + s.name + loc + '</span>' +
+          '<span class="v" style="color:var(--sa-celadon)">' + t("info.shelters.directions") + '</span></a>';
+      }).join("") + '</div>';
+    } else {
+      sheltersEl.innerHTML = '<p class="info-who-body">' + t("info.shelters.empty") + '</p>';
+    }
   }
 
-  html += '</div></details>';
-
-  var rcEl = $("resources-content");
-  if (rcEl) {
-    rcEl.innerHTML = html;
-    renderResourceShelters("resources-shelters-grid");
+  // Recovery — config.community_resources (FEMA aid / DA tip line / price-gouging) as
+  // titled .info-who-body blocks with their contact actions.
+  var recoveryEl = $("info-recovery-list");
+  if (recoveryEl) {
+    var resources = (configCache && configCache.community_resources) || [];
+    recoveryEl.innerHTML = resources.map(function (r) {
+      var actions = [];
+      if (r.url) actions.push('<a href="' + r.url + '" target="_blank" rel="noopener" style="color:var(--sa-celadon);text-decoration:none">' + t("resources.visit") + ' ↗</a>');
+      if (r.phone) actions.push('<a href="tel:' + r.phone.replace(/[^+\d]/g, '') + '" style="color:var(--sa-celadon);text-decoration:none">☎ ' + r.phone + '</a>');
+      return '<div class="info-section"><div class="info-who-body">' +
+        '<p><strong>' + r.title + '</strong></p>' +
+        (r.description ? '<p>' + r.description + '</p>' : '') +
+        (actions.length ? '<p>' + actions.join(' &nbsp;&middot;&nbsp; ') + '</p>' : '') +
+        '</div></div>';
+    }).join("");
   }
-}
-
-function renderResourceShelters(gridId) {
-  var grid = $(gridId);
-  if (!grid) return;
-  renderResourceSheltersInto(grid);
-}
-function renderResourceSheltersInto(grid) {
-  var shelters = (configCache && configCache.map && configCache.map.shelters) || [];
-  if (!shelters.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;color:var(--sa-text-3);font-size:13px">' + t("info.shelters.empty") + '</div>';
-    return;
-  }
-  grid.innerHTML = shelters.map(function(s) {
-    var gmaps = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(s.lat + "," + s.lon);
-    return '<div class="shelter-card">' +
-      '<div class="name">' + s.name + '</div>' +
-      '<div class="city">' + (s.city || "") + '</div>' +
-      '<div class="address">' + (s.address || "") + '</div>' +
-      (s.notes ? '<span class="notes-chip">' + s.notes + '</span>' : "") +
-      '<a class="directions" href="' + gmaps + '" target="_blank" rel="noopener">' + t("info.shelters.directions") + '</a>' +
-    '</div>';
-  }).join("");
-}
-
-/* ============ SHELTERS (for old render path) ============ */
-function renderShelters(cfg) {
-  renderResourceShelters("resources-shelters-grid");
 }
 
 /* ============ PRINT CONTENT ============ */
@@ -2547,8 +2301,7 @@ async function loadConfig() {
     if (!resp.ok) throw new Error("config.json HTTP " + resp.status);
     configCache = await resp.json();
     renderInfoTab();
-    renderResources();
-    renderInfoShelters();
+    renderInfoConfigData();
     return configCache;
   } catch (e) {
     console.warn("config load failed:", e);

@@ -85,6 +85,16 @@ It is honest by construction:
 
 The emergency was multi-day and evolving. The available signals — news live-blogs, the city's emergency page, OCFA tweets — were scattered. Reaching for my phone or refreshing news tabs felt like a tax I was paying every 20 minutes. I wanted one page that answered my actual question ("do I need to leave?") with everything else as supporting evidence I could glance at, not hunt for.
 
+## How this archive was made
+
+Built by two local volunteers, Mike and Nancy, to help our community during the May 2026 Garden Grove tank emergency. It is **not** affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. It is free, has no sign-up and no ads, and does not collect your data.
+
+**Data pipeline (historical).** Status was updated every 30 minutes via verified web sources — official agency feeds, city websites, and news outlets — and each fact was cross-referenced against multiple sources before publishing. The pipeline is now frozen; see [Architecture](#architecture) and [Data sync](#data-sync--how-statusjson-stays-fresh) for how it ran.
+
+**Evaluation.** The dashboard ships with a [behavioral test suite + LLM-as-judge rubrics](eval/) for design and data quality; see [How data quality + behavior gets evaluated](#how-data-quality--behavior-gets-evaluated).
+
+> This fuller methodology and who-made-it narrative lives here in the README, by design. The in-app **About** sub-tab is deliberately lean: it carries only the persistent AI-assistance disclosure (the binding honesty principle), a "Sources checked" list, and links to the Terms and Accessibility pages — the responsible-AI disclosure stays in front of residents, while the portfolio narrative stays out of their way.
+
 ## Architecture
 
 ```

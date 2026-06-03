@@ -50,3 +50,16 @@ def test_readme_breakdown_matches_data():
             mismatches[unit] = f"README={got}/data={c[unit]}"
     return {"passed": not mismatches,
             "details": "README breakdown matches data" if not mismatches else f"mismatches: {mismatches}"}
+
+
+def test_readme_methodology_past_tense():
+    """The methodology / data-pipeline narrative migrated OUT of the in-app About in the 6-tab
+    redesign (2026-06-02) now lives in the README and must read PAST tense — a frozen archive
+    must not describe its retired pipeline as ongoing. ('was updated every' / 'cross-referenced
+    against multiple sources', not present-tense 'status updated every'.) This re-homes the
+    integrity property the in-app test_method_pipeline_past_tense used to guard."""
+    txt = README.read_text(encoding="utf-8").lower()
+    past = "was updated every" in txt and "cross-referenced against multiple sources" in txt
+    no_present = "status updated every" not in txt
+    return {"passed": past and no_present,
+            "details": f"past_tense={past} no_present_tense={no_present}"}

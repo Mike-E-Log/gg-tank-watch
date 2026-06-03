@@ -62,8 +62,11 @@ def test_about_drops_disclaimer_and_official_routing_keeps_ai():
     routing prose (both now carried once by the banner), but KEEPS the persistent AI-assistance
     disclosure (its single allowed in-content home)."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    i = text.find('id="info-subpanel-about"')
-    j = text.find("// end about panel", i) if i >= 0 else -1
+    # 6-tab redesign (2026-06-02): panel ids are built dynamically, so anchor on the
+    # renderInfoTab `var about =` block instead of the removed literal id / "// end about
+    # panel" marker.
+    i = text.find("var about =")
+    j = text.find("var bodies =", i) if i >= 0 else -1
     region = text[i:j] if (i >= 0 and j > i) else ""
     no_disclaimer = "info.method.disclaimer" not in region
     no_official_routing = "info.about.official" not in region
