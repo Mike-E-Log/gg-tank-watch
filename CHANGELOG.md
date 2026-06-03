@@ -2,6 +2,41 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.26] — 2026-06-03 (Info sub-tab polish — Officials descriptions, About cleanup, ghost lines)
+
+User-directed polish across the four Info sub-tabs. Acceptance rubric amended first as the
+fixed target; test-first (guards red → green); eval green (**191/191**); vision-verified in
+signed Edge (light + dark, 320/360/375/390/430/768px) with `getBoundingClientRect` geometry
+probes on every rubric §0 hard constraint; cross-checked by a 4-lens adversarial review
+(safety/transparency, eval-honesty, copy accuracy, rubric/surgical — all pass, zero
+blocker/major).
+
+### Added
+- **Officials:** a one-line `.info-row-desc` description under each of the 3 official channels
+  (what the city page / Zonehaven lookup / AlertOC sign-up is for), replacing the removed
+  generic "No single source…" note.
+- **About → Sources:** the fold is **open by default**, opens with a one-line caption stating
+  what the list is (the provenance trail the pipeline checked), and tags the official
+  City/County sources with an **"Official"** label (`status.json` flags 2 sources `official`).
+- **Eval guards** (`eval/test_info_archive_clarity.py`): `test_officials_note_removed_and_descriptions_present`,
+  `test_resources_descriptor_one_line`, `test_sources_caption_open_and_official_labels`,
+  `test_no_ghost_lines_background`.
+
+### Changed
+- **About:** the binding AI-assistance disclosure renders at body near-black `--sa-text` (12px),
+  in line with the other sub-tabs — the gold accent was dropped (text + first-line placement
+  carry the binding-honesty property, not the color).
+- **About:** removed the duplicate "Current life-safety info…" routing line (`disclosure.aiRoute`)
+  — concrete 911/ggcity routing is carried persistently by the safety strip on every tab; the
+  routing-concreteness guard was re-pointed to the strip.
+- **About:** dropped the Terms link (still in the persistent strip), kept Accessibility (its only
+  in-app entry point).
+- **Resources:** descriptor band shortened to one line.
+- **Removed the `.sa-wave-bg` "lined-paper" ghost lines** (the `repeating-linear-gradient` that
+  painted a faint horizontal line every ~22px on every Info sub-tab); the intentional `1px solid`
+  item separators stay.
+- service-worker `CACHE_NAME` bumped `v63 → v64`.
+
 ## [v0.25] — 2026-06-02 (Info sub-tab fit guard)
 
 Deterministic regression guard for the #108 failure class — the Info sub-tab bar must be
