@@ -2,6 +2,39 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.27] — 2026-06-03 (Info data freeze + refresh-proof Official tags + typography pass)
+
+Follow-up to v0.26. Re-freezes the archive data (an upstream cloud auto-refresh had been
+re-stamping timestamps and accumulating post-all-clear events), makes the Sources "Official"
+tags immune to that refresh, and a typography-consistency pass per user feedback. Eval
+**191/191**; signed-Edge vision-verified (light + dark, 320–768px) with `getComputedStyle`
+font probes across all four sub-tabs.
+
+### Changed
+- **Official tags are now URL-derived** (`isOfficialSourceUrl()` → `ggcity.org` / `ocgov.com`),
+  not a `status.json` `official` flag — the data-refresh regenerated `status.json` and stripped
+  the flag, so the tags vanished; deriving from the (preserved) source URL is refresh-proof.
+- **Typography harmonized across the four sub-tabs** (user 2026-06-03): About primary content
+  (`.info-ai-disclosure` + `.source-item`) → **13px** to match the other panels' rows (were 12px
+  outliers); the Officials channel name → dark `--sa-text` (was the muted key color, read lighter
+  than the shelter names); group/section titles (`.info-section-title` for Shelters/Schools/
+  Recovery **and** the About `.info-sources-toggle`) → **11px/700/caps/`--sa-text-2`** so a
+  heading stands out above its 13px items.
+- **About copy/layout:** the AI disclosure reads "Summaries in this **archive**…" (was "on this
+  page"); the Sources caption shortened to one line; the **Accessibility** link moved to the
+  bottom of About (a quiet footer link, below the Sources fold, instead of under the disclosure).
+- service-worker `CACHE_NAME` bumped `v64 → v65`.
+
+### Removed / Frozen (data)
+- **`timeline.json`:** removed **25 post-all-clear events** (May 28 → Jun 3) that the upstream
+  auto-refresh had accumulated — the archive is May 21–26 (boundary `2026-05-27T02:30:00Z`), so
+  the timeline is back to its 67 in-window events. (`timeline.json` is a static source for the
+  Summary peak facts, not fetched at runtime — zero UI impact.)
+- **`status.json`:** froze `last_updated_iso` / `next_check_at_iso` / per-source `fetched_iso` to
+  the all-clear so the frozen archive stops presenting a live "last updated" time (the dashboard
+  already ignores `last_updated_iso` for display); restored the 9-source provenance set; dropped
+  the now-unused per-source `official` flag.
+
 ## [v0.26] — 2026-06-03 (Info sub-tab polish — Officials descriptions, About cleanup, ghost lines)
 
 User-directed polish across the four Info sub-tabs. Acceptance rubric amended first as the

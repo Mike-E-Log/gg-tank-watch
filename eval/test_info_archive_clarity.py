@@ -150,7 +150,7 @@ def test_about_disclosure_and_sources():
     css_i = text.find(".info-ai-disclosure {")
     css_block = text[css_i:css_i + 240] if css_i != -1 else ""
     # body near-black, no gold accent
-    disclosure_styled = "12px" in css_block and "var(--sa-text)" in css_block and "--sa-gold" not in css_block
+    disclosure_styled = "13px" in css_block and "var(--sa-text)" in css_block and "--sa-gold" not in css_block
     ok = (sources_fold and sources_caption and conduct_removed
           and disclosure_class and disclosure_styled)
     return {"passed": ok,
@@ -299,7 +299,7 @@ def test_disclosure_single_line_body_color():
     no_imperative = "Always confirm life-safety" not in text
     ci = text.find(".info-ai-disclosure {")
     css = text[ci:ci + 200] if ci != -1 else ""
-    styled = "12px" in css and "var(--sa-text)" in css and "--sa-gold" not in css
+    styled = "13px" in css and "var(--sa-text)" in css and "--sa-gold" not in css
     ok = has_ai and airoute_gone and line1 and no_imperative and styled
     return {"passed": ok,
             "details": "AI disclosure: single body-color line; duplicate routing line removed"
@@ -350,23 +350,39 @@ def test_resources_descriptor_one_line():
 
 def test_sources_caption_open_and_official_labels():
     """Sources fold (user 2026-06-02 — 'make it clear WHY these sources'): the fold is OPEN by
-    default, opens with a one-line caption stating what the list is (info.sources.caption — the
-    provenance trail the pipeline checked), and the official City/County sources are tagged
-    'Official' (info.sources.official). The render path keys the tag off s.official, and
-    status.json flags >=2 sources_checked entries official:true. The tag uses a class
-    (.source-official) so the no-inline-font-size guard still holds."""
+    default, opens with a one-line caption (info.sources.caption), and the official City/County
+    sources are tagged 'Official' (info.sources.official).
+
+    Official-ness is DERIVED FROM THE SOURCE URL host (ggcity.org / ocgov.com) via
+    isOfficialSourceUrl() — NOT a status.json `official` flag. The data-refresh pipeline
+    regenerates status.json and strips an explicit flag (it did, 2026-06-03: the tags vanished
+    after an auto-refresh), but it PRESERVES the source URLs, so URL-derived tagging is
+    refresh-proof. The eval counts official sources by URL host (>=2) and asserts the render no
+    longer depends on the volatile s.official flag. The tag uses a class (.source-official) so
+    the no-inline-font-size guard still holds."""
     text = DASHBOARD.read_text(encoding="utf-8")
     caption_key = '"info.sources.caption"' in text
     fold_open = "<details open>" in text
     tag_key = '"info.sources.official"' in text
-    renders_official = "s.official" in text and ".source-official" in text
+    derives_from_url = "isOfficialSourceUrl" in text and ".source-official" in text
+    # must not key the tag off the refresh-stripped data flag. Match the precise render ternary
+    # `s.official ?` (NOT the substring "s.official", which also occurs in the i18n key
+    # "info.sources.official").
+    no_volatile_flag = "s.official ?" not in text and "s.official?" not in text
+
+    def _official_url(u):
+        u = (u or "").lower()
+        return "ggcity.org" in u or "ocgov.com" in u
+
     d = json.loads(STATUS.read_text(encoding="utf-8"))
-    n_official = sum(1 for s in d.get("sources_checked", []) if s.get("official") is True)
-    ok = caption_key and fold_open and tag_key and renders_official and n_official >= 2
+    n_official = sum(1 for s in d.get("sources_checked", []) if _official_url(s.get("url")))
+    ok = (caption_key and fold_open and tag_key and derives_from_url
+          and no_volatile_flag and n_official >= 2)
     return {"passed": ok,
-            "details": "Sources: open + caption + Official labels (>=2 flagged)"
+            "details": "Sources: open + caption + URL-derived Official labels (>=2 official-host sources)"
             if ok else (f"caption={caption_key} open={fold_open} tag_key={tag_key} "
-                        f"renders_official={renders_official} n_official={n_official}")}
+                        f"derives_from_url={derives_from_url} no_volatile_flag={no_volatile_flag} "
+                        f"n_official={n_official}")}
 
 
 def test_no_ghost_lines_background():

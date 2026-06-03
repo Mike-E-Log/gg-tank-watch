@@ -811,12 +811,15 @@
       padding: 10px 14px;
       border-bottom: 1px solid var(--sa-border);
     }
+    /* Group/section titles (Shelters/Schools/Recovery, and the About "Sources" toggle) — made
+       more prominent than the dimmer 10px/text-3 original so a heading stands out above the
+       13px items it labels (user 2026-06-03). */
     .info-section-title {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--sa-text-3);
+      color: var(--sa-text-2);
       margin: 12px 14px 6px;
     }
     /* Responsible-AI disclosure: surfaced as the first line in About (not a buried footnote).
@@ -824,7 +827,7 @@
        accent was dropped 2026-06-02 (user); the binding-honesty property holds via the text +
        first-line placement, not the color. */
     .info-ai-disclosure {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--sa-text);
       line-height: 1.45;
       margin-bottom: 8px;
@@ -845,6 +848,9 @@
     .info-row-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
     /* keep the "Official ↗" cue intact; let a long channel name wrap instead (shelter-row pattern). */
     .info-row-top .v { white-space: nowrap; flex: 0 0 auto; }
+    /* Official channel NAME is primary content (the link), so it reads at the dark value color
+       like the shelter/school names — not the muted key color (user 2026-06-03). */
+    .info-official-row .k { color: var(--sa-text); }
     .info-row-desc { color: var(--sa-text-3); font-size: 11px; line-height: 1.35; }
     /* Shelter rows: name+city in a flex text column, Directions pinned top-right so a long
        name wraps without dragging the action out of alignment. */
@@ -879,7 +885,7 @@
       border-bottom: 1px solid var(--sa-border);
       color: var(--sa-text);
       text-decoration: none;
-      font-size: 12px;
+      font-size: 13px;
     }
     .source-item:last-child { border-bottom: none; }
     .source-item:hover { color: var(--sa-celadon); }
@@ -898,6 +904,9 @@
     }
     /* One-line caption above the sources list, stating what the list is (the provenance trail). */
     .info-sources-caption { margin: 8px 0 6px; }
+    /* Accessibility utility link sits at the BOTTOM of About (after the Sources fold), not under
+       the disclosure — a quiet footer link, separated from the list above (user 2026-06-03). */
+    .info-about-footlink { margin-top: 12px; }
 
     /* ===== SON MAI CULTURAL ELEMENTS ===== */
     .lotus-divider {
@@ -1213,15 +1222,17 @@
     /* Recovery nests .info-who-body inside .info-section (which now has the 14px gutter); zero the
        inner gutter so its text shares the same left edge as every other panel, not 14+14px. */
     .info-section > .info-who-body { padding-left: 0; padding-right: 0; }
+    /* The About "Sources" disclosure summary reads as a group title, matched to the Resources
+       .info-section-title treatment (11px/700/caps/text-2 Jakarta) so it's as noticeable as
+       Shelters/Schools/Recovery (user 2026-06-03); keeps the cursor + expand/collapse marker. */
     .info-sources-toggle {
       cursor: pointer;
       padding: 12px 14px;
-      font-family: "IBM Plex Mono", ui-monospace, monospace;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--sa-text-3);
+      color: var(--sa-text-2);
       border-bottom: 1px solid var(--sa-border);
       list-style: none;
       display: flex;
@@ -1447,7 +1458,7 @@ var STRINGS = {
   "safety.strip.official": { en: "Official source:" },
   "safety.strip.terms": { en: "Terms" },
   "safety.strip.route": { en: "Current info:" },
-  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person." },
+  "disclosure.ai": { en: "Summaries in this archive are compiled with AI assistance from official and news sources, then checked by a person." },
   "hero.severity.label": { en: "Incident severity:" },
   "hero.summary.loading": { en: "Loading current status…" },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
@@ -1486,7 +1497,7 @@ var STRINGS = {
   "info.schools.none": { en: "None reported" },
   "info.sources.title": { en: "Sources verified" },
   "info.sources.empty": { en: "No sources in this snapshot" },
-  "info.sources.caption": { en: "Sources we checked while compiling and corroborating this archive." },
+  "info.sources.caption": { en: "Sources checked while compiling this archive." },
   "info.sources.official": { en: "Official" },
   "common.yes": { en: "yes" },
   "common.no": { en: "no" },
@@ -2097,14 +2108,21 @@ function renderInfoTab() {
   var about =
     '<div class="about-body">' +
     '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>' +
-    '<p class="info-fine"><a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>' +
     '<details open><summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>' +
     '<p class="info-fine info-sources-caption">' + t("info.sources.caption") + '</p>' +
     '<div id="info-source-list" class="info-fine" style="padding:0 0 12px"></div></details>' +
+    '<p class="info-fine info-about-footlink"><a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>' +
     '</div>';
 
   var bodies = [summary, officials, resources, about];
   el.innerHTML = html + TABS.map(function (tb, i) { return panel(tb, i, bodies[i]); }).join("");
+}
+
+// Official-source hosts (city + county), derived from the URL so a data refresh that
+// regenerates status.json without an explicit flag can't strip the "Official" label
+// (the refresh preserves source URLs). Refresh-proof by construction.
+function isOfficialSourceUrl(url) {
+  return /^https?:\/\/(www\.)?(ggcity\.org|ocgov\.com)(\/|$)/i.test(url || "");
 }
 
 function updateInfoData(snap) {
@@ -2136,8 +2154,9 @@ function updateInfoData(snap) {
         // not surfaced as a "checked {date}" — it re-stamps on refresh and would read like
         // ongoing monitoring past the May 26 all-clear (J, archive honesty).
         // Official City/County sources carry an "Official" tag so the provenance hierarchy
-        // (where the facts came from vs. corroborating press) is visible (user 2026-06-02).
-        var tag = s.official ? '<span class="source-official">' + t("info.sources.official") + '</span>' : '';
+        // (where the facts came from vs. corroborating press) is visible. Derived from the URL
+        // host (not a data flag) so a status.json refresh can't strip it (user 2026-06-02/03).
+        var tag = isOfficialSourceUrl(s.url) ? '<span class="source-official">' + t("info.sources.official") + '</span>' : '';
         return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + tag + '</a>';
       }).join("");
     } else {
