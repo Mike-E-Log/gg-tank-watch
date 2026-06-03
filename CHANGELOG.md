@@ -2,6 +2,27 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.28] — 2026-06-03 (About "Why this was made" + prominent Accessibility link + full Resources titles)
+
+User-directed Info-tab update. Acceptance rubric amended first (the fixed target), then test-first.
+Eval **194/194**; signed-Edge (Playwright msedge channel) vision-verified at 320/360/375/390/430px,
+light + dark, with `getBoundingClientRect` geometry probes across the About and Resources sub-tabs.
+
+### Added
+- **About → "Why this was made"** section: a short, resident-first note placed under the binding AI
+  disclosure (which stays the first line). Conduit-true — it states the app gathered scattered
+  official updates into one place and routed back to the officials in charge, authoring no directives.
+  Overrides the earlier "methodology / who-made-it narrative lives in the README, not in-app" posture.
+
+### Changed
+- **Accessibility link → prominent, centered, tappable button** (`.info-a11y-btn`): bordered celadon
+  pill, ≥44px tap target, centered below the Sources fold, with a monochrome universal-access glyph —
+  was a quiet 11px footer link. More apparent and more accessible (user 2026-06-03).
+- **Resources section titles name each section in full:** SHELTERS / SCHOOL CLOSURES / RECOVERY AID
+  (the `info.subtab.schools` / `info.subtab.recovery` values were lengthened from "Schools"/"Recovery";
+  render single-line down to 320px).
+- service-worker `CACHE_NAME` bumped `v65 → v66`.
+
 ## [v0.27] — 2026-06-03 (Info data freeze + refresh-proof Official tags + typography pass)
 
 Follow-up to v0.26. Re-freezes the archive data (an upstream cloud auto-refresh had been

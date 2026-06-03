@@ -904,9 +904,38 @@
     }
     /* One-line caption above the sources list, stating what the list is (the provenance trail). */
     .info-sources-caption { margin: 8px 0 6px; }
-    /* Accessibility utility link sits at the BOTTOM of About (after the Sources fold), not under
-       the disclosure — a quiet footer link, separated from the list above (user 2026-06-03). */
-    .info-about-footlink { margin-top: 12px; }
+    /* "Why this was made" — a short resident-first note under the AI disclosure (user 2026-06-03).
+       Heading uses the shared group-title token (11px/700/caps/--sa-text-2, matching the Sources
+       toggle and the Resources section titles); the body is plain .about-body prose. */
+    .about-why-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--sa-text-2);
+      margin: 14px 0 4px;
+    }
+    /* Accessibility link sits at the BOTTOM of About (after the Sources fold), not under the
+       disclosure. Now a prominent, CENTERED, tappable link instead of a quiet 11px footer link
+       (user 2026-06-03): a bordered celadon pill with a >=44px tap target, so it is more apparent
+       and more accessible. */
+    .info-about-footlink { margin-top: 16px; text-align: center; }
+    .info-a11y-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 22px;
+      border: 1px solid var(--sa-celadon);
+      border-radius: 8px;
+      color: var(--sa-celadon);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .info-a11y-btn:hover { background: var(--sa-surface); text-decoration: none; }
+    .info-a11y-ico { font-size: 15px; line-height: 1; }
 
     /* ===== SON MAI CULTURAL ELEMENTS ===== */
     .lotus-divider {
@@ -1442,8 +1471,8 @@ var STRINGS = {
   "info.subtab.officials": { en: "Officials" },
   "info.subtab.resources": { en: "Resources" },
   "info.subtab.shelters": { en: "Shelters" },
-  "info.subtab.schools": { en: "Schools" },
-  "info.subtab.recovery": { en: "Recovery" },
+  "info.subtab.schools": { en: "School closures" },
+  "info.subtab.recovery": { en: "Recovery aid" },
   "info.subtab.about": { en: "About" },
   "info.desc.summary": { en: "What happened during the May 2026 emergency." },
   "info.desc.officials": { en: "The city and county's own emergency channels." },
@@ -1502,6 +1531,8 @@ var STRINGS = {
   "common.yes": { en: "yes" },
   "common.no": { en: "no" },
   "info.about.a11ylink": { en: "Accessibility" },
+  "info.about.whyH": { en: "Why this was made" },
+  "info.about.why": { en: "In May 2026, a chemical storage tank emergency forced about 50,000 Garden Grove residents from their homes. Official updates were scattered across city, county, and news pages. GG Tank Watch pulled them into one calm view and pointed back to the officials in charge &mdash; it never replaced them or told anyone what to do. The emergency was resolved on May 26, 2026; this remains as a record of it." },
   "info.group.closures": { en: "Closures" },
   "info.roads.title": { en: "Road closures" },
   "info.roads.defer": { en: 'Roads inside the evacuation zone were closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for closure history.' },
@@ -2103,15 +2134,19 @@ function renderInfoTab() {
     '<div class="info-section-title">' + t("info.subtab.recovery") + '</div>' +
     '<div id="info-recovery-list"></div>';
 
-  // About (lean) — binding AI disclosure + Terms/Accessibility + Sources-checked fold.
-  // Methodology / who-made-it narrative lives in the README, not in-app.
+  // About — binding AI disclosure (stays the first line) + a short resident-first "Why this was
+  // made" section (user 2026-06-03, conduit-true: gathered scattered official updates, routed
+  // back to officials, no directives) + Sources-checked fold + a prominent centered Accessibility
+  // link. The step-by-step methodology narrative still lives in the README, not in-app.
   var about =
     '<div class="about-body">' +
     '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>' +
+    '<div class="about-why-title">' + t("info.about.whyH") + '</div>' +
+    '<p>' + t("info.about.why") + '</p>' +
     '<details open><summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>' +
     '<p class="info-fine info-sources-caption">' + t("info.sources.caption") + '</p>' +
     '<div id="info-source-list" class="info-fine" style="padding:0 0 12px"></div></details>' +
-    '<p class="info-fine info-about-footlink"><a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>' +
+    '<p class="info-about-footlink"><a class="info-a11y-btn" href="accessibility.html"><span class="info-a11y-ico" aria-hidden="true">&#9855;&#65038;</span>' + t("info.about.a11ylink") + '</a></p>' +
     '</div>';
 
   var bodies = [summary, officials, resources, about];

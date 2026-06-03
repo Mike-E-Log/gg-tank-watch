@@ -64,11 +64,12 @@ def test_situation_headline_concise_and_resolved():
 
 
 def test_about_panel_lean_keeps_disclosure_and_a11y():
-    """The About sub-tab is LEAN — it surfaces the binding AI-assistance disclosure + an
-    Accessibility link + the Sources fold, and the methodology / who-made-it narrative has
-    MOVED to the README (no longer in-app). The in-app methodology strings (info.about.title/
-    body, info.method.title/pipeline) must be gone. Anchors on the renderInfoTab `var about =`
-    block, since panel ids are built dynamically.
+    """About surfaces the binding AI-assistance disclosure + a short "Why this was made" section
+    (info.about.whyH/why, added in-app 2026-06-03 per user) + an Accessibility link + the Sources
+    fold. The earlier METHODOLOGY narrative (the step-by-step pipeline) stays in the README — the
+    legacy in-app keys info.about.title/body + info.method.title/pipeline must stay gone; the new
+    Why section deliberately uses DISTINCT keys (info.about.why*) so those retired keys do not
+    return. Anchors on the renderInfoTab `var about =` block, since panel ids are built dynamically.
 
     The Terms link was DROPPED from About 2026-06-02 (user): it duplicated the persistent
     safety strip's Terms link (safety.strip.terms), which carries it on every tab — so Terms
@@ -83,11 +84,12 @@ def test_about_panel_lean_keeps_disclosure_and_a11y():
     region = text[i:j] if (i >= 0 and j > i) else ""
     checks = {
         "ai_disclosure_surfaced": "disclosure.ai" in region,
+        "why_section": "info.about.whyH" in region and "info.about.why" in region,
         "a11y_link": "info.about.a11ylink" in region,
         "terms_dropped_from_about": "info.about.termslink" not in region,
         "terms_reachable_in_strip": "safety.strip.terms" in text,
         "sources_fold": "info.sourcesH" in region,
-        "who_moved_out": "info.about.title" not in text and "info.about.body" not in text,
+        "legacy_about_narrative_out": "info.about.title" not in text and "info.about.body" not in text,
         "methodology_moved_out": "info.method.title" not in text and "info.method.pipeline" not in text,
     }
     ok = bool(region) and all(checks.values())

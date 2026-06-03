@@ -398,3 +398,69 @@ def test_no_ghost_lines_background():
     separators_kept = "1px solid var(--sa-border)" in text
     return {"passed": ghost_gone and separators_kept,
             "details": f"ghost_repeating_gradient_gone={ghost_gone} solid_separators_kept={separators_kept}"}
+
+
+def test_resources_section_titles_full_labels():
+    """User 2026-06-03: the Resources section titles name each section in full —
+    SHELTERS / SCHOOL CLOSURES / RECOVERY AID (uppercased by .info-section-title). The
+    info.subtab.schools/recovery values were lengthened from "Schools"/"Recovery"; "Shelters"
+    was already full. The titles reuse these keys (test_resources_panel_merges_three guards the
+    t() calls stay) — this guards the displayed VALUES."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    shelters = '"info.subtab.shelters": { en: "Shelters" }' in text
+    schools = '"info.subtab.schools": { en: "School closures" }' in text
+    recovery = '"info.subtab.recovery": { en: "Recovery aid" }' in text
+    ok = shelters and schools and recovery
+    return {"passed": ok,
+            "details": "Resources titles: Shelters / School closures / Recovery aid"
+            if ok else f"shelters={shelters} schools={schools} recovery={recovery}"}
+
+
+def test_about_why_section_present():
+    """User 2026-06-03: About carries a "Why this was made" section — a .about-why-title group
+    heading + one short resident-first paragraph — placed AFTER the binding AI disclosure (which
+    stays the first line) and BEFORE the Sources fold. Conduit-true: the copy routes back to the
+    officials in charge and authors no directive. New keys (info.about.whyH/why) so the retired
+    info.about.title/body + info.method.* keys stay gone (test_about_panel_lean_keeps_disclosure_
+    and_a11y). Overrides the earlier 'who-made-it narrative lives in the README, not in-app'."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    keys = '"info.about.whyH"' in text and '"info.about.why"' in text
+    i = text.find("var about =")
+    j = text.find("var bodies =", i) if i >= 0 else -1
+    region = text[i:j] if (i >= 0 and j > i) else ""
+    bound = ('t("info.about.whyH")' in region and 't("info.about.why")' in region
+             and 'class="about-why-title"' in region)
+    p_disc = region.find('t("disclosure.ai")')
+    p_why = region.find('t("info.about.whyH")')
+    p_src = region.find('t("info.sourcesH")')
+    ordered = -1 < p_disc < p_why < p_src
+    m = re.search(r'"info\.about\.why":\s*\{\s*en:\s*"([^"]*)"', text)
+    why_body = (m.group(1) if m else "").lower()
+    conduit = "officials" in why_body
+    ok = keys and bound and ordered and conduit
+    return {"passed": ok,
+            "details": "About 'Why this was made' section present, after disclosure, routes to officials"
+            if ok else f"keys={keys} bound={bound} ordered={ordered} conduit={conduit}"}
+
+
+def test_about_a11y_link_prominent_centered():
+    """User 2026-06-03: the Accessibility link is prominent + centered + tappable, not the quiet
+    11px footer link. .info-about-footlink centers it (text-align: center); the link itself
+    (.info-a11y-btn) is a bordered pill with a >=44px tap target. The markup drops the .info-fine
+    downscale (so it is no longer 11px) and the inline color (styling moved to the class)."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    fi = text.find(".info-about-footlink {")
+    foot = text[fi:fi + 160] if fi != -1 else ""
+    centered = bool(foot) and "text-align: center" in foot
+    bi = text.find(".info-a11y-btn {")
+    btn = text[bi:bi + 360] if bi != -1 else ""
+    btn_ok = bool(btn) and "border" in btn and "min-height: 44px" in btn
+    i = text.find("var about =")
+    j = text.find("var bodies =", i) if i >= 0 else -1
+    region = text[i:j] if (i >= 0 and j > i) else ""
+    markup_ok = 'class="info-a11y-btn"' in region
+    not_fine = 'info-fine info-about-footlink' not in region and 'info-about-footlink info-fine' not in region
+    ok = centered and btn_ok and markup_ok and not_fine
+    return {"passed": ok,
+            "details": "Accessibility link centered (.info-about-footlink) + bordered >=44px tap (.info-a11y-btn)"
+            if ok else f"centered={centered} btn_ok={btn_ok} markup_ok={markup_ok} not_fine={not_fine}"}
