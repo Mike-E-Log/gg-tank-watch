@@ -33,6 +33,15 @@ These are the criteria a text-only test cannot see and that caused the #108→#1
 - [ ] Spacing on the 4px base unit, compact density. Row padding consistent across panels (the #110 "breathing room" value, applied uniformly — verify rendered, not just the string).
 - [ ] Sub-tab bar height **matches the News chip-bar** (verify the bars align at 375px by screenshot, not by `padding:` string match).
 
+## 2a. Cross-panel consistency tokens (the four panels are ONE system — harmonized 2026-06-02)
+
+Summary / Officials / Resources / About previously read as four designs (two key/value row systems, a 12px-vs-14px gutter drift, 500-vs-600 values, a lone dashed row, dimmer school names). Fixed tokens, guarded by `test_info_panel_consistency`:
+
+- [ ] **One 14px horizontal gutter** for all panel content (`.info-section`, `.info-section-title`, `.info-kv-row`, `.info-schools-grid`, `.about-body`, `.info-who-body`) so every sub-tab shares one left edge. Nested `.info-section > .info-who-body` zeroes its inner gutter (no 14+14).
+- [ ] **One key/value row**: `9px` vertical padding, `13px`, `1px solid var(--sa-border)` hairline, key `--sa-text-2`/400, value `--sa-text`/**600**. Applies to BOTH `.info-kv-row`/`.info-kv-val` (Summary) and `.info-row`/`.v` (Officials) — no dashed row, no 500 value.
+- [ ] **List rows** (`.info-school-card`, `.shelter-row`): `9px` rhythm; names at value color `--sa-text` (not dimmed `text-2`).
+- [ ] **Unchanged role distinctions** (intentional, NOT inconsistencies): descriptor band `.info-desc`, section titles 10px/700/caps, body `.info-who-body` 12px, fine print 11px, gold AI-disclosure accent.
+
 ## 3. Definition of done (the loop — run EVERY pass, in this order)
 
 1. **Open this rubric.** If the change implies a structural edit (§1), amend §1 here *first*.
