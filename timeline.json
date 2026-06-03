@@ -989,7 +989,18 @@
       "source_url": "https://laist.com/news/climate-environment/california-regulators-garden-grove-tank-fire-signs",
       "source_name": "LAist",
       "category": "media_coverage"
+    },
+    {
+      "id": "evt-20260602-002",
+      "timestamp_utc": "2026-06-02T22:00:00Z",
+      "timestamp_local": "2026-06-02T15:00:00-07:00",
+      "day": 13,
+      "title": "Cal/OSHA opens independent investigation; GKN tank was 22 years old, 10 prior violations",
+      "description": "The Orange County Business Journal reports Cal/OSHA has opened its own independent investigation into GKN Aerospace's Garden Grove facility, running parallel to the OC District Attorney's criminal probe — two simultaneous government investigations into the same company. The 34,000-gallon tank involved in the May 21 crisis was 22 years old at the time of failure. Public records show GKN accumulated 10 safety violations across four Cal/OSHA inspections at the Garden Grove facility since 2018, including a 2018 citation for improperly cooling and covering chemical storage tanks — the precise failure mode at the center of the emergency. GKN had announced a $150 million investment to double F-35 canopy production at the site in 2024.",
+      "source_url": "https://www.ocbj.com/defense-2/gkn-aerospace-under-fire-after-garden-grove-chemical-emergency/",
+      "source_name": "Orange County Business Journal",
+      "category": "government_action"
     }
   ],
-  "generated_at": "2026-06-03T01:09:30Z"
+  "generated_at": "2026-06-03T05:19:26Z"
 }
