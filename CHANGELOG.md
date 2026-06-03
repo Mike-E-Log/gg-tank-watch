@@ -2,6 +2,23 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.25] — 2026-06-02 (Info sub-tab fit guard)
+
+Deterministic regression guard for the #108 failure class — the Info sub-tab bar must be
+structurally incapable of one-row overflow. No browser, no new dependency; runs in the
+existing text-only eval suite by asserting the causal layout invariant rather than pixels.
+
+### Added
+- **`eval/test_info_subtab_fit.py`** — asserts the invariant that guarantees the sub-tab bar
+  fits one row: `.info-subtabs` carries no `overflow-x`/`scroll-snap`/`flex-wrap` anti-pattern
+  (the #108 scrollable-bar that clipped "Recovery"/hid "About" at 375px), `.info-subtab` is
+  `flex:1 1 0` + `min-width:0`, and the bar stays ≤4 tabs.
+
+### Changed
+- **`.info-subtab` hardened with `min-width: 0`** so equal-width flex is overflow-proof for any
+  label length (no visual change to the current four short labels).
+- service-worker `CACHE_NAME` bumped `v60 → v61`.
+
 ## [v0.24] — 2026-06-02 (Info tab polish batch — typography, spacing, content, honesty)
 
 Follow-up polish on the consolidated 4-sub-tab Info tab (PR #109). Eleven live-observed
