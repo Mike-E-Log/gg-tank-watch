@@ -38,10 +38,12 @@ def test_kv_value_weight_unified():
 
 def test_panel_gutter_unified_14():
     """Section + section-title use the same 14px horizontal gutter as the rest of the panel content,
-    so every sub-tab shares one left edge."""
+    so every sub-tab shares one left edge. The gutter may be expressed via margin OR padding: the
+    Resources 2A change (2026-06-03) moved .info-section-title's gutter to padding so its full-width
+    top rule spans the panel (a margin-inset border can't be full-width)."""
     css = DASHBOARD.read_text(encoding="utf-8")
     sec_ok = bool(re.search(r"padding:\s*\d+px\s+14px", _rule(css, ".info-section") or ""))
-    title_ok = bool(re.search(r"margin:\s*\d+px\s+14px", _rule(css, ".info-section-title") or ""))
+    title_ok = bool(re.search(r"(?:margin|padding):\s*\d+px\s+14px", _rule(css, ".info-section-title") or ""))
     return {"passed": sec_ok and title_ok,
             "details": f".info-section 14px={sec_ok} .info-section-title 14px={title_ok}"}
 

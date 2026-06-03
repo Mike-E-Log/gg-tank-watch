@@ -138,7 +138,8 @@ def test_about_disclosure_and_sources():
     """About keeps the binding AI disclosure + the sources fold; the fold is titled 'Sources'
     (J, archive honesty 2026-06-02). The disclosure now renders at body near-black --sa-text
     (NOT gold — user 2026-06-02: bring it in line with the other sub-tabs' body text); the
-    binding-honesty property holds via the text + first-line placement, not the gold accent.
+    binding-honesty property holds via the text + the persistent safety strip, and the disclosure
+    renders at the panel-closing bottom line of About (moved there 2026-06-03), not the first line.
     The fold is OPEN by default and opens with a one-line caption stating what the list is
     (info.sources.caption). The methodology narrative stays in the README; the conduct link
     stays gone."""
@@ -230,9 +231,9 @@ def test_summary_archive_facts_present():
     outcome) as STATIC copy — neutral labels, NO 'verified' authority chrome, and decoupled
     from the cleared resolved snapshot (no live id binding)."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    val_keys = ["info.fact.substanceV", "info.fact.facilityV", "info.fact.tankV",
+    val_keys = ["info.fact.substanceV", "info.fact.facilityV",
                 "info.fact.windowV", "info.fact.outcomeV"]
-    label_keys = ["info.fact.substance", "info.fact.facility", "info.fact.tank",
+    label_keys = ["info.fact.substance", "info.fact.facility",
                   "info.fact.window", "info.fact.outcome"]
     missing = [k for k in (val_keys + label_keys) if f'"{k}"' not in text]
     bound = all(f't("{k}")' in text for k in val_keys)
@@ -417,12 +418,13 @@ def test_resources_section_titles_full_labels():
 
 
 def test_about_why_section_present():
-    """User 2026-06-03: About carries a "Why this was made" section — a .about-why-title group
-    heading + one short resident-first paragraph — placed AFTER the binding AI disclosure (which
-    stays the first line) and BEFORE the Sources fold. Conduit-true: the copy routes back to the
-    officials in charge and authors no directive. New keys (info.about.whyH/why) so the retired
-    info.about.title/body + info.method.* keys stay gone (test_about_panel_lean_keeps_disclosure_
-    and_a11y). Overrides the earlier 'who-made-it narrative lives in the README, not in-app'."""
+    """User 2026-06-03: About order is Why -> Sources -> Accessibility -> AI disclosure
+    (panel-closing line). The binding AI disclosure MOVED from the first line to the very bottom
+    (the persistent safety strip carries the always-on honesty; the disclosure stays present +
+    legible at 13px, position demoted not size). 'Why this was made' is a .about-why-title heading
+    + a short resident-first paragraph; conduit-true (routes to officials, authors no directive).
+    New keys (info.about.whyH/why) so the retired info.about.title/body + info.method.* keys stay
+    gone (test_about_panel_lean_keeps_disclosure_and_a11y)."""
     text = DASHBOARD.read_text(encoding="utf-8")
     keys = '"info.about.whyH"' in text and '"info.about.why"' in text
     i = text.find("var about =")
@@ -430,16 +432,17 @@ def test_about_why_section_present():
     region = text[i:j] if (i >= 0 and j > i) else ""
     bound = ('t("info.about.whyH")' in region and 't("info.about.why")' in region
              and 'class="about-why-title"' in region)
-    p_disc = region.find('t("disclosure.ai")')
     p_why = region.find('t("info.about.whyH")')
     p_src = region.find('t("info.sourcesH")')
-    ordered = -1 < p_disc < p_why < p_src
+    p_a11y = region.find('class="info-a11y-btn"')
+    p_disc = region.find('t("disclosure.ai")')
+    ordered = -1 < p_why < p_src < p_a11y < p_disc
     m = re.search(r'"info\.about\.why":\s*\{\s*en:\s*"([^"]*)"', text)
     why_body = (m.group(1) if m else "").lower()
     conduit = "officials" in why_body
     ok = keys and bound and ordered and conduit
     return {"passed": ok,
-            "details": "About 'Why this was made' section present, after disclosure, routes to officials"
+            "details": "About order Why->Sources->Accessibility->disclosure (disclosure last)"
             if ok else f"keys={keys} bound={bound} ordered={ordered} conduit={conduit}"}
 
 
@@ -464,3 +467,41 @@ def test_about_a11y_link_prominent_centered():
     return {"passed": ok,
             "details": "Accessibility link centered (.info-about-footlink) + bordered >=44px tap (.info-a11y-btn)"
             if ok else f"centered={centered} btn_ok={btn_ok} markup_ok={markup_ok} not_fine={not_fine}"}
+
+
+def test_officials_render_as_cards():
+    """Officials 1A (2026-06-03): the 3 channels render as calm bordered cards — --sa-surface
+    fill + a FULL --sa-border hairline (not a colored left border) + radius + ~14px padding +
+    >=44px tap target — so routing-to-officials is the panel's visual focus. The channel name
+    reads 15px/600. This is Officials-scoped and does NOT reintroduce the Resources card grid
+    cross-model review hard-rejected."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    ci = text.find(".info-official-row {")
+    css = text[ci:ci + 340] if ci != -1 else ""
+    carded = (bool(css) and "background: var(--sa-surface)" in css
+              and "border: 1px solid var(--sa-border)" in css
+              and "border-radius" in css and "min-height: 44px" in css)
+    no_left_accent = "border-left: 3px solid var(--sa-celadon)" not in css
+    ki = text.find(".info-official-row .k {")
+    kcss = text[ki:ki + 140] if ki != -1 else ""
+    name_15 = bool(kcss) and "font-size: 15px" in kcss and "font-weight: 600" in kcss
+    ok = carded and no_left_accent and name_15
+    return {"passed": ok,
+            "details": "Officials channels render as bordered cards (15px/600 name, >=44px tap)"
+            if ok else f"carded={carded} no_left_accent={no_left_accent} name_15={name_15}"}
+
+
+def test_resources_sections_delineated():
+    """Resources 2A (2026-06-03): the three sections are visibly delineated — each
+    .info-section-title carries a FULL-WIDTH top hairline (--sa-border, no horizontal margin
+    inset) + generous top space, so Shelters / School closures / Recovery aid read as three
+    distinct blocks, not one undifferentiated list. Reuses the --sa-border token (no card grid)."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    ti = text.find(".info-section-title {")
+    css = text[ti:ti + 260] if ti != -1 else ""
+    ruled = bool(css) and "border-top: 1px solid var(--sa-border)" in css
+    full_width = bool(css) and "margin: 0;" in css and "padding: 16px 14px 6px" in css
+    ok = ruled and full_width
+    return {"passed": ok,
+            "details": "Resources section titles ruled full-width with top space (3 distinct blocks)"
+            if ok else f"ruled={ruled} full_width={full_width}"}
