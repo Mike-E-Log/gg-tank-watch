@@ -1000,7 +1000,18 @@
       "source_url": "https://www.ocbj.com/defense-2/gkn-aerospace-under-fire-after-garden-grove-chemical-emergency/",
       "source_name": "Orange County Business Journal",
       "category": "government_action"
+    },
+    {
+      "id": "evt-20260603-001",
+      "timestamp_utc": "2026-06-03T17:00:00Z",
+      "timestamp_local": "2026-06-03T10:00:00-07:00",
+      "day": 14,
+      "title": "OC Health warns of temporary odors as MMA scheduled to be pumped from tank June 4–5",
+      "description": "Orange County Health Care Agency announces that cleanup operations will include pumping MMA out of the compromised GKN Aerospace tank and loading it into sealed trucks for transport and disposal, expected between Thursday and Friday (June 4–5). OC Health warns nearby residents that temporary, intermittent odors may occur during the operation. The 150-foot exclusion zone around the tanks remains in place. OC Health Care Agency, South Coast AQMD, and GKN Aerospace are jointly overseeing the multi-agency cleanup.",
+      "source_url": "https://www.cbsnews.com/losangeles/news/orange-county-health-odors-gkn-aerospace-chemical-tank-cleanup/",
+      "source_name": "CBS Los Angeles",
+      "category": "tank_status"
     }
   ],
-  "generated_at": "2026-06-03T05:19:26Z"
+  "generated_at": "2026-06-03T07:11:32Z"
 }
