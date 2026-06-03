@@ -85,6 +85,10 @@
       overflow: hidden;
       height: 100%;
     }
+    /* Form controls don't inherit font-variant-ligatures from <body> (the UA stylesheet resets it),
+       so the fi ligature re-dropped the lowercase-i dot on buttons (e.g. the "Officials" info
+       sub-tab). Disable ligatures on every control too so every i stays dotted app-wide. */
+    button, input, select, textarea, optgroup { font-variant-ligatures: none; }
     .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
     .sa-mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-feature-settings: "zero", "cv11"; font-variant-numeric: tabular-nums; }
 
