@@ -46,15 +46,15 @@ Summary / Officials / Resources / About previously read as four designs (two key
 
 1. **Open this rubric.** If the change implies a structural edit (§1), amend §1 here *first*.
 2. **Implement** against the fixed target.
-3. **Render-and-diff IN the loop (not after):** signed-Edge headless screenshot at **320, 360, 375, 390, 430, 768 px**, light + dark. Compare each against §0 + §1 + §2. List differences; fix; re-shoot. Repeat until zero §0 failures. *(SAC-safe: `msedge --headless=new --screenshot`, per project memory.)*
+3. **Render-and-diff IN the loop (not after):** open the page in the **native Claude Code + Chrome integration** (`/chrome`; real signed Chrome/Edge — clears SAC *and* the harness deny on raw `msedge.exe`, and renders the MapLibre map without the headless hang) at **320, 360, 375, 390, 430, 768 px**, light + dark. Compare each against §0 + §1 + §2; list differences; fix; re-shoot until zero §0 failures. *(The agent drives this via the Chrome tool; the user can also run `__qa_shots.ps1`. A headless Playwright `channel:'msedge'` test is the opt-in CI form — the agent cannot spawn a raw `msedge.exe`. **For the narrow widths, load the page in `__qa_harness.html?w=320|375|…` — the Chrome integration's `resize_window` clamps at ~412px innerWidth and can't reach true 320/375.** See `~/Documents/Eyes_In_The_Loop_Research_20260603/` and [[eyes-in-loop-stack]].)*
 4. **Text eval** `python eval/run_all.py --skip integration` → green by scorecard (never `--quiet`).
 5. **Add/keep a geometry guard** (see §4) so the §0 fit-failure class can't silently regress.
 6. **SW cache bump** (`gg-tank-vN`) on any `dashboard.html`/config change.
 7. Pass is "done" only when **§0 = all green by screenshot** AND text eval green.
 
-## 4. Close the eval's blind spot (highest-leverage one-time add)
+## 4. Close the eval's blind spot (static floor in place; rendered guard optional)
 
-The current `eval/test_info_*` guards are **text-only string-matches** — they passed 171/171 while #108's bar was clipped on a real 375px device. Add **one** guard that measures *rendered geometry* (via the existing signed-Edge headless + a DOM `getBoundingClientRect` probe) and **fails when the sub-tab bar's scrollWidth exceeds its clientWidth at 375px** (i.e., it wrapped or scrolled). This single test converts the §0 fit-constraint from "judged by feel" into an enforced behavioral gate — directly extending the project's scalable-oversight thesis to the visual layer.
+The `eval/test_info_*` *text* guards are string-matches — they passed 171/171 while #108's bar was clipped at a real 375px. The shipped **static CSS-invariant** guard (`eval/test_info_subtab_fit.py`: equal-width `flex:1 1 0` + `min-width:0`, ≤4 tabs) now makes that overflow class **structurally impossible** — zero-dep, deterministic, the always-on floor. For a *rendered* check beyond the invariant, run a `getBoundingClientRect`/`scrollWidth` probe through the **native Chrome integration** (agent-mediated) or, for a headless exit-code CI gate, a scripted **Playwright `channel:'msedge'` (or `'chrome'`)** test that **fails when the sub-tab bar's scrollWidth exceeds its clientWidth at 375px**  (NOT `--dump-dom`, broken on `--headless=new`). This keeps the §0 fit-constraint an enforced behavioral gate — extending the project's scalable-oversight thesis to the visual layer.
 
 ---
 
