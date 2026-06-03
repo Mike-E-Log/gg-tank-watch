@@ -792,6 +792,7 @@
       margin-bottom: 6px;
     }
     .about-body {
+      padding: 0 14px;
       font-size: 12px;
       color: var(--sa-text-2);
       line-height: 1.5;
@@ -824,11 +825,27 @@
     .info-row {
       display: flex;
       justify-content: space-between;
-      padding: 3px 0;
+      padding: 9px 0;
       font-size: 13px;
+      border-bottom: 1px solid var(--sa-border);
     }
+    .info-row:last-child { border-bottom: none; }
     .info-row .k { color: var(--sa-text-2); }
     .info-row .v { color: var(--sa-text); font-weight: 500; }
+    /* Shelter rows: name+city in a flex text column, Directions pinned top-right so a long
+       name wraps without dragging the action out of alignment. */
+    .shelter-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--sa-border);
+      text-decoration: none;
+    }
+    .shelter-row:last-child { border-bottom: none; }
+    .shelter-name { flex: 1 1 auto; color: var(--sa-text); font-size: 13px; line-height: 1.4; }
+    .shelter-city { display: block; color: var(--sa-text-3); font-size: 11px; margin-top: 1px; }
+    .shelter-go { flex: 0 0 auto; color: var(--sa-celadon); font-size: 13px; white-space: nowrap; }
     .info-fine { font-size: 11px; color: var(--sa-text-3); line-height: 1.4; }
     .info-desc {
       margin: 12px 12px 6px;
@@ -852,7 +869,6 @@
     }
     .source-item:last-child { border-bottom: none; }
     .source-item:hover { color: var(--sa-celadon); }
-    .source-time { color: var(--sa-text-3); font-size: 11px; margin-left: 4px; }
 
     /* ===== SON MAI CULTURAL ELEMENTS ===== */
     .lotus-divider {
@@ -912,7 +928,7 @@
     .news-filter-chips {
       display: flex;
       gap: 6px;
-      padding: 8px 12px;
+      padding: 8px 12px 0;
       overflow-x: auto;
       flex-wrap: nowrap;
       -webkit-overflow-scrolling: touch;
@@ -1386,7 +1402,7 @@ var STRINGS = {
   "info.desc.summary": { en: "What happened during the May 2026 emergency." },
   "info.desc.officials": { en: "The city and county's own emergency channels." },
   "info.desc.resources": { en: "Evacuation shelters, school closures, and recovery aid from the emergency." },
-  "info.desc.about": { en: "How this archive was made, and the sources behind it." },
+  "info.desc.about": { en: "How this archive was made, and its sources." },
   "topbar.unofficial": { en: "UNOFFICIAL" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
   "topbar.archive": { en: "ARCHIVE" },
@@ -1396,7 +1412,8 @@ var STRINGS = {
   "safety.strip.official": { en: "Official source:" },
   "safety.strip.terms": { en: "Terms" },
   "safety.strip.route": { en: "Current info:" },
-  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person. Always confirm life-safety information with ggcity.org/emergency or 911." },
+  "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person." },
+  "disclosure.aiRoute": { en: "Current life-safety info: ggcity.org/emergency or 911." },
   "hero.severity.label": { en: "Incident severity:" },
   "hero.summary.loading": { en: "Loading current status…" },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
@@ -1435,7 +1452,6 @@ var STRINGS = {
   "info.schools.none": { en: "None reported" },
   "info.sources.title": { en: "Sources verified" },
   "info.sources.empty": { en: "No sources in this snapshot" },
-  "info.sources.checked": { en: "checked" },
   "common.yes": { en: "yes" },
   "common.no": { en: "no" },
   "info.about.termslink": { en: "Read the full Terms & disclaimer" },
@@ -1508,6 +1524,16 @@ var STRINGS = {
   "info.tankTempArchive": { en: "~100°F (gauge max), then stabilized" },
   "info.peakEvac": { en: "~50,000 people" },
   "info.zonePeak": { en: "~9 sq mi: Garden Grove + Anaheim, Buena Park, Cypress, Stanton, Westminster" },
+  "info.fact.substance":  { en: "Substance" },
+  "info.fact.substanceV": { en: "Methyl methacrylate (MMA)" },
+  "info.fact.facility":   { en: "Facility" },
+  "info.fact.facilityV":  { en: "GKN Aerospace, Garden Grove" },
+  "info.fact.tank":       { en: "Tank" },
+  "info.fact.tankV":      { en: "34,000-gallon storage tank" },
+  "info.fact.window":     { en: "Incident window" },
+  "info.fact.windowV":    { en: "May 21–26, 2026" },
+  "info.fact.outcome":    { en: "Outcome" },
+  "info.fact.outcomeV":   { en: "No injuries, 0 residents displaced" },
   "info.whereToGo": { en: "Where to go · nearest shelters" },
   "info.allShelters": { en: "All 9 shelters" },
   "info.liveList": { en: "Shelter records at ggcity.org/emergency" },
@@ -1516,7 +1542,7 @@ var STRINGS = {
   "info.schoolsClosed": { en: "School closures" },
   "info.allSchools": { en: "See all 12" },
   "info.unofficial.seal": { en: "INFORMATIONAL · UNOFFICIAL" },
-  "info.sourcesH": { en: "Sources checked" }
+  "info.sourcesH": { en: "Sources" }
 };
 
 // English-only by design: this is a life-safety tool and unverified safety copy is a liability,
@@ -1991,10 +2017,15 @@ function renderInfoTab() {
   // Summary — sourced peak facts (STATIC archive copy from timeline.json; the resolved
   // snapshot clears temp_f/residents/boundary, so binding to it would show a misleading 0/--).
   var summary =
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.substance") + '</span><span class="info-kv-val">' + t("info.fact.substanceV") + '</span></div>' +
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.facility") + '</span><span class="info-kv-val">' + t("info.fact.facilityV") + '</span></div>' +
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.tank") + '</span><span class="info-kv-val">' + t("info.fact.tankV") + '</span></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankCrack") + '</span><span class="info-kv-val" id="info-crack-val">--</span></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankTemp") + '</span><span class="info-kv-val">' + t("info.tankTempArchive") + '</span></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacResidents") + '</span><span class="info-kv-val">' + t("info.peakEvac") + '</span></div>' +
-    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val info-fine">' + t("info.zonePeak") + '</span></div>';
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val">' + t("info.zonePeak") + '</span></div>' +
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.window") + '</span><span class="info-kv-val">' + t("info.fact.windowV") + '</span></div>' +
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.outcome") + '</span><span class="info-kv-val">' + t("info.fact.outcomeV") + '</span></div>';
 
   // Officials — the 3 official channels as unified .info-row links (route-to-officials
   // is the conduit's primary action; "Official" label kept, the old official-link chrome retired).
@@ -2025,11 +2056,14 @@ function renderInfoTab() {
   // About (lean) — binding AI disclosure + Terms/Accessibility + Sources-checked fold.
   // Methodology / who-made-it narrative lives in the README, not in-app.
   var about =
+    '<div class="about-body">' +
     '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>' +
+    '<p class="info-ai-disclosure">' + t("disclosure.aiRoute") + '</p>' +
     '<p class="info-fine"><a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>' +
     ' &middot; <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>' +
     '<details><summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>' +
-    '<div id="info-source-list" class="info-fine" style="padding:0 14px 12px"></div></details>';
+    '<div id="info-source-list" class="info-fine" style="padding:0 0 12px"></div></details>' +
+    '</div>';
 
   var bodies = [summary, officials, resources, about];
   el.innerHTML = html + TABS.map(function (tb, i) { return panel(tb, i, bodies[i]); }).join("");
@@ -2060,8 +2094,10 @@ function updateInfoData(snap) {
   if (sourceList) {
     if (sources.length) {
       sourceList.innerHTML = sources.map(function(s) {
-        var checked = s.fetched_iso ? ' <span class="source-time">' + t("info.sources.checked") + ' ' + fmtAbsDateOnly(s.fetched_iso) + '</span>' : '';
-        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + checked + '</a>';
+        // Frozen archive: list the sources by title/URL only. The per-source fetched_iso is
+        // not surfaced as a "checked {date}" — it re-stamps on refresh and would read like
+        // ongoing monitoring past the May 26 all-clear (J, archive honesty).
+        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + '</a>';
       }).join("");
     } else {
       sourceList.innerHTML = '<span class="info-fine">' + t("info.sources.empty") + '</span>';
@@ -2079,10 +2115,10 @@ function renderInfoConfigData() {
     if (shelters.length) {
       sheltersEl.innerHTML = '<div class="info-section">' + shelters.map(function (s) {
         var gmaps = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(s.lat + "," + s.lon);
-        var loc = s.city ? ' <span class="info-fine">&middot; ' + s.city + '</span>' : '';
-        return '<a class="info-row" style="text-decoration:none" href="' + gmaps + '" target="_blank" rel="noopener">' +
-          '<span class="k">' + s.name + loc + '</span>' +
-          '<span class="v" style="color:var(--sa-celadon)">' + t("info.shelters.directions") + '</span></a>';
+        var loc = s.city ? '<span class="shelter-city">&middot; ' + s.city + '</span>' : '';
+        return '<a class="shelter-row" href="' + gmaps + '" target="_blank" rel="noopener">' +
+          '<span class="shelter-name">' + s.name + loc + '</span>' +
+          '<span class="shelter-go">' + t("info.shelters.directions") + '</span></a>';
       }).join("") + '</div>';
     } else {
       sheltersEl.innerHTML = '<p class="info-who-body">' + t("info.shelters.empty") + '</p>';

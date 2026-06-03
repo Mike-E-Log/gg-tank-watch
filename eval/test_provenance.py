@@ -163,12 +163,13 @@ def test_sources_checked_have_fetched_time():
 
 
 def test_feed_renders_source_attribution():
-    """dashboard.html feed render includes source name + relative time for every item type (T2 UI)."""
+    """dashboard.html feed render includes source name + relative time for every item type (T2 UI).
+    The per-source 'checked {date}' in the sources fold was removed (J, archive honesty 2026-06-02);
+    the sources_checked fetched_iso DATA contract still holds via test_sources_checked_have_fetched_time."""
     html = open(REPO_ROOT / "dashboard.html", encoding="utf-8").read()
     checks = {
         "feed meta shows source": "it.source" in html,
         "feed meta shows relative time": "relativeTime(it.when)" in html,
-        "sources_checked shows fetched date": "fetched_iso" in html and "fmtAbsDateOnly(s.fetched_iso)" in html,
     }
     failed = [k for k, v in checks.items() if not v]
     return {

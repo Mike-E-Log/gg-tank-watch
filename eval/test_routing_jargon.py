@@ -23,7 +23,10 @@ def _en(key):
 
 
 def test_ai_disclosure_routes_concretely():
-    val = _en("disclosure.ai")
+    # The disclosure is rendered as two lines (disclosure.ai + disclosure.aiRoute, item I);
+    # the concrete life-safety routing lives in the routing line. Check across both so the
+    # safety property (route to ggcity/911, not vague "official channels") is preserved.
+    val = _en("disclosure.ai") + " " + _en("disclosure.aiRoute")
     low = val.lower()
     concrete = "ggcity.org/emergency" in low or "911" in low
     no_vague = "official channels" not in low
