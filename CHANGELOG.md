@@ -2,6 +2,33 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.24] — 2026-06-02 (Info tab polish batch — typography, spacing, content, honesty)
+
+Follow-up polish on the consolidated 4-sub-tab Info tab (PR #109). Eleven live-observed
+items (A–K) went through a full `/autoplan` review (4 independent voices + Codex): A–J
+shipped, **K cut**. Eval green (**179/179**); vision-verified in signed Edge (light+dark, 320/375/768).
+
+### Changed
+- **Unified the Summary type scale** — dropped the 11px `.info-fine` downscale on the evacuation-zone value so every Summary key/value reads at 13px (B).
+- **Gave Officials rows breathing room** — `.info-row` vertical padding `3px → 9px` with a hairline separator between rows (`:last-child` none) so they read as a list, not a cramped stack (D/E).
+- **Restructured shelter rows** into a dedicated `.shelter-row` flex layout — name + city in a text column, "Directions ↗" pinned top-right — so a long shelter name wraps without dragging the action out of alignment (F).
+- **Matched the News filter-chip bar height to the Info sub-tab bar** (both 52px; chip-bar bottom padding aligned) so toggling Info ↔ News no longer jumps the bar (A).
+- **Shortened the About descriptor** to drop the orphaned "it." ("…and the sources behind it." → "…and its sources.") (G), and **added the horizontal gutter** to the About panel body so the disclosure/terms/sources are inset, not edge-to-edge (H).
+- **Split the AI-assistance disclosure into two lines** — the compiled-with-AI/checked-by-a-person note, then the life-safety routing line reframed from an imperative to "Current life-safety info: ggcity.org/emergency or 911" (I).
+- service-worker `CACHE_NAME` bumped `v59 → v60`.
+
+### Added
+- **Five sourced archive facts to the Summary** — Substance (Methyl methacrylate / MMA), Facility (GKN Aerospace, Garden Grove), Tank (34,000-gallon), Incident window (May 21–26, 2026), Outcome (no injuries, 0 displaced) — as static archive copy in narrative order, decoupled from the cleared resolved snapshot; neutral labels, no authority chrome (C).
+
+### Removed
+- **The per-source "checked {date}" suffix** from the About sources fold, and **retitled the fold "Sources checked" → "Sources"** (J, archive honesty): the per-source `fetched_iso` re-stamps on every refresh, so a post-resolution date on a frozen May-26 archive read like ongoing monitoring. The `fetched_iso` data contract stays in `status.json`; only the misleading UI surfacing was removed. Also dropped the now-orphaned `info.sources.checked` i18n key and `.source-time` CSS.
+
+### Cut
+- **Mobile pull-to-refresh (K)** — on a frozen archive a refresh re-fetches identical data and would imply live updates, contradicting the archive framing (`REFRESH_MS=null`, cache-first `status.json`, archived pipeline). Flagged unanimously by the review (4 voices + Codex) as a safety-contract risk and cut.
+
+### Tests
+- Added grep guards for A/B/C/D-E/F/G/H/I in `test_info_archive_clarity.py`; rewrote the J guards to assert the per-source date is GONE (`test_sources_checked_date_omitted`, the relaxed `test_feed_renders_source_attribution`, the retitled-fold `test_about_disclosure_and_sources`) while keeping the `fetched_iso` data-shape + anti-fabrication guards intact; updated `test_routing_jargon` to find the life-safety routing across the split disclosure; bumped the two SW tripwire tests `v59 → v60`.
+
 ## [v0.23] — 2026-06-02 (Info tab → 6 scrollable sub-tabs)
 
 ### Changed

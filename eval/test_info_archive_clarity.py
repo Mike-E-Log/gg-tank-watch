@@ -132,20 +132,21 @@ def test_what_happened_shows_sourced_peak_facts():
 
 
 def test_about_disclosure_and_sources():
-    """About keeps the binding AI disclosure (12px gold) + the 'Sources checked' fold;
-    the methodology/who-made-it narrative moved to the README, and the old conduct link
-    stays gone."""
+    """About keeps the binding AI disclosure (12px gold) + the sources fold; the fold is now
+    titled 'Sources' (J, archive honesty 2026-06-02 — 'Sources checked' gestured at a freshness
+    claim once the per-source dates were dropped). The methodology/who-made-it narrative moved to
+    the README, and the old conduct link stays gone."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    sources_retitled = '"info.sourcesH": { en: "Sources checked" }' in text
+    sources_fold = '"info.sourcesH": { en: "Sources" }' in text
     conduct_removed = '"info.about.conductlink"' not in text
     disclosure_class = 'class="info-ai-disclosure"' in text
     css_i = text.find(".info-ai-disclosure {")
     css_block = text[css_i:css_i + 240] if css_i != -1 else ""
     disclosure_styled = "12px" in css_block and "--sa-gold" in css_block
-    ok = sources_retitled and conduct_removed and disclosure_class and disclosure_styled
+    ok = sources_fold and conduct_removed and disclosure_class and disclosure_styled
     return {"passed": ok,
-            "details": "About keeps 'Sources checked' + AI disclosure 12px gold"
-            if ok else f"retitled={sources_retitled} conduct_removed={conduct_removed} cls={disclosure_class} styled={disclosure_styled}"}
+            "details": "About keeps 'Sources' fold + AI disclosure 12px gold"
+            if ok else f"fold_titled={sources_fold} conduct_removed={conduct_removed} cls={disclosure_class} styled={disclosure_styled}"}
 
 
 def test_retired_classes_gone_markup_and_css():
@@ -173,6 +174,123 @@ def test_no_inline_font_size_in_info_panels():
     return {"passed": ok,
             "details": "no inline font-size between renderInfoTab and renderPrintContent"
             if ok else "inline font-size found in Info render region"}
+
+
+def test_news_chipbar_matches_subtab_bar():
+    """A: the News filter-chip bar uses the same vertical padding as the Info sub-tab bar
+    (8px 12px 0) so toggling Info<->News does not jump the bar height."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    ci = text.find(".news-filter-chips {")
+    block = text[ci:ci + 220] if ci != -1 else ""
+    ok = bool(block) and "padding: 8px 12px 0" in block
+    return {"passed": ok,
+            "details": "news chip-bar padding matches sub-tab bar (8px 12px 0)"
+            if ok else "news chip-bar padding still differs from .info-subtabs"}
+
+
+def test_summary_zone_value_full_scale():
+    """B: the Summary zone value reads at the same 13px as its sibling kv-values — the 11px
+    .info-fine downscale is dropped so the Summary type scale is uniform."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    has_fine = 'info-fine">\' + t("info.zonePeak")' in text
+    bound_plain = 'info-kv-val">\' + t("info.zonePeak")' in text
+    ok = (not has_fine) and bound_plain
+    return {"passed": ok,
+            "details": "zone value at full 13px scale (info-fine dropped)"
+            if ok else f"has_fine={has_fine} bound_plain={bound_plain}"}
+
+
+def test_info_row_has_breathing_room():
+    """D/E: the unified .info-row (Officials + Shelters) has list breathing room — ~9px
+    vertical padding and a hairline separator (last-child none) — not the old 3px cramp."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    ri = text.find(".info-row {")
+    block = text[ri:ri + 220] if ri != -1 else ""
+    padded = bool(block) and ("padding: 9px 0" in block or "padding: 10px 0" in block)
+    bordered = "border-bottom: 1px solid var(--sa-border)" in block
+    last_none = ".info-row:last-child { border-bottom: none; }" in text
+    ok = padded and bordered and last_none
+    return {"passed": ok,
+            "details": "info-row ~9px padding + hairline + last-child none"
+            if ok else f"padded={padded} bordered={bordered} last_none={last_none}"}
+
+
+def test_summary_archive_facts_present():
+    """C: the Summary surfaces five sourced archive facts (substance/facility/tank/window/
+    outcome) as STATIC copy — neutral labels, NO 'verified' authority chrome, and decoupled
+    from the cleared resolved snapshot (no live id binding)."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    val_keys = ["info.fact.substanceV", "info.fact.facilityV", "info.fact.tankV",
+                "info.fact.windowV", "info.fact.outcomeV"]
+    label_keys = ["info.fact.substance", "info.fact.facility", "info.fact.tank",
+                  "info.fact.window", "info.fact.outcome"]
+    missing = [k for k in (val_keys + label_keys) if f'"{k}"' not in text]
+    bound = all(f't("{k}")' in text for k in val_keys)
+    no_live_id = ('id="info-substance-val"' not in text
+                  and 'id="info-facility-val"' not in text)
+    ok = not missing and bound and no_live_id
+    return {"passed": ok,
+            "details": "Summary shows 5 sourced static archive facts (neutral labels, decoupled)"
+            if ok else f"missing_keys={missing} bound={bound} no_live_id={no_live_id}"}
+
+
+def test_shelter_row_dedicated_layout():
+    """F: shelter rows use a dedicated flex layout (.shelter-row) with name+city in a flex
+    text column and 'Directions' pinned top (align-items: flex-start), so a long shelter name
+    wraps without pushing the action out of alignment. Google Maps directions href preserved."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    si = text.find(".shelter-row {")
+    css = text[si:si + 260] if si != -1 else ""
+    css_ok = bool(css) and "display: flex" in css and "align-items: flex-start" in css
+    markup_ok = ('class="shelter-row"' in text and 'class="shelter-name"' in text
+                 and 'class="shelter-go"' in text)
+    href_ok = "maps/dir/?api=1&destination=" in text
+    ok = css_ok and markup_ok and href_ok
+    return {"passed": ok,
+            "details": "shelter rows use dedicated flex layout (text column + pinned action)"
+            if ok else f"css_ok={css_ok} markup_ok={markup_ok} href_ok={href_ok}"}
+
+
+def test_about_desc_no_orphan():
+    """G: the About descriptor is shortened so 'it.' no longer orphans onto its own line."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    new_ok = '"info.desc.about": { en: "How this archive was made, and its sources." }' in text
+    old_gone = "and the sources behind it." not in text
+    ok = new_ok and old_gone
+    return {"passed": ok, "details": "About descriptor shortened (no orphan)"
+            if ok else f"new_present={new_ok} old_gone={old_gone}"}
+
+
+def test_about_body_has_gutter():
+    """H: the About body (disclosure + terms + sources fold) is wrapped in a gutter container
+    (.about-body, padding 0 14px) so its text aligns with the inset descriptor band rather than
+    running to the panel edges."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    ci = text.find(".about-body {")
+    css = text[ci:ci + 120] if ci != -1 else ""
+    css_ok = bool(css) and "padding: 0 14px" in css
+    markup_ok = 'class="about-body"' in text
+    ok = css_ok and markup_ok
+    return {"passed": ok, "details": "About body wrapped in .about-body gutter (0 14px)"
+            if ok else f"css_ok={css_ok} markup_ok={markup_ok}"}
+
+
+def test_disclosure_split_two_lines():
+    """I: the AI disclosure renders as two lines — (1) compiled-with-AI/checked-by-a-person,
+    (2) routing copy to officials/911 (NOT an 'Always confirm' imperative) — both in
+    .info-ai-disclosure (12px gold preserved)."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    two_keys = '"disclosure.ai"' in text and '"disclosure.aiRoute"' in text
+    line1 = 'info-ai-disclosure">\' + t("disclosure.ai")' in text
+    line2 = 'info-ai-disclosure">\' + t("disclosure.aiRoute")' in text
+    no_imperative = "Always confirm life-safety" not in text
+    ci = text.find(".info-ai-disclosure {")
+    css = text[ci:ci + 200] if ci != -1 else ""
+    styled = "12px" in css and "--sa-gold" in css
+    ok = two_keys and line1 and line2 and no_imperative and styled
+    return {"passed": ok,
+            "details": "AI disclosure split into two gold lines; routing copy not imperative"
+            if ok else f"two_keys={two_keys} line1={line1} line2={line2} no_imperative={no_imperative} styled={styled}"}
 
 
 def test_dead_shelter_renderer_removed():

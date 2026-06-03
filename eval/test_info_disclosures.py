@@ -88,14 +88,18 @@ def test_about_panel_lean_keeps_disclosure_and_terms():
     return {"passed": ok, "details": str(checks)}
 
 
-def test_sources_checked_uses_absolute_date():
-    """T10 (deferred fix): the 'sources checked' age renders an ABSOLUTE date (fmtAbsDateOnly),
-    not a drifting relativeTime 'N days ago' — a frozen archive must not age its own provenance."""
+def test_sources_checked_date_omitted():
+    """J (archive honesty, 2026-06-02): the per-source 'checked {date}' suffix is REMOVED from
+    the sources fold. fetched_iso re-stamps on every refresh, so a post-resolution date (e.g.
+    Jun 3) on a May-26 frozen archive reads like ongoing monitoring. The list shows title/URL
+    only; fetched_iso stays IN status.json (data-shape guard test_provenance.py::
+    test_sources_checked_have_fetched_time) but is no longer surfaced as a freshness date.
+    Supersedes the old T10 'render an absolute date' guard — the honest archive answer is no date."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    uses_abs = "fmtAbsDateOnly(s.fetched_iso)" in text
+    date_gone = "fmtAbsDateOnly(s.fetched_iso)" not in text
     no_relative = "relativeTime(s.fetched_iso)" not in text
-    return {"passed": uses_abs and no_relative,
-            "details": f"uses_fmtAbsDateOnly={uses_abs} no_relativeTime={no_relative}"}
+    return {"passed": date_gone and no_relative,
+            "details": f"per_source_date_removed={date_gone} no_relativeTime={no_relative}"}
 
 
 def test_tank_facts_past_tense():
