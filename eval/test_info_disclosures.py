@@ -63,35 +63,29 @@ def test_situation_headline_concise_and_resolved():
             "details": f"len={len(h)} concise={concise} resolved={conveys_resolved} no_editorial={no_editorial}"}
 
 
-def test_about_panel_organized_into_sections():
-    """The Info > About panel must be organized into consistent info-section blocks (like the
-    Status/Resources panels) and SURFACE the responsible-AI methodology + official routing +
-    conduct code, rather than burying methodology in a collapsed <details>. Guards that the
-    reorg uses the structured About/method strings (user follow-up 2026-05-31)."""
+def test_about_panel_lean_keeps_disclosure_and_terms():
+    """6-tab redesign (2026-06-02): the About sub-tab is LEAN — it surfaces the binding
+    AI-assistance disclosure + Terms/Accessibility + the Sources-checked fold, and the
+    methodology / who-made-it narrative has MOVED to the README (no longer in-app). The
+    in-app methodology strings (info.about.title/body, info.method.title/pipeline) must be
+    gone. Anchors on the renderInfoTab `var about =` block, since panel ids are now built
+    dynamically (the literal id / "// end about panel" marker no longer exist).
+
+    The past-tense integrity of the migrated pipeline text is re-guarded on the README
+    (eval/test_readme_archive_count.py::test_readme_methodology_past_tense)."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    i = text.find('id="info-subpanel-about"')
-    j = text.find("// end about panel", i) if i >= 0 else -1
+    i = text.find("var about =")
+    j = text.find("var bodies =", i) if i >= 0 else -1
     region = text[i:j] if (i >= 0 and j > i) else ""
     checks = {
-        "who_section": "info.about.title" in region,
-        "methodology_section": "info.method.title" in region,
         "ai_disclosure_surfaced": "disclosure.ai" in region,
-        # official routing dropped from About — now carried once by the consolidated banner
         "terms_link": "info.about.termslink" in region,
+        "sources_fold": "info.sourcesH" in region,
+        "who_moved_out": "info.about.title" not in text and "info.about.body" not in text,
+        "methodology_moved_out": "info.method.title" not in text and "info.method.pipeline" not in text,
     }
-    ok = all(checks.values())
+    ok = bool(region) and all(checks.values())
     return {"passed": ok, "details": str(checks)}
-
-
-def test_method_pipeline_past_tense():
-    """T10: the data-pipeline description reads in PAST tense (the incident is resolved and
-    polling has been frozen since Batch 1). 'was updated' / 'was cross-referenced', not present."""
-    val = _en_string("info.method.pipeline")
-    low = val.lower()
-    past = "was updated" in low or "was cross-referenced" in low
-    not_present = "status updated every" not in low
-    return {"passed": past and not_present,
-            "details": f"past_tense={past} no_present_tense={not_present}"}
 
 
 def test_sources_checked_uses_absolute_date():

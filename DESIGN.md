@@ -101,6 +101,7 @@ The hero shows severity status and situation bullets — never directives.
 | 2026-05-29 | News dedupe deferred | Dedupe code is proven in tests but effectively a no-op on the static seed; defer to a post-incident video-sourcing strategy. |
 | 2026-06-01 | Info tab archive-clarity (scope B) | "Status"→"What happened"; Status gets its own derived historical disclaimer; Resources leads with Official Sources, then a collapsed de-carded "Historical resources" fold (shelters + community as dense rows, no card chrome); About fold retitled "Sources checked"; AI disclosure promoted to 12px gold; disclaimer split with "In an emergency, call 911." on its own line. Cross-model review (Codex gpt-5.5 + blind Claude subagent) hard-rejected the card-grid-first Resources panel. Full structural `.info-section` refactor (scope C) deferred. |
 | 2026-06-02 | Map + News design-complete; Info is the remaining alignment work | Map/News patterns are the reference the rest of the app aligns to; the Info tab must adopt that visual language, gain clearer individually-navigable sub-tabs, and use the documented type scale consistently. Exact sub-tab set is a pending design decision. (Also: dropped the trailing period from the safety-strip disclaimer — it reads as a label flowing into "· Terms".) |
+| 2026-06-02 | Info tab → 6 scrollable sub-tabs (Summary \| Officials \| Shelters \| Schools \| Recovery \| About) | Rebuilt Info onto the unified `.info-section` primitives so it reads as one system with Map/News. Each panel leads with a one-line descriptor (`.info-desc`); the sub-tab chrome is generated from one `{id,label,descriptor}` array. The sub-tab bar is horizontally **scrollable** (`overflow-x:auto` + scroll-snap + a right-edge fade peek) — a conscious deviation from the equal-width reference chrome, chosen for granularity: six individually-findable sections beat three squished equal-width tabs. Tab-focus + `aria-selected` kept; arrow-key roving deliberately not added (would diverge from the app's other tabs). AI disclosure stays in the About tab (binding honesty); methodology/who-made-it narrative moved to the README. Dead `renderInfoShelters` and the parallel `.resources-*`/`.community-resource-card`/`.shelters-grid`/`.official-link` markup+CSS retired; inline `font-size` killed via `.info-fine`/`.info-desc`/`.info-who-body`. |
 
 ## v0.17 Design-Complete Gate (2026-05-29)
 
@@ -131,22 +132,24 @@ The founder's binding "design-complete" bar, made finite so it can be reached (n
 
 **Binding constraints:** conduit (no authored directives) · G1 (no MT safety copy; vi held) · persistent honesty disclosure · `noindex` ON (vercel.json header). **Verified non-issues:** noindex meta tag, Info "buried disclaimer", `.vercel/project.json` staleness (gitignored).
 
-## Tab Design Status — Map & News complete; Info is the remaining alignment work (2026-06-02)
+## Tab Design Status — Map, News & Info design-complete (Info: 2026-06-02)
 
-**Map and News are design-complete.** Their patterns are the reference the rest of the app aligns to — do not restyle them without being asked. The **Info tab is the only tab still being brought up to that bar.**
+**Map, News, and Info are now design-complete.** Their patterns are the reference the rest of the app aligns to — do not restyle them without being asked. Info was brought up to that bar on 2026-06-02: 6 scrollable sub-tabs on the unified `.info-section` primitives.
 
 ### Reference patterns (carry these into Info)
 - **Type scale (single source of truth):** body Plus Jakarta Sans 14px / line-height 1.4; data & numbers in IBM Plex Mono (`.mono` / `.sa-mono`, tabular-nums); headings, section titles, and 11–12px labels per the Typography block above. No per-element inline `font-size` overrides.
-- **Sub-navigation chrome:** the underline-accent sub-tab bar (`.info-subtabs` / `.info-subtab`) — equal-width flex buttons, celadon `border-bottom` on `.active`, sticky to the top of the scroll area, 44px min touch target — is the established sub-tab pattern (it reused the original News sub-tab styling). News now renders a single sourced feed with filter chips in the same celadon-accent family.
+- **Sub-navigation chrome:** the underline-accent sub-tab bar (`.info-subtabs` / `.info-subtab`) — celadon `border-bottom` on `.active`, sticky to the top of the scroll area, 44px min touch target — is the established sub-tab pattern (it reused the original News sub-tab styling). Info's 6-tab bar is the **scrollable** variant (content-width tabs + `overflow-x:auto` + scroll-snap + right-edge fade peek), chosen over equal-width so all six sections stay individually findable. News renders a single sourced feed with filter chips in the same celadon-accent family.
 - **Surfaces & color:** `--sa-surface` cards on the `--sa-bg` page, `--sa-border` hairlines, celadon (`--sa-celadon`) for active/interactive accents; gold is reserved for the UNOFFICIAL pill and the AI disclosure.
 - **Spacing:** 4px base unit, compact density.
 
-### Info tab — remaining work (the only incomplete tab)
-Info already has **Status | Resources | About** sub-tabs (`renderInfo` in `dashboard.html`). The work left:
-1. **Align style with Map/News** — same type scale, spacing, surface/border treatment, and celadon accents, so the tab reads as one system rather than a different screen.
-2. **Better-organized, individually-navigable sub-tabs** — refine the sub-tab set and content grouping so a resident can jump straight to what they need; the sub-tab bar should match the reference sub-navigation chrome exactly.
-3. **Font/style consistency** — replace the ad-hoc inline `style="font-size:11px/12px"` overrides in the Info content generator with the documented type scale; everything inherits, nothing one-off.
+### Info tab — design-complete (2026-06-02)
+Info was rebuilt into **6 individually-navigable sub-tabs** — **Summary | Officials | Shelters | Schools | Recovery | About** (`renderInfoTab` in `dashboard.html`) — on the unified `.info-section` primitives, so it reads as one system with Map/News. What shipped:
+1. **Aligned to Map/News** — same type scale, spacing, surface/border treatment, and celadon accents; all panels use `.info-section`/`.info-row`/`.info-kv-row` primitives.
+2. **Individually-navigable sub-tabs** — every content section (peak facts, official channels, shelters, school closures, recovery resources, about) is its own tab, each led by a one-line `.info-desc` descriptor; the chrome is generated from one `{id,label,descriptor}` array.
+3. **Type-scale consistency** — the ad-hoc inline `style="font-size:…"` overrides are gone, replaced by `.info-fine` (11px) / `.info-desc` (12px) / `.info-who-body` (12px); guarded by `test_no_inline_font_size_in_info_panels`.
 
-**Status:** PENDING design + planning. The exact sub-tab set and any content moves are a design decision (`/plan-eng-review` → `/plan-design-review` → `/writing-plans` before editing), not yet executed.
+**Deviation (intentional):** the Info sub-tab bar is horizontally **scrollable** (content-width tabs + scroll-snap + right-edge fade peek), not the equal-width reference chrome. Six findable sections beat three squished equal-width tabs; Tab-focus + `aria-selected` are kept, arrow-key roving is deliberately not added (would diverge from the app's other tabs).
+
+**Status:** DONE — eval green, Edge-headless verified light + dark @375px. Map/News remain the off-limits reference patterns.
 
 > **Lowercase-`i` legibility — root-caused 2026-06-02.** The dotless `i` in "official" was the `fi`/`ffi` OpenType ligature dropping the i's tittle — only the `i` inside the `ffi` cluster was affected, and it's size-invariant (the initial 13px guess was wrong and was reverted). Fixed globally with `font-variant-ligatures: none` on `html, body` (brand typeface unchanged), guarded by `test_no_dotless_ligatures`. Verified locally on Blink (Edge headless) and deterministic across Chrome/Edge/Android Chrome.

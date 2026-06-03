@@ -2,6 +2,20 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+## [v0.23] — 2026-06-02 (Info tab → 6 scrollable sub-tabs)
+
+### Changed
+- **Rebuilt the Info tab into 6 individually-navigable, horizontally-scrollable sub-tabs** — **Summary · Officials · Shelters · Schools · Recovery · About** — on the unified `.info-section` primitives, so Info reads as one system with the design-complete Map/News tabs. The sub-tab chrome + per-panel one-line descriptors (`.info-desc`) are generated from a single `{id,label,descriptor}` array. The bar is horizontally scrollable (`overflow-x:auto` + scroll-snap + a right-edge fade peek) — a conscious deviation from the equal-width reference chrome, chosen so all six sections stay individually findable. The AI-assistance disclosure stays in the About tab (binding honesty); the methodology / who-made-it narrative moved to the README.
+- **Officials channels re-expressed as unified `.info-row` links** (the standalone `.official-link` card chrome retired), keeping the "Official" label and route-to-officials framing.
+- service-worker `CACHE_NAME` bumped `v57 → v58` so cached residents re-fetch the new shell.
+
+### Removed
+- **Dead `renderInfoShelters()`** (its `#info-shelter-list` was never emitted, so it always early-returned) + its orphaned `.info-shelter-*` CSS, and the parallel Resources system (`renderResources` and the `.resources-section` / `.community-resource-card` / `.shelters-grid` / `.official-link` markup + CSS, plus the `.info-fold` / `.info-historical` styles) — Shelters and Recovery now render from config via `renderInfoConfigData`.
+- **Ad-hoc inline `font-size`** across the Info render path, replaced by `.info-fine` (11px) / `.info-desc` (12px) / `.info-who-body` (12px); guarded by `test_no_inline_font_size_in_info_panels`.
+
+### Tests
+- Consolidated the Info behavioral contract into `test_info_archive_clarity.py` (6 sub-tabs present, per-panel descriptors, Officials 3 links, Recovery panel, sourced peak facts, About disclosure, retired-classes-gone markup+CSS, no-inline-font-size, dead-shelter-removed) and realigned the `test_info_disclosures` / `test_one_banner` About guards to the lean 6-tab About. Eval green.
+
 ## [v0.22] — 2026-06-02 (dotless-`i` root cause: a ligature, not size)
 
 ### Fixed
