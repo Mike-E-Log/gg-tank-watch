@@ -15,6 +15,8 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import os
+import subprocess
 import sys
 import traceback
 from datetime import datetime, timezone
@@ -71,6 +73,36 @@ def append_score(entry: dict) -> None:
         f.write(json.dumps(entry, separators=(",", ":")) + "\n")
 
 
+def _source_commit() -> str:
+    try:
+        out = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=EVAL_DIR.parent,
+            capture_output=True, text=True, timeout=10,
+        )
+        return out.stdout.strip() or "unknown"
+    except Exception:
+        return "unknown"
+
+
+def build_summary(results) -> dict:
+    """Deterministic summary: sorted {module::test: pass|fail} + commit-bound meta. No timestamps."""
+    tests = {f"{m}::{t}": ("pass" if o["passed"] else "fail") for m, t, _c, o in results}
+    by_cat = {}
+    for _m, _t, cat, o in results:
+        d = by_cat.setdefault(cat, 0)
+        by_cat[cat] = d + (1 if o["passed"] else 0)
+    return {
+        "meta": {
+            "source_commit": _source_commit(),
+            "runner": "eval/run_all.py --skip integration",
+            "total": len(tests),
+            "behavioral": by_cat.get("behavioral", 0),
+            "schema": by_cat.get("schema", 0),
+        },
+        "tests": dict(sorted(tests.items())),
+    }
+
+
 # Test classification — used to skip categories.
 # Add a `CATEGORY = "..."` module-level attribute to a test_*.py to override.
 DEFAULT_CATEGORY = "behavioral"
@@ -81,7 +113,14 @@ def main():
     ap.add_argument("--skip", action="append", default=[], help="skip a category (e.g. integration)")
     ap.add_argument("--only", action="append", default=[], help="only run module names containing this string")
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--summary-out", default=None, help="write a deterministic summary JSON to PATH")
     args = ap.parse_args()
+
+    # When generating a summary, mark child runs so meta-tests that re-invoke the suite
+    # (e.g. test_summary_export) expose no tests — prevents unbounded recursion and keeps
+    # the artifact to the curated behavioral+schema suite.
+    if args.summary_out:
+        os.environ["GG_SUMMARY_EXPORT_CHILD"] = "1"
 
     results = []
     crashed_modules = []
@@ -143,6 +182,14 @@ def main():
         print(f"\n  crashed modules: {', '.join(crashed_modules)}")
     print("=" * 64)
     print(f"  scores.jsonl: {SCORES_PATH} (now {SCORES_PATH.stat().st_size if SCORES_PATH.exists() else 0} bytes)")
+
+    if args.summary_out:
+        summary = build_summary(results)
+        Path(args.summary_out).write_text(
+            json.dumps(summary, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        print(f"  summary-out: {args.summary_out} ({len(summary['tests'])} tests)")
 
     if crashed_modules:
         sys.exit(2)
