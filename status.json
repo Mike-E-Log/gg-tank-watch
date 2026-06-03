@@ -33,11 +33,13 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
+      "official": true,
       "fetched_iso": "2026-06-03T05:19:26Z"
     },
     {
       "url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident",
       "title": "GKN Aerospace HazMat incident | Orange County",
+      "official": true,
       "fetched_iso": "2026-06-03T05:19:26Z"
     },
     {

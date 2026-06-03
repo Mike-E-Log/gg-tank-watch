@@ -819,10 +819,13 @@
       color: var(--sa-text-3);
       margin: 12px 14px 6px;
     }
-    /* Responsible-AI disclosure: surfaced (not a buried footnote) at the gold authority accent. */
+    /* Responsible-AI disclosure: surfaced as the first line in About (not a buried footnote).
+       Renders at body near-black --sa-text, in line with the other sub-tabs' text — the gold
+       accent was dropped 2026-06-02 (user); the binding-honesty property holds via the text +
+       first-line placement, not the color. */
     .info-ai-disclosure {
       font-size: 12px;
-      color: var(--sa-gold);
+      color: var(--sa-text);
       line-height: 1.45;
       margin-bottom: 8px;
     }
@@ -836,6 +839,13 @@
     .info-row:last-child { border-bottom: none; }
     .info-row .k { color: var(--sa-text-2); }
     .info-row .v { color: var(--sa-text); font-weight: 600; }
+    /* Official rows (Officials sub-tab): stack a k/v top line over a one-line description of
+       what the channel is for. The top line keeps the unified k/v; the desc is a muted sub-line. */
+    .info-official-row { flex-direction: column; align-items: stretch; gap: 3px; }
+    .info-row-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    /* keep the "Official ↗" cue intact; let a long channel name wrap instead (shelter-row pattern). */
+    .info-row-top .v { white-space: nowrap; flex: 0 0 auto; }
+    .info-row-desc { color: var(--sa-text-3); font-size: 11px; line-height: 1.35; }
     /* Shelter rows: name+city in a flex text column, Directions pinned top-right so a long
        name wraps without dragging the action out of alignment. */
     .shelter-row {
@@ -873,6 +883,21 @@
     }
     .source-item:last-child { border-bottom: none; }
     .source-item:hover { color: var(--sa-celadon); }
+    /* "Official" provenance tag on City/County sources — celadon outline, smaller than the title,
+       so the official-vs-press hierarchy in the sources fold is visible (user 2026-06-02). */
+    .source-official {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 6px;
+      border: 1px solid var(--sa-celadon);
+      border-radius: 4px;
+      color: var(--sa-celadon);
+      font-size: 10px;
+      font-weight: 600;
+      vertical-align: middle;
+    }
+    /* One-line caption above the sources list, stating what the list is (the provenance trail). */
+    .info-sources-caption { margin: 8px 0 6px; }
 
     /* ===== SON MAI CULTURAL ELEMENTS ===== */
     .lotus-divider {
@@ -889,10 +914,13 @@
       border-radius: 50% 50% 0 0;
       border-bottom: none;
     }
+    /* Soft top glow only. The repeating "lined-paper" gradient was removed 2026-06-02 (user):
+       it painted a faint horizontal line every ~22px that read as noisy, erroneous ghost lines
+       across every Info sub-tab. The only horizontal lines kept are the intentional 1px solid
+       item separators (.info-row / .info-kv-row / .info-section hairlines). */
     .sa-wave-bg {
       background-image:
-        radial-gradient(ellipse 1200px 60px at 50% 0%, var(--sa-celadon-3), transparent 70%),
-        repeating-linear-gradient(0deg, transparent 0px, transparent 22px, rgba(14, 111, 94, 0.035) 22px, rgba(14, 111, 94, 0.035) 23px);
+        radial-gradient(ellipse 1200px 60px at 50% 0%, var(--sa-celadon-3), transparent 70%);
     }
     .severity-high .sa-wave-bg,
     .severity-critical .sa-wave-bg {
@@ -1408,7 +1436,7 @@ var STRINGS = {
   "info.subtab.about": { en: "About" },
   "info.desc.summary": { en: "What happened during the May 2026 emergency." },
   "info.desc.officials": { en: "The city and county's own emergency channels." },
-  "info.desc.resources": { en: "Evacuation shelters, school closures, and recovery aid from the emergency." },
+  "info.desc.resources": { en: "Shelters, school closures, and recovery aid." },
   "info.desc.about": { en: "How this archive was made, and its sources." },
   "topbar.unofficial": { en: "UNOFFICIAL" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
@@ -1420,7 +1448,6 @@ var STRINGS = {
   "safety.strip.terms": { en: "Terms" },
   "safety.strip.route": { en: "Current info:" },
   "disclosure.ai": { en: "Summaries on this page are compiled with AI assistance from official and news sources, then checked by a person." },
-  "disclosure.aiRoute": { en: "Current life-safety info: ggcity.org/emergency or 911." },
   "hero.severity.label": { en: "Incident severity:" },
   "hero.summary.loading": { en: "Loading current status…" },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
@@ -1459,18 +1486,21 @@ var STRINGS = {
   "info.schools.none": { en: "None reported" },
   "info.sources.title": { en: "Sources verified" },
   "info.sources.empty": { en: "No sources in this snapshot" },
+  "info.sources.caption": { en: "Sources we checked while compiling and corroborating this archive." },
+  "info.sources.official": { en: "Official" },
   "common.yes": { en: "yes" },
   "common.no": { en: "no" },
-  "info.about.termslink": { en: "Read the full Terms & disclaimer" },
   "info.about.a11ylink": { en: "Accessibility" },
   "info.group.closures": { en: "Closures" },
   "info.roads.title": { en: "Road closures" },
   "info.roads.defer": { en: 'Roads inside the evacuation zone were closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for closure history.' },
   "info.group.official": { en: "Official sources" },
-  "info.official.note": { en: "No single source should be your only one. Subscribe to official alerts and check multiple channels." },
   "info.official.city": { en: "City of Garden Grove emergency page" },
+  "info.official.cityDesc": { en: "The city's official emergency page and current updates." },
   "info.official.zonehaven": { en: "Genasys / Zonehaven zone lookup" },
+  "info.official.zonehavenDesc": { en: "Look up any address's evacuation zone status." },
   "info.official.alert": { en: "AlertOC sign-up (official county alerts)" },
+  "info.official.alertDesc": { en: "Sign up for official Orange County emergency alerts." },
   "info.group.sources": { en: "Sources & how this works" },
   "news.badge.newest": { en: "Newest" },
   "news.badge.recent": { en: "Recent" },
@@ -2036,16 +2066,18 @@ function renderInfoTab() {
 
   // Officials — the 3 official channels as unified .info-row links (route-to-officials
   // is the conduit's primary action; "Official" label kept, the old official-link chrome retired).
-  function officialRow(href, label) {
-    return '<a class="info-row" style="text-decoration:none" href="' + href + '" target="_blank" rel="noopener">' +
-      '<span class="k">' + label + '</span><span class="v" style="color:var(--sa-celadon)">Official ↗</span></a>';
+  // Each row stacks the channel name + an "Official ↗" cue, then a one-line .info-row-desc
+  // saying what the channel is for (user 2026-06-02; the generic "no single source" note removed).
+  function officialRow(href, label, desc) {
+    return '<a class="info-row info-official-row" style="text-decoration:none" href="' + href + '" target="_blank" rel="noopener">' +
+      '<span class="info-row-top"><span class="k">' + label + '</span><span class="v" style="color:var(--sa-celadon)">Official ↗</span></span>' +
+      '<span class="info-row-desc">' + desc + '</span></a>';
   }
   var officials =
-    '<p class="info-who-body">' + t("info.official.note") + '</p>' +
     '<div class="info-section">' +
-    officialRow("https://ggcity.org/emergency", t("info.official.city")) +
-    officialRow("https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12", t("info.official.zonehaven")) +
-    officialRow("https://member.everbridge.net/892807736729480/login", t("info.official.alert")) +
+    officialRow("https://ggcity.org/emergency", t("info.official.city"), t("info.official.cityDesc")) +
+    officialRow("https://community.zonehaven.com/?lat=33.7858&lng=-118.005&z=12", t("info.official.zonehaven"), t("info.official.zonehavenDesc")) +
+    officialRow("https://member.everbridge.net/892807736729480/login", t("info.official.alert"), t("info.official.alertDesc")) +
     '</div>';
 
   // Resources — Shelters + Schools + Recovery merged into one panel as sections. The
@@ -2065,10 +2097,9 @@ function renderInfoTab() {
   var about =
     '<div class="about-body">' +
     '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>' +
-    '<p class="info-ai-disclosure">' + t("disclosure.aiRoute") + '</p>' +
-    '<p class="info-fine"><a href="terms.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.termslink") + '</a>' +
-    ' &middot; <a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>' +
-    '<details><summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>' +
+    '<p class="info-fine"><a href="accessibility.html" style="color:var(--sa-celadon);text-decoration:none">' + t("info.about.a11ylink") + '</a></p>' +
+    '<details open><summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>' +
+    '<p class="info-fine info-sources-caption">' + t("info.sources.caption") + '</p>' +
     '<div id="info-source-list" class="info-fine" style="padding:0 0 12px"></div></details>' +
     '</div>';
 
@@ -2104,7 +2135,10 @@ function updateInfoData(snap) {
         // Frozen archive: list the sources by title/URL only. The per-source fetched_iso is
         // not surfaced as a "checked {date}" — it re-stamps on refresh and would read like
         // ongoing monitoring past the May 26 all-clear (J, archive honesty).
-        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + '</a>';
+        // Official City/County sources carry an "Official" tag so the provenance hierarchy
+        // (where the facts came from vs. corroborating press) is visible (user 2026-06-02).
+        var tag = s.official ? '<span class="source-official">' + t("info.sources.official") + '</span>' : '';
+        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + tag + '</a>';
       }).join("");
     } else {
       sourceList.innerHTML = '<span class="info-fine">' + t("info.sources.empty") + '</span>';

@@ -23,15 +23,19 @@ def _en(key):
 
 
 def test_ai_disclosure_routes_concretely():
-    # The disclosure is rendered as two lines (disclosure.ai + disclosure.aiRoute, item I);
-    # the concrete life-safety routing lives in the routing line. Check across both so the
-    # safety property (route to ggcity/911, not vague "official channels") is preserved.
-    val = _en("disclosure.ai") + " " + _en("disclosure.aiRoute")
-    low = val.lower()
-    concrete = "ggcity.org/emergency" in low or "911" in low
+    # Concrete life-safety routing (ggcity.org/emergency or 911, NOT vague "official channels")
+    # must always be visible. 2026-06-02: the duplicate routing line was removed from the About
+    # AI disclosure (disclosure.aiRoute) — the routing now lives ONCE in the PERSISTENT safety
+    # strip, which renders on every tab. Re-point the safety-property guard at the strip so it
+    # stays enforced at its real home rather than at the (now removed) About duplicate.
+    text = DASH.read_text(encoding="utf-8")
+    si = text.find('class="safety-strip"')
+    strip = text[si:si + 800] if si != -1 else ""
+    low = strip.lower()
+    concrete = "ggcity.org/emergency" in low and ("tel:911" in low or ">911<" in low)
     no_vague = "official channels" not in low
-    return {"passed": concrete and no_vague,
-            "details": f"concrete_routing={concrete} no_vague_'official channels'={no_vague}"}
+    return {"passed": bool(strip) and concrete and no_vague,
+            "details": f"strip_found={bool(strip)} concrete_routing={concrete} no_vague={no_vague}"}
 
 
 def test_official_source_labels_preserved():

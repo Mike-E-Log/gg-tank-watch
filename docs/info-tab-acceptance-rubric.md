@@ -22,14 +22,14 @@ These are the criteria a text-only test cannot see and that caused the #108→#1
 - [ ] Exactly **4 equal-width sub-tabs, single row**: `Summary | Officials | Resources | About` (`renderInfoTab`). Changing the count or set requires editing this file first.
 - [ ] Each panel opens with one `.info-desc` descriptor band (3px celadon left border + surface tint).
 - [ ] **Summary** = sourced peak facts only (≈100°F / ≈50,000 / ≈9 sq mi from `timeline.json`).
-- [ ] **Officials** = pure route-to-officials (official channels), nothing else.
-- [ ] **Resources** = shelters + school closures + recovery aid as labeled `.info-section-title` sections (no card grid — cross-model review hard-rejected card-grid-first).
-- [ ] **About** = who-made-this + "Sources checked" fold + AI disclosure (12px gold, binding honesty).
+- [ ] **Officials** = route-to-officials only: the official channels, each with a one-line `.info-row-desc` description of what the channel is for. No general safety-advice note (the "No single source…" note was removed 2026-06-02 per user — generic boilerplate that didn't fit a frozen, resolved archive).
+- [ ] **Resources** = shelters + school closures + recovery aid as labeled `.info-section-title` sections (no card grid — cross-model review hard-rejected card-grid-first). Descriptor band copy stays to **one line at 375px**.
+- [ ] **About** = AI disclosure (12px, body near-black `--sa-text` — binding honesty, surfaced as the first line, **not** a gold accent) + an Accessibility link (Terms lives in the persistent safety strip, so it is no longer duplicated here) + a "Sources" fold that is **open by default**, opens with a one-line `.info-fine` caption stating what the list is (the provenance trail the pipeline checked), and tags the official City/County sources with an "Official" label. The single duplicate routing line (`disclosure.aiRoute`) was removed 2026-06-02 — concrete 911/ggcity routing is carried persistently by the safety strip.
 
 ## 2. Visual system (token rubric — already stable in DESIGN.md; conform, don't reinvent)
 
 - [ ] Type scale from `DESIGN.md` only: body Plus Jakarta Sans 14px/1.4; data IBM Plex Mono tabular-nums; labels 11–12px. **No inline `font-size`** (use `.info-fine` / `.info-desc` / `.info-who-body`; guarded by `test_no_inline_font_size_in_info_panels`).
-- [ ] Surfaces `--sa-surface` on `--sa-bg`; `--sa-border` hairlines; celadon = active/interactive; gold reserved for UNOFFICIAL pill + AI disclosure.
+- [ ] Surfaces `--sa-surface` on `--sa-bg`; `--sa-border` hairlines; celadon = active/interactive; gold reserved for the UNOFFICIAL pill (the AI disclosure now renders at body `--sa-text`, not gold — changed 2026-06-02 per user; the disclosure stays binding via its text + first-line placement, not the color accent).
 - [ ] Spacing on the 4px base unit, compact density. Row padding consistent across panels (the #110 "breathing room" value, applied uniformly — verify rendered, not just the string).
 - [ ] Sub-tab bar height **matches the News chip-bar** (verify the bars align at 375px by screenshot, not by `padding:` string match).
 
@@ -40,7 +40,7 @@ Summary / Officials / Resources / About previously read as four designs (two key
 - [ ] **One 14px horizontal gutter** for all panel content (`.info-section`, `.info-section-title`, `.info-kv-row`, `.info-schools-grid`, `.about-body`, `.info-who-body`) so every sub-tab shares one left edge. Nested `.info-section > .info-who-body` zeroes its inner gutter (no 14+14).
 - [ ] **One key/value row**: `9px` vertical padding, `13px`, `1px solid var(--sa-border)` hairline, key `--sa-text-2`/400, value `--sa-text`/**600**. Applies to BOTH `.info-kv-row`/`.info-kv-val` (Summary) and `.info-row`/`.v` (Officials) — no dashed row, no 500 value.
 - [ ] **List rows** (`.info-school-card`, `.shelter-row`): `9px` rhythm; names at value color `--sa-text` (not dimmed `text-2`).
-- [ ] **Unchanged role distinctions** (intentional, NOT inconsistencies): descriptor band `.info-desc`, section titles 10px/700/caps, body `.info-who-body` 12px, fine print 11px, gold AI-disclosure accent.
+- [ ] **Unchanged role distinctions** (intentional, NOT inconsistencies): descriptor band `.info-desc`, section titles 10px/700/caps, body `.info-who-body` 12px, fine print 11px. (The AI disclosure renders at body `--sa-text` 12px, not a gold accent — changed 2026-06-02 per user.)
 
 ## 3. Definition of done (the loop — run EVERY pass, in this order)
 

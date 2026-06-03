@@ -14,11 +14,14 @@ also appear in the inline <style>; see learning eval-find-hits-css-before-html).
 chrome is generated from one {id,label,descriptor} array, so the honest per-tab anchors
 are the array ids and the i18n label/descriptor keys, not the dynamically-built onclick.
 """
+import json
+import re
 from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DASHBOARD = REPO_ROOT / "dashboard.html"
+STATUS = REPO_ROOT / "status.json"
 
 SUBTABS = ["summary", "officials", "resources", "about"]
 MERGED = ["shelters", "schools", "recovery"]  # now sections inside Resources, not tabs
@@ -132,21 +135,28 @@ def test_what_happened_shows_sourced_peak_facts():
 
 
 def test_about_disclosure_and_sources():
-    """About keeps the binding AI disclosure (12px gold) + the sources fold; the fold is now
-    titled 'Sources' (J, archive honesty 2026-06-02 — 'Sources checked' gestured at a freshness
-    claim once the per-source dates were dropped). The methodology/who-made-it narrative moved to
-    the README, and the old conduct link stays gone."""
+    """About keeps the binding AI disclosure + the sources fold; the fold is titled 'Sources'
+    (J, archive honesty 2026-06-02). The disclosure now renders at body near-black --sa-text
+    (NOT gold — user 2026-06-02: bring it in line with the other sub-tabs' body text); the
+    binding-honesty property holds via the text + first-line placement, not the gold accent.
+    The fold is OPEN by default and opens with a one-line caption stating what the list is
+    (info.sources.caption). The methodology narrative stays in the README; the conduct link
+    stays gone."""
     text = DASHBOARD.read_text(encoding="utf-8")
     sources_fold = '"info.sourcesH": { en: "Sources" }' in text
+    sources_caption = '"info.sources.caption"' in text
     conduct_removed = '"info.about.conductlink"' not in text
     disclosure_class = 'class="info-ai-disclosure"' in text
     css_i = text.find(".info-ai-disclosure {")
     css_block = text[css_i:css_i + 240] if css_i != -1 else ""
-    disclosure_styled = "12px" in css_block and "--sa-gold" in css_block
-    ok = sources_fold and conduct_removed and disclosure_class and disclosure_styled
+    # body near-black, no gold accent
+    disclosure_styled = "12px" in css_block and "var(--sa-text)" in css_block and "--sa-gold" not in css_block
+    ok = (sources_fold and sources_caption and conduct_removed
+          and disclosure_class and disclosure_styled)
     return {"passed": ok,
-            "details": "About keeps 'Sources' fold + AI disclosure 12px gold"
-            if ok else f"fold_titled={sources_fold} conduct_removed={conduct_removed} cls={disclosure_class} styled={disclosure_styled}"}
+            "details": "About: 'Sources' fold + caption + AI disclosure 12px body --sa-text (not gold)"
+            if ok else (f"fold_titled={sources_fold} caption={sources_caption} "
+                        f"conduct_removed={conduct_removed} cls={disclosure_class} styled={disclosure_styled}")}
 
 
 def test_retired_classes_gone_markup_and_css():
@@ -275,22 +285,26 @@ def test_about_body_has_gutter():
             if ok else f"css_ok={css_ok} markup_ok={markup_ok}"}
 
 
-def test_disclosure_split_two_lines():
-    """I: the AI disclosure renders as two lines — (1) compiled-with-AI/checked-by-a-person,
-    (2) routing copy to officials/911 (NOT an 'Always confirm' imperative) — both in
-    .info-ai-disclosure (12px gold preserved)."""
+def test_disclosure_single_line_body_color():
+    """The AI disclosure is ONE line — compiled-with-AI/checked-by-a-person — in
+    .info-ai-disclosure at body near-black --sa-text (user 2026-06-02). The second
+    'Current life-safety info…' routing line (disclosure.aiRoute) was REMOVED as a duplicate
+    of the persistent safety strip (which carries 911 + ggcity.org/emergency on every tab;
+    re-guarded by test_routing_jargon::test_ai_disclosure_routes_concretely). The disclosure
+    must not become an imperative ('Always confirm…')."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    two_keys = '"disclosure.ai"' in text and '"disclosure.aiRoute"' in text
+    has_ai = '"disclosure.ai"' in text
+    airoute_gone = '"disclosure.aiRoute"' not in text and "disclosure.aiRoute" not in text
     line1 = 'info-ai-disclosure">\' + t("disclosure.ai")' in text
-    line2 = 'info-ai-disclosure">\' + t("disclosure.aiRoute")' in text
     no_imperative = "Always confirm life-safety" not in text
     ci = text.find(".info-ai-disclosure {")
     css = text[ci:ci + 200] if ci != -1 else ""
-    styled = "12px" in css and "--sa-gold" in css
-    ok = two_keys and line1 and line2 and no_imperative and styled
+    styled = "12px" in css and "var(--sa-text)" in css and "--sa-gold" not in css
+    ok = has_ai and airoute_gone and line1 and no_imperative and styled
     return {"passed": ok,
-            "details": "AI disclosure split into two gold lines; routing copy not imperative"
-            if ok else f"two_keys={two_keys} line1={line1} line2={line2} no_imperative={no_imperative} styled={styled}"}
+            "details": "AI disclosure: single body-color line; duplicate routing line removed"
+            if ok else (f"has_ai={has_ai} airoute_gone={airoute_gone} line1={line1} "
+                        f"no_imperative={no_imperative} styled={styled}")}
 
 
 def test_dead_shelter_renderer_removed():
@@ -303,3 +317,68 @@ def test_dead_shelter_renderer_removed():
     return {"passed": ok,
             "details": "renderInfoShelters + #info-shelter-list + .info-shelter-* removed"
             if ok else "dead shelter renderer still present"}
+
+
+def test_officials_note_removed_and_descriptions_present():
+    """Officials (user 2026-06-02): the generic 'No single source should be your only one…'
+    note (info.official.note) is REMOVED — boilerplate that didn't fit a frozen, resolved
+    archive — and each of the 3 official channels now carries a one-line description of what
+    it is for (info.official.cityDesc / zonehavenDesc / alertDesc), rendered in a
+    .info-row-desc sub-line (a CLASS, so the no-inline-font-size guard still holds)."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    note_removed = "info.official.note" not in text
+    desc_keys = all(k in text for k in (
+        '"info.official.cityDesc"', '"info.official.zonehavenDesc"', '"info.official.alertDesc"'))
+    sub_line_class = ".info-row-desc" in text and "info-row-desc" in text
+    ok = note_removed and desc_keys and sub_line_class
+    return {"passed": ok,
+            "details": "Officials: note removed + 3 per-link descriptions in .info-row-desc"
+            if ok else f"note_removed={note_removed} desc_keys={desc_keys} sub_line_class={sub_line_class}"}
+
+
+def test_resources_descriptor_one_line():
+    """Resources (user 2026-06-02): the .info-desc descriptor copy is shortened to fit ONE line
+    at 375px (the old 'Evacuation shelters, school closures, and recovery aid from the emergency.'
+    wrapped to two). Coarse text backstop (<=50 chars); the real one-line check is the rendered
+    screenshot per the acceptance rubric §0."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    m = re.search(r'"info\.desc\.resources":\s*\{\s*en:\s*"([^"]*)"', text)
+    val = m.group(1) if m else ""
+    ok = 0 < len(val) <= 50
+    return {"passed": ok, "details": f"resources descriptor len={len(val)} (<=50) val={val!r}"}
+
+
+def test_sources_caption_open_and_official_labels():
+    """Sources fold (user 2026-06-02 — 'make it clear WHY these sources'): the fold is OPEN by
+    default, opens with a one-line caption stating what the list is (info.sources.caption — the
+    provenance trail the pipeline checked), and the official City/County sources are tagged
+    'Official' (info.sources.official). The render path keys the tag off s.official, and
+    status.json flags >=2 sources_checked entries official:true. The tag uses a class
+    (.source-official) so the no-inline-font-size guard still holds."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    caption_key = '"info.sources.caption"' in text
+    fold_open = "<details open>" in text
+    tag_key = '"info.sources.official"' in text
+    renders_official = "s.official" in text and ".source-official" in text
+    d = json.loads(STATUS.read_text(encoding="utf-8"))
+    n_official = sum(1 for s in d.get("sources_checked", []) if s.get("official") is True)
+    ok = caption_key and fold_open and tag_key and renders_official and n_official >= 2
+    return {"passed": ok,
+            "details": "Sources: open + caption + Official labels (>=2 flagged)"
+            if ok else (f"caption={caption_key} open={fold_open} tag_key={tag_key} "
+                        f"renders_official={renders_official} n_official={n_official}")}
+
+
+def test_no_ghost_lines_background():
+    """User 2026-06-02: the .sa-wave-bg decorative background painted a faint horizontal line
+    every ~22px (a repeating-linear-gradient 'lined-paper' effect) that read as noisy, erroneous
+    ghost lines across every Info sub-tab. That repeating gradient is REMOVED; the only horizontal
+    lines kept are the intentional 1px solid item separators (.info-row / .info-kv-row /
+    .info-section hairlines). The soft top radial glow may remain."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    ci = text.find(".sa-wave-bg {")
+    block = text[ci:ci + 320] if ci != -1 else ""
+    ghost_gone = bool(block) and "repeating-linear-gradient" not in block
+    separators_kept = "1px solid var(--sa-border)" in text
+    return {"passed": ghost_gone and separators_kept,
+            "details": f"ghost_repeating_gradient_gone={ghost_gone} solid_separators_kept={separators_kept}"}
