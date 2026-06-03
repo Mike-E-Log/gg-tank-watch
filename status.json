@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "writer_version": 1,
-  "last_updated_iso": "2026-06-03T01:09:30Z",
+  "last_updated_iso": "2026-06-03T05:19:26Z",
   "data_as_of_iso": "2026-05-27T02:30:00Z",
-  "next_check_at_iso": "2026-06-03T01:39:30Z",
+  "next_check_at_iso": "2026-06-03T05:49:26Z",
   "stale_after_iso": "2026-05-27T03:10:00Z",
   "incident": {
     "name": "Garden Grove MMA Tank Leak",
@@ -33,42 +33,47 @@
     {
       "url": "https://ggcity.org/emergency",
       "title": "Hazardous Materials Incident | City of Garden Grove",
-      "fetched_iso": "2026-06-03T00:00:00Z"
+      "fetched_iso": "2026-06-03T05:19:26Z"
     },
     {
       "url": "https://www.ocgov.com/gkn-aerospace-hazmat-incident",
       "title": "GKN Aerospace HazMat incident | Orange County",
-      "fetched_iso": "2026-06-03T00:00:00Z"
+      "fetched_iso": "2026-06-03T05:19:26Z"
     },
     {
       "url": "https://en.wikipedia.org/wiki/Garden_Grove_chemical_leak",
       "title": "Garden Grove chemical leak - Wikipedia",
-      "fetched_iso": "2026-06-03T00:00:00Z"
+      "fetched_iso": "2026-06-03T05:19:26Z"
     },
     {
       "url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "title": "Garden Grove chemical tank update: Cleanup efforts begin and legal claims mount — ABC7 LA",
-      "fetched_iso": "2026-06-03T00:00:00Z"
+      "fetched_iso": "2026-06-03T05:19:26Z"
     },
     {
       "url": "https://newsantaana.com/california-senate-passes-sb-954-which-will-rein-in-industrial-exemptions-after-garden-grove-hazmat-crisis/",
       "title": "California Senate passes SB 954 to rein in industrial exemptions after Garden Grove hazmat crisis",
-      "fetched_iso": "2026-06-03T00:00:00Z"
+      "fetched_iso": "2026-06-03T05:19:26Z"
     },
     {
       "url": "https://laist.com/news/climate-environment/california-regulators-garden-grove-tank-fire-signs",
       "title": "Did California's regulators miss signs of the Garden Grove toxic tank meltdown? | LAist",
-      "fetched_iso": "2026-06-03T00:00:00Z"
+      "fetched_iso": "2026-06-03T05:19:26Z"
     },
     {
       "url": "https://calmatters.org/environment/2026/05/gkn-aerospace-chemical-leak-california/",
       "title": "GKN Aerospace chemical leak exposes regulatory gaps | CalMatters",
-      "fetched_iso": "2026-06-03T00:00:00Z"
+      "fetched_iso": "2026-06-03T05:19:26Z"
     },
     {
       "url": "https://spectrumlocalnews.com/ca/california/business/2026/06/01/local-businesses-impacted-by-chemical-incident-in-garden-grove-",
       "title": "Local businesses impacted by chemical incident in Garden Grove | Spectrum Local News",
-      "fetched_iso": "2026-06-03T00:00:00Z"
+      "fetched_iso": "2026-06-03T05:19:26Z"
+    },
+    {
+      "url": "https://www.ocbj.com/defense-2/gkn-aerospace-under-fire-after-garden-grove-chemical-emergency/",
+      "title": "GKN Aerospace Under Fire After Garden Grove Chemical Emergency - Orange County Business Journal",
+      "fetched_iso": "2026-06-03T05:19:26Z"
     }
   ],
   "schools_closed": [
