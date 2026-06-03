@@ -820,17 +820,19 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       color: var(--sa-text-2);
-      margin: 12px 14px 6px;
+      margin: 0;
+      padding: 16px 14px 6px;
+      border-top: 1px solid var(--sa-border);
     }
-    /* Responsible-AI disclosure: surfaced as the first line in About (not a buried footnote).
-       Renders at body near-black --sa-text, in line with the other sub-tabs' text — the gold
-       accent was dropped 2026-06-02 (user); the binding-honesty property holds via the text +
-       first-line placement, not the color. */
+    /* Responsible-AI disclosure: the panel-closing line of About (moved from the first line
+       2026-06-03 — the persistent safety strip carries the always-on honesty). Stays at body
+       near-black --sa-text, 13px, legible (position demoted, size not); the gold accent was
+       dropped 2026-06-02. margin-top sets it off from the Accessibility pill above. */
     .info-ai-disclosure {
       font-size: 13px;
       color: var(--sa-text);
       line-height: 1.45;
-      margin-bottom: 8px;
+      margin-top: 16px;
     }
     .info-row {
       display: flex;
@@ -842,15 +844,28 @@
     .info-row:last-child { border-bottom: none; }
     .info-row .k { color: var(--sa-text-2); }
     .info-row .v { color: var(--sa-text); font-weight: 600; }
-    /* Official rows (Officials sub-tab): stack a k/v top line over a one-line description of
-       what the channel is for. The top line keeps the unified k/v; the desc is a muted sub-line. */
-    .info-official-row { flex-direction: column; align-items: stretch; gap: 3px; }
+    /* Officials 1A (2026-06-03): each of the 3 channels is a calm bordered card — --sa-surface
+       fill + a FULL --sa-border hairline (NOT a colored left border; celadon-left is reserved for
+       .info-desc) + radius + 14px padding + >=44px tap target — so routing-to-officials is the
+       panel's visual focus. The full border + padding here override .info-row's bottom-border. */
+    .info-official-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+      background: var(--sa-surface);
+      border: 1px solid var(--sa-border);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 10px;
+      min-height: 44px;
+    }
+    .info-official-row:last-child { margin-bottom: 0; }
     .info-row-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
     /* keep the "Official ↗" cue intact; let a long channel name wrap instead (shelter-row pattern). */
     .info-row-top .v { white-space: nowrap; flex: 0 0 auto; }
     /* Official channel NAME is primary content (the link), so it reads at the dark value color
        like the shelter/school names — not the muted key color (user 2026-06-03). */
-    .info-official-row .k { color: var(--sa-text); }
+    .info-official-row .k { color: var(--sa-text); font-size: 15px; font-weight: 600; }
     .info-row-desc { color: var(--sa-text-3); font-size: 11px; line-height: 1.35; }
     /* Shelter rows: name+city in a flex text column, Directions pinned top-right so a long
        name wraps without dragging the action out of alignment. */
@@ -1600,19 +1615,17 @@ var STRINGS = {
   "info.tankTempV": { en: "Stabilized" },
   "info.evacResidents": { en: "Peak evacuation" },
   "info.evacBoundary": { en: "Evacuation zone (peak)" },
-  "info.tankTempArchive": { en: "~100°F (gauge max), then stabilized" },
+  "info.tankTempArchive": { en: "~100°F (gauge max)" },
   "info.peakEvac": { en: "~50,000 people" },
-  "info.zonePeak": { en: "~9 sq mi: Garden Grove + Anaheim, Buena Park, Cypress, Stanton, Westminster" },
+  "info.zonePeak": { en: "~9 sq mi, 6 cities" },
   "info.fact.substance":  { en: "Substance" },
   "info.fact.substanceV": { en: "Methyl methacrylate (MMA)" },
   "info.fact.facility":   { en: "Facility" },
-  "info.fact.facilityV":  { en: "GKN Aerospace, Garden Grove" },
-  "info.fact.tank":       { en: "Tank" },
-  "info.fact.tankV":      { en: "34,000-gallon storage tank" },
+  "info.fact.facilityV":  { en: "GKN Aerospace" },
   "info.fact.window":     { en: "Incident window" },
   "info.fact.windowV":    { en: "May 21–26, 2026" },
   "info.fact.outcome":    { en: "Outcome" },
-  "info.fact.outcomeV":   { en: "No injuries, 0 residents displaced" },
+  "info.fact.outcomeV":   { en: "No injuries; 0 displaced" },
   "info.whereToGo": { en: "Where to go · nearest shelters" },
   "info.allShelters": { en: "All 9 shelters" },
   "info.liveList": { en: "Shelter records at ggcity.org/emergency" },
@@ -2098,8 +2111,6 @@ function renderInfoTab() {
   var summary =
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.substance") + '</span><span class="info-kv-val">' + t("info.fact.substanceV") + '</span></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.facility") + '</span><span class="info-kv-val">' + t("info.fact.facilityV") + '</span></div>' +
-    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.tank") + '</span><span class="info-kv-val">' + t("info.fact.tankV") + '</span></div>' +
-    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankCrack") + '</span><span class="info-kv-val" id="info-crack-val">--</span></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankTemp") + '</span><span class="info-kv-val">' + t("info.tankTempArchive") + '</span></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacResidents") + '</span><span class="info-kv-val">' + t("info.peakEvac") + '</span></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val">' + t("info.zonePeak") + '</span></div>' +
@@ -2134,19 +2145,19 @@ function renderInfoTab() {
     '<div class="info-section-title">' + t("info.subtab.recovery") + '</div>' +
     '<div id="info-recovery-list"></div>';
 
-  // About — binding AI disclosure (stays the first line) + a short resident-first "Why this was
-  // made" section (user 2026-06-03, conduit-true: gathered scattered official updates, routed
-  // back to officials, no directives) + Sources-checked fold + a prominent centered Accessibility
-  // link. The step-by-step methodology narrative still lives in the README, not in-app.
+  // About — resident-first "Why this was made" + Sources fold + a prominent centered Accessibility
+  // link, then the binding AI disclosure as the panel-closing line (user 2026-06-03: moved from the
+  // first line to the bottom; the persistent safety strip carries the always-on honesty, so the
+  // disclosure stays present + legible at 13px, position demoted not size). Methodology stays in README.
   var about =
     '<div class="about-body">' +
-    '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>' +
     '<div class="about-why-title">' + t("info.about.whyH") + '</div>' +
     '<p>' + t("info.about.why") + '</p>' +
     '<details open><summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>' +
     '<p class="info-fine info-sources-caption">' + t("info.sources.caption") + '</p>' +
     '<div id="info-source-list" class="info-fine" style="padding:0 0 12px"></div></details>' +
     '<p class="info-about-footlink"><a class="info-a11y-btn" href="accessibility.html"><span class="info-a11y-ico" aria-hidden="true">&#9855;&#65038;</span>' + t("info.about.a11ylink") + '</a></p>' +
+    '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>' +
     '</div>';
 
   var bodies = [summary, officials, resources, about];
@@ -2161,11 +2172,6 @@ function isOfficialSourceUrl(url) {
 }
 
 function updateInfoData(snap) {
-  var tank = snap.tank || {};
-
-  var crackEl = $("info-crack-val");
-  if (crackEl) crackEl.innerHTML = tank.crack_observed ? '<span class="yes">' + t("info.tankCrackY") + '</span>' : "—";
-
   // Schools
   var schoolsGrid = $("info-schools-grid");
   var schools = snap.schools_closed || [];

@@ -52,3 +52,31 @@ def test_info_subtab_count_at_most_four():
     assert arr, "Info TABS array (starting with id:'summary') not found"
     count = len(re.findall(r"\bid:\s*[\"']", arr.group(0)))
     assert 0 < count <= 4, f"Info sub-tabs should be 1..4, found {count}"
+
+
+def test_summary_fits_seven_rows():
+    """Summary must be <=7 kv-rows so it fits a 568px-tall mobile panel with no vertical
+    scroll (rubric 2026-06-03: 9 rows measured 486px@375 / 541px@320, over the ~342px panel).
+    Tank + Crack observed are cut; the kept set is the 7-fact narrative. The real one-line/
+    no-scroll proof is the rendered geometry probe in the acceptance rubric DoD."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    i = text.find("var summary =")
+    j = text.find("var officials", i)
+    region = text[i:j] if (i >= 0 and j > i) else ""
+    assert region, "summary render block not found"
+    n = region.count('class="info-kv-row"')
+    assert 0 < n <= 7, f"Summary should be 1..7 kv-rows, found {n}"
+    assert 't("info.fact.tankV")' not in region, "Tank row should be cut"
+    assert 'id="info-crack-val"' not in region, "Crack observed row should be cut"
+
+
+def test_summary_values_shortened_for_single_line():
+    """The 4 values that wrapped to 2-3 lines at <=320px are shortened to single-line forms
+    (rubric 2026-06-03): Facility 'GKN Aerospace'; Peak tank temperature '~100F (gauge max)'
+    (trailing ', then stabilized' dropped); Evacuation zone '~9 sq mi, 6 cities'; Outcome
+    'No injuries; 0 displaced'."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    assert '{ en: "GKN Aerospace" }' in text, "facilityV not shortened"
+    assert '{ en: "~9 sq mi, 6 cities" }' in text, "zonePeak not shortened"
+    assert '{ en: "No injuries; 0 displaced" }' in text, "outcomeV not shortened"
+    assert ", then stabilized" not in text, "tankTempArchive tail not trimmed"
