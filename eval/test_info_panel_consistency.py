@@ -48,6 +48,33 @@ def test_panel_gutter_unified_14():
             "details": f".info-section 14px={sec_ok} .info-section-title 14px={title_ok}"}
 
 
+def test_about_sources_toggle_shares_left_edge():
+    """The About 'Sources' disclosure summary sits directly inside .about-body, which already
+    provides the panel's 14px horizontal gutter (padding: 0 14px). The toggle must NOT add its
+    own horizontal padding, or its text indents 14px past the caption, source list, why-title,
+    and disclosure that share the .about-body left edge - the SOURCES title floated right of every
+    sibling (user 2026-06-03; rendered glyph-left was 28px vs 14px). Assert the toggle's horizontal
+    padding is 0 so its glyph-left matches its siblings. Vertical padding (tap target + the
+    full-width border-bottom divider) is unaffected and intentionally not constrained here."""
+    css = DASHBOARD.read_text(encoding="utf-8")
+    block = _rule(css, ".info-sources-toggle") or ""
+    block = re.sub(r"/\*.*?\*/", "", block, flags=re.S)  # ignore the why-comment, which mentions padding
+    m = re.search(r"padding:\s*([^;]+);", block)
+    if not m:
+        return {"passed": False, "details": ".info-sources-toggle padding declaration not found"}
+    parts = m.group(1).split()
+    # CSS padding shorthand -> horizontal value(s): [all] | [v h] | [t h b] | [t r b l]
+    if len(parts) == 1:
+        horiz = {parts[0]}
+    elif len(parts) in (2, 3):
+        horiz = {parts[1]}
+    else:
+        horiz = {parts[1], parts[3]}
+    ok = horiz == {"0"}
+    return {"passed": ok,
+            "details": f".info-sources-toggle horizontal padding (want 0, shares .about-body gutter)={sorted(horiz)}"}
+
+
 def test_school_card_value_color():
     """School names render at the value color (--sa-text), not dimmer than every other panel value."""
     css = DASHBOARD.read_text(encoding="utf-8")
