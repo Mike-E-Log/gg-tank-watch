@@ -1271,7 +1271,11 @@
        Shelters/Schools/Recovery (user 2026-06-03); keeps the cursor + expand/collapse marker. */
     .info-sources-toggle {
       cursor: pointer;
-      padding: 12px 14px;
+      /* No horizontal padding: this summary sits directly inside .about-body, which already
+         provides the 14px gutter (padding: 0 14px). A 14px inset here floated the SOURCES title
+         right of the caption / source list / why-title that share the .about-body edge (user
+         2026-06-03). Vertical padding keeps the tap target + the full-width border-bottom divider. */
+      padding: 12px 0;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 1px;
