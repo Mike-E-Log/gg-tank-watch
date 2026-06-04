@@ -1,8 +1,11 @@
 # Design System -- GG MMA Tank Dashboard
 
-## Product Context
-- **What this is:** Real-time emergency situational awareness dashboard for the Garden Grove MMA tank crisis
-- **Who it's for:** Panicking residents on phones during an active chemical/explosion emergency
+## Product Context (Historical)
+
+> This is a historical design record from the May 21–26, 2026 emergency. The dashboard is now a frozen archive.
+
+- **What this was:** Real-time emergency situational awareness dashboard for the Garden Grove MMA tank crisis (May 21–26, 2026)
+- **Who it served:** Residents on phones during the active chemical/explosion emergency
 - **Space/industry:** Emergency management, public safety
 - **Project type:** Mobile-first dashboard / public utility
 

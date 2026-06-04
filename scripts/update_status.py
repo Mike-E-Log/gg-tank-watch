@@ -3,7 +3,7 @@
 Reads a JSON facts blob from stdin (produced by the /loop's WebSearch step),
 diffs against the previous status.json snapshot with 2-tick hysteresis on
 breaking events, writes status.json atomically with retry on Windows file
-locks, posts to ntfy.sh on breaking transitions, and logs every invocation.
+locks, and logs every invocation.
 
 Stdin format (all fields optional; missing fields fall back to previous value):
   {
