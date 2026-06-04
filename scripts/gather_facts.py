@@ -110,7 +110,8 @@ SOURCE PRIORITY (search official sources first, then work down):
 
 Cross-check facts across tiers before reporting. Prefer Tier 1 statements verbatim.
 Include Vietnamese-language sources when they carry unique community information
-not available in English outlets.
+not available in English outlets (for fact-gathering only — all published safety
+copy is English-only per the conduit design; see docs/LANGUAGE_ACCESS.md).
 
 Rules:
 - Report ONLY facts you found in a source during this search. If you cannot

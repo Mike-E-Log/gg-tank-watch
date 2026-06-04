@@ -17,7 +17,7 @@
 **Project:** Free, unofficial, volunteer-built static web dashboard for the Garden
 Grove, CA methyl-methacrylate (MMA) chemical-tank incident (GKN Aerospace, 12122
 Western Ave; began 2026-05-21). Shows a MapLibre GL map on OpenFreeMap vector tiles
-(evacuation zone, the GKN facility, shelter locations, live NWS wind direction) and
+(evacuation zone, the GKN facility, shelter locations) and
 aggregated news/video/official statements from a `status.json` feed. It authors **no
 hazard verdicts** — it routes users to official sources (a pure information
 *conduit*). Two private volunteers operate it; no money is charged. Currently

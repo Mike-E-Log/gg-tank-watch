@@ -3,9 +3,9 @@
 The dashboard polls `status.json` (incident facts) every ~30s. Something has to
 keep that file current. There are two paths; **only the local one is active right now.**
 
-## Active: local refresh on subscription credits
+## Archived: local refresh on subscription credits
 
-`scripts/refresh_local.py`, run on a contributor's machine that's left on.
+`scripts/refresh_local.py` (archived — the script now exits with an `ARCHIVED` notice; see [DEPLOYMENT_READINESS.md](DEPLOYMENT_READINESS.md)), formerly run on a contributor's machine that was left on.
 
 - Gathers current facts via `claude -p` with the **OAuth subscription**
   (`ANTHROPIC_API_KEY` unset) + the WebSearch tool — so it bills **subscription
