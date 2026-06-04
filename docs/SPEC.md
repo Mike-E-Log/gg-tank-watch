@@ -217,7 +217,7 @@ She needs **one glanceable view** that shows the current state of the incident a
 - Viewing devices: Windows laptop (primary), phone (browser; secondary). Layout must be readable on both without app install.
 - Lifetime: days, not months. This dashboard ships, runs through the incident, then gets archived. **Throwaway is acceptable.**
 - The user already has Claude Code running locally with /loop active, and a cloud routine running hourly. Either can be the data writer.
-- No backend infrastructure (no servers to provision, no DBs). Everything lives on disk in `C:\Users\redacted\OneDrive\Desktop\GG-tank-updates\`. OneDrive sync is incidental and not relied on.
+- No backend infrastructure (no servers to provision, no DBs). Everything lives on disk in the repo working directory; no external sync is relied on.
 - Source-of-truth for facts is the open web (news sites + ggcity.org + AQMD). Dashboard is a viewer over a structured snapshot, not an originator of facts.
 
 ## 3. Architecture
