@@ -29,6 +29,7 @@ desktop.ini
 
 # Eval transient output (the .jsonl log itself is kept)
 eval/.last_run/
+eval/summary.json
 
 # Orchestration scratch (split-and-orchestrate wiki/state)
 .orchestra/

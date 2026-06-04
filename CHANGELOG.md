@@ -2,6 +2,8 @@
 
 All notable changes to GG Tank Watch. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) loosely; dates in `YYYY-MM-DD`.
 
+> **Frozen archive.** This changelog covers v0 → v0.28 (May–June 2026). The incident resolved May 26, 2026; the dashboard is now a frozen historical archive and no longer updates.
+
 ## [v0.28] — 2026-06-03 (About "Why this was made" + prominent Accessibility link + full Resources titles)
 
 User-directed Info-tab update. Acceptance rubric amended first (the fixed target), then test-first.
