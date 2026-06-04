@@ -432,18 +432,24 @@ def test_no_ghost_lines_background():
 
 
 def test_resources_section_titles_full_labels():
-    """User 2026-06-03: the Resources section titles name each section in full —
-    SHELTERS / SCHOOL CLOSURES / RECOVERY AID (uppercased by .info-section-title). The
-    info.subtab.schools/recovery values were lengthened from "Schools"/"Recovery"; "Shelters"
-    was already full. The titles reuse these keys (test_resources_panel_merges_three guards the
-    t() calls stay) — this guards the displayed VALUES."""
+    """User 2026-06-04: the two HISTORICAL Resources section titles are DATE-ANCHORED —
+    "Evacuation shelters (May 2026)" / "School closures (May 2026)" (uppercased by
+    .info-section-title) — so a post-crisis viewer can't misread the May 21-26 shelters/closures
+    as currently active; stale-data-presented-as-fresh is the archive's top failure mode. Recovery
+    aid stays present-tense: it is the one still-current, forward-actionable section and leads the
+    panel (test_resources_recovery_leads guards the order). Framing chosen via two
+    cross-vendor-judge runs (Claude+GPT+Gemini): date-anchored won both (HIGH-confidence clean
+    run), "keep as-is" was the unanimous worst (reads as live), and "Former school closures" was
+    rejected as grammatically ambiguous (un-closed). Titles reuse the info.subtab.* keys
+    (test_resources_panel_merges_three guards the t() calls stay) — this guards the displayed
+    VALUES."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    shelters = '"info.subtab.shelters": { en: "Shelters" }' in text
-    schools = '"info.subtab.schools": { en: "School closures" }' in text
+    shelters = '"info.subtab.shelters": { en: "Evacuation shelters (May 2026)" }' in text
+    schools = '"info.subtab.schools": { en: "School closures (May 2026)" }' in text
     recovery = '"info.subtab.recovery": { en: "Recovery aid" }' in text
     ok = shelters and schools and recovery
     return {"passed": ok,
-            "details": "Resources titles: Shelters / School closures / Recovery aid"
+            "details": "Resources titles: Evacuation shelters (May 2026) / School closures (May 2026) / Recovery aid"
             if ok else f"shelters={shelters} schools={schools} recovery={recovery}"}
 
 
