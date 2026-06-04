@@ -50,6 +50,9 @@
       --sa-border-2:  rgba(26, 22, 18, 0.16);
       --sa-shadow-sm: 0 1px 2px rgba(26, 22, 18, 0.05);
       --sa-shadow:    0 2px 12px rgba(26, 22, 18, 0.06), 0 1px 2px rgba(26, 22, 18, 0.04);
+      /* Layout: comfortable content reading column on desktop/tablet (the map breaks wide);
+         reuses the mobile .app cap value so the column reads at a consistent width. */
+      --content-cap: 800px;
     }
     html.theme-dark {
       --sa-bg:        #121110;
@@ -139,6 +142,13 @@
       .app {
         max-width: none;
       }
+      /* The map fills the viewport (.app cap removed above); cap only the CONTENT to a
+         comfortable reading column so Info rows / News lines don't stretch full-bleed. */
+      .news-subpanel,
+      #info-content {
+        max-width: var(--content-cap);
+        margin-inline: auto;
+      }
     }
 
     /* L1: clamp the hero + safety-strip so chrome stays <=~1/3 of a short
@@ -180,7 +190,8 @@
       .topbar { order: -1; }
     }
     @media (min-width: 768px) {
-      .topbar { gap: 14px; padding: 10px 22px; }
+      /* full-width bar; content centered into the --content-cap column (own 22px padding as the floor) */
+      .topbar { gap: 14px; padding-block: 10px; padding-inline: max(22px, calc((100% - var(--content-cap)) / 2)); }
     }
     .unofficial-pill {
       display: inline-flex;
@@ -381,7 +392,8 @@
     @media (min-width: 600px) {
       .safety-strip {
         gap: 6px;
-        padding: 10px 22px;
+        padding-block: 10px;
+        padding-inline: max(22px, calc((100% - var(--content-cap)) / 2));
         font-size: 12px;
       }
     }
@@ -542,7 +554,8 @@
       .tab-bar {
         border-top: 1px solid var(--sa-border);
         border-bottom: none;
-        padding: 0 14px;
+        padding-block: 0;
+        padding-inline: max(14px, calc((100% - var(--content-cap)) / 2));
         order: 1;
       }
       .tab-btn {
