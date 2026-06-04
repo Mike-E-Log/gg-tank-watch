@@ -1,4 +1,4 @@
-var CACHE_NAME = "gg-tank-v74";
+var CACHE_NAME = "gg-tank-v75";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
@@ -74,7 +74,7 @@ self.addEventListener("fetch", function (event) {
     return;
   }
 
-  // Cross-origin requests (OpenFreeMap map style/tiles/glyphs/sprites, NOAA wind,
+  // Cross-origin requests (OpenFreeMap map style/tiles/glyphs/sprites,
   // fonts): do NOT intercept. Falling through without event.respondWith() lets the
   // browser fetch them natively. Wrapping them in respondWith(fetch(event.request))
   // made the service worker the failure point: Firefox rejects the re-dispatched
