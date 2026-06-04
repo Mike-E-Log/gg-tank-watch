@@ -1286,31 +1286,6 @@
     /* Recovery nests .info-who-body inside .info-section (which now has the 14px gutter); zero the
        inner gutter so its text shares the same left edge as every other panel, not 14+14px. */
     .info-section > .info-who-body { padding-left: 0; padding-right: 0; }
-    /* The About "Sources" disclosure summary reads as a group title, matched to the Resources
-       .info-section-title treatment (11px/700/caps/text-2 Jakarta) so it's as noticeable as
-       Shelters/Schools/Recovery (user 2026-06-03); keeps the cursor + expand/collapse marker. */
-    .info-sources-toggle {
-      cursor: pointer;
-      /* No horizontal padding: this summary sits directly inside .about-body, which already
-         provides the 14px gutter (padding: 0 14px). A 14px inset here floated the SOURCES title
-         right of the caption / source list / why-title that share the .about-body edge (user
-         2026-06-03). Vertical padding keeps the tap target + the full-width border-bottom divider. */
-      padding: 12px 0;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--sa-text-2);
-      border-bottom: 1px solid var(--sa-border);
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .info-sources-toggle::-webkit-details-marker { display: none; }
-    .info-sources-toggle::after { content: " \25B8"; color: var(--sa-text-3); font-size: 9px; }
-    details[open] > .info-sources-toggle::after { content: " \25BE"; }
-
     /* ===== LOADING SKELETON ===== */
     .skeleton {
       background: linear-gradient(90deg, var(--sa-border) 25%, var(--sa-bg) 50%, var(--sa-border) 75%);
@@ -2177,9 +2152,9 @@ function renderInfoTab() {
     '<div class="about-body">' +
     '<div class="about-why-title">' + t("info.about.whyH") + '</div>' +
     '<ul class="about-why-list">' + t("info.about.why") + '</ul>' +
-    '<details open><summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>' +
+    '<div class="about-why-title">' + t("info.sourcesH") + '</div>' +
     '<p class="info-fine info-sources-caption">' + t("info.sources.caption") + '</p>' +
-    '<div id="info-source-list" class="info-fine" style="padding:0 0 12px"></div></details>' +
+    '<div id="info-source-list" class="info-fine" style="padding:0 0 12px"></div>' +
     '<p class="info-about-footlink"><a class="info-a11y-btn" href="accessibility.html"><span class="info-a11y-ico" aria-hidden="true">&#9855;&#65038;</span>' + t("info.about.a11ylink") + '</a></p>' +
     '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>' +
     '</div>';
