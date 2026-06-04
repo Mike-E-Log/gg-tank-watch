@@ -112,6 +112,28 @@ def test_resources_panel_merges_three():
             if ok else f"tab={tab} targets={targets} headings={headings}"}
 
 
+def test_resources_recovery_leads():
+    """Resources sub-tab leads with Recovery aid, then Shelters, then School closures (reordered
+    2026-06-03). GG Tank Watch is a FROZEN archive of a RESOLVED emergency: the live 'shelters
+    first' hierarchy serves an evacuee who needs shelter NOW, but there is no live evacuee anymore.
+    For the post-crisis archive viewer, Shelters/Schools are historical reference while Recovery
+    aid (FEMA assistance, DA tip line, price-gouging hotline — config.community_resources) is the
+    only forward-actionable section, so it leads. Asserts render order in the `var resources =`
+    block: recovery title before shelters before schools. See the recovery-aid-leads-resources
+    project memory."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    i = text.find("var resources =")
+    j = text.find("var about =", i) if i >= 0 else -1
+    region = text[i:j] if (i >= 0 and j > i) else ""
+    p_rec = region.find('t("info.subtab.recovery")')
+    p_shel = region.find('t("info.subtab.shelters")')
+    p_sch = region.find('t("info.subtab.schools")')
+    ok = -1 < p_rec < p_shel < p_sch
+    return {"passed": ok,
+            "details": "Resources order: Recovery aid -> Shelters -> School closures"
+            if ok else f"positions recovery={p_rec} shelters={p_shel} schools={p_sch} (recovery must be first)"}
+
+
 def test_what_happened_shows_sourced_peak_facts():
     """The Summary panel surfaces the sourced peak facts (timeline.json: ~100F peak
     temp, ~50,000 evacuated across ~9 sq mi) as static archive copy, decoupled from the
@@ -341,12 +363,15 @@ def test_resources_descriptor_one_line():
     """Resources (user 2026-06-02): the .info-desc descriptor copy is shortened to fit ONE line
     at 375px (the old 'Evacuation shelters, school closures, and recovery aid from the emergency.'
     wrapped to two). Coarse text backstop (<=50 chars); the real one-line check is the rendered
-    screenshot per the acceptance rubric §0."""
+    screenshot per the acceptance rubric §0. It also LEADS with 'Recovery aid' to match the
+    recovery-first section order (2026-06-03) — descriptor and sections stay in sync."""
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r'"info\.desc\.resources":\s*\{\s*en:\s*"([^"]*)"', text)
     val = m.group(1) if m else ""
-    ok = 0 < len(val) <= 50
-    return {"passed": ok, "details": f"resources descriptor len={len(val)} (<=50) val={val!r}"}
+    short = 0 < len(val) <= 50
+    leads_recovery = val.lower().startswith("recovery")
+    ok = short and leads_recovery
+    return {"passed": ok, "details": f"resources descriptor len={len(val)} leads_recovery={leads_recovery} val={val!r}"}
 
 
 def test_sources_caption_static_and_official_labels():
