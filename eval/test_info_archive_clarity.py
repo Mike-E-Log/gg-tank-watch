@@ -135,16 +135,16 @@ def test_what_happened_shows_sourced_peak_facts():
 
 
 def test_about_disclosure_and_sources():
-    """About keeps the binding AI disclosure + the sources fold; the fold is titled 'Sources'
+    """About keeps the binding AI disclosure + a static Sources section, titled 'Sources'
     (J, archive honesty 2026-06-02). The disclosure now renders at body near-black --sa-text
     (NOT gold — user 2026-06-02: bring it in line with the other sub-tabs' body text); the
     binding-honesty property holds via the text + the persistent safety strip, and the disclosure
     renders at the panel-closing bottom line of About (moved there 2026-06-03), not the first line.
-    The fold is OPEN by default and opens with a one-line caption stating what the list is
-    (info.sources.caption). The methodology narrative stays in the README; the conduct link
-    stays gone."""
+    The Sources section is static (always visible — the lone collapsible fold was removed
+    2026-06-03) with a one-line caption stating what the list is (info.sources.caption). The
+    methodology narrative stays in the README; the conduct link stays gone."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    sources_fold = '"info.sourcesH": { en: "Sources" }' in text
+    sources_section = '"info.sourcesH": { en: "Sources" }' in text
     sources_caption = '"info.sources.caption"' in text
     conduct_removed = '"info.about.conductlink"' not in text
     disclosure_class = 'class="info-ai-disclosure"' in text
@@ -152,11 +152,11 @@ def test_about_disclosure_and_sources():
     css_block = text[css_i:css_i + 240] if css_i != -1 else ""
     # body near-black, no gold accent
     disclosure_styled = "13px" in css_block and "var(--sa-text)" in css_block and "--sa-gold" not in css_block
-    ok = (sources_fold and sources_caption and conduct_removed
+    ok = (sources_section and sources_caption and conduct_removed
           and disclosure_class and disclosure_styled)
     return {"passed": ok,
-            "details": "About: 'Sources' fold + caption + AI disclosure 12px body --sa-text (not gold)"
-            if ok else (f"fold_titled={sources_fold} caption={sources_caption} "
+            "details": "About: 'Sources' section + caption + AI disclosure 12px body --sa-text (not gold)"
+            if ok else (f"section_titled={sources_section} caption={sources_caption} "
                         f"conduct_removed={conduct_removed} cls={disclosure_class} styled={disclosure_styled}")}
 
 
@@ -349,9 +349,12 @@ def test_resources_descriptor_one_line():
     return {"passed": ok, "details": f"resources descriptor len={len(val)} (<=50) val={val!r}"}
 
 
-def test_sources_caption_open_and_official_labels():
-    """Sources fold (user 2026-06-02 — 'make it clear WHY these sources'): the fold is OPEN by
-    default, opens with a one-line caption (info.sources.caption), and the official City/County
+def test_sources_caption_static_and_official_labels():
+    """Sources is a STATIC, always-visible section (user 2026-06-03: it was the only collapsible
+    element on an otherwise-static site, and provenance should stay visible on a transparency-first
+    archive — so the <details>/<summary> fold was removed). The 'Sources' heading reuses the
+    .about-why-title group-title treatment (matching the 'Why this was made' heading in the same
+    panel); a one-line caption (info.sources.caption) states what the list is; official City/County
     sources are tagged 'Official' (info.sources.official).
 
     Official-ness is DERIVED FROM THE SOURCE URL host (ggcity.org / ocgov.com) via
@@ -363,7 +366,9 @@ def test_sources_caption_open_and_official_labels():
     the no-inline-font-size guard still holds."""
     text = DASHBOARD.read_text(encoding="utf-8")
     caption_key = '"info.sources.caption"' in text
-    fold_open = "<details open>" in text
+    # no collapsible fold anywhere; the Sources heading is a static .about-why-title
+    sources_static = "<details" not in text and "info-sources-toggle" not in text
+    sources_heading = 't("info.sourcesH")' in text
     tag_key = '"info.sources.official"' in text
     derives_from_url = "isOfficialSourceUrl" in text and ".source-official" in text
     # must not key the tag off the refresh-stripped data flag. Match the precise render ternary
@@ -377,13 +382,13 @@ def test_sources_caption_open_and_official_labels():
 
     d = json.loads(STATUS.read_text(encoding="utf-8"))
     n_official = sum(1 for s in d.get("sources_checked", []) if _official_url(s.get("url")))
-    ok = (caption_key and fold_open and tag_key and derives_from_url
+    ok = (caption_key and sources_static and sources_heading and tag_key and derives_from_url
           and no_volatile_flag and n_official >= 2)
     return {"passed": ok,
-            "details": "Sources: open + caption + URL-derived Official labels (>=2 official-host sources)"
-            if ok else (f"caption={caption_key} open={fold_open} tag_key={tag_key} "
-                        f"derives_from_url={derives_from_url} no_volatile_flag={no_volatile_flag} "
-                        f"n_official={n_official}")}
+            "details": "Sources: static (no fold) + caption + URL-derived Official labels (>=2 official-host sources)"
+            if ok else (f"caption={caption_key} static={sources_static} heading={sources_heading} "
+                        f"tag_key={tag_key} derives_from_url={derives_from_url} "
+                        f"no_volatile_flag={no_volatile_flag} n_official={n_official}")}
 
 
 def test_no_ghost_lines_background():
