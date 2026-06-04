@@ -1498,19 +1498,19 @@
       }
     },
     {
-      "title": "School Closure Notice — Orange County Department of Education",
-      "outlet": "OCDE (Orange County Department of Education)",
-      "url": "https://newsroom.ocde.us/several-garden-grove-unified-school-campuses-closed-following-chemical-leak-response/",
-      "type": "official",
+      "title": "These schools will be closed until further notice due to chemical tank crisis",
+      "outlet": "NBC Los Angeles",
+      "url": "https://www.nbclosangeles.com/news/local/gatden-grove-chemical-tank-schools-closed/3894457/",
+      "type": "article",
       "youtube_id": null,
-      "published_iso": "2026-05-22T12:00:00Z",
+      "published_iso": "2026-05-24T14:10:58Z",
       "published_iso_confidence": "date-confirmed",
-      "summary": "Orange County Department of Education and Garden Grove Unified School District (GGUSD) closed 12 GGUSD campuses beginning May 22, 2026, and continuing through last day of school on May 27 due to evacuation and containment efforts. Westminster School District also evacuated 4 schools (Eastwood ES, Fryberger ES, Meairs ES, Sequoia ES). Nine GGUSD schools reopened May 26; three remained closed.",
+      "summary": "NBC Los Angeles lists the schools closed \"until further notice\" because of the Garden Grove chemical-tank emergency.",
       "provenance": {
-        "search_query": "deep-research May 21-28 full-window sweep (2026-05-31)",
-        "fetched_iso": "2026-06-01T03:40:00Z",
+        "search_query": "close-out audit 2026-06-04: repointed from a dead OCDE slug to the live NBC LA schools-closed article",
+        "fetched_iso": "2026-06-04T17:00:00Z",
         "url_status": "agent-verified-resolves",
-        "url_status_note": "OCDE newsroom confirms 12 GGUSD campuses closed beginning May 22 due to chemical incident. Multiple school districts reported closures: Garden Grove USD, Westminster School District, and others. Reopening staggered: 9 schools reopened May 26; 3 remained closed through May 27.",
+        "url_status_note": "Repointed during the 2026-06-04 close-out audit. The prior OCDE URL (.../several-garden-grove-unified-school-campuses-closed-...) returned HTTP 404 while its provenance claimed verification; this is the integrity defect the audit corrected. This live NBC LA article (HTTP 200; source headline 'These schools will be closed unti[l] further notice due to chemical tank crisis') covers the same GGUSD school closures. Title normalizes the source's 'unti' typo to 'until'. published_iso is the article's own datePublished (2026-05-24, read from page metadata); the summary is held to what the headline supports.",
         "matches_seed": false
       }
     },

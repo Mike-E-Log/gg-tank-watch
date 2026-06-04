@@ -61,14 +61,17 @@
       <li>Live regions (<code>aria-live</code>) that announce banner updates and status changes to screen readers.</li>
       <li>Text contrast targeting WCAG AA (4.5:1 minimum for normal text).</li>
       <li>Decorative SVGs marked <code>aria-hidden="true"</code>.</li>
-      <li>Dark mode and light mode, respecting system preference.</li>
-      <li>Vietnamese language support for the full interface.</li>
-      <li>A text alternative for the interactive map describing the evacuation zone, shelter locations, and wind conditions.</li>
+      <li>Dark mode and light mode, set with a manual toggle (defaults to light).</li>
+      <li>English-only interface by design: we do not surface unverified translations of
+      safety information; speakers of other languages are routed to official sources, which
+      publish their own verified translations.</li>
+      <li>A text alternative for the interactive map: the evacuation zone and shelter
+      locations are listed in text on the Info tab.</li>
     </ul>
 
     <h2>Known limitations</h2>
     <ul>
-      <li>The interactive Leaflet map is not fully operable by keyboard alone. Shelter addresses and
+      <li>The interactive map (MapLibre GL) is not fully operable by keyboard alone. Shelter addresses and
       evacuation zone details are available in text form on the Info tab.</li>
       <li>Some third-party embedded content (news videos, social media posts) may not meet accessibility standards.</li>
     </ul>
