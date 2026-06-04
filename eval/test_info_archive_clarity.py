@@ -446,6 +446,35 @@ def test_about_why_section_present():
             if ok else f"keys={keys} bound={bound} ordered={ordered} conduit={conduit}"}
 
 
+def test_about_why_is_bulleted():
+    """User 2026-06-03: the 'Why this was made' narrative is a scannable bulleted list, not one
+    back-to-back-sentences paragraph. The four sentences become four <li> items (words/punctuation
+    unchanged) wrapped in a styled <ul class="about-why-list"> (not a <p>). The load-bearing conduit
+    clause ('pointed back to the officials in charge -- it never replaced them or told anyone what to
+    do') stays whole inside a single bullet so the Section 230 / no-directive framing is not split.
+    .about-why-list carries a bounded padding-left so the list cannot overflow the 320px panel
+    (causal-layout guard, matching test_info_subtab_fit's 'assert the property, not the pixels')."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    m = re.search(r'"info\.about\.why":\s*\{\s*en:\s*"([^"]*)"', text)
+    why_val = m.group(1) if m else ""
+    li_open = why_val.count("<li>")
+    four_bullets = li_open == 4 and why_val.count("</li>") == 4
+    conduit_whole = "officials in charge &mdash; it never replaced them or told anyone what to do.</li>" in why_val
+    i = text.find("var about =")
+    j = text.find("var bodies =", i) if i >= 0 else -1
+    region = text[i:j] if (i >= 0 and j > i) else ""
+    ul_wrapped = '\'<ul class="about-why-list">\' + t("info.about.why") + \'</ul>\'' in region
+    no_p_wrap = '\'<p>\' + t("info.about.why")' not in region
+    ci = text.find(".about-why-list {")
+    css = text[ci:ci + 200] if ci != -1 else ""
+    css_ok = bool(css) and "padding-left" in css
+    ok = four_bullets and conduit_whole and ul_wrapped and no_p_wrap and css_ok
+    return {"passed": ok,
+            "details": "About 'Why' renders as a 4-item <ul class=about-why-list>, conduit clause intact"
+            if ok else f"four_bullets={four_bullets} conduit_whole={conduit_whole} "
+                       f"ul_wrapped={ul_wrapped} no_p_wrap={no_p_wrap} css_ok={css_ok}"}
+
+
 def test_about_a11y_link_prominent_centered():
     """User 2026-06-03: the Accessibility link is prominent + centered + tappable, not the quiet
     11px footer link. .info-about-footlink centers it (text-align: center); the link itself

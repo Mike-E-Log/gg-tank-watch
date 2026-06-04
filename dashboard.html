@@ -804,6 +804,13 @@
     .about-body p { margin-bottom: 6px; }
     .about-body a { color: var(--sa-celadon); text-decoration: none; }
     .about-body a:hover { text-decoration: underline; }
+    /* "Why this was made" rendered as a scannable bulleted list (user 2026-06-03). A bounded
+       padding-left (not the ~40px browser default) keeps the bullets inside the 320px panel; the
+       type/colour inherit .about-body (12px/1.5/--sa-text-2). Muted markers keep the tone calm. */
+    .about-why-list { margin: 0 0 6px; padding-left: 18px; }
+    .about-why-list li { margin-bottom: 5px; }
+    .about-why-list li:last-child { margin-bottom: 0; }
+    .about-why-list li::marker { color: var(--sa-text-3); }
 
     /* ===== INFO PANEL (incident status data rows) ===== */
     .info-panel-inner { padding: 0 0 24px; }
@@ -1551,7 +1558,7 @@ var STRINGS = {
   "common.no": { en: "no" },
   "info.about.a11ylink": { en: "Accessibility" },
   "info.about.whyH": { en: "Why this was made" },
-  "info.about.why": { en: "In May 2026, a chemical storage tank emergency forced about 50,000 Garden Grove residents from their homes. Official updates were scattered across city, county, and news pages. GG Tank Watch pulled them into one calm view and pointed back to the officials in charge &mdash; it never replaced them or told anyone what to do. The emergency was resolved on May 26, 2026; this remains as a record of it." },
+  "info.about.why": { en: "<li>In May 2026, a chemical storage tank emergency forced about 50,000 Garden Grove residents from their homes.</li><li>Official updates were scattered across city, county, and news pages.</li><li>GG Tank Watch pulled them into one calm view and pointed back to the officials in charge &mdash; it never replaced them or told anyone what to do.</li><li>The emergency was resolved on May 26, 2026; this remains as a record of it.</li>" },
   "info.group.closures": { en: "Closures" },
   "info.roads.title": { en: "Road closures" },
   "info.roads.defer": { en: 'Roads inside the evacuation zone were closed. See <a href="https://ggcity.org/emergency" target="_blank" rel="noopener">ggcity.org/emergency</a> for closure history.' },
@@ -2156,7 +2163,7 @@ function renderInfoTab() {
   var about =
     '<div class="about-body">' +
     '<div class="about-why-title">' + t("info.about.whyH") + '</div>' +
-    '<p>' + t("info.about.why") + '</p>' +
+    '<ul class="about-why-list">' + t("info.about.why") + '</ul>' +
     '<details open><summary class="info-sources-toggle">' + t("info.sourcesH") + '</summary>' +
     '<p class="info-fine info-sources-caption">' + t("info.sources.caption") + '</p>' +
     '<div id="info-source-list" class="info-fine" style="padding:0 0 12px"></div></details>' +
