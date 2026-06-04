@@ -74,9 +74,11 @@ def test_summary_values_shortened_for_single_line():
     """The 4 values that wrapped to 2-3 lines at <=320px are shortened to single-line forms
     (rubric 2026-06-03): Facility 'GKN Aerospace'; Peak tank temperature '~100F (gauge max)'
     (trailing ', then stabilized' dropped); Evacuation zone '~9 sq mi, 6 cities'; Outcome
-    'No injuries; 0 displaced'."""
+    'No injuries; all returned' (disambiguated 2026-06-04 from '0 displaced', which read as
+    conflicting with the ~50,000 evacuated row; the new form is geometry-verified single-line
+    at 320px and makes the temporary-evacuation/no-permanent-displacement outcome explicit)."""
     text = DASHBOARD.read_text(encoding="utf-8")
     assert '{ en: "GKN Aerospace" }' in text, "facilityV not shortened"
     assert '{ en: "~9 sq mi, 6 cities" }' in text, "zonePeak not shortened"
-    assert '{ en: "No injuries; 0 displaced" }' in text, "outcomeV not shortened"
+    assert '{ en: "No injuries; all returned" }' in text, "outcomeV not shortened"
     assert ", then stabilized" not in text, "tankTempArchive tail not trimmed"
