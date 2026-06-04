@@ -1,30 +1,51 @@
 # GG Tank Watch
 
-**A single-page situational-awareness dashboard I built during the May 2026 Garden Grove methyl methacrylate tank emergency** — a real chemical incident that evacuated ~50,000 residents in a 9-square-mile zone of Orange County, California. I was a downwind-adjacent resident; I built it for myself. The emergency resolved on May 26, 2026, and this is now a frozen historical archive of it — no longer updated.
+**A frozen historical archive of the May 21–26, 2026 Garden Grove methyl-methacrylate (MMA) chemical-tank emergency** — a real Orange County, California incident that evacuated ~50,000 residents from a ~9-square-mile zone across six cities. Built during the emergency by two local volunteers to amplify official information for evacuees, it is now a settled record of a resolved event — **no longer updated**.
 
-[![Status](https://img.shields.io/badge/status-shipped-success)](#)
+[![Status](https://img.shields.io/badge/status-frozen%20archive-informational)](#)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Stack](https://img.shields.io/badge/stack-vanilla%20JS%20%2B%20Python%20stdlib-lightgrey)](#stack)
-[![Eval](https://img.shields.io/badge/eval-pytest%20%2B%20LLM%20judge-orange)](eval/)
+[![Eval](https://img.shields.io/badge/eval-208%20tests-orange)](eval/)
+[![Indexing](https://img.shields.io/badge/robots-noindex-lightgrey)](#responsible-deployment)
+
+> **Informational only — not official emergency guidance.** The incident resolved **May 26, 2026**. For any current emergency, call **911** and see **[ggcity.org/emergency](https://ggcity.org/emergency)**.
+
+---
+
+## What this is, in 30 seconds
+
+GG Tank Watch is a single-page dashboard that, during a multi-day chemical emergency, pulled scattered official and news signals into one calm view and **routed residents back to the authorities in charge**. It is a **pure information conduit**: it republishes official facts and links, and **authors no directives or hazard verdicts of its own**. The emergency is over, so the dashboard is frozen: the data pipeline is retired, the page no longer polls, and every heading is date-anchored so it can never be misread as live.
+
+It is also a **portfolio piece for the Anthropic Fellows Program**, and its organizing thesis is simple:
+
+> **Responsible AI and helpful AI are the same lane.** Every safety constraint here made the product *more* trustworthy and *more* useful to scared residents, not less. The alignment tax was zero.
+
+This README is the project's **decisions record** — what was decided, *why*, and what was deliberately *not* built. The reasoning is the point, not just the code.
 
 ---
 
 ## For Anthropic reviewers
 
-This repo is a portfolio piece for the Fellows Program. Recommended path: [`CLAUDE.md`](CLAUDE.md) (safety principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (12-mode red team) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (conduit pattern) → [`eval/`](eval/) (run `python eval/run_all.py --skip integration` — 75 tests, exits 0).
+Recommended reading path: this README's [Safety & ethics decisions](#safety--ethics-decisions-the-core) → [`CLAUDE.md`](CLAUDE.md) (the binding safety-principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (red-team failure modes) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (the conduit pattern) → [`eval/`](eval/).
+
+**Why this is a worked example of Anthropic's research priorities:**
+
+- **Scalable oversight on a consumer-facing AI system.** An automated behavioral test suite catches when the system drifts from its safety contract — fabricated sources, authored directives, stale data stamped fresh — *before* it ships, not after.
+- **AI control in deployment.** The system *cannot* exceed its authority (route to officials only). That limit is enforced by code structure and tests, not by prompting alone.
+- **Empirical safety thinking.** Every safety property has a test that fails *before* the property is violated.
 
 ### Safety architecture (30-second scan)
 
-The LLM's output passes through a single chokepoint before reaching `status.json`. The control layer enforces four structural properties — no prompting required:
+The LLM never writes the published snapshot. Its output passes through **one chokepoint** — `scripts/update_status.py` — which enforces four structural properties before anything reaches `status.json`. No prompting required.
 
-| Control | What it prevents | Asymmetry |
-|---------|-----------------|-----------|
-| **P0-1 Corroboration gate** | A single hallucinated `evacuation_lifted: true` fires an all-clear | Danger downgrades need ≥2 sources + ≥1 official. Upgrades fire on 1. |
-| **P0-2 Provenance check** | Fabricated source URL or unattributed quote reaches the dashboard | Statement dropped unless its URL was actually fetched this run |
-| **P0-3 Freshness honesty** | Empty-facts run stamps a fresh timestamp on stale data | `data_as_of_iso` advances only on source-backed facts; staleness banner keys off data age, not write age |
-| **P1-1 Date sanity** | Future-dated or malformed `incident_resolved_iso` flips incident to resolved | Future/malformed timestamps are nulled before snapshot write |
+| Control | What it prevents | The asymmetry |
+|---------|------------------|---------------|
+| **P0-1 Corroboration gate** | A single hallucinated `evacuation_lifted: true` firing a false all-clear | Danger *downgrades* need **≥2 sources incl. ≥1 official agency**; danger *upgrades* fire on 1. A wrong "you're safe" is catastrophic; a wrong "still dangerous" is survivable. |
+| **P0-2 Provenance check** | A fabricated source URL or unattributed quote reaching the dashboard | A statement is dropped unless its `source_url` was *actually fetched* this run. |
+| **P0-3 Freshness honesty** | An empty-facts run stamping a fresh timestamp on stale data | `data_as_of_iso` (data age) is tracked separately from write time; the staleness banner keys off data age. |
+| **P1-1 Date sanity** | A future-dated or malformed `incident_resolved_iso` flipping the incident to "resolved" | Out-of-range / malformed timestamps are nulled before the snapshot is written. |
 
-Full diagram and test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md)
+Full diagram + per-control test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md).
 
 ### Eval quick-start
 
@@ -32,230 +53,207 @@ Full diagram and test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTR
 python eval/run_all.py --skip integration
 ```
 
-Expected output (75 tests, all green):
+Expected (208 tests, all green):
 
 ```
-  behavioral       68/68   (100.0% pass)
-  schema            7/7    (100.0% pass)
+  behavioral      200/200  (100.0% pass)
+  schema            8/8    (100.0% pass)
 ----------------------------------------------------------------
-  TOTAL            75/75   (100.0% pass)
+  TOTAL           208/208  (100.0% pass)
 ```
 
-Test categories: 5-state behavioral sequence (writer state machine) · corroboration gate · provenance · freshness · date sanity · severity derivation · gatherer failure contract · encoding integrity · schema validation. Results append to `eval/scores.jsonl` for regression tracking.
-
-Red-team report (12 failure modes, guarded/unguarded verdict per mode): [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md)
-
-### Performance
-
-| Metric | Value | How |
-|--------|-------|-----|
-| First paint | No framework, no build step | The whole UI ships in one ~126 KB HTML file; `status.json` is fetched client-side after paint |
-| Third-party CDN in the critical path | 0 | MapLibre GL is self-hosted in `/lib` (~800 KB) and service-worker cached, so the map can't vanish when a CDN changes |
-| Offline resilience | PWA + service worker | Caches the last-known state and the map library; the staleness banner fires when data is old |
-| Map | MapLibre GL + OpenFreeMap | Vector tiles, light/dark styles; the map library loads when the Map tab is opened |
-
-A single HTML file with no framework and no build step, serving a safety-critical audience on mobile data. Self-hosting the map library is a deliberate reliability choice: an earlier CDN-loaded build disappeared on refresh, so the library now ships with the app and is cached by the service worker. Tiles come from OpenFreeMap and degrade gracefully.
+**63 test files / 208 deterministic tests** spanning the writer state machine, the corroboration / provenance / freshness / date-sanity gates, the conduit guard (no authored verdicts), the English-only language gate, frozen-archive invariants, and rendered-geometry guards for the UI. Results append to [`eval/scores.jsonl`](eval/scores.jsonl) for regression tracking. (Run *without* `--quiet` — that flag suppresses `[FAIL]` lines.)
 
 ---
 
-## What it does
+## The thesis: conduit, not verdict-author
 
-| | |
-|---|---|
-| **Single glance** | Hero status board: the current-situation lead plus the key facts — evacuation status, residents affected, last verified update — without scrolling |
-| **Map** | MapLibre GL + OpenFreeMap vector tiles (light / dark). The evacuation-zone boundary, the GKN Aerospace facility marker, and shelter locations |
-| **Official sources** | Routes to the authoritative channels — ggcity.org/emergency, OCFA, Genasys EVAC, OC Alert — with the reminder that no single source should be your only one |
-| **Update banner** | URGENT (red, pulsing, beep) for act-now changes; UPDATE (amber, no beep) for informational. Click → scrolls sidebar to highlight the newest statement |
-| **Statements sidebar** | Sticky, scrollable, newest-first, with `Newest` + `Recent` badges. Source links on each |
-| **Update mechanism (archived)** | During the incident the dashboard polled `status.json` every 30 s, and a contributor ran the refresh job on demand — roughly every 20–30 min — to re-gather facts and rewrite `status.json` (see [Data sync](#data-sync--how-statusjson-stays-fresh)). The pipeline is now frozen |
-| **Theme** | Light default with dark toggle, saved per browser |
+The single most load-bearing decision in the project is what it **refuses** to do.
 
-## Coverage Archive (News tab)
+Early builds (v0.1–v0.7) had a "check your address" tool that geocoded an address, computed a blast/plume radius, and rendered a personal verdict (`SAFE` / `ELEVATED` / `HIGH` / `CRITICAL`). On **2026-05-26** all of that was removed in the **conduit pivot**. The dashboard now states officials' facts and routes to officials' channels; it issues no directives and authors no hazard assessments.
 
-The News tab is a resolved-state **Coverage Archive** — a historical record of how the May 2026 incident was reported, not a live feed. A persistent note at the top of the tab says exactly that, and the page's persistent safety strip routes to officials on every tab. Like the rest of the dashboard, it aggregates official statements and news coverage and *authors no directives of its own*: officials lead the list (the conduit principle), news coverage follows.
+This is both an ethics decision and a legal one. As a pure automated feed of third-party links, the project leans on **Section 230 (47 U.S.C. § 230(c)(1))** and **_Winter v. G.P. Putnam's Sons_ (9th Cir. 1991)** — publishers of information owe no duty to verify it. The moment the app authors its *own* safety verdict, it steps outside that shelter and into a voluntarily-undertaken duty of care (Restatement (Second) of Torts §§ 323, 324A). Removing the verdict made the product safer for residents *and* legally defensible. See [`docs/LEGAL.md`](docs/LEGAL.md) and [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md).
 
-It is honest by construction:
+---
 
-- **Real sources, no fabrication.** Coverage is read from [`data/news_archive.json`](data/news_archive.json) — 92 items (57 articles, 23 videos, 12 official statements) across 43 outlets, each carrying per-item provenance (search query, fetch status, known caveats). The verification method, queries, and caveats from the initial compilation are written up in [`data/NEWS_ARCHIVE_AUDIT.md`](data/NEWS_ARCHIVE_AUDIT.md); the per-item provenance in the JSON is authoritative for the full frozen set. [`eval/test_provenance.py`](eval/test_provenance.py) fails the build if a statement's source URL wasn't actually fetched, and [`eval/test_readme_archive_count.py`](eval/test_readme_archive_count.py) fails it if these counts drift from the data.
-- **No false time precision.** Most publish timestamps are approximate (search surfaces the date, rarely the minute), so archive items render **date-only** unless the exact publish time is verified. A resolved record never drifts to "3 months ago," and it never shows a precision it doesn't have.
-- **English only, by design.** Safety copy is never surfaced in a language we can't reliably verify; residents with limited English are routed to officials, who publish their own verified translations ([`docs/LANGUAGE_ACCESS.md`](docs/LANGUAGE_ACCESS.md), guarded by `eval/test_language_access.py`).
-- **Resolved, and it says so.** The incident resolved May 26, 2026. The archive note, the global status, and the absolute dates leave no room to misread it as live.
+## Safety & ethics decisions (the core)
 
-## Why I built it
+Every decision below is logged with its rationale and, where direction changed, its reversal. Fuller per-decision records live in [`DESIGN_LOG.md`](DESIGN_LOG.md) (D-001–D-029, with rubric scores) and the `docs/` set.
 
-The emergency was multi-day and evolving. The available signals — news live-blogs, the city's emergency page, OCFA tweets — were scattered. Reaching for my phone or refreshing news tabs felt like a tax I was paying every 20 minutes. I wanted one page that answered my actual question ("do I need to leave?") with everything else as supporting evidence I could glance at, not hunt for.
+### Avoiding harm — conduit, not verdict-author
 
-## How this archive was made
+| Decision | Why | Rejected alternative |
+|----------|-----|----------------------|
+| **No authored hazard verdicts** (removed the address checker, blast/plume layers, severity badges) | An AI-authored "you are in the danger zone" is a directive the project has no authority to issue, and it forfeits the §230 conduit shelter | Geocode → blast-radius → personal verdict (the v0.1–v0.7 design) |
+| **No directives** — never "evacuate" / "shelter now" | Only officials issue evacuation orders; the app routes to them | Action-verb hero copy ("LEAVE NOW") — rejected as false authority + liability |
+| **Official sources first, always** | The conduit's job is to point at the authorities, not replace them; officials lead every list and the persistent safety strip routes to them on every tab | Make the dashboard the primary reference and bury official links |
+| **No PII** — aggregate data only ("~50,000 residents evacuated") | A safety tool must not expose residents | Publish shelter rosters / named testimonials |
 
-Built by two local volunteers, Mike and Nancy, to help our community during the May 2026 Garden Grove tank emergency. It is **not** affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, or any government agency. It is free, has no sign-up and no ads, and does not collect your data.
+### Honesty & AI transparency
 
-**Data pipeline (historical).** Status was updated every 30 minutes via verified web sources — official agency feeds, city websites, and news outlets — and each fact was cross-referenced against multiple sources before publishing. The pipeline is now frozen; see [Architecture](#architecture) and [Data sync](#data-sync--how-statusjson-stays-fresh) for how it ran.
+| Decision | Why | Rejected alternative |
+|----------|-----|----------------------|
+| **Persistent AI-assistance disclosure** ("compiled with AI assistance, checked by a person") | Residents deserve to know what produced what they're reading; the disclosure stays legible (13px), never shrunk to fine print | Hide the AI involvement; ship model output unreviewed |
+| **Provenance check (P0-2)** | A fabricated citation, once committed to git, is permanent | Warn-but-keep the unverified citation |
+| **Freshness honesty (P0-3)** — two timestamps + staleness banner | A run that learns nothing must not look fresh | A single timestamp for both write age and data age |
+| **No false time precision** — archive items render **date-only** unless the exact publish time is verified | Search surfaces the date, rarely the minute; a resolved record never drifts to "3 months ago" | Show relative time / fabricated minute-level precision |
+| **Correctable = trustworthy** — a visible error channel (ggtankwatch@gmail.com) | Being correctable is a credibility signal | No error channel; silent edits |
 
-**Evaluation.** The dashboard ships with a [behavioral test suite + LLM-as-judge rubrics](eval/) for design and data quality; see [How data quality + behavior gets evaluated](#how-data-quality--behavior-gets-evaluated).
+### Human oversight & scalable oversight
 
-> This fuller methodology and who-made-it narrative lives here in the README, by design. The in-app **About** sub-tab is deliberately lean: it carries only the persistent AI-assistance disclosure (the binding honesty principle), a "Sources checked" list, and links to the Terms and Accessibility pages — the responsible-AI disclosure stays in front of residents, while the portfolio narrative stays out of their way.
+| Decision | Why | Rejected alternative |
+|----------|-----|----------------------|
+| **Single chokepoint control layer** (`update_status.py`) | One place where every safety-relevant field is validated before publish; the model can't write the snapshot directly | Distributed validation across gatherer + writer + frontend |
+| **Asymmetric corroboration gate (P0-1)** | A false all-clear is the worst outcome; downgrades need ≥2 sources incl. ≥1 of 6 official-agency hosts | A symmetric gate that lets one source authorize an all-clear |
+| **Severity is *derived*, never model-extracted** | A partial-facts tick must not silently downgrade severity to "low" | Accept severity from the model / recompute on every tick |
+| **Gatherer fail-closed contract** | If a gather fails, the writer writes nothing — the page goes visibly stale, never confidently wrong | Emit empty facts + exit 0 (fresh-stamps stale data) |
+| **A 208-test behavioral eval gates merges** | Safety properties regress silently without a machine-checkable gate | Manual review only |
 
-## Architecture
+### Language access (G1)
+
+| Decision | Why | Rejected alternative |
+|----------|-----|----------------------|
+| **English-only by design** — no non-English safety copy is surfaced without fluent human verification; LEP residents are routed to officials, who publish their own verified translations | The affected area overlaps Little Saigon; a *wrong* Vietnamese safety string is worse than none. A fluent verifier was never secured (the G1 gate), so the conservative resolution was to remove non-English entirely | Ship machine-translated Vietnamese / unverified native review |
+
+This is the project's clearest "alignment tax = zero" case: the conservative call (remove rather than risk) is also the safer call. See [`docs/LANGUAGE_ACCESS.md`](docs/LANGUAGE_ACCESS.md), guarded by [`eval/test_language_access.py`](eval/test_language_access.py) and `eval/test_no_vietnamese_residue.py`.
+
+### Responsible deployment
+
+| Decision | Why | Status |
+|----------|-----|--------|
+| **Attorney review gates public launch; `noindex` until cleared** | A safety tool reaching scale needs real legal review first | `noindex, nofollow` enforced via HTTP header (`vercel.json`) + `robots.txt: Disallow: /`; **still on** |
+| **Nonprofit entity + liability insurance before wide launch** | Two private volunteers carry no statutory immunity (the Volunteer Protection Act needs a nonprofit/government nexus) | **Not yet done** — deliberately gated |
+| **Phase-gated rollout (Phase 0–3, gates G1–G5)** | Distribution is earned, not assumed; only Phase 0 was ever executed | Uncontrolled launch |
+| **No ads, no subscriptions, no tracking, no login** | Free + no commercial nexus keeps the pecuniary-interest liability shield (Restatement §552) and respects privacy | Monetize / collect analytics |
+
+### Deliberately NOT built
+
+The negative space is part of the design: **no** address checker, **no** blast/plume maps, **no** severity badges, **no** evacuate/shelter directives, **no** machine-translated safety copy, **no** runtime image scraping (YouTube thumbnails are derived from the canonical `hqdefault.jpg` formula, never fetched at query time — [`eval/test_no_runtime_scraper.py`](eval/)), **no** third-party CDN in the critical path (MapLibre GL is self-hosted), **no** full-article reproduction (headline + snippet + link + attribution only), **no** government seals or "official" framing, and **no** single-station wind indicator (removed — one NOAA station pointed the wrong way ~34% of the time, and a misread wind arrow on a no-directives tool is a hazard).
+
+---
+
+## How it was built — the journey, and the reversals
+
+The interesting decisions are the ones that changed. All are logged in [`DESIGN_LOG.md`](DESIGN_LOG.md).
+
+- **Push-first → dashboard-first (D-001 → D-009).** The first plan was mobile push notifications (you can't see a dashboard while asleep). The user reversed it — "scratch all mobile plans" — and the ntfy/push pipeline was removed cleanly. Both decisions are logged with full reasoning.
+- **The conduit pivot (2026-05-26).** Removed the address checker, blast/plume layers, and severity verdicts. The single most important decision in the project (see [thesis](#the-thesis-conduit-not-verdict-author)).
+- **The historical-archive pivot (live → frozen).** Once the incident resolved, live polling was pointless and a stale "live" view is a hazard. The dashboard was frozen: polling disabled, the refresh job retired (`refresh_local.py` now exits with an "ARCHIVED" error), every heading date-anchored.
+- **Info tab: 6 sub-tabs → 4 equal-width (Summary · Officials · Resources · About).** Six scrollable sub-tabs clipped their labels at 375px (caught after the fact); the fix was four equal-width tabs that fit, locked by a rendered-geometry guard ([`eval/test_info_subtab_fit.py`](eval/)).
+- **Recovery-first Resources ordering.** A frozen archive serves *post*-crisis viewers, so Resources leads with **Recovery aid**, then date-anchored Evacuation shelters (May 2026), then School closures (May 2026) — recovery is the only still-forward-actionable section.
+- **Name: "GG Tank Watch," not "…Safety."** "Safety" over-claims authority and risks resident over-trust (the Citizen-app precedent). "Watch" is honest about what it is.
+
+---
+
+## The Coverage Archive (News tab)
+
+The News tab is a resolved-state **Coverage Archive** — a historical record of *how the incident was reported*, not a live feed. Coverage is read from [`data/news_archive.json`](data/news_archive.json): **92 items** (**57 articles**, **23 videos**, **12 official statements**) across **43 outlets**, each carrying per-item provenance (search query, fetch status, known caveats). Officials lead the list (the conduit principle), news follows; nothing after the May 26 all-clear boundary is included. [`eval/test_provenance.py`](eval/) fails the build if a statement's source URL wasn't actually fetched, and [`eval/test_readme_archive_count.py`](eval/) fails it if these counts drift from the data.
+
+---
+
+## The close-out audit (2026-06-04)
+
+Before this README, the whole archive was audited end-to-end ([`docs/AUDIT_2026-06-04.md`](docs/AUDIT_2026-06-04.md)):
+
+- **UI/UX sweep:** 108 renders (widths 320–1440 × light/dark × every surface) via Playwright — **geometry-green**, zero new issues.
+- **Link liveness:** **110 / 112** runtime URLs live (1 genuine 404, since fixed; 1 rate-limited but live). A flagged `abcnews.com` concern was *refuted* by fetching the real articles.
+- **Honesty fixes (the audit's point):** one news item carried a 404 URL with a *fabricated* "verified" provenance note — corrected (the one finding that contradicted the project's own thesis); `terms.html` / `accessibility.html` described removed features — trimmed to match the shipped app; the Summary outcome "0 displaced" (ambiguous next to "~50,000 evacuated") was reworded to "no permanent displacement." Each fix shipped test-first with a new guard so it can't regress.
+
+---
+
+## Architecture (frozen)
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│  refresh job (on demand) → claude -p WebSearch (subscription)       │
-│       ↓ extracts structured facts as JSON                           │
-│       ↓ pipes to stdin                                              │
-│  scripts/update_status.py  (Python stdlib only)                     │
-│   • diffs against prev snapshot                                     │
-│   • classifies change: URGENT (toggles) vs UPDATE (info)            │
-│   • atomic-writes status.json with Windows OneDrive retry           │
-│   • appends to breaking_events.jsonl + updates.log                  │
-│       ↓                                                              │
-│  status.json  ← atomic-renamed snapshot                             │
-│       ↑                                                              │
-│  dashboard.html  (vanilla JS, no build step)                        │
-│   • polls status.json every 30 s                                    │
-│   • renders hero / map / sidebar / panels                           │
-│   • fetches wind from api.weather.gov every 5 min (KFUL)            │
-│   • fetches map tiles from OpenFreeMap                              │
-││       ↑                                                              │
-│  start_dashboard.bat  → python -m http.server + opens browser       │
-└─────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────┐
+│  HISTORICAL pipeline (now retired)                                     │
+│  refresh job (on demand) → claude -p WebSearch (subscription)          │
+│       ↓ extracts structured facts as JSON, pipes to stdin              │
+│  scripts/update_status.py  (Python stdlib only) — THE CONTROL LAYER    │
+│   • P0-1 corroboration · P0-2 provenance · P0-3 freshness · P1-1 dates │
+│   • severity derived (not model-extracted); atomic-write status.json   │
+│       ↓                                                                 │
+│  status.json  ← frozen snapshot (2026-05-27T02:30:00Z all-clear)       │
+│       ↑                                                                 │
+│  dashboard.html  (vanilla JS, no build step) — THE READER             │
+│   • Map (MapLibre GL + OpenFreeMap) · News (Coverage Archive) · Info   │
+│   • polling DISABLED (frozen); service-worker caches the shell + map   │
+└──────────────────────────────────────────────────────────────────────┘
 ```
 
-> **Historical pipeline** — shown as it ran during the May 2026 emergency. It is now frozen: the dashboard no longer polls, the refresh job is retired, and the NOAA wind fetch was removed (single-station readings were unreliable).
+**No backend, no database, no auth, no build step.** Two files of real code (a Python writer + an HTML/JS reader), JSON as the message bus, the browser as the runtime. The historical data pipeline was updated every ~30 minutes during the active incident, and each fact was cross-referenced against multiple sources before publishing; it is now frozen. Self-hosting MapLibre GL is a deliberate reliability choice — an earlier CDN-loaded build vanished on refresh, so the library now ships with the app and is service-worker cached. See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the dual-path (subscription-CLI vs. metered-SDK) sync design and its cost tradeoff.
 
-**No backend, no database, no auth, no build step.** Two files of real code (Python writer + HTML/JS reader), JSON as the message bus, browser as the runtime. The whole thing is double-clickable.
-
-## Data sync — how `status.json` stays fresh
-
-`status.json` is the only thing that changes after deploy, so keeping it current is the one real ops problem. I built two interchangeable paths and deliberately run the cheaper one:
-
-| Path | Where it runs | Billing | Status |
-|---|---|---|---|
-| `scripts/refresh_local.py` | a contributor's machine, left on | **subscription credits, $0 metered** — calls `claude -p` on the OAuth subscription with `ANTHROPIC_API_KEY` unset | **active** |
-| `.github/workflows/update-status.yml` | GitHub-hosted runner, no machine needed | **metered `ANTHROPIC_API_KEY`** (~$200–330/mo at a 20-min cadence) | **dormant** — `schedule:` commented out |
-
-Both share one gatherer: `refresh_local.py` imports `PROMPT` + `extract_json` from `gather_facts.py`, so the two paths stay in lockstep and only the model call differs (subscription CLI vs. metered SDK). Each run gathers facts via WebSearch, writes `status.json`, commits it with `[skip ci]`, and pushes — Vercel auto-deploys the new snapshot.
-
-**The tradeoff is the point.** A headless cloud runner can't use the OAuth subscription, only a metered key, so "no machine required" costs real money while "$0 metered" needs a machine that's on. For a single-incident dashboard that isn't cleared for wide distribution yet, the right call is to keep the cloud cron wired-but-dormant (the secret's already set; uncommenting one line flips it on) and refresh locally on subscription credits. Full writeup in [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md).
-
-**The failure mode is honest by design.** If a gather fails, the writer writes nothing: `status.json` keeps its old timestamp and the dashboard's staleness banner fires. It never stamps a fresh time onto stale data.
+---
 
 ## Stack
 
-- **Frontend:** vanilla HTML/CSS/JS + [MapLibre GL](https://maplibre.org/) (self-hosted in `/lib`) + [OpenFreeMap](https://openfreemap.org/) vector tiles. No framework, no build step; the app ships as one ~126 KB HTML file.
-- **Writer:** Python 3 stdlib only. No external deps. Uses `urllib` for HTTP would have been, but the ntfy push pipeline was scratched (see DESIGN_LOG D-009).
-- **Map data:**
-  - Wind from NOAA's free `api.weather.gov` (station KFUL Fullerton Muni)
-  - Vector tiles from OpenFreeMap (light / dark styles)
-  - Evacuation-zone polygon, the GKN Aerospace facility, and shelter locations from `config.json`
-- **Trigger:** `scripts/refresh_local.py` (run on demand, roughly every 20–30 min during the active incident) gathers facts via `claude -p` WebSearch on the subscription and pipes structured JSON to the writer. See [Data sync](#data-sync--how-statusjson-stays-fresh) for the dual-path design.
-- **No deps beyond Python 3 stdlib + a self-hosted MapLibre GL build.**
+- **Frontend:** vanilla HTML/CSS/JS in a single **~112 KB** `dashboard.html` (no framework, no build step) + [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (~852 KB) + [OpenFreeMap](https://openfreemap.org/) vector tiles (light/dark). A service worker (cache `gg-tank-v74`) caches the shell + map for offline resilience.
+- **Writer:** Python 3 **stdlib only**, no external dependencies.
+- **Security headers (prod, `vercel.json`):** strong CSP (`default-src 'self'`), `X-Frame-Options: DENY`, `X-Robots-Tag: noindex, nofollow`.
+- **Eval:** pytest-style harness, **208 tests across 63 files** + LLM-as-judge rubrics ([`eval/rubrics/`](eval/rubrics/)).
+- **Hosting:** Vercel static (auto-deploys `main`).
 
-## How design decisions get made and tracked
+---
 
-Every meaningful design call is captured in [`DESIGN_LOG.md`](DESIGN_LOG.md) with structured fields:
+## The incident (facts, as archived)
 
-- **What** was decided
-- **Alternatives** considered (and why they lost)
-- **Rationale** + which design principles applied
-- **Rubric score** (correctness / maintainability / user-fit, 1–10)
-- **Status** (active / superseded / reverted) — including links to superseding decisions when direction changed
-- **Retrospective lesson**
-
-The log was seeded retroactively from the project's first hour, then maintained going forward. It demonstrates the *thinking* behind the code, not just the code.
-
-The most interesting reversal is **D-001 → D-009**: I went into the build push-first-dashboard-second based on the CEO subagent's strong reasoning (the user can't see a dashboard when asleep / away from screen). The user immediately reversed it: "scratch all mobile plans." Both decisions are logged with full reasoning. Lesson at the bottom of D-001.
-
-## How data quality + behavior gets evaluated
-
-[`eval/`](eval/) contains a pytest-style behavioral test suite + LLM-as-judge rubrics. Every change runs through it.
-
-| Suite | What it checks |
+| | |
 |---|---|
-| `test_writer.py` | 5-state behavioral sequence (baseline / no-diff / urgent-toggle / stable / resolved) + new-statement detection + residents-shift rate-limiting + schema validation |
-| `test_safety.py` | Conduit-principle guards: asserts the dashboard contains no authored hazard verdicts (no `blast_zones_mi`, no plume layer, no injury-radius copy) and routes users to an official source |
-| `test_geocoder.py` | Legacy integration test for the pre-conduit address geocoder (Nominatim). Skipped by default (`--skip integration`); retained as regression history |
-| `test_schema.py` | JSON schema validation for `status.json` and `config.json` |
-| `rubrics/design_quality.md` | LLM-as-judge prompt for evaluating any design decision against the 6 autoplan principles |
-| `rubrics/data_quality.md` | LLM-as-judge prompt for evaluating writer fact extraction (precision, recall, hallucination check) |
+| **Substance** | Methyl methacrylate (MMA), a ~34,000-gallon tank |
+| **Facility** | GKN Aerospace, 12122 Western Ave, Garden Grove, CA |
+| **Peak tank temperature** | ~100°F (exceeded the gauge maximum) |
+| **Peak evacuation** | ~50,000 people |
+| **Evacuation zone** | ~9 sq mi across 6 cities (Garden Grove, Anaheim, Buena Park, Cypress, Stanton, Westminster) |
+| **Window** | May 21–26, 2026 |
+| **Outcome** | No injuries; all evacuees returned |
 
-Results append to `eval/scores.jsonl` so regressions are visible over time. Run with `python eval/run_all.py`.
-
-## Process highlight: full autoplan review on day 1
-
-Before writing a line of code I ran a full multi-phase plan review against the original SPEC: CEO (strategy + scope), Design (UI / interaction states / aesthetic), and Eng (architecture / atomic writes / error paths / test coverage / budget honesty). Codex CLI wasn't available locally so phases ran with Claude subagents only — degraded gracefully via the autoplan skill's documented fallback. Findings ended up reshaping the SPEC before I touched the implementation.
-
-Reviewer outputs are folded into [`docs/SPEC.md`](docs/SPEC.md) and the design log. The most load-bearing findings:
-
-- **CEO F1:** Original dashboard-first scope was solving the wrong problem ("seen when looking" vs "reaches me when not looking"). Triggered the push-first pivot.
-- **Eng E1:** Per-site HTML scrapers would be broken within a day. Reframed extraction to "WebSearch (Claude side) + regex on snippets" — fragile parts on the model, deterministic parts in Python.
-- **Eng E3:** Residents-count flapping between reports would false-fire breaking every tick. Added rate-limiting (now: residents shifts only fire once per 2 hours).
-- **Design D1:** Hero was tank temperature; should be zone verdict. Tank temp isn't something the user can act on. Zone status is.
-
-Each finding logged with status (Fixed / Deferred / Reverted) in the design log.
-
-## Lessons (what I'd do differently)
-
-- **Build the eval suite earlier.** I had the writer's behavior wrong twice (hysteresis logic) before I had tests. A 5-state behavioral sequence as a test file would have caught both within minutes.
-- **Trust the reviewers' biggest finding even when it conflicts with the user's framing.** I built mobile push, the user said "scratch it," I deleted it cleanly — but if I'd surfaced the reviewer's full reasoning earlier maybe we'd have caught the disconnect sooner.
-- **Don't pick a `--theme=dark` aesthetic without showing the user.** First version was NWS gov-emergency-calm dark. User said "too dark" within 30 seconds. Light/dark toggle should have been default from the start.
-- **Atomic rename + OneDrive sync is a real failure mode on Windows.** The retry-with-backoff wrapper has caught at least one transient `PermissionError` in testing. Worth the 10 lines.
-- **A hardcoded estimate is defensible if you say where it came from.** Early versions rendered blast-radius circles derived from BLEVE scaling for the tank inventory, with the basis spelled out in `config.json.notes`. The circles were later removed in the conduit pivot (the dashboard authors no hazard verdicts), but the principle holds.
+---
 
 ## Running it yourself
 
-See [`USAGE.md`](USAGE.md) for full operational docs. Quick version:
+See [`USAGE.md`](USAGE.md). The dashboard is a static file — serve the repo root and open `dashboard.html`:
 
 ```powershell
 git clone <this-repo>
 cd gg-tank-watch
-.\start_dashboard.bat
+python -m http.server 8000   # then open http://127.0.0.1:8000/dashboard.html
+python eval/run_all.py --skip integration   # 208 tests, exits 0
 ```
 
-Then in another shell (or via your scheduler of choice), feed the writer some facts:
+The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and exits with an "ARCHIVED" error.
 
-```powershell
-'{"tank_temp_f": 100, "evacuation_residents": 50000, "evacuation_lifted": false, "status_headline": "Test"}' | python scripts\update_status.py
-```
-
-Refresh the browser to see the snapshot.
+---
 
 ## Repository layout
 
 ```
 gg-tank-watch/
-├── README.md                       ← you are here
-├── USAGE.md                        ← operational guide
-├── CHANGELOG.md                    ← iteration log
-├── DESIGN_LOG.md                   ← decisions + rubric scores
-├── LICENSE                         ← MIT
-├── .gitignore
-├── start_dashboard.bat             ← launcher
-├── dashboard.html                  ← the dashboard
-├── config.json                     ← map coords, intervals, zone_status
-├── go_bag.md                       ← printable evac checklist
-├── BRIEF_2026-05-24.md             ← source-cited factual brief
-├── PERSONAL_UPDATE_2026-05-24.md   ← personal status update drafts
+├── README.md                  ← you are here
+├── CLAUDE.md                  ← binding safety-principles table (project instructions)
+├── dashboard.html             ← the dashboard (single file)
+├── terms.html · accessibility.html
+├── config.json · status.json · timeline.json
+├── data/news_archive.json     ← the Coverage Archive (92 items, per-item provenance)
+├── sw.js · manifest.json      ← PWA / offline
+├── DESIGN_LOG.md · DESIGN.md · CHANGELOG.md · USAGE.md
 ├── scripts/
-│   ├── refresh_local.py            ← subscription-billed refresh (active path)
-│   ├── gather_facts.py             ← metered SDK gatherer (cloud path)
-│   └── update_status.py            ← the writer
+│   ├── update_status.py        ← the writer (the control layer)
+│   ├── gather_facts.py         ← metered-SDK gatherer (cloud path)
+│   └── refresh_local.py        ← subscription refresh (retired/archived)
 ├── docs/
-│   ├── SPEC.md                     ← full SPEC + autoplan trail
-│   └── DATA_SYNC.md                ← dual-path data-sync design + cost tradeoff
+│   ├── AI_CONTROL_ARCHITECTURE.md   ← control layer + test mapping
+│   ├── FAILURE_ANALYSIS.md          ← red-team failure modes
+│   ├── PRIOR_ART.md · LEGAL.md · DISTRIBUTION.md · CODE_OF_CONDUCT.md
+│   ├── LANGUAGE_ACCESS.md · DATA_SYNC.md · DATA_QUALITY.md
+│   ├── SPEC.md · NEWS_UX_SPEC.md · WCAG_NOTES.md
+│   └── AUDIT_2026-06-04.md          ← the close-out audit
 └── eval/
-    ├── README.md
-    ├── run_all.py                  ← runs everything, appends scores.jsonl
-    ├── test_writer.py
-    ├── test_safety.py
-    ├── test_geocoder.py
-    ├── test_schema.py
-    ├── scores.jsonl                ← append-only eval history
-    ├── fixtures/
-    └── rubrics/
-        ├── design_quality.md       ← LLM-as-judge prompt
-        └── data_quality.md
+    ├── run_all.py              ← runs everything, appends scores.jsonl
+    ├── test_*.py               ← 63 test files / 208 tests
+    └── rubrics/                ← LLM-as-judge prompts
 ```
+
+---
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Data is informational only, NOT authoritative emergency guidance. For evacuation status refer to OCFA, ggcity.org/emergency, Genasys EVAC, Ready OC.
+MIT — see [`LICENSE`](LICENSE). **Data is informational only, NOT authoritative emergency guidance.** For any emergency, call 911; for status refer to OCFA and [ggcity.org/emergency](https://ggcity.org/emergency). This project is independent and **not** affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.
