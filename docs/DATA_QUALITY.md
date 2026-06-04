@@ -3,6 +3,8 @@
 **Workstream:** Data-Quality (distribution-readiness)
 **Owner deliverable:** this spec. Implementation lands later on `feat/data-sync`.
 **Status:** design only — no code changed.
+
+> **Historical design spec (frozen archive).** This was a pre-resolution hardening spec for `feat/data-sync`. The incident resolved before it was implemented; the recommendations below were not shipped. Retained as a design-decision record.
 **Scope of the pipeline under review:**
 
 ```

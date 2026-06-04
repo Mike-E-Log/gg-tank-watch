@@ -2,7 +2,7 @@
 
 I'm applying with a portfolio piece that demonstrates scalable oversight and AI control in a real deployment: **GG Tank Watch**, an emergency information dashboard serving ~50,000 evacuated residents during the Garden Grove chemical tank incident.
 
-**Live:** https://gg-tank-watch.vercel.app (running; English, routing non-English speakers to officials). **Run the harness:** `python eval/run_all.py --skip integration` (48/48, exits 0). The repo trail below maps each safety principle to its code and tests.
+**Deployed (noindex, behind the attorney gate):** https://gg-tank-watch.vercel.app — English, routing non-English speakers to officials. The incident resolved May 2026; this is now a frozen historical archive. **Run the harness:** `python eval/run_all.py --skip integration` (208/208, exits 0). The repo trail below maps each safety principle to its code and tests.
 
 The thesis: responsible AI and helpful AI are the same lane. Every safety constraint in GG Tank Watch made the product more trustworthy and more useful — the alignment tax was zero.
 

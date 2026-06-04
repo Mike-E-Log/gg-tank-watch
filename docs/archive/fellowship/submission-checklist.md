@@ -21,7 +21,7 @@
 | **Honesty / AI transparency** | `docs/CODE_OF_CONDUCT.md` (principle 6) | `dashboard.html` disclosure string, `STRINGS.disclosure` |
 | **Avoiding harm** | `docs/PRIOR_ART.md` (conduit vs. authority) | `docs/CODE_OF_CONDUCT.md` (principle 2: no directives) |
 | **Human oversight** | `docs/CODE_OF_CONDUCT.md` (principle 6) | Pipeline design: human reviews AI summaries pre-publish |
-| **Scalable oversight** | `docs/AI_CONTROL_ARCHITECTURE.md` | `eval/` harness (48 tests), `docs/FAILURE_ANALYSIS.md` |
+| **Scalable oversight** | `docs/AI_CONTROL_ARCHITECTURE.md` | `eval/` harness (208 tests), `docs/FAILURE_ANALYSIS.md` |
 | **Responsible deployment** | `CLAUDE.md` (attorney review gates, noindex) | `docs/LANGUAGE_ACCESS.md` + `eval/test_language_access.py` (G1 gate; English-only — no unverifiable translation surface) |
 | **Alignment tax = zero** | `docs/PRIOR_ART.md` (section: "Why Option B is correct") | `docs/AI_CONTROL_ARCHITECTURE.md` (closing section) |
 
@@ -41,7 +41,7 @@ A reviewer evaluating the portfolio should follow this path:
 - [ ] **Repo accessibility.** Verify the repo is public or the application includes access instructions
 - [ ] **noindex does not block Greenhouse reviewers.** `noindex` is on `dashboard.html` meta tag and `vercel.json` — this blocks search engines, not direct URL access. Reviewers can still view the deployed site via direct link. Confirm the Vercel deployment URL is included in the application
 - [x] **README is adequate.** "For Anthropic reviewers" signpost section added with direct links to CLAUDE.md, AI_CONTROL_ARCHITECTURE, FAILURE_ANALYSIS, PRIOR_ART, and eval/ (2026-05-25)
-- [x] **Eval harness runs clean.** `python eval/run_all.py --skip integration` exits 0. Verified 48/48 pass (2026-05-30; was 47/47 on 2026-05-29, 45/45 on 2026-05-25)
+- [x] **Eval harness runs clean.** `python eval/run_all.py --skip integration` exits 0. Verified 208/208 pass (2026-06-04; was 48/48 on 2026-05-30)
 - [x] **Cover letter is final.** 463 words, all file references verified to exist (2026-05-25)
 - [x] **No secrets in repo.** Grepped for `sk-`, `ANTHROPIC_API_KEY=`, `ghp_`, `gho_` — no secrets in tracked files (2026-05-25)
 - [ ] **Attorney review status.** Note current status of Lane B3 (attorney review) in application if asked about deployment timeline

@@ -128,7 +128,16 @@ This is the project's clearest "alignment tax = zero" case: the conservative cal
 
 ### Deliberately NOT built
 
-The negative space is part of the design: **no** address checker, **no** blast/plume maps, **no** severity badges, **no** evacuate/shelter directives, **no** machine-translated safety copy, **no** runtime image scraping (YouTube thumbnails are derived from the canonical `hqdefault.jpg` formula, never fetched at query time — [`eval/test_no_runtime_scraper.py`](eval/)), **no** third-party CDN in the critical path (MapLibre GL is self-hosted), **no** full-article reproduction (headline + snippet + link + attribution only), **no** government seals or "official" framing, and **no** single-station wind indicator (removed — one NOAA station pointed the wrong way ~34% of the time, and a misread wind arrow on a no-directives tool is a hazard).
+The negative space is part of the design. Each "no" traces to the same rule — bounded authority, routed to officials:
+
+- **No address checker / blast-plume maps / severity badges** — an AI-authored "you are in danger" is a directive the project has no authority to issue, and it forfeits the §230 conduit shelter (removed in the conduit pivot, 2026-05-26).
+- **No evacuate / shelter directives** — only officials issue protective-action orders; the app routes to them.
+- **No machine-translated safety copy** — a wrong safety string in a language we can't verify is worse than none (G1; English-only, LEP residents routed to officials).
+- **No single-station wind indicator** — one NOAA station pointed the wrong way ~34% of the time, and a misread wind arrow on a no-directives tool is a hazard (removed 2026-05-31).
+- **No runtime image scraping** — YouTube thumbnails derive from the canonical `hqdefault.jpg` formula, never fetched at query time, preserving provenance + human review ([`eval/test_no_runtime_scraper.py`](eval/)).
+- **No third-party CDN in the critical path** — MapLibre GL is self-hosted, so the map can't vanish when a CDN changes.
+- **No full-article reproduction** — headline + snippet + link + attribution only.
+- **No government seals or "official" framing** — the conduit must never be mistaken for the authority it points to.
 
 ---
 

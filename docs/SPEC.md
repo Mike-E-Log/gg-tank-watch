@@ -1,6 +1,8 @@
-# SPEC — Garden Grove MMA Tank Live Dashboard
+# SPEC — Garden Grove MMA Tank Dashboard
 
-**Owner:** Nancy (***REDACTED***)
+> **Frozen archive (2026-06-04).** This spec documents the design and build of the dashboard during the May 21–26, 2026 emergency (the v0.1 desktop-only pivot was locked 2026-05-24). The incident resolved May 26; the site is now a historical archive and this spec is retained as a design-decision record.
+
+**Owner:** Nancy
 **Created:** 2026-05-24
 **Status:** v0 pivot locked in (post-/autoplan Phase 1 CEO review)
 **Context:** See `BRIEF_2026-05-24.md` and `~/.claude/projects/.../memory/project_gg_mma_tank_emergency.md` — there's an active multi-day MMA tank emergency in Garden Grove. Nancy is a downwind-adjacent resident sheltering in place and wants glanceable situational awareness without re-reading the news.

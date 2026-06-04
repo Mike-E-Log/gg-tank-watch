@@ -1,5 +1,7 @@
 # Data sync — how `status.json` stays fresh
 
+> **Frozen archive (historical).** The pipeline is retired — the dashboard no longer polls and `scripts/refresh_local.py` exits with an `ARCHIVED` notice. The present-tense below describes how sync ran during the May 2026 incident.
+
 The dashboard polls `status.json` (incident facts) every ~30s. Something has to
 keep that file current. There are two paths; **only the local one is active right now.**
 
