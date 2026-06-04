@@ -1490,7 +1490,7 @@ var STRINGS = {
   "info.subtab.about": { en: "About" },
   "info.desc.summary": { en: "What happened during the May 2026 emergency." },
   "info.desc.officials": { en: "The city and county's own emergency channels." },
-  "info.desc.resources": { en: "Shelters, school closures, and recovery aid." },
+  "info.desc.resources": { en: "Recovery aid, shelters, and school closures." },
   "info.desc.about": { en: "How this archive was made, and its sources." },
   "topbar.unofficial": { en: "UNOFFICIAL" },
   "topbar.unofficial.title": { en: "Volunteer-made — not an official government source" },
@@ -2137,12 +2137,12 @@ function renderInfoTab() {
   // renderInfoConfigData (shelters/recovery) keep working; the section headings reuse
   // the existing Shelters/Schools/Recovery labels.
   var resources =
+    '<div class="info-section-title">' + t("info.subtab.recovery") + '</div>' +
+    '<div id="info-recovery-list"></div>' +
     '<div class="info-section-title">' + t("info.subtab.shelters") + '</div>' +
     '<div id="info-shelters-list"></div>' +
     '<div class="info-section-title">' + t("info.subtab.schools") + '</div>' +
-    '<div class="info-schools-grid" id="info-schools-grid"></div>' +
-    '<div class="info-section-title">' + t("info.subtab.recovery") + '</div>' +
-    '<div id="info-recovery-list"></div>';
+    '<div class="info-schools-grid" id="info-schools-grid"></div>';
 
   // About — resident-first "Why this was made" + Sources fold + a prominent centered Accessibility
   // link, then the binding AI disclosure as the panel-closing line (user 2026-06-03: moved from the
