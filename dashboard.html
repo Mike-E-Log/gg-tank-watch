@@ -2114,8 +2114,8 @@ function renderInfoTab() {
   // Summary — sourced peak facts (STATIC archive copy from timeline.json; the resolved
   // snapshot clears temp_f/residents/boundary, so binding to it would show a misleading 0/--).
   var summary =
-    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.substance") + '</span><span class="info-kv-val">' + t("info.fact.substanceV") + '</span></div>' +
-    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.facility") + '</span><span class="info-kv-val">' + t("info.fact.facilityV") + '</span></div>' +
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.substance") + '</span><a class="info-kv-val" href="https://en.wikipedia.org/wiki/Methyl_methacrylate" target="_blank" rel="noopener" style="color:var(--sa-text);text-decoration:none">' + t("info.fact.substanceV") + ' <span style="color:var(--sa-celadon)">↗</span></a></div>' +
+    '<div class="info-kv-row"><span class="info-kv-key">' + t("info.fact.facility") + '</span><a class="info-kv-val" href="https://en.wikipedia.org/wiki/GKN_Aerospace" target="_blank" rel="noopener" style="color:var(--sa-text);text-decoration:none">' + t("info.fact.facilityV") + ' <span style="color:var(--sa-celadon)">↗</span></a></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.tankTemp") + '</span><span class="info-kv-val">' + t("info.tankTempArchive") + '</span></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacResidents") + '</span><span class="info-kv-val">' + t("info.peakEvac") + '</span></div>' +
     '<div class="info-kv-row"><span class="info-kv-key">' + t("info.evacBoundary") + '</span><span class="info-kv-val">' + t("info.zonePeak") + '</span></div>' +

@@ -272,7 +272,11 @@ def test_info_row_has_breathing_room():
 def test_summary_archive_facts_present():
     """C: the Summary surfaces five sourced archive facts (substance/facility/tank/window/
     outcome) as STATIC copy — neutral labels, NO 'verified' authority chrome, and decoupled
-    from the cleared resolved snapshot (no live id binding)."""
+    from the cleared resolved snapshot (no live id binding). The substance (MMA) and facility
+    (GKN Aerospace) values each link out to a NEUTRAL third-party explainer (Wikipedia) with the
+    external-link ↗ cue and external-link safety (target=_blank rel=noopener), so a reader who
+    does not know the chemical or the company can self-serve context without the conduit authoring
+    any claim about them (user 2026-06-05, review item #2)."""
     text = DASHBOARD.read_text(encoding="utf-8")
     val_keys = ["info.fact.substanceV", "info.fact.facilityV",
                 "info.fact.windowV", "info.fact.outcomeV"]
@@ -282,10 +286,26 @@ def test_summary_archive_facts_present():
     bound = all(f't("{k}")' in text for k in val_keys)
     no_live_id = ('id="info-substance-val"' not in text
                   and 'id="info-facility-val"' not in text)
-    ok = not missing and bound and no_live_id
+    # The substance + facility values link out to neutral Wikipedia explainers, scoped to the
+    # Summary render block, each anchor wrapping its value with target=_blank/rel=noopener + ↗.
+    i = text.find("var summary =")
+    j = text.find("// Officials", i) if i >= 0 else -1
+    region = text[i:j] if (i >= 0 and j > i) else ""
+    mma_link = re.search(
+        r'href="https://en\.wikipedia\.org/wiki/Methyl_methacrylate"[^>]*>\'\s*\+\s*t\("info\.fact\.substanceV"\)',
+        region)
+    gkn_link = re.search(
+        r'href="https://en\.wikipedia\.org/wiki/GKN_Aerospace"[^>]*>\'\s*\+\s*t\("info\.fact\.facilityV"\)',
+        region)
+    link_safe = region.count('target="_blank"') >= 2 and region.count('rel="noopener"') >= 2
+    arrows = region.count("↗") >= 2
+    links_ok = bool(mma_link) and bool(gkn_link) and link_safe and arrows
+    ok = not missing and bound and no_live_id and links_ok
     return {"passed": ok,
-            "details": "Summary shows 5 sourced static archive facts (neutral labels, decoupled)"
-            if ok else f"missing_keys={missing} bound={bound} no_live_id={no_live_id}"}
+            "details": "Summary shows 5 sourced static archive facts + MMA/GKN neutral explainer links (↗)"
+            if ok else (f"missing_keys={missing} bound={bound} no_live_id={no_live_id} "
+                        f"mma_link={bool(mma_link)} gkn_link={bool(gkn_link)} "
+                        f"link_safe={link_safe} arrows={arrows}")}
 
 
 def test_shelter_row_dedicated_layout():
