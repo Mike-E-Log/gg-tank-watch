@@ -42,33 +42,25 @@ def test_feed_shows_every_collected_item():
     text = DASHBOARD.read_text(encoding="utf-8")
     m = re.search(r"NEWS_MAX_PER_BASE\s*=\s*(\d+)", text)
     cap = int(m.group(1)) if m else -1
-    ok = cap >= max_base
-    return {
-        "passed": ok,
-        "details": f"NEWS_MAX_PER_BASE={cap} >= largest base cluster {max_base}: feed shows all {len(items)} items"
-        if ok
-        else f"NEWS_MAX_PER_BASE={cap} < largest base cluster {max_base}: feed hides {max_base - cap} item(s) from that base",
-        "metrics": {"cap": cap, "max_base": max_base, "total_items": len(items)},
-    }
-
-
-def test_all_subtab_chronological_not_officials_first():
-    """The News 'All' subtab renders in pure reverse-chronological order (newest-first), NOT
-    officials-as-a-block-first. curateNewsFeed sorts the whole feed newest-first, then returns
-    the deduped list in that order — the old `officials.concat(rest)` re-grouping (which floated
-    all 12 officials above every article regardless of date, reading 'out of order' in 'All') is
-    removed. This is a FROZEN archive of a resolved incident, so the chronological story is the
-    value; officials stay distinguished by their OFFICIAL badge + the dedicated Official filter
-    tab, so authority no longer depends on feed position (user 2026-06-05). Static structural
-    guard on the curateNewsFeed source (the eval can't run JS)."""
-    text = DASHBOARD.read_text(encoding="utf-8")
+    complete = cap >= max_base
+    # Ordering: the 'All' feed is pure reverse-chronological (curateNewsFeed sorts newest-first
+    # then returns the deduped list directly; the old officials.concat(rest) re-grouping is gone).
+    # Officials stay distinguished by their badge + the Official filter tab, not by feed position
+    # (user 2026-06-05). Folded into this completeness test so the suite count stays stable (the
+    # count is cited across the README + safety-method docs).
     i = text.find("function curateNewsFeed(")
     j = text.find("function buildFeedCardsHtml(", i) if i >= 0 else -1
     body = text[i:j] if (i >= 0 and j > i) else ""
     newest_first = bool(re.search(r"feed\.sort\(", body)) and "tb - ta" in body
-    no_officials_first = ".concat(rest)" not in body
+    no_officials_first = bool(body) and ".concat(rest)" not in body
     returns_deduped = bool(re.search(r"return\s+deduped\s*;", body))
-    ok = bool(body) and newest_first and no_officials_first and returns_deduped
-    return {"passed": ok,
-            "details": "News 'All' pure reverse-chronological (deduped newest-first; officials-first concat removed)"
-            if ok else f"newest_first={newest_first} no_officials_first={no_officials_first} returns_deduped={returns_deduped}"}
+    chronological = newest_first and no_officials_first and returns_deduped
+    ok = complete and chronological
+    return {
+        "passed": ok,
+        "details": f"feed shows all {len(items)} items (cap={cap}>=max_base={max_base}) + 'All' reverse-chronological"
+        if ok
+        else f"complete={complete}(cap={cap},max_base={max_base}) chronological={chronological}"
+             f"(newest_first={newest_first} no_officials_first={no_officials_first} returns_deduped={returns_deduped})",
+        "metrics": {"cap": cap, "max_base": max_base, "total_items": len(items)},
+    }
