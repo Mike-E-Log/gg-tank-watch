@@ -162,7 +162,7 @@ This mirrors Anthropic's own approach to AI control: the system's authority is b
 | Encoding | 2 | UTF-8 survives cp1252 locale |
 | **Total control tests** | **15** | |
 
-The remaining ~193 tests in the 210-test suite cover schema validation, writer state-machine behavior (5-state sequence), safety-checker math (haversine, polygon), UI rendering contracts, encoding integrity, deployment-asset verification, and frozen-archive invariants.
+The remaining ~193 tests in the 211-test suite cover schema validation, writer state-machine behavior (5-state sequence), safety-checker math (haversine, polygon), UI rendering contracts, encoding integrity, deployment-asset verification, and frozen-archive invariants.
 
 ## Why this matters
 
