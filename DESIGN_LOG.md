@@ -44,7 +44,7 @@ Each decision has:
 | D-021 | 2026-05-24 | Section headers for visual flow | Active | 8.0 |
 | D-022 | 2026-05-24 | Safety checker placement: below map | Active | 8.0 |
 | D-023 | 2026-05-24 | Statement card design: bold meta + relative time | Active | 9.0 |
-| D-024 | 2026-05-24 | Portfolio framing: eval suite + design log | Active | TBD |
+| D-024 | 2026-05-24 | Documentation: eval suite + design log | Active | TBD |
 | D-025 | 2026-05-25 | Evac shelters: aggregate + link (hybrid) | Active | 9.0 |
 | D-026 | 2026-05-25 | News panel: generalize to videos + articles, Microlink OG fetch | Active | 8.7 |
 | D-027 | 2026-05-25 | Writer fix: partial facts must not recompute severity | Active | 9.3 |
@@ -352,13 +352,13 @@ Each decision has:
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 9.
 - **Lesson:** When the user can't tell what's newest at a glance, the fix is hierarchy — make the freshness signal the largest element on the card.
 
-## D-024: Portfolio framing: eval suite + design log
+## D-024: Documentation: eval suite + design log
 
 - **Date:** 2026-05-24
 - **Status:** Active.
-- **Context:** User: "I'm planning to put this as a github portfolio piece. I would like all of our design, so far and moving forward, to be logged and evaluated. Use AI Eval techniques to ensure the elite analytics engineer data-quality."
+- **Context:** Kept a full design log + eval suite, with design decisions logged and evaluated using AI-eval techniques for data-quality rigor.
 - **Decision:**
-  - Top-level `README.md` rewritten as a portfolio pitch (case study, architecture, lessons).
+  - Top-level `README.md` rewritten as a case study (architecture, lessons).
   - Operational guide moved to `USAGE.md`.
   - This `DESIGN_LOG.md` seeded retroactively + maintained going forward.
   - `eval/` directory with pytest-style behavioral tests (writer 5-state sequence, safety-compute known-input/output, geocoder live regression, JSON schema validation) + LLM-as-judge rubric files. `eval/run_all.py` produces `eval/scores.jsonl` append-only history.
@@ -366,7 +366,7 @@ Each decision has:
   - MIT LICENSE + .gitignore (excludes runtime artifacts).
 - **Principles applied:** P1 completeness, P5 explicit.
 - **Rubric:** TBD (this decision is too new to retroactively score).
-- **Lesson:** TBD. Note for future-self: the highest-leverage element of "portfolio quality" is showing the *thinking* (design log + eval suite + lessons) — not just the artifact.
+- **Lesson:** TBD. Note for future-self: the highest-leverage element of documentation quality is showing the *thinking* (design log + eval suite + lessons) — not just the artifact.
 
 ## D-025: Evacuation shelters — aggregate + link (hybrid)
 
@@ -416,14 +416,14 @@ Each decision has:
 
 - **Date:** 2026-05-25
 - **Status:** Active.
-- **Context:** First 8 commits landed directly on `main` while iterating live during an active emergency. That was the right velocity for the build phase. Now that the repo is a portfolio piece, the workflow should look like a real engineering team's.
+- **Context:** First 8 commits landed directly on `main` while iterating live during an active emergency. That was the right velocity for the build phase. Now that the repo is a public artifact, the workflow should follow professional engineering practices.
 - **Decision:** Going forward, non-trivial changes (>3 files, new dependency, schema change, doc updates spanning multiple files) land via feature branch + GitHub PR + merge. Trivial direct-to-main is still OK for one-line fixes during active incident response.
 - **Alternatives:**
   - **Always PR (rejected):** during the build phase, the PR overhead per change was wrong — 30-sec edits being PR'd would have killed momentum and added noise.
-  - **Never PR (rejected):** this is a portfolio piece now; the PR-merge history is part of the artifact.
+  - **Never PR (rejected):** for a public record, the PR-merge history provides transparency and auditability.
 - **Principles applied:** P3 pragmatic (right tool per phase), P5 explicit.
 - **Rubric:** TBD — too new to score retrospectively.
-- **Lesson:** Process maturity isn't a single switch. Build phase ≠ portfolio phase ≠ team phase. Pick the lightest workflow that meets the current phase's quality bar.
+- **Lesson:** Process maturity isn't a single switch. Build phase ≠ public-release phase ≠ team phase. Pick the lightest workflow that meets the current phase's quality bar.
 
 ## D-029: Hero address check — move safety checker into always-visible hero
 
@@ -433,7 +433,7 @@ Each decision has:
 - **Decision:** Move the address-check widget into the always-visible hero section so it's the first interactive element a user encounters. Keep the Check tab as an expanded detail view (full zone explanation, methodology notes, source links). Tabbed architecture preserved for secondary content.
 - **Alternatives:**
   - **A) Keep tabs as-is (rejected):** hides the most personal feature behind navigation. A frightened, limited-English-speaking elder shouldn't need to discover a tab to learn if their home is safe.
-  - **B) Single scroll page removing all tabs (rejected):** scroll fatigue on mobile; overwhelming for the billboard-test audience. Loses the technical sophistication signal for the portfolio.
+  - **B) Single scroll page removing all tabs (rejected):** scroll fatigue on mobile; overwhelming for the billboard-test audience. Loses the technical-sophistication signal for a public reader.
   - **C) Hybrid with collapsible sections (rejected):** collapsibles have their own discoverability problem — users don't know what's inside until they click. Same failure mode as tabs, just repackaged.
   - **D) Keep tabs + hero check (chosen):** smallest change that addresses the core safety concern. Answers the user's primary question ("am I safe?") with zero navigation friction while preserving the tabbed architecture for secondary information depth.
 - **Principles applied:** P1 completeness (primary user need answered without navigation), P5 explicit (the answer is visible, not hidden), P3 pragmatic (minimal structural change).

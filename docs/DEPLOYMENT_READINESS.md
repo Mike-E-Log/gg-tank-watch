@@ -39,7 +39,7 @@ who provide their own multilingual access. This is the most conservative applica
 
 - The VI toggle, sign-post, strings, redirects, and `vi.ready` flag are **removed** (not
   gated). Tracked in the dashboard workflow.
-- Fellowship / README / CLAUDE copy that still says "bilingual / Tiếng Việt" must be
+- README / CLAUDE copy that still says "bilingual / Tiếng Việt" must be
   updated to reflect the English-only + G1 posture (tracked in the workflow).
 
 ## Deferred (Phase 2, not blocking)

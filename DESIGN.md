@@ -100,7 +100,7 @@ The hero shows severity status and situation bullets — never directives.
 | 2026-05-29 | D2 'Tiếng Việt' sign-post, vi.ready=false (standing posture) | Reviewer reachable but NOT scheduled → withhold-and-amplify is the durable design, not a temporary patch. G1. |
 | 2026-05-29 | Info sub-tabs: Status \| Resources \| About | "Get Help" over-claims (conduit routes to help, doesn't provide it); "Sources" folded under About to remove the Resources/Sources label clash. |
 | 2026-05-29 | Timeline: curate + archive toggle | Keep the data; default-show ~critical/major milestones, archive toggle for forensic depth. Fits the during-incident thesis without dropping history. |
-| 2026-05-29 | Tablet: comprehensive responsive (600–767 + 768–1023) | All-concerns scope + portfolio stakes warrant proper tablet handling, not a deferral. |
+| 2026-05-29 | Tablet: comprehensive responsive (600–767 + 768–1023) | All-concerns scope warrants proper tablet handling, not a deferral. |
 | 2026-05-29 | News dedupe deferred | Dedupe code is proven in tests but effectively a no-op on the static seed; defer to a post-incident video-sourcing strategy. |
 | 2026-06-01 | Info tab archive-clarity (scope B) | "Status"→"What happened"; Status gets its own derived historical disclaimer; Resources leads with Official Sources, then a collapsed de-carded "Historical resources" fold (shelters + community as dense rows, no card chrome); About fold retitled "Sources checked"; AI disclosure promoted to 12px gold; disclaimer split with "In an emergency, call 911." on its own line. Cross-model review (Codex gpt-5.5 + blind Claude subagent) hard-rejected the card-grid-first Resources panel. Full structural `.info-section` refactor (scope C) deferred. |
 | 2026-06-02 | Map + News design-complete; Info is the remaining alignment work | Map/News patterns are the reference the rest of the app aligns to; the Info tab must adopt that visual language, gain clearer individually-navigable sub-tabs, and use the documented type scale consistently. Exact sub-tab set is a pending design decision. (Also: dropped the trailing period from the safety-strip disclaimer — it reads as a label flowing into "· Terms".) |
@@ -129,7 +129,7 @@ The founder's binding "design-complete" bar, made finite so it can be reached (n
 14. **Visual verify** — Edge-headless at 375x812, 375x667, 700x900, 768x1024, 1024x768, 1280x720, light + dark; no clipping/reflow.
 15. **Cache** — `CACHE_NAME` v7→v8 on deploy (dashboard.html changes); reason in CHANGELOG.
 16. **Docs + rename refs** — CHANGELOG + this gate; constraints audit (conduit/G1/honesty/noindex); update README/USAGE/docs/DATA_SYNC current-facing `gg-tank-dashboard`→`gg-tank-watch` refs (leave historical records).
-17. **Submission-ready** — all of the above merged + deployed; Fellows application can submit.
+17. **Submission-ready** — all of the above merged + deployed and documented.
 
 **Milestone ladder (safety net, not a scope cut — the gate is M3):** M1 Map-foundation (B2+L1+L2+V1+B1) · M2 +D1+D2+video cards · **M3 = full all-concerns (the gate).**
 

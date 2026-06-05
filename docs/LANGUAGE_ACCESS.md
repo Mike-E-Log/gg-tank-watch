@@ -13,7 +13,7 @@ get the information in English are exactly the people a translation serves.
 (even via a link framed as our own content) any non-English safety copy without
 reliable human verification. A wrong "you're safe" — or a mistranslated evacuation
 instruction — is far worse than a missing translation (see
-[DISTRIBUTION.md](DISTRIBUTION.md) G1, [LEGAL.md](LEGAL.md)). For a two-person volunteer
+[LEGAL.md](LEGAL.md)). For a two-person volunteer
 conduit without reliable native translators on call, the honest and safe choice is to
 **not ship translations at all** and route limited-English residents to the officials
 who publish their own verified copy (the city's emergency page carries human-authored

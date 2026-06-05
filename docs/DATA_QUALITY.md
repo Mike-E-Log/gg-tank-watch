@@ -260,7 +260,7 @@ set, to keep them cheap and stable:
 ## 4. Data-freshness contract (handshake → News-UX stream)
 
 > **Cross-stream handshake.** This section defines the signal; the News-UX stream
-> (`docs/NEWS_UX_SPEC.md`) consumes it to render the stale/very-stale treatment.
+> the dashboard consumes it to render the stale/very-stale treatment.
 > The orchestrator routes the agreement. The single most important line: **the
 > frontend must key staleness off `data_as_of_iso`, not `last_updated_iso`.**
 

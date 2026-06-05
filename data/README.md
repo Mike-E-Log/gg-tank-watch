@@ -40,4 +40,4 @@ This seed is hand-curated. The live `/loop` job (every 30 min) is where fresh co
 
 - Bootstrapping a fresh `git clone` of the dashboard
 - Restoring after wiping `status.json`
-- Demonstrating the dashboard for a portfolio review
+- Demonstrating the dashboard for a code review
