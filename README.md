@@ -28,7 +28,7 @@ GG Tank Watch is a single-page dashboard that, during a multi-day chemical emerg
 
 Its organizing principle is simple:
 
-> **Responsible and helpful are the same lane.** Every safety constraint here made the product *more* trustworthy and *more* useful to scared residents, not less. The alignment tax was zero.
+> **Responsible and helpful are the same lane.** Every safety constraint here made the product *more* trustworthy and *more* useful to scared residents, not less. The alignment tax never materialized here.
 
 This README is the project's **decisions record** — what was decided, *why*, and what was deliberately *not* built. The reasoning is the point, not just the code.
 
@@ -125,7 +125,7 @@ Every decision below is logged with its rationale and, where direction changed, 
 |----------|-----|----------------------|
 | **English-only by design** — no non-English safety copy is surfaced without fluent human verification; LEP residents are routed to officials, who publish their own verified translations | The affected area overlaps Little Saigon; a *wrong* Vietnamese safety string is worse than none. A fluent verifier was never secured (the G1 gate), so the conservative resolution was to remove non-English entirely | Ship machine-translated Vietnamese / unverified native review |
 
-This is the project's clearest "alignment tax = zero" case: the conservative call (remove rather than risk) is also the safer call. See [`docs/LANGUAGE_ACCESS.md`](docs/LANGUAGE_ACCESS.md), guarded by [`eval/test_language_access.py`](eval/test_language_access.py) and `eval/test_no_vietnamese_residue.py`.
+This is the project's clearest case of that: the conservative call (remove rather than risk) is also the safer call. See [`docs/LANGUAGE_ACCESS.md`](docs/LANGUAGE_ACCESS.md), guarded by [`eval/test_language_access.py`](eval/test_language_access.py) and `eval/test_no_vietnamese_residue.py`.
 
 ### Responsible deployment
 
@@ -158,6 +158,7 @@ The interesting decisions are the ones that changed. All are logged in [`DESIGN_
 - **Push-first → dashboard-first (D-001 → D-009).** The first plan was mobile push notifications (you can't see a dashboard while asleep). The user reversed it — "scratch all mobile plans" — and the ntfy/push pipeline was removed cleanly. Both decisions are logged with full reasoning.
 - **The conduit pivot (2026-05-26).** Removed the address checker, blast/plume layers, and severity verdicts. The single most important decision in the project (see [thesis](#the-thesis-conduit-not-verdict-author)).
 - **The historical-archive pivot (live → frozen).** Once the incident resolved, live polling was pointless and a stale "live" view is a hazard. The dashboard was frozen: polling disabled, the refresh job retired (`refresh_local.py` now exits with an "ARCHIVED" error), every heading date-anchored.
+- **Vietnamese safety copy → English-only (G1).** Early builds carried Vietnamese translations for the Little Saigon population near the zone. With no fluent verifier secured, a *wrong* safety string in a language we couldn't check was judged worse than none — so all non-English was removed and LEP residents routed to officials' own verified translations. The conservative call was also the safer one.
 - **Info tab: 6 sub-tabs → 4 equal-width (Summary · Officials · Resources · About).** Six scrollable sub-tabs clipped their labels at 375px (caught after the fact); the fix was four equal-width tabs that fit, locked by a rendered-geometry guard ([`eval/test_info_subtab_fit.py`](eval/)).
 - **Recovery-first Resources ordering.** A frozen archive serves *post*-crisis viewers, so Resources leads with **Recovery aid**, then date-anchored Evacuation shelters (May 2026), then School closures (May 2026) — recovery is the only still-forward-actionable section.
 - **Name: "GG Tank Watch," not "…Safety."** "Safety" over-claims authority and risks resident over-trust (the Citizen-app precedent). "Watch" is honest about what it is.
