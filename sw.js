@@ -1,4 +1,4 @@
-var CACHE_NAME = "gg-tank-v76";
+var CACHE_NAME = "gg-tank-v77";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
