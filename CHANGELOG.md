@@ -433,7 +433,7 @@ Pre-distribution trust and liability hardening from `docs/LEGAL.md` (minimum-bar
 - D-001 push-first vs dashboard-first (later reversed per D-009)
 - D-002 OneDrive path vs `%LOCALAPPDATA%` (kept OneDrive)
 - D-003 WebSearch+regex vs per-site scrapers (chose WebSearch+regex)
-- D-004 Hysteresis design (initially 2-tick, then killed in v0.1.1 because the candidate-fires-twice rule was wrong for toggle events)
+- D-004 Hysteresis design (initially 2-tick, then dropped in v0.1.1 because the candidate-fires-twice rule was wrong for toggle events)
 - D-005 Severity rules (hardcoded `SEVERITY_RULES` dict)
 - D-006 Cloud routine writing to status.json (rejected — Linux sandbox can't reach OneDrive)
 - D-007 Map vs no map (initially deferred, then added in v0.3 per user request)

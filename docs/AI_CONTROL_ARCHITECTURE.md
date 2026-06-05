@@ -170,4 +170,4 @@ This is not an academic exercise. During the Garden Grove tank emergency, ~50,00
 
 The architecture ensures that even if the model hallucinates — which it will, eventually — the hallucination cannot reach users in a form that looks like an official all-clear. The dashboard might go stale. It might show fewer statements than it should. It will never tell someone it's safe to go home when it isn't.
 
-That is the alignment tax being zero: the safety constraints made the product more trustworthy, not less useful.
+That is the alignment tax never materializing: the safety constraints made the product more trustworthy, not less useful.
