@@ -1,0 +1,19 @@
+name: hygiene
+
+# Repo-hygiene guard: fails the build if personal PII or the removed
+# self-promotional framing ever re-enters this public repo. Together with the
+# clean baseline (curated 2026-06-05), a future change can never reintroduce
+# those problems - so the repo never needs another full sweep.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  repo-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PII + framing guard
+        run: bash scripts/check_repo_hygiene.sh
