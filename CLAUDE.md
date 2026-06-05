@@ -1,55 +1,32 @@
 # GG Tank Watch — Project Instructions
 
-## Portfolio Framing
+## What this is
 
-This project is a **frozen historical archive of a resolved May 2026 emergency that demonstrates responsible AI deployment in a safety-critical domain**, built for the Anthropic Fellows Program portfolio (rolling, May/July 2026 cohorts).
+A frozen historical archive of a resolved May 2026 methyl-methacrylate chemical-tank emergency in Garden Grove, California. During the incident it served ~50,000 evacuated residents by amplifying official information; it is a pure information conduit that routes to officials and authors no directives of its own. It is now frozen — no longer updated.
 
-The thesis: responsible AI and helpful AI are the same lane. GG Tank Watch was built to serve ~50,000 evacuated residents during a real chemical emergency by amplifying official information — and every design choice demonstrates an Anthropic safety principle in production, not in theory. It is now a frozen historical archive of that resolved incident.
+The organizing principle: responsible and helpful are the same lane. Every safety constraint here made the product more trustworthy and more useful to scared residents, not less. These principles map to widely published responsible-AI guidance (including Anthropic's).
 
-## Anthropic Safety Principles (BINDING — governs all decisions)
+## Safety principles (BINDING — govern all decisions)
 
-| Principle | How this project demonstrates it | Evidence |
+| Principle | How this project applies it | Evidence |
 |-----------|----------------------------------|----------|
-| **Honesty / AI transparency** | Persistent disclosure: "compiled with AI assistance, checked by a person" | T3, `disclosure.ai` string |
-| **Avoiding harm** | Information conduit only — routes to officials, authors NO directives. The §552/§230 line is explicitly load-bearing | T1 router, Code of Conduct |
-| **Human oversight** | Human reviews all AI summaries pre-publish. The app ships English only; safety copy is never surfaced in a language we can't reliably verify (G1) — LEP residents are routed to officials, who publish their own verified translations | Pipeline design, LANGUAGE_ACCESS.md, eval/test_language_access.py |
-| **Scalable oversight** | 48-test eval harness monitors behavioral properties incl. a G1 language-access gate. Provenance tests prevent fabricated sources. Corroboration gate on danger downgrades | eval/ harness, test_provenance.py, test_language_access.py |
-| **Responsible deployment** | Attorney review gates public launch. Entity + insurance required. `noindex` until cleared | Lane B, DISTRIBUTION.md |
-| **Alignment tax = zero** | Safety constraints made the product better (more trustworthy, more useful to scared residents), not worse | Conduit > verdict design |
-
-## Why this matters for the fellowship
-
-Anthropic's research priorities include scalable oversight and AI control. This project is a worked example of:
-- **Scalable oversight applied to a consumer-facing AI system** — automated behavioral tests that catch when the system drifts from its safety contract (fabricated sources, authored directives, stale data presented as fresh)
-- **AI control in deployment** — the system cannot exceed its authority (route to officials only), enforced by code structure + eval, not by prompting alone
-- **Empirical safety thinking** — every safety property has a test that fails before the property is violated, not after
-
-## Technical
-
-- **Stack:** Single-file static dashboard (`dashboard.html`), Python data pipeline (`scripts/`), pytest-style eval harness (`eval/`), Vercel static hosting.
-- **Eval:** `python eval/run_all.py --skip integration` — verify by exit code/scorecard. NEVER use `--quiet` to verify (suppresses `[FAIL]` lines).
-- **Visual/geometry gate (eyes-in-loop) — the stack Anthropic uses:** primary eyes = the **native Claude Code + Chrome integration** (`/chrome`; `claude-in-chrome` MCP) — real signed Chrome/Edge, reads DOM + screenshots, renders the MapLibre map (no headless hang), and runs the design-verification loop (open the page → compare → list differences → fix) plus on-demand geometry probes (`getBoundingClientRect`/`scrollWidth`) at 320/360/375/390/430/768 px × light/dark. **Deterministic floor** = the always-on text eval incl. static CSS-invariant guards (`eval/test_info_subtab_fit.py`). A headless **Playwright `channel:'msedge'`** exit-code test is an *opt-in* CI upgrade only. The agent can't spawn raw `msedge.exe` (harness *permission* deny, survives `dangerouslyDisableSandbox`); `--dump-dom` is broken on `--headless=new`. See `docs/info-tab-acceptance-rubric.md` §3–§4 and `~/Documents/Eyes_In_The_Loop_Research_20260603/`.
-- **Data refresh:** `scripts/refresh_local.py` pushes to CURRENT branch. Verify `git branch --show-current` == main first.
-- **Deploy:** Auto-deploys `main` to Vercel. `noindex` ON until Lane B3 (attorney) clears.
-- **Branch workflow:** Branch → PR → merge. Never push main directly.
+| **Honesty / transparency** | Persistent disclosure: "compiled with AI assistance, checked by a person" | disclosure string, eval guards |
+| **Avoiding harm** | Information conduit only — routes to officials, authors NO directives. The §552/§230 line is load-bearing | `scripts/update_status.py`, `docs/CODE_OF_CONDUCT.md` |
+| **Human oversight** | A person reviews all AI summaries pre-publish. English-only; safety copy is never surfaced in a language we can't reliably verify (G1); LEP residents are routed to officials | `docs/LANGUAGE_ACCESS.md`, `eval/test_language_access.py` |
+| **Scalable oversight** | A 208-test eval harness monitors behavioral properties incl. the G1 language gate, provenance (no fabricated sources), and the corroboration gate on danger downgrades | `eval/` harness, `test_provenance.py`, `test_language_access.py` |
+| **Responsible deployment** | Attorney review gates public launch; entity + insurance required; `noindex` until cleared | `vercel.json`, `robots.txt` |
+| **Alignment tax = zero** | Safety constraints made the product better (more trustworthy, more useful), not worse | conduit > verdict design |
 
 ## Constraints
 
 - **G1:** No non-English safety copy. English-only by design — never surface a translation (even a link framed as ours) without reliable human verification; route LEP residents to officials.
-- **No directives:** Never tell anyone to evacuate or take action. Route to officials.
+- **No directives:** never tell anyone to evacuate or take action. Route to officials.
 - **No new deps without approval.**
-- **Attorney review blocks launch:** Do not remove `noindex` until B3 clears.
+- **Attorney review blocks launch:** do not remove `noindex` until attorney review clears.
 
-## Skill routing
+## Technical
 
-When the user's request matches an available skill, invoke it via the Skill tool.
-
-- Product ideas/brainstorming → /office-hours
-- Strategy/scope → /plan-ceo-review
-- Architecture → /plan-eng-review
-- Bugs/errors → /investigate
-- QA/testing → /qa or /qa-only
-- Code review → /review
-- Ship/deploy/PR → /ship or /land-and-deploy
-- Save progress → /context-save
-- Resume context → /context-restore
+- **Stack:** single-file static dashboard (`dashboard.html`), Python stdlib data pipeline (`scripts/`), pytest-style eval harness (`eval/`), Vercel static hosting.
+- **Eval:** `python eval/run_all.py --skip integration` — verify by exit code/scorecard. Do not use `--quiet` to verify (it suppresses `[FAIL]` lines).
+- **Data:** the pipeline is frozen/retired; the archive is no longer updated.
+- **Branch workflow:** branch → PR → merge. Never push `main` directly.
