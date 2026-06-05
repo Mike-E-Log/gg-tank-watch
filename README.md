@@ -263,7 +263,7 @@ gg-tank-watch/
 │   ├── FAILURE_ANALYSIS.md          ← red-team failure modes
 │   ├── PRIOR_ART.md · LEGAL.md · CODE_OF_CONDUCT.md
 │   ├── LANGUAGE_ACCESS.md · DATA_SYNC.md · DATA_QUALITY.md
-│   ├── SPEC.md · NEWS_UX_SPEC.md · WCAG_NOTES.md
+│   ├── SPEC.md · WCAG_NOTES.md
 │   └── AUDIT_2026-06-04.md          ← the close-out audit
 └── eval/
     ├── run_all.py              ← runs everything, appends scores.jsonl

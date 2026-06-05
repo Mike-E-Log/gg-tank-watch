@@ -1,4 +1,4 @@
-# Legal & Liability Research — gg-tank-dashboard ("ggtankwatch")
+# Legal & Liability Research — gg-tank-watch ("ggtankwatch")
 
 > ## ⚠️ THIS IS RESEARCH, NOT LEGAL ADVICE
 >
@@ -32,7 +32,7 @@ hazard verdicts** — it routes users to official sources (a pure information
 
 **Jurisdiction focus:** U.S. federal + California. **Compiled:** 2026-05-24.
 **Reconciled to the conduit product + the 2026-05-27 legal memo
-([`legal-research/2026-05-27/`](legal-research/2026-05-27/)):** 2026-05-29.
+(internal memo):** 2026-05-29.
 **Method:** multi-source web research with claim-level source tracking; see
 [Methodology](#methodology--source-confidence) and [Bibliography](#bibliography).
 
@@ -710,7 +710,7 @@ conclusion.** DMLP guides cited for California defamation are not maintained pas
 **2026-05-29 reconciliation.** This document was updated to match the shipped conduit
 product (address checker, blast/plume layers, Leaflet, and Nominatim removed) and to
 fold in the 2026-05-27 deep-research legal memo
-([`legal-research/2026-05-27/legal_risk_memo.md`](legal-research/2026-05-27/legal_risk_memo.md)).
+(internal legal memo).
 The memo's distinctive contributions — the §552 pecuniary-interest shield, the §230
 aggregator/ICP line (*Force v. Facebook*), the *Brandt* forecaster analogy, and the
 CCPA/AB 1355 location-privacy watch — are cited inline as [50]–[55]. The two docs use
@@ -779,7 +779,7 @@ misrepresentation in the memo); both are retained as complementary defenses.
 49. FTC — COPPA Rule, 16 CFR Part 312 (verifiable parental consent) ⚑. (P, .gov) — https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa · https://www.ecfr.gov/current/title-16/chapter-I/subchapter-C/part-312
 
 **Conduit reconciliation additions (2026-05-29)**
-50. 2026-05-27 deep-research legal memo (internal). [`docs/legal-research/2026-05-27/legal_risk_memo.md`](legal-research/2026-05-27/legal_risk_memo.md) — conduit-mode risk memo; sources tracked in the sibling `claims.jsonl`/`evidence.jsonl`/`sources.jsonl`.
+50. 2026-05-27 deep-research legal memo (internal). an internal deep-research legal memo (not published) — conduit-mode risk memo; sources tracked in the sibling `claims.jsonl`/`evidence.jsonl`/`sources.jsonl`.
 51. Force v. Facebook, 934 F.3d 53 (2d Cir. 2019). (P, case) — algorithmic curation protected under §230. https://law.justia.com/cases/federal/appellate-courts/F3/934/53/
 52. Bartnicki v. Vopper, 532 U.S. 514 (2001). (P, case) — First Amendment protects publishing truthful information on matters of public concern. https://supreme.justia.com/cases/federal/us/532/514/
 53. Brandt v. The Weather Channel. (S, case) — no liability for incorrect forecasts absent actual negligence (cited in memo [15]).

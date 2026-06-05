@@ -171,7 +171,7 @@ shipped, **K cut**. Eval green (**179/179**); vision-verified in signed Edge (li
 
 ### Changed
 - **Policy metadata reframed to the frozen state.** `data/news_archive.json` `policy` drops the forward-posture `collection_going_forward: "officials-only"` (read as ongoing collection) for `collection_ended: "2026-05-27T02:30:00Z"`; the note now says collection ended at the all-clear with nothing added after — official statements included — which matches the data (all 92 items are dated ≤ May 26). `test_collection_policy_documented` now rejects forward-posture framing instead of merely requiring the `officials-only` string.
-- **Stale forward-posture prose cleaned.** `CODE_OF_CONDUCT.md` (Vietnamese "currently held — awaiting verification" → removed 2026-05-30, English-only by design), `LANGUAGE_ACCESS.md` ("maintained for every future incident update" → "for the life of an incident", no future-incident assumption), and `DISTRIBUTION.md` (Open Question 3 "Nancy to confirm" → Phase 0 concluded at the May 26 all-clear).
+- **Stale forward-posture prose cleaned.** `CODE_OF_CONDUCT.md` (Vietnamese "currently held — awaiting verification" → removed 2026-05-30, English-only by design), `LANGUAGE_ACCESS.md` ("maintained for every future incident update" → "for the life of an incident", no future-incident assumption), and the distribution-plan doc (Open Question 3 "Nancy to confirm" → Phase 0 concluded at the May 26 all-clear).
 - service-worker `CACHE_NAME` bumped `v40 → v41`.
 
 ### Removed
@@ -199,7 +199,7 @@ shipped, **K cut**. Eval green (**179/179**); vision-verified in signed Edge (li
 
 ### Changed — docs / process
 - **Eval count corrected** to 48 across reviewer-facing docs (was stated as 47).
-- **`DISTRIBUTION.md`** no longer markets removed features (address checker, blast-radius/plume map).
+- **the distribution-plan doc** no longer markets removed features (address checker, blast-radius/plume map).
 - **`docs/DEPLOYMENT_READINESS.md`** is the single source of truth for launch state, replacing the stale `plan/EXECUTION_PLAN.md` + `loop/LOOP_STATE.md` sentinels.
 - service-worker `CACHE_NAME` bumped `v8 → v9`.
 
@@ -217,7 +217,7 @@ shipped, **K cut**. Eval green (**179/179**); vision-verified in signed Edge (li
 - **Live site was ~22h stale.** Vercel's free Hobby plan silently refuses to deploy a private repo owned by a GitHub *org*, so every `refresh_local.py` push since ~02:42Z never deployed — residents saw ~22h-old emergency data (the staleness banner correctly fired, so it was degraded-but-honest). Migrated the repo to a personal account (`Mike-E-Log/gg-tank-watch`), where Hobby deploys private repos free; auto-deploy on push is restored. Interim live URL is `gg-tank-watch.vercel.app` (resident-facing `gardengrovetankwatch.org` follows at launch).
 
 ### Changed
-- **Repointed canonical / Open Graph / Twitter URLs** + the cover-letter "Live:" link to `gg-tank-watch.vercel.app`; portfolio repo ref → `Mike-E-Log/gg-tank-watch`.
+- **Repointed canonical / Open Graph / Twitter URLs** + the cover-letter "Live:" link to `gg-tank-watch.vercel.app`; repo ref → `Mike-E-Log/gg-tank-watch`.
 - **`refresh_local.py` `trigger_deploy()`** — optionally POSTs `$VERCEL_DEPLOY_HOOK_URL` after each push as defense-in-depth against a silent auto-deploy stall (no-op until the hook env var is set; mirrors `ping_healthcheck`).
 
 ## [v0.16] — 2026-05-29 (Vietnamese held pending fluent verification — G1 honesty)
@@ -225,7 +225,7 @@ shipped, **K cut**. Eval green (**179/179**); vision-verified in signed Edge (li
 ### Changed
 - **Vietnamese held (`vi.ready=false`).** The ~134 AI-drafted Vietnamese strings were never verified by a fluent native speaker (the prior reviewer is not fluent and checked only a few), so they no longer ship as safety copy. `t()` falls back to verified English automatically. This corrects a real honesty gap — the site had been serving unverified Vietnamese life-safety copy. Re-enable only after a fluent native speaker + certified translation verify it (the gate below enforces this).
 - **Interim "Tiếng Việt ↗" affordance.** With the toggle hidden, the language menu offers an outbound "Tiếng Việt ↗" link to the official Vietnamese emergency page (ggcity.org/emergency), routing Vietnamese-seeking residents to verified *human* Vietnamese instead of stranding them in English ("withhold-and-amplify").
-- **Honesty corrections across docs.** Qualified/removed false "native-verified" / "Nancy has verified" claims in CODE_OF_CONDUCT, PRIOR_ART, LANGUAGE_ACCESS, DISTRIBUTION, the fellowship evidence docs, and the i18n briefing (kept with a correction note as the audit trail). The truthful forward-looking "English fallback until verified" rules are unchanged.
+- **Honesty corrections across docs.** Qualified/removed false "native-verified" / "Nancy has verified" claims in CODE_OF_CONDUCT, PRIOR_ART, LANGUAGE_ACCESS, and the i18n briefing (kept with a correction note as the audit trail). The truthful forward-looking "English fallback until verified" rules are unchanged.
 
 ### Added
 - **G1 language-access gate (`eval/test_language_access.py`, +2 tests → 47 total).** A build-failing guard: any non-English language flipped to `ready:true` without fluent-native verification fails the eval — turning the G1 policy into an enforced control. The falsifier recommended by the 2026-05-29 research (`docs/research/2026-05-29-vi-anthropic-lens-research.md`).
@@ -307,11 +307,11 @@ shipped, **K cut**. Eval green (**179/179**); vision-verified in signed Edge (li
 - **Geocode result caching** (localStorage, 7-day TTL) to satisfy the OSM Nominatim caching policy.
 
 ### Notes
-- New user-facing strings are English-only with EN fallback under VI until Nancy verifies (G1 gate). Final hero/severity wording remains attorney-review-gated per `docs/LEGAL.md`. The takeover modal's "LEAVE NOW" directive is flagged for a separate liability decision in `docs/REDESIGN_PUNCHLIST.md`. A pre-existing em-dash mojibake in `status.json` `boundary_text` (Info → Evacuation → Boundary) is a data-pipeline issue for the DATA_QUALITY lane, not this PR.
+- New user-facing strings are English-only with EN fallback under VI until Nancy verifies (G1 gate). Final hero/severity wording remains attorney-review-gated per `docs/LEGAL.md`. The takeover modal's "LEAVE NOW" directive is flagged for a separate liability decision in an internal punch-list. A pre-existing em-dash mojibake in `status.json` `boundary_text` (Info → Evacuation → Boundary) is a data-pipeline issue for the DATA_QUALITY lane, not this PR.
 
 ## [v0.7] — 2026-05-25 (trust/safety on-page — PR-A)
 
-Pre-distribution trust and liability hardening from `docs/LEGAL.md` (minimum-bar checklist) and `docs/DISTRIBUTION.md` §5. The dashboard now sells its own unofficial, informational-only posture on first glance and points to the city as the source of truth on every screen.
+Pre-distribution trust and liability hardening from `docs/LEGAL.md` (minimum-bar checklist) and the distribution-plan doc. The dashboard now sells its own unofficial, informational-only posture on first glance and points to the city as the source of truth on every screen.
 
 ### Added
 - **Persistent "UNOFFICIAL" pill** in the topbar next to the title — never dismissable, with a "volunteer-made, not an official government source" tooltip.
@@ -320,13 +320,13 @@ Pre-distribution trust and liability hardening from `docs/LEGAL.md` (minimum-bar
 - **New `terms.html`** — standalone Terms & disclaimer page carrying the draft ToU (not-official/not-affiliated, informational-only, no-warranty, verify-official-sources, §1668-aware liability limit, third-party content, report-an-error, privacy, changes), an on-page banner, official sources, and OSM/Leaflet attribution.
 
 ### Changed
-- **Address-check verdict wording audit** (highest-risk per LEGAL R1/R2, DISTRIBUTION §3): the "outside all zones" verdict no longer says "LIKELY SAFE" / "CÓ KHẢ NĂNG AN TOÀN" (dropped the banned safety promise) — now "OUTSIDE MAPPED ZONES" / "NGOÀI CÁC VÙNG TRÊN BẢN ĐỒ". "inside official evac zone" → "inside the city's evacuation zone" (keeps attribution to the authority, drops the "official" adjective).
+- **Address-check verdict wording audit** (highest-risk per LEGAL R1/R2, the distribution-plan doc): the "outside all zones" verdict no longer says "LIKELY SAFE" / "CÓ KHẢ NĂNG AN TOÀN" (dropped the banned safety promise) — now "OUTSIDE MAPPED ZONES" / "NGOÀI CÁC VÙNG TRÊN BẢN ĐỒ". "inside official evac zone" → "inside the city's evacuation zone" (keeps attribution to the authority, drops the "official" adjective).
 - **Check-result disclaimer** strengthened to "Estimate only — not official. Verify at ggcity.org/emergency; in an emergency, call 911."
 
 ### Notes
 - New user-facing strings are English-only and fall back to English under VI until Nancy verifies them (G1 translation gate). The minimal VI redactions in changed verdict strings also need Nancy's sign-off. Final wording remains attorney-review-gated per `docs/LEGAL.md` (🔴).
 
-## [v0.6] — 2026-05-25 (post-portfolio iteration)
+## [v0.6] — 2026-05-25 (post-release iteration)
 
 ### Added
 - **Evacuation shelters panel + map markers** (D-025). 9 hand-curated shelters geocoded via Nominatim: Garden Grove Sports & Rec, Cypress Community Center, Savanna HS (Anaheim), Mile Square Park (Fountain Valley), Los Amigos HS (Fountain Valley), Ocean View HS (Huntington Beach), Golden West College, JFK HS (La Palma), OC Fair & Event Center (Costa Mesa — RV evacuees only). Each rendered as a blue square marker on the map; panel below safety-checker shows name, city, address, RV-only chip, and a "Directions ↗" link that opens Google Maps with the destination pre-filled. Prominent CTA at top: "Live list at ggcity.org/emergency" since the city stays the source of truth.
@@ -358,10 +358,10 @@ Pre-distribution trust and liability hardening from `docs/LEGAL.md` (minimum-bar
 - Initial push to a private repository.
 - 8 commits on `main` before this PR. GH Actions workflow runs eval suite on every push.
 
-## [v0.5] — 2026-05-24 (portfolio cut)
+## [v0.5] — 2026-05-24 (public-release cut)
 
 ### Added
-- Top-level `README.md` rewritten as a portfolio pitch (case study, screenshots, architecture, what I'd change).
+- Top-level `README.md` rewritten as a case study (architecture, what I'd change).
 - `DESIGN_LOG.md` — structured log of every design decision (D-001 … D-NNN) with rubric scoring, alternatives considered, status (active/superseded), and retrospective notes.
 - `eval/` directory with pytest-style behavioral suite:
   - `test_writer.py` — 5-state sequence (baseline / no-diff / urgent-toggle / stable / resolved) + new-statement + residents-shift + schema validation
@@ -376,7 +376,7 @@ Pre-distribution trust and liability hardening from `docs/LEGAL.md` (minimum-bar
 - `.gitignore` (excludes runtime artifacts)
 
 ### Changed
-- Original user-facing `README.md` moved to `USAGE.md`. Top-level `README.md` now serves a different audience (portfolio visitors).
+- Original user-facing `README.md` moved to `USAGE.md`. Top-level `README.md` now serves a different audience (public readers).
 
 ## [v0.4] — 2026-05-24 (UPDATE banner + sidebar + statement card polish)
 
