@@ -12,26 +12,36 @@
 
 ---
 
+## Origin
+
+GG Tank Watch started with one worried person. During the May 2026 emergency, Nancy had family near the evacuation zone, and for days she refreshed the news on a loop — trying to tell, from scattered and contradicting reports, whether things were getting better or worse. So we built her one page that showed the official picture at a glance, honestly labeled — and it became the one place she trusted, so she could stop hunting for updates and get back to the people she loved.
+
+> *"I didn't need more news — I needed to know my family was okay without reading twenty articles to figure it out."* — Nancy
+
+*Built by Mike, with Nancy as its first user and the reason it exists.*
+
+---
+
 ## What this is, in 30 seconds
 
 GG Tank Watch is a single-page dashboard that, during a multi-day chemical emergency, pulled scattered official and news signals into one calm view and **routed residents back to the authorities in charge**. It is a **pure information conduit**: it republishes official facts and links, and **authors no directives or hazard verdicts of its own**. The emergency is over, so the dashboard is frozen: the data pipeline is retired, the page no longer polls, and every heading is date-anchored so it can never be misread as live.
 
-It is also a **portfolio piece for the Anthropic Fellows Program**, and its organizing thesis is simple:
+Its organizing principle is simple:
 
-> **Responsible AI and helpful AI are the same lane.** Every safety constraint here made the product *more* trustworthy and *more* useful to scared residents, not less. The alignment tax was zero.
+> **Responsible and helpful are the same lane.** Every safety constraint here made the product *more* trustworthy and *more* useful to scared residents, not less. The alignment tax was zero.
 
 This README is the project's **decisions record** — what was decided, *why*, and what was deliberately *not* built. The reasoning is the point, not just the code.
 
 ---
 
-## For Anthropic reviewers
+## How to read this
 
 Recommended reading path: this README's [Safety & ethics decisions](#safety--ethics-decisions-the-core) → [`CLAUDE.md`](CLAUDE.md) (the binding safety-principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (red-team failure modes) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (the conduit pattern) → [`eval/`](eval/).
 
-**Why this is a worked example of Anthropic's research priorities:**
+**What this demonstrates:**
 
 - **Scalable oversight on a consumer-facing AI system.** An automated behavioral test suite catches when the system drifts from its safety contract — fabricated sources, authored directives, stale data stamped fresh — *before* it ships, not after.
-- **AI control in deployment.** The system *cannot* exceed its authority (route to officials only). That limit is enforced by code structure and tests, not by prompting alone.
+- **Bounded authority, enforced in code.** The system *cannot* exceed its authority (route to officials only). That limit is enforced by code structure and tests, not by prompting alone.
 - **Empirical safety thinking.** Every safety property has a test that fails *before* the property is violated.
 
 ### Safety architecture (30-second scan)
@@ -251,7 +261,7 @@ gg-tank-watch/
 ├── docs/
 │   ├── AI_CONTROL_ARCHITECTURE.md   ← control layer + test mapping
 │   ├── FAILURE_ANALYSIS.md          ← red-team failure modes
-│   ├── PRIOR_ART.md · LEGAL.md · DISTRIBUTION.md · CODE_OF_CONDUCT.md
+│   ├── PRIOR_ART.md · LEGAL.md · CODE_OF_CONDUCT.md
 │   ├── LANGUAGE_ACCESS.md · DATA_SYNC.md · DATA_QUALITY.md
 │   ├── SPEC.md · NEWS_UX_SPEC.md · WCAG_NOTES.md
 │   └── AUDIT_2026-06-04.md          ← the close-out audit
