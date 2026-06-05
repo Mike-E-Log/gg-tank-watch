@@ -5,7 +5,7 @@ scrolling the feed always keeps the filter controls in view. Stickiness needs fo
 in the .news-filter-chips rule, and all four are the causal mechanism (not a proxy):
   - position: sticky   -> pin to the scroll container (.tab-panel)
   - top: 0             -> pin at the very top
-  - an opaque background -> feed cards must not bleed through the gaps between pills
+  - an opaque background -> feed cards must not bleed through behind the bar
   - a z-index          -> the bar paints above the scrolling cards
 """
 import re
@@ -27,7 +27,7 @@ def test_news_filter_chips_are_sticky():
     has_sticky = re.search(r"position:\s*sticky", block) is not None
     has_top = re.search(r"top:\s*0", block) is not None
     has_z = re.search(r"z-index:\s*\d+", block) is not None
-    has_bg = re.search(r"background:\s*var\(--sa-bg\)", block) is not None
+    has_bg = re.search(r"background:\s*var\(--sa-surface\)", block) is not None
     passed = has_sticky and has_top and has_z and has_bg
     return {
         "passed": passed,

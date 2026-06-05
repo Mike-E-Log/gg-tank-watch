@@ -210,15 +210,32 @@ def test_no_inline_font_size_in_info_panels():
 
 
 def test_news_chipbar_matches_subtab_bar():
-    """A: the News filter-chip bar uses the same vertical padding as the Info sub-tab bar
-    (8px 12px 0) so toggling Info<->News does not jump the bar height."""
+    """The News filter bar uses the SAME flat-tab model as the Info sub-tab bar
+    (2026-06-04): same 8px 12px 0 padding (no height jump on Info<->News toggle),
+    equal-width flex tabs on a hairline rail that cannot overflow the row, and the
+    SELECTED tab shown by a green underline (not a filled pill) - so the rounded-pill
+    bottom can never be clipped by the rail. Causal-invariant style, like
+    test_info_subtab_fit."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    ci = text.find(".news-filter-chips {")
-    block = text[ci:ci + 220] if ci != -1 else ""
-    ok = bool(block) and "padding: 8px 12px 0" in block
+
+    def _blk(sel):
+        m = re.search(re.escape(sel) + r"\s*\{([^}]*)\}", text)
+        return m.group(1) if m else ""
+
+    bar = _blk(".news-filter-chips")
+    tab = _blk(".news-filter-chip")
+    active = _blk(".news-filter-chip.active")
+    same_pad = "padding: 8px 12px 0" in bar
+    not_scrollable = not any(b in bar for b in
+                             ("overflow-x: auto", "overflow-x:auto", "flex-wrap: wrap", "scroll-snap"))
+    equal_width = bool(re.search(r"flex:\s*1\s+1\s+0", tab)) and bool(re.search(r"min-width:\s*0", tab))
+    no_pill = "border-radius" not in tab
+    underline_active = ("border-bottom-color: var(--sa-celadon)" in active
+                        and "background: var(--sa-celadon)" not in active)
+    ok = same_pad and not_scrollable and equal_width and no_pill and underline_active
     return {"passed": ok,
-            "details": "news chip-bar padding matches sub-tab bar (8px 12px 0)"
-            if ok else "news chip-bar padding still differs from .info-subtabs"}
+            "details": (f"same_pad={same_pad} not_scrollable={not_scrollable} equal_width={equal_width} "
+                        f"no_pill={no_pill} underline_active={underline_active}")}
 
 
 def test_summary_zone_value_full_scale():
