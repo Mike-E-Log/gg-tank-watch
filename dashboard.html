@@ -2054,9 +2054,9 @@ function buildFeedCardsHtml(feed) {
 
     if (it.type === "official") {
       return '<div class="feed-card' + newestClass + '">' + meta +
-        '<div class="feed-card-text">' + it.text + '</div>' +
-        '<span style="font-size:11px;color:var(--sa-text-3);font-weight:600">' + it.source + '</span>' +
-        (it.url ? '<a class="feed-card-source" href="' + it.url + '" target="_blank" rel="noopener">' + t("news.source") + '</a>' : '') +
+        '<div class="feed-card-text">' + escAttr(it.text) + '</div>' +
+        '<span style="font-size:11px;color:var(--sa-text-3);font-weight:600">' + escAttr(it.source) + '</span>' +
+        (it.url ? '<a class="feed-card-source" href="' + escAttr(it.url) + '" target="_blank" rel="noopener">' + t("news.source") + '</a>' : '') +
       '</div>';
     }
 
@@ -2065,17 +2065,17 @@ function buildFeedCardsHtml(feed) {
     // the live feed carries no duration field.
     var thumbHtml = it.isVideo
       ? (it.thumb
-          ? '<div class="feed-card-thumb"><img loading="lazy" src="' + it.thumb + '" alt="">' +
+          ? '<div class="feed-card-thumb"><img loading="lazy" src="' + escAttr(it.thumb) + '" alt="">' +
               '<span class="feed-card-play" aria-hidden="true"></span></div>'
           : '<div class="feed-card-thumb placeholder-video feed-card-branded-placeholder">' +
               '<span class="feed-card-play" aria-hidden="true"></span>' +
               '<span class="feed-card-branded-label">' + t("news.watchOn") + ' ' + escAttr(it.source || "") + ' ↗</span>' +
             '</div>')
       : '';
-    return '<a class="feed-card' + (it.isVideo ? ' feed-card-video' : '') + newestClass + '" href="' + it.url + '" target="_blank" rel="noopener" style="text-decoration:none;display:block">' + meta +
+    return '<a class="feed-card' + (it.isVideo ? ' feed-card-video' : '') + newestClass + '" href="' + escAttr(it.url) + '" target="_blank" rel="noopener" style="text-decoration:none;display:block">' + meta +
       thumbHtml +
-      '<div class="feed-card-title">' + (it.title || t("news.untitled")) + '</div>' +
-      '<span style="font-size:11px;color:var(--sa-text-3)">' + it.source + '</span>' +
+      '<div class="feed-card-title">' + escAttr(it.title || t("news.untitled")) + '</div>' +
+      '<span style="font-size:11px;color:var(--sa-text-3)">' + escAttr(it.source) + '</span>' +
     '</a>';
   }).join("");
 }
@@ -2399,24 +2399,24 @@ function buildFeedHtml(feed, snap) {
              :                          '<span class="feed-chip feed-chip-article">' + t("news.type.article") + '</span>';
     var when = it.when ? relativeTime(it.when) : "";
     var meta = '<div class="feed-meta">' + chip +
-      '<strong>' + it.source + '</strong>' +
+      '<strong>' + escAttr(it.source) + '</strong>' +
       (when ? ' · <span class="feed-time">' + when + '</span>' : '') +
     '</div>';
     if (it.type === "official") {
       return '<div class="feed-item feed-item-official">' + meta +
-        '<div class="feed-text">' + it.text + '</div>' +
-        (it.url ? '<a class="feed-source" href="' + it.url + '" target="_blank" rel="noopener">' + t("news.source") + '</a>' : '') +
+        '<div class="feed-text">' + escAttr(it.text) + '</div>' +
+        (it.url ? '<a class="feed-source" href="' + escAttr(it.url) + '" target="_blank" rel="noopener">' + t("news.source") + '</a>' : '') +
       '</div>';
     }
-    var escapedUrl = (it.url || "").replace(/"/g, "&quot;");
+    var escapedUrl = escAttr(it.url || "");
     var thumbClass = it.thumb ? "" : (it.isVideo ? "placeholder-video" : "placeholder-article");
-    return '<a class="feed-item news-item" href="' + it.url + '" target="_blank" rel="noopener" data-needs-og="' + (!it.thumb) + '" data-url="' + escapedUrl + '">' +
+    return '<a class="feed-item news-item" href="' + escAttr(it.url) + '" target="_blank" rel="noopener" data-needs-og="' + (!it.thumb) + '" data-url="' + escapedUrl + '">' +
       '<div class="news-thumb ' + thumbClass + '">' +
-        (it.thumb ? '<img loading="lazy" src="' + it.thumb + '" alt="">' : '') +
+        (it.thumb ? '<img loading="lazy" src="' + escAttr(it.thumb) + '" alt="">' : '') +
         (it.isVideo ? '<div class="news-thumb-play"></div>' : '') +
       '</div>' +
       '<div class="news-meta">' + meta +
-        '<div class="news-title">' + it.title + '</div>' +
+        '<div class="news-title">' + escAttr(it.title) + '</div>' +
       '</div>' +
     '</a>';
   }).join("");

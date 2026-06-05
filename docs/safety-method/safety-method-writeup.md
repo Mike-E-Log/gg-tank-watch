@@ -2,7 +2,7 @@
 
 > A first-person writeup of the method and the build. Every claim traces to a file in the repo.
 
-**TL;DR.** During a chemical-tank evacuation that moved about 50,000 people near me, I built a dashboard that used an LLM to summarize official and news sources every 30 minutes. The one failure that could get someone killed is the model confidently saying "it's safe" when it isn't. You can't fix that by prompting carefully. So I bounded the model's authority in the system itself. The tool is a pure information conduit: it routes people to officials and writes no safety verdicts of its own. Every model output passes through one validation chokepoint with asymmetric corroboration gates. A 210-test eval harness, with control-specific tests gating corroboration, provenance, freshness, and date sanity, checks the behavior on every update. The design principle is the testable one. You can't write an automated test for "the verdict is correct," but you can write one for "the system never exceeded its authority." This is a small, real instance of scalable oversight and AI control on a deployed consumer system, and the safety work made the product better, not worse.
+**TL;DR.** During a chemical-tank evacuation that moved about 50,000 people near me, I built a dashboard that used an LLM to summarize official and news sources every 30 minutes. The one failure that could get someone killed is the model confidently saying "it's safe" when it isn't. You can't fix that by prompting carefully. So I bounded the model's authority in the system itself. The tool is a pure information conduit: it routes people to officials and writes no safety verdicts of its own. Every model output passes through one validation chokepoint with asymmetric corroboration gates. A 211-test eval harness, with control-specific tests gating corroboration, provenance, freshness, and date sanity, checks the behavior on every update. The design principle is the testable one. You can't write an automated test for "the verdict is correct," but you can write one for "the system never exceeded its authority." This is a small, real instance of scalable oversight and AI control on a deployed consumer system, and the safety work made the product better, not worse.
 
 ## The setup
 
@@ -59,7 +59,7 @@ This is the part I think of as AI control. The system's authority is bounded by 
 
 ## Scalable oversight: the eval harness
 
-Structural controls are only worth trusting if you can show they hold, and keep holding as the code changes. So the controls come with a 210-test eval harness (210/210 via `python eval/run_all.py --skip integration`) whose control-specific tests gate corroboration, provenance, freshness, and date sanity, run every cycle and gate on exit code. A few of them:
+Structural controls are only worth trusting if you can show they hold, and keep holding as the code changes. So the controls come with a 211-test eval harness (211/211 via `python eval/run_all.py --skip integration`) whose control-specific tests gate corroboration, provenance, freshness, and date sanity, run every cycle and gate on exit code. A few of them:
 
 - `test_lifted_requires_corroboration` and `test_resolved_requires_two_sources`: a single source can't authorize a downgrade.
 - `test_fabricated_source_url_not_in_snapshot` and `test_statement_without_source_url_rejected`: invented provenance is dropped.

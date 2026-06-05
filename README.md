@@ -5,7 +5,7 @@
 [![Status](https://img.shields.io/badge/status-frozen%20archive-informational)](#)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Stack](https://img.shields.io/badge/stack-vanilla%20JS%20%2B%20Python%20stdlib-lightgrey)](#stack)
-[![Eval](https://img.shields.io/badge/eval-210%20tests-orange)](eval/)
+[![Eval](https://img.shields.io/badge/eval-211%20tests-orange)](eval/)
 [![Indexing](https://img.shields.io/badge/robots-noindex-lightgrey)](#responsible-deployment)
 
 > **Informational only — not official emergency guidance.** The incident resolved **May 26, 2026**. For any current emergency, call **911** and see **[ggcity.org/emergency](https://ggcity.org/emergency)**.
@@ -63,16 +63,16 @@ Full diagram + per-control test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](doc
 python eval/run_all.py --skip integration
 ```
 
-Expected (210 tests, all green):
+Expected (211 tests, all green):
 
 ```
-  behavioral      202/202  (100.0% pass)
+  behavioral      203/203  (100.0% pass)
   schema            8/8    (100.0% pass)
 ----------------------------------------------------------------
-  TOTAL           210/210  (100.0% pass)
+  TOTAL           211/211  (100.0% pass)
 ```
 
-**64 test files / 210 deterministic tests** spanning the writer state machine, the corroboration / provenance / freshness / date-sanity gates, the conduit guard (no authored verdicts), the English-only language gate, frozen-archive invariants, and rendered-geometry guards for the UI. Results append to [`eval/scores.jsonl`](eval/scores.jsonl) for regression tracking. (Run *without* `--quiet` — that flag suppresses `[FAIL]` lines.)
+**65 test files / 211 deterministic tests** spanning the writer state machine, the corroboration / provenance / freshness / date-sanity gates, the conduit guard (no authored verdicts), the English-only language gate, frozen-archive invariants, and rendered-geometry guards for the UI. Results append to [`eval/scores.jsonl`](eval/scores.jsonl) for regression tracking. (Run *without* `--quiet` — that flag suppresses `[FAIL]` lines.)
 
 ---
 
@@ -117,7 +117,7 @@ Every decision below is logged with its rationale and, where direction changed, 
 | **Asymmetric corroboration gate (P0-1)** | A false all-clear is the worst outcome; downgrades need ≥2 sources incl. ≥1 of 6 official-agency hosts | A symmetric gate that lets one source authorize an all-clear |
 | **Severity is *derived*, never model-extracted** | A partial-facts tick must not silently downgrade severity to "low" | Accept severity from the model / recompute on every tick |
 | **Gatherer fail-closed contract** | If a gather fails, the writer writes nothing — the page goes visibly stale, never confidently wrong | Emit empty facts + exit 0 (fresh-stamps stale data) |
-| **A 210-test behavioral eval gates merges** | Safety properties regress silently without a machine-checkable gate | Manual review only |
+| **A 211-test behavioral eval gates merges** | Safety properties regress silently without a machine-checkable gate | Manual review only |
 
 ### Language access (G1)
 
@@ -208,7 +208,7 @@ Before this README, the whole archive was audited end-to-end ([`docs/AUDIT_2026-
 - **Frontend:** vanilla HTML/CSS/JS in a single **~112 KB** `dashboard.html` (no framework, no build step) + [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (~852 KB) + [OpenFreeMap](https://openfreemap.org/) vector tiles (light/dark). A service worker (cache `gg-tank-v77`) caches the shell + map for offline resilience.
 - **Writer:** Python 3 **stdlib only**, no external dependencies.
 - **Security headers (prod, `vercel.json`):** strong CSP (`default-src 'self'`), `X-Frame-Options: DENY`, `X-Robots-Tag: noindex, nofollow`.
-- **Eval:** pytest-style harness, **210 tests across 64 files** + LLM-as-judge rubrics ([`eval/rubrics/`](eval/rubrics/)).
+- **Eval:** pytest-style harness, **211 tests across 65 files** + LLM-as-judge rubrics ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
 ---
@@ -235,7 +235,7 @@ See [`USAGE.md`](USAGE.md). The dashboard is a static file — serve the repo ro
 git clone <this-repo>
 cd gg-tank-watch
 python -m http.server 8000   # then open http://127.0.0.1:8000/dashboard.html
-python eval/run_all.py --skip integration   # 210 tests, exits 0
+python eval/run_all.py --skip integration   # 211 tests, exits 0
 ```
 
 The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and exits with an "ARCHIVED" error.
@@ -267,7 +267,7 @@ gg-tank-watch/
 │   └── AUDIT_2026-06-04.md          ← the close-out audit
 └── eval/
     ├── run_all.py              ← runs everything, appends scores.jsonl
-    ├── test_*.py               ← 64 test files / 210 tests
+    ├── test_*.py               ← 65 test files / 211 tests
     └── rubrics/                ← LLM-as-judge prompts
 ```
 
