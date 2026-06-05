@@ -88,9 +88,13 @@ def test_officials_panel_has_three_links():
     text = DASHBOARD.read_text(encoding="utf-8")
     ok = ('"info.official.city"' in text and '"info.official.zonehaven"' in text
           and '"info.official.alert"' in text
-          and "ggcity.org/emergency" in text)
+          and "ggcity.org/emergency" in text
+          # AlertOC must use the official .gov front door (durable vs Everbridge
+          # org-ID churn, which broke the prior hardcoded member URL 2026-06-05).
+          and "https://www.alertoc.gov/" in text
+          and "892807736729480" not in text)
     return {"passed": ok, "details": "Officials panel renders the 3 official channels"
-            if ok else "an official channel is missing"}
+            if ok else "an official channel is missing or the AlertOC link is wrong"}
 
 
 def test_resources_panel_merges_three():
