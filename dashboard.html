@@ -1994,10 +1994,11 @@ function newsBaseKey(url) {
   return u.replace(/\/+$/, "");
 }
 
-// One clean feed: newest-first, then officials-first while keeping the globally-
-// newest item flagged so the "Newest" badge tracks time, not position. The frozen
-// archive shows every collected entry, so the per-base cap is effectively lifted
-// (was 2 to de-clutter live-blog runs in the live feed); officials never dropped.
+// One clean feed: pure reverse-chronological (newest-first) across all sources, with the
+// globally-newest item flagged so the "Newest" badge tracks time, not position. Officials
+// stay distinguished by their OFFICIAL badge + the dedicated Official filter tab, not by feed
+// position (user 2026-06-05). The frozen archive shows every collected entry, so the per-base
+// cap is effectively lifted (was 2 to de-clutter live-blog runs); officials never dropped.
 var NEWS_MAX_PER_BASE = 99;
 function curateNewsFeed(feed) {
   feed.sort(function(a, b) {
@@ -2019,9 +2020,7 @@ function curateNewsFeed(feed) {
     perBase[key] = (perBase[key] || 0) + 1;
     return perBase[key] <= NEWS_MAX_PER_BASE;
   });
-  var officials = deduped.filter(function(it) { return it.type === "official"; });
-  var rest = deduped.filter(function(it) { return it.type !== "official"; });
-  return officials.concat(rest);
+  return deduped;
 }
 
 function buildFeedCardsHtml(feed) {
