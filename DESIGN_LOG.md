@@ -419,7 +419,7 @@ Each decision has:
 - **Context:** First 8 commits landed directly on `main` while iterating live during an active emergency. That was the right velocity for the build phase. Now that the repo is a public artifact, the workflow should follow professional engineering practices.
 - **Decision:** Going forward, non-trivial changes (>3 files, new dependency, schema change, doc updates spanning multiple files) land via feature branch + GitHub PR + merge. Trivial direct-to-main is still OK for one-line fixes during active incident response.
 - **Alternatives:**
-  - **Always PR (rejected):** during the build phase, the PR overhead per change was wrong — 30-sec edits being PR'd would have killed momentum and added noise.
+  - **Always PR (rejected):** during the build phase, the PR overhead per change was wrong — 30-sec edits being PR'd would have stalled momentum and added noise.
   - **Never PR (rejected):** for a public record, the PR-merge history provides transparency and auditability.
 - **Principles applied:** P3 pragmatic (right tool per phase), P5 explicit.
 - **Rubric:** TBD — too new to score retrospectively.
