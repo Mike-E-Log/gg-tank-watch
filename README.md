@@ -7,6 +7,7 @@
 [![Stack](https://img.shields.io/badge/stack-vanilla%20JS%20%2B%20Python%20stdlib-lightgrey)](#stack)
 [![Eval](https://img.shields.io/badge/eval-211%20tests-orange)](eval/)
 [![Indexing](https://img.shields.io/badge/robots-noindex-lightgrey)](#responsible-deployment)
+[![Live](https://img.shields.io/badge/live-gg--tank--watch.vercel.app-2ea44f)](https://gg-tank-watch.vercel.app)
 
 > **Informational only — not official emergency guidance.** The incident resolved **May 26, 2026**. For any current emergency, call **911** and see **[ggcity.org/emergency](https://ggcity.org/emergency)**.
 
@@ -230,7 +231,9 @@ Before this README, the whole archive was audited end-to-end ([`docs/AUDIT_2026-
 
 ## Running it yourself
 
-See [`USAGE.md`](USAGE.md). The dashboard is a static file — serve the repo root and open `dashboard.html`:
+**View it live:** **[gg-tank-watch.vercel.app](https://gg-tank-watch.vercel.app)** — the frozen archive, hosted. It is intentionally `noindex` (not listed in search engines); the direct link works.
+
+To run it locally instead — see [`USAGE.md`](USAGE.md). The dashboard is a static file — serve the repo root and open `dashboard.html`:
 
 ```powershell
 git clone <this-repo>

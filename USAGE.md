@@ -4,6 +4,10 @@ Operational guide for GG Tank Watch. For the project pitch / case study, see [`R
 
 > **This is a frozen historical archive.** The May 2026 Garden Grove tank emergency resolved on **May 26, 2026**, and the dashboard now shows a static snapshot from that date. It does **not** auto-refresh, wind direction is **not** live (the wind indicator was removed), and the refresh job (`scripts/refresh_local.py`) is **retired** — it exits with an `ARCHIVED` error if run. This guide covers (1) how to view the frozen archive today and (2) how the pipeline operated during the incident, kept for reference.
 
+## View the live archive (hosted)
+
+The frozen archive is hosted at **[gg-tank-watch.vercel.app](https://gg-tank-watch.vercel.app)** — open it directly, nothing to install. It is intentionally `noindex` (not listed in search engines); the direct link works.
+
 ## View the frozen archive locally
 
 1. **Double-click `start_dashboard.bat`** — or, from the repo root, run `python -m http.server 8000` and open `http://127.0.0.1:8000/dashboard.html`. A local server is required because browsers block `fetch()` on `file://` URLs; without it the page shows "Offline / file missing".
@@ -17,7 +21,7 @@ To stop the local server, close the `cmd` window the `.bat` opened.
 - **Hero:** the resolved-incident summary and key facts (final evacuation status, residents) as of the all-clear.
 - **Map:** the former evacuation zone ("Former evac area"), the GKN Aerospace facility, and former shelter locations. There is no wind indicator — it was removed (a single NOAA station was wrong often enough to be a hazard on a no-directives tool).
 - **Official sources:** links to ggcity.org/emergency, OCFA, and other authoritative channels — officials first, the conduit principle.
-- **News (Coverage Archive):** a date-anchored record of how the incident was reported, officials first.
+- **News (Coverage Archive):** a date-anchored record of how the incident was reported, newest first (the **Official** filter shows the official statements on their own).
 - **Info tab:** Summary · Officials · Resources · About, including the persistent AI-assistance disclosure.
 
 ## Running the eval suite
