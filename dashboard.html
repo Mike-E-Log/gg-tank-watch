@@ -149,6 +149,20 @@
         max-width: var(--content-cap);
         margin-inline: auto;
       }
+      /* Enlarge + make the content scrollbar clearly visible on desktop (the default thin gray
+         bar is easy to miss). The scroll container is .tab-panel; mobile keeps its native bar.
+         NOTE: do NOT set scrollbar-color/scrollbar-width on .tab-panel -- Chrome 121+ ignores
+         ::-webkit-scrollbar on any element that also sets those, which silently kills this
+         enlargement. Firefox keeps its native bar (it can't widen past auto regardless). */
+      .tab-panel::-webkit-scrollbar { width: 16px; }
+      .tab-panel::-webkit-scrollbar-track { background: transparent; }
+      .tab-panel::-webkit-scrollbar-thumb {
+        background: var(--sa-text-3);
+        border-radius: 8px;
+        border: 2px solid var(--sa-surface);
+        min-height: 48px;
+      }
+      .tab-panel::-webkit-scrollbar-thumb:hover { background: var(--sa-text-2); }
     }
 
     /* L1: clamp the hero + safety-strip so chrome stays <=~1/3 of a short
