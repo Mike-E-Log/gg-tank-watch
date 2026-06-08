@@ -37,6 +37,8 @@ This README is the project's **decisions record** — what was decided, *why*, a
 
 ## How to read this
 
+**Reviewing this (fellowship, grant, or peer read)?** Start with [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md) — the whole method in one first-person read: bounded authority enforced in code, the single validation chokepoint, the eval harness, and an honest account of what it *can't* catch. Its companion [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md) is a one-page map from each safety principle to its implementation and tests.
+
 Recommended reading path: this README's [Safety & ethics decisions](#safety--ethics-decisions-the-core) → [`CLAUDE.md`](CLAUDE.md) (the binding safety-principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (red-team failure modes) → [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md) (the conduit pattern) → [`eval/`](eval/).
 
 **What this demonstrates:**
