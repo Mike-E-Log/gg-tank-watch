@@ -207,7 +207,7 @@ Before this README, the whole archive was audited end-to-end ([`docs/AUDIT_2026-
 
 ## Stack
 
-- **Frontend:** vanilla HTML/CSS/JS in a single **~112 KB** `dashboard.html` (no framework, no build step) + [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (~852 KB) + [OpenFreeMap](https://openfreemap.org/) vector tiles (light/dark). A service worker (cache `gg-tank-v80`) caches the shell + map for offline resilience.
+- **Frontend:** vanilla HTML/CSS/JS in a single **~112 KB** `dashboard.html` (no framework, no build step) + [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (~852 KB) + [OpenFreeMap](https://openfreemap.org/) vector tiles (light/dark). A service worker (cache `gg-tank-v81`) caches the shell + map for offline resilience.
 - **Writer:** Python 3 **stdlib only**, no external dependencies.
 - **Security headers (prod, `vercel.json`):** strong CSP (`default-src 'self'`), `X-Frame-Options: DENY`, `X-Robots-Tag: noindex, nofollow`.
 - **Eval:** pytest-style harness, **211 tests across 65 files** + LLM-as-judge rubrics ([`eval/rubrics/`](eval/rubrics/)).

@@ -1945,6 +1945,11 @@ function setNewsFilter(filter) {
   activeNewsFilter = filter;
   renderNewsFilterChips();
   renderFilteredFeed();
+  // Return to the top of the filtered results on switch. The feed lives in the .tab-panel
+  // (#panel-news) scroll container; swapping in a shorter filtered list otherwise leaves the
+  // old scrollTop stranded or clamped to a seemingly-random position (2026-06-08 jump fix).
+  var panel = document.getElementById("panel-news");
+  if (panel) panel.scrollTop = 0;
 }
 window.setNewsFilter = setNewsFilter;
 
