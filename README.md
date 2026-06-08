@@ -104,7 +104,7 @@ Every decision below is logged with its rationale and, where direction changed, 
 
 | Decision | Why | Rejected alternative |
 |----------|-----|----------------------|
-| **Persistent AI-assistance disclosure** ("compiled with AI assistance, checked by a person") | Residents deserve to know what produced what they're reading; the disclosure stays legible (13px), never shrunk to fine print | Hide the AI involvement; ship model output unreviewed |
+| **Persistent AI-assistance disclosure** ("compiled with AI assistance, checked by people") | Residents deserve to know what produced what they're reading; the disclosure stays legible (13px), never shrunk to fine print | Hide the AI involvement; ship model output unreviewed |
 | **Provenance check (P0-2)** | A fabricated citation, once committed to git, is permanent | Warn-but-keep the unverified citation |
 | **Freshness honesty (P0-3)** — two timestamps + staleness banner | A run that learns nothing must not look fresh | A single timestamp for both write age and data age |
 | **No false time precision** — archive items render **date-only** unless the exact publish time is verified | Search surfaces the date, rarely the minute; a resolved record never drifts to "3 months ago" | Show relative time / fabricated minute-level precision |

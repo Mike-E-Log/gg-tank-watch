@@ -42,7 +42,7 @@ Safety-critical copy must never be machine-translated. English is the fallback u
 
 The refresh pipeline lives in `scripts/`. `refresh_local.py` pulls from official and news sources, applies the AI summarization pipeline (with human review), and writes `status.json`. The dashboard reads this file client-side.
 
-AI-generated summaries carry a persistent disclosure: "compiled with AI assistance, checked by a person."
+AI-generated summaries carry a persistent disclosure: "compiled with AI assistance, checked by people."
 
 ## What to work on
 
