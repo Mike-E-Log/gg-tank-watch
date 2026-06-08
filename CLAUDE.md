@@ -10,7 +10,7 @@ The organizing principle: responsible and helpful are the same lane. Every safet
 
 | Principle | How this project applies it | Evidence |
 |-----------|----------------------------------|----------|
-| **Honesty / transparency** | Persistent disclosure: "compiled with AI assistance, checked by a person" | disclosure string, eval guards |
+| **Honesty / transparency** | Persistent disclosure: "compiled with AI assistance, checked by people" | disclosure string, eval guards |
 | **Avoiding harm** | Information conduit only — routes to officials, authors NO directives. The §552/§230 line is load-bearing | `scripts/update_status.py`, `docs/CODE_OF_CONDUCT.md` |
 | **Human oversight** | A person reviews all AI summaries pre-publish. English-only; safety copy is never surfaced in a language we can't reliably verify (G1); LEP residents are routed to officials | `docs/LANGUAGE_ACCESS.md`, `eval/test_language_access.py` |
 | **Scalable oversight** | A 211-test eval harness monitors behavioral properties incl. the G1 language gate, provenance (no fabricated sources), and the corroboration gate on danger downgrades | `eval/` harness, `test_provenance.py`, `test_language_access.py` |
