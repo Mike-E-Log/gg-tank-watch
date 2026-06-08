@@ -1,4 +1,4 @@
-# Prior Art — Why the Conduit Pattern
+# The Conduit Pattern
 
 How GG Tank Watch differs from existing emergency information tools, and why the information-conduit pattern is the right safety posture for a volunteer tool with AI in the loop.
 
