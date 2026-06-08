@@ -26,11 +26,11 @@
     "fixed_points": [],
     "shelters": [
       {"name": "Garden Grove Sports & Rec Center", "city": "Garden Grove", "address": "13641 Deodara Dr, Garden Grove, CA 92644", "lat": 33.7631, "lon": -117.9659, "notes": "All evacuees"},
-      {"name": "Cypress Community Center", "city": "Cypress", "address": "Graham St, Cypress, CA 90630", "lat": 33.8235, "lon": -118.0339, "notes": "All evacuees"},
-      {"name": "Savanna High School", "city": "Anaheim", "address": "Gilbert St, Anaheim, CA 92801", "lat": 33.8348, "lon": -117.9710, "notes": "All evacuees"},
-      {"name": "Mile Square Regional Park", "city": "Fountain Valley", "address": "Mile Square Regional Park, Fountain Valley, CA", "lat": 33.7246, "lon": -117.9459, "notes": "All evacuees"},
+      {"name": "Cypress Recreation & Community Center", "city": "Cypress", "address": "5700 Orange Ave, Cypress, CA 90630", "lat": 33.8235, "lon": -118.0339, "notes": "All evacuees"},
+      {"name": "Savanna High School", "city": "Anaheim", "address": "301 N Gilbert St, Anaheim, CA 92801", "lat": 33.8348, "lon": -117.9710, "notes": "All evacuees"},
+      {"name": "Mile Square Regional Park (Freedom Hall)", "city": "Fountain Valley", "address": "16801 Euclid St, Fountain Valley, CA 92708", "lat": 33.7191, "lon": -117.9383, "notes": "All evacuees"},
       {"name": "Los Amigos High School", "city": "Fountain Valley", "address": "16566 Newhope St, Fountain Valley, CA", "lat": 33.7221, "lon": -117.9263, "notes": "All evacuees"},
-      {"name": "Ocean View High School", "city": "Huntington Beach", "address": "Warner Ave, Huntington Beach, CA", "lat": 33.7141, "lon": -118.0023, "notes": "All evacuees"},
+      {"name": "Ocean View High School", "city": "Huntington Beach", "address": "17071 Gothard St, Huntington Beach, CA", "lat": 33.7141, "lon": -118.0023, "notes": "All evacuees"},
       {"name": "Golden West College", "city": "Huntington Beach", "address": "15744 Goldenwest St, Huntington Beach, CA", "lat": 33.7337, "lon": -118.0036, "notes": "All evacuees"},
       {"name": "John F. Kennedy High School", "city": "La Palma", "address": "8281 Walker St, La Palma, CA 90623", "lat": 33.8421, "lon": -118.0372, "notes": "All evacuees"},
       {"name": "OC Fair & Event Center", "city": "Costa Mesa", "address": "88 Fair Dr, Costa Mesa, CA 92626", "lat": 33.6664, "lon": -117.9015, "notes": "RV evacuees only (~100 spaces)"}
