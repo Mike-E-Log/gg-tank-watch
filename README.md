@@ -37,7 +37,7 @@ This README is the project's **decisions record** — what was decided, *why*, a
 
 ## How to read this
 
-Recommended reading path: this README's [Safety & ethics decisions](#safety--ethics-decisions-the-core) → [`CLAUDE.md`](CLAUDE.md) (the binding safety-principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (red-team failure modes) → [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md) (the conduit pattern) → [`eval/`](eval/).
+Recommended reading path: this README's [Safety & ethics decisions](#safety--ethics-decisions-the-core) → [`CLAUDE.md`](CLAUDE.md) (the binding safety-principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (red-team failure modes) → [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md) (the conduit pattern) → [`eval/`](eval/).
 
 **What this demonstrates:**
 
@@ -83,7 +83,7 @@ The single most load-bearing decision in the project is what it **refuses** to d
 
 Early builds (v0.1–v0.7) had a "check your address" tool that geocoded an address, computed a blast/plume radius, and rendered a personal verdict (`SAFE` / `ELEVATED` / `HIGH` / `CRITICAL`). On **2026-05-26** all of that was removed in the **conduit pivot**. The dashboard now states officials' facts and routes to officials' channels; it issues no directives and authors no hazard assessments.
 
-This is both an ethics decision and a legal one. As a pure automated feed of third-party links, the project leans on **Section 230 (47 U.S.C. § 230(c)(1))** and **_Winter v. G.P. Putnam's Sons_ (9th Cir. 1991)** — publishers of information owe no duty to verify it. The moment the app authors its *own* safety verdict, it steps outside that shelter and into a voluntarily-undertaken duty of care (Restatement (Second) of Torts §§ 323, 324A). Removing the verdict made the product safer for residents *and* legally defensible. See [`docs/LEGAL.md`](docs/LEGAL.md) and [`docs/PRIOR_ART.md`](docs/PRIOR_ART.md).
+This is both an ethics decision and a legal one. As a pure automated feed of third-party links, the project leans on **Section 230 (47 U.S.C. § 230(c)(1))** and **_Winter v. G.P. Putnam's Sons_ (9th Cir. 1991)** — publishers of information owe no duty to verify it. The moment the app authors its *own* safety verdict, it steps outside that shelter and into a voluntarily-undertaken duty of care (Restatement (Second) of Torts §§ 323, 324A). Removing the verdict made the product safer for residents *and* legally defensible. See [`docs/LEGAL.md`](docs/LEGAL.md) and [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md).
 
 ---
 
@@ -265,7 +265,7 @@ gg-tank-watch/
 ├── docs/
 │   ├── AI_CONTROL_ARCHITECTURE.md   ← control layer + test mapping
 │   ├── FAILURE_ANALYSIS.md          ← red-team failure modes
-│   ├── PRIOR_ART.md · LEGAL.md · CODE_OF_CONDUCT.md
+│   ├── CONDUIT_PATTERN.md · LEGAL.md · CODE_OF_CONDUCT.md
 │   ├── LANGUAGE_ACCESS.md · DATA_SYNC.md · DATA_QUALITY.md
 │   ├── SPEC.md · WCAG_NOTES.md
 │   └── AUDIT_2026-06-04.md          ← the close-out audit
