@@ -24,6 +24,7 @@ PATTERNS=(
   'Anthropic Fellows'
   'portfolio piece'
   'Fellows application'
+  'gg-tank-bot'
 )
 
 # Exclude self-references (this script + the workflow legitimately list the patterns).

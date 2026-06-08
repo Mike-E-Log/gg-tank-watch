@@ -53,8 +53,8 @@ jobs:
 
       - name: Commit & push if changed
         run: |
-          git config user.name  "gg-tank-bot"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name  "Mike Ilog"
+          git config user.email "48659643+Mike-E-Log@users.noreply.github.com"
           if git diff --quiet -- status.json; then
             echo "status.json unchanged; nothing to commit"
           else

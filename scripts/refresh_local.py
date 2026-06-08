@@ -130,8 +130,8 @@ def commit_and_push() -> None:
     if git("diff", "--cached", "--quiet").returncode == 0:
         print("status.json unchanged; nothing to commit")
         return
-    git("config", "user.name", "gg-tank-bot")
-    git("config", "user.email", "github-actions[bot]@users.noreply.github.com")
+    git("config", "user.name", "Mike Ilog")
+    git("config", "user.email", "48659643+Mike-E-Log@users.noreply.github.com")
     git("commit", "-m", "chore(data): refresh status.json [skip ci]")
     branch = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
     git("pull", "--rebase", "--autostash", "origin", branch)
