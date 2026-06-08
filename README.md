@@ -89,7 +89,7 @@ This is both an ethics decision and a legal one. As a pure automated feed of thi
 
 ## Safety & ethics decisions (the core)
 
-Every decision below is logged with its rationale and, where direction changed, its reversal. Fuller per-decision records live in [`DESIGN_LOG.md`](DESIGN_LOG.md) (D-001–D-029, with rubric scores) and the `docs/` set.
+Every decision below is logged with its rationale and, where direction changed, its reversal. Fuller per-decision records live in [`DESIGN_LOG.md`](DESIGN_LOG.md) (D-001–D-039, with rubric scores) and the `docs/` set.
 
 ### Avoiding harm — conduit, not verdict-author
 

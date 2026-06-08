@@ -1,6 +1,6 @@
 # Design Log
 
-Structured log of every meaningful design decision made on the GG MMA Tank Dashboard. Seeded retroactively from project start; maintained going forward.
+Structured log of every meaningful design decision made on GG Tank Watch (the project's working title through 2026-05-27 was "GG MMA Tank Dashboard"; see [D-032](#d-032)). Seeded retroactively from project start; maintained going forward.
 
 ## How to read this
 
@@ -31,25 +31,35 @@ Each decision has:
 | D-008 | 2026-05-24 | CEO pivot: push-first | Reverted → [D-009](#d-009) | 7.0 |
 | D-009 | 2026-05-24 | User reversal: scratch all mobile | Active | 9.3 |
 | D-010 | 2026-05-24 | Light theme default + dark toggle | Active | 9.0 |
-| D-011 | 2026-05-24 | Map library: Leaflet | Active | 9.3 |
+| D-011 | 2026-05-24 | Map library: Leaflet | Superseded → [D-031](#d-031) | 9.3 |
 | D-012 | 2026-05-24 | Hero size: shrink 72px → 32px | Active | 9.0 |
 | D-013 | 2026-05-24 | Evac polygon: extend west to ~Knott Ave | Active | 7.7 |
-| D-014 | 2026-05-24 | Blast radii: BLEVE-scaled, not generic | Active | 8.3 |
+| D-014 | 2026-05-24 | Blast radii: BLEVE-scaled, not generic | Superseded → [D-030](#d-030) | 8.3 |
 | D-015 | 2026-05-24 | Official statements: sticky right sidebar | Active | 9.0 |
 | D-016 | 2026-05-24 | URGENT vs UPDATE banner classification | Active | 9.3 |
 | D-017 | 2026-05-24 | Banner clickable → scroll + highlight | Active | 8.7 |
 | D-018 | 2026-05-24 | Newest + Recent badges on statements | Active | 9.0 |
-| D-019 | 2026-05-24 | Fixed reference pins on map | Active | 8.7 |
+| D-019 | 2026-05-24 | Fixed reference pins on map | Superseded → [D-030](#d-030) | 8.7 |
 | D-020 | 2026-05-24 | Geocoder bias: Garden Grove → Orange County | Active | 9.0 |
 | D-021 | 2026-05-24 | Section headers for visual flow | Active | 8.0 |
-| D-022 | 2026-05-24 | Safety checker placement: below map | Active | 8.0 |
+| D-022 | 2026-05-24 | Safety checker placement: below map | Superseded → [D-030](#d-030) | 8.0 |
 | D-023 | 2026-05-24 | Statement card design: bold meta + relative time | Active | 9.0 |
 | D-024 | 2026-05-24 | Documentation: eval suite + design log | Active | TBD |
 | D-025 | 2026-05-25 | Evac shelters: aggregate + link (hybrid) | Active | 9.0 |
 | D-026 | 2026-05-25 | News panel: generalize to videos + articles, Microlink OG fetch | Active | 8.7 |
 | D-027 | 2026-05-25 | Writer fix: partial facts must not recompute severity | Active | 9.3 |
 | D-028 | 2026-05-25 | PR workflow: feature branches + GitHub PRs for non-trivial changes | Active | TBD |
-| D-029 | 2026-05-25 | Hero address check: move safety checker into always-visible hero | Active | 8.7 |
+| D-029 | 2026-05-25 | Hero address check: move safety checker into always-visible hero | Superseded → [D-030](#d-030) | 8.7 |
+| D-030 | 2026-05-26 | The conduit pivot — remove authored verdicts | Active | 9.3 |
+| D-031 | 2026-05-27 | Map: Leaflet → MapLibre GL, self-hosted | Active | 9.0 |
+| D-032 | 2026-05-28 | Name: "GG Tank Watch," not "…Safety" | Active | 8.7 |
+| D-033 | 2026-05-30 | Vietnamese → English-only (G1) | Active | 8.7 |
+| D-034 | 2026-05-31 | Single-station wind indicator removed | Active | 8.7 |
+| D-035 | 2026-05-31 | No runtime image scraping | Active | 8.7 |
+| D-036 | 2026-05-31 | News tab → Coverage Archive | Active | 8.7 |
+| D-037 | 2026-06-01 | Live → frozen historical archive | Active | 9.0 |
+| D-038 | 2026-06-02 | Info tab: 6 scrollable → 4 equal-width sub-tabs | Active | 8.7 |
+| D-039 | 2026-06-08 | Responsible deployment: noindex + phase-gating | Deferred | TBD |
 
 ---
 
@@ -184,7 +194,7 @@ Each decision has:
 ## D-011: Map library: Leaflet
 
 - **Date:** 2026-05-24
-- **Status:** Active.
+- **Status:** Superseded by [D-031](#d-031) (MapLibre GL, self-hosted, 2026-05-27).
 - **Context:** Need a live map. Three real options.
 - **Decision:** [Leaflet](https://leafletjs.com/) + OpenStreetMap tiles + Nominatim geocoding. CDN-loaded from unpkg.
 - **Alternatives:**
@@ -221,7 +231,7 @@ Each decision has:
 ## D-014: Blast radii: BLEVE-scaled, not generic
 
 - **Date:** 2026-05-24
-- **Status:** Active.
+- **Status:** Superseded by [D-030](#d-030) (the conduit pivot removed all authored blast/plume layers, 2026-05-26).
 - **Context:** User shared the OC Register's published blast-zone map. Original v0 radii were generic (0.25 / 0.5 / 1.0 mi).
 - **Decision:** Recalibrated to **0.11 / 0.31 / 0.93 mi** derived from BLEVE / overpressure scaling for ~7,000 gal MMA ≈ ~100 tonnes TNT-equivalent. Labels updated to OCFA categories: "20 PSI overpressure" / "Moderate damage" / "Lightweight injury."
 - **Alternatives:**
@@ -292,7 +302,7 @@ Each decision has:
 ## D-019: Fixed reference pins on map
 
 - **Date:** 2026-05-24
-- **Status:** Active.
+- **Status:** Superseded by [D-030](#d-030) (safety-colored verdict pins were authored hazard assessments; removed in the conduit pivot).
 - **Context:** User: "I'd like some fixed points on the map. Trask and Harbor, Magnolia and Ellis."
 - **Decision:** New `config.json.map.fixed_points` array. Rendered as circle markers with persistent tooltips. **Color-coded by current safety verdict** (green/amber/red/dark-red) so the user sees at-a-glance whether a landmark is safe right now. Auto-recolored every 5 min when wind updates.
 - **Alternatives:**
@@ -331,7 +341,7 @@ Each decision has:
 ## D-022: Safety checker placement: below map
 
 - **Date:** 2026-05-24
-- **Status:** Active.
+- **Status:** Superseded by [D-030](#d-030) (the address/safety checker itself was removed in the conduit pivot).
 - **Context:** Originally placed between hero and map. Broke the visual flow (user looks at hero verdict → expects map next → got a form first).
 - **Decision:** Moved safety checker BELOW the map. Natural flow: look at the map, see something, want to check a specific address.
 - **Principles applied:** P3 pragmatic.
@@ -385,7 +395,7 @@ Each decision has:
 ## D-026: News panel — generalize to videos + articles, Microlink OG fetch
 
 - **Date:** 2026-05-25
-- **Status:** Active.
+- **Status:** Active — the videos+articles generalization stands; the client-side Microlink OG-image fetch was later removed (runtime scraping bypasses provenance + human review), see [D-035](#d-035).
 - **Context:** User asked to add YouTube videos with thumbnails for major changes, then added news article URLs (ABC7 entries). Initial implementation forced everything through a video-shaped card with a play overlay — articles looked like broken videos.
 - **Decision:**
   - Single `videos` field on `status.json` holds both types. `youtube_id` auto-derives `https://img.youtube.com/vi/{id}/hqdefault.jpg` thumbnail. `is_video: true` flag for non-YouTube videos. Otherwise treated as article.
@@ -428,7 +438,7 @@ Each decision has:
 ## D-029: Hero address check — move safety checker into always-visible hero
 
 - **Date:** 2026-05-25
-- **Status:** Active.
+- **Status:** Superseded by [D-030](#d-030) (the address checker it surfaced was removed the next day in the conduit pivot). A sharp irony: this entry optimized the discoverability of the very feature the pivot deleted.
 - **Context:** Three converging lenses identified the same friction point. The address-safety checker — the most personal feature ("am I safe?") — was buried in the Check tab, requiring users to discover and navigate to it. During the conduit-strategy rework, office-hours analysis confirmed the problem from safety, marketing, and builder perspectives simultaneously.
 - **Decision:** Move the address-check widget into the always-visible hero section so it's the first interactive element a user encounters. Keep the Check tab as an expanded detail view (full zone explanation, methodology notes, source links). Tabbed architecture preserved for secondary content.
 - **Alternatives:**
@@ -442,6 +452,139 @@ Each decision has:
   - Maintainability: 8 (hero section grows slightly; tab remains as detail view — clean separation)
   - User-fit: 9 (conduit mission = answer with minimum friction; three independent lenses converged)
 - **Lesson:** When safety, marketing, and builder instincts all point at the same answer, the decision is load-bearing — not a coincidence. The "coolest version answers before you ask" framing is the same thing as "conduit with minimum friction" and "billboard test for a frightened elder." Convergence across lenses = high-confidence signal.
+
+## D-030: The conduit pivot — remove authored verdicts
+
+- **Date:** 2026-05-26 (implementation landed 2026-05-27)
+- **Status:** Active. **The single most load-bearing decision in the project.** Supersedes [D-014](#d-014), [D-019](#d-019), [D-022](#d-022), [D-029](#d-029).
+- **Context:** v0.1–v0.7 shipped an "am I safe?" tool — geocode an address, compute a BLEVE blast/plume radius, render a personal verdict (`SAFE`/`ELEVATED`/`HIGH`/`CRITICAL`) and safety-colored map pins. An AI authoring "you are in the danger zone" is a protective-action directive the project has no authority to issue, and it forfeits the §230 publisher shelter the moment the app speaks a safety claim in its own voice.
+- **Decision:** Remove the address checker, the blast/plume layers, and every authored severity verdict. The dashboard becomes a pure information conduit: it states officials' facts and routes to officials' channels, authoring no directives and no hazard assessments. The map keeps the former evacuation polygon as a labeled reference, not a verdict surface.
+- **Alternatives:**
+  - **Keep the verdict tool, add disclaimers (rejected):** a disclaimer does not cure a voluntarily-undertaken duty of care (Restatement (Second) of Torts §§ 323, 324A); the exposure is in the authoring, not the labeling.
+  - **Keep the checker, drop only the color verdict (rejected):** geocode + blast radius still constitutes an authored personal assessment.
+  - **Pure conduit (chosen):** bounded authority; §230 / *Winter v. Putnam's Sons* shelter intact; and (per the alignment-tax thesis) a more trustworthy product.
+- **Principles applied:** P3 pragmatic, P5 explicit, P1 completeness (the negative space is the design).
+- **Rubric:** Correctness 10 · Maintainability 9 · User-fit 9.
+- **Lesson:** For an AI tool in a safety-critical domain, the highest-leverage decision is what NOT to author. Removing the verdict made the product simultaneously safer, more legally defensible, and more useful to scared residents — the alignment tax was negative, not a cost.
+
+## D-031: Map — Leaflet → MapLibre GL, self-hosted
+
+- **Date:** 2026-05-27
+- **Status:** Active. Supersedes [D-011](#d-011).
+- **Context:** D-011 chose Leaflet + OSM tiles loaded from the unpkg CDN. During the conduit cleanup the interactive tile map was first swapped for a static zone image (dropping the blast/plume interactivity); the map then blanked on service-worker cache-first reloads, and a CDN in the critical path meant the map could vanish if unpkg changed.
+- **Decision:** MapLibre GL JS + OpenFreeMap vector tiles (light/dark), with the MapLibre JS/CSS **self-hosted in `/lib`** — no third-party CDN in the critical path. `worker-src blob:` added to the CSP for MapLibre's web worker.
+- **Alternatives:**
+  - **Keep Leaflet + unpkg (rejected):** CDN single-point-of-failure; no vector-tile theming.
+  - **Static zone image only (rejected, interim):** loses pan/zoom regional context for residents.
+  - **MapLibre self-hosted (chosen):** offline-resilient, themeable, no upstream that can break the map.
+- **Principles applied:** P3 pragmatic, P4 DRY.
+- **Rubric:** Correctness 9 · Maintainability 9 · User-fit 9.
+- **Lesson:** A CDN in the critical path of a safety tool is a liability — self-host the map runtime so it can't disappear when an upstream changes. (The reload-blank regression is locked out by `eval/test_map_reload_regressions.py`.)
+
+## D-032: Name — "GG Tank Watch," not "…Safety"
+
+- **Date:** by 2026-05-28 (the working title had been "GG MMA Tank Dashboard")
+- **Status:** Active.
+- **Context:** The tool needed a public, resident-legible name. "…Safety" was on the table.
+- **Decision:** **"GG Tank Watch."** "Watch" is honest about what the tool is — a watch/monitor that points at the authorities — whereas "Safety" over-claims authority and invites resident over-trust (the Citizen-app precedent, where an authoritative name drove over-reliance).
+- **Alternatives:**
+  - **"GG Tank Safety" (rejected):** implies safety/authority the app does not have — the same failure mode as an authored verdict ([D-030](#d-030)), but encoded in the wordmark.
+  - **"GG MMA Tank Dashboard" (superseded working title):** accurate but not resident-legible.
+- **Principles applied:** P5 explicit.
+- **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
+- **Lesson:** The name is part of the safety contract. A name that over-claims authority is the same error as authoring a verdict — bounded authority has to be legible in the wordmark, not just the code. The eval/credentials signal lives in the repo + README, not the slug.
+
+## D-033: Vietnamese → English-only (G1)
+
+- **Date:** 2026-05-30 (Vietnamese first *held* 2026-05-29, v0.16)
+- **Status:** Active. Supersedes the v0.16 "held pending verification" posture.
+- **Context:** Early builds carried ~134 AI-drafted Vietnamese strings for Little Saigon's limited-English-proficiency (LEP) residents near the zone. No fluent native speaker ever verified them — the site had been serving unverified Vietnamese life-safety copy. v0.16 held them (`ready:false`, English fallback) pending verification; no fluent verifier was ever secured.
+- **Decision:** Remove all non-English entirely — the toggle, the `vi` `LANGS` entry, all `vi` STRINGS, the flag. **English-only by design.** LEP residents are routed to officials, who publish their own verified Vietnamese / Spanish / Korean per update ("withhold-and-amplify"). The G1 gate (`eval/test_language_access.py`, `test_english_only`) fails the build if any non-English language ships unverified.
+- **Alternatives:**
+  - **Ship machine-translated Vietnamese (rejected):** a wrong safety string in a language we can't verify can get someone killed.
+  - **Keep the held posture indefinitely (rejected, superseded):** dead unverified strings are a maintenance + honesty hazard; clean removal is better.
+  - **English-only + route to officials (chosen):** the conservative call is also the safer one.
+- **Principles applied:** P5 explicit, P1 completeness (a build-failing gate, not a guideline).
+- **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
+- **Lesson:** When you can't verify safety copy, removing it beats shipping it. Encode the rule as a build-failing gate so a future well-meaning translation can't quietly re-introduce the risk.
+
+## D-034: Single-station wind indicator removed
+
+- **Date:** 2026-05-31 (the overlay was shrunk first in v0.18, 2026-05-30)
+- **Status:** Active (the feature was removed).
+- **Context:** The original map carried a live wind-flow arrow from a single NOAA station (KFUL). Checked against the nearest on-site station, the single-station reading pointed **≥90° wrong ~34% of the time**. On a no-directives tool, a confidently-wrong wind arrow is itself a hazard — a resident can infer plume direction from it.
+- **Decision:** Remove the wind indicator entirely. Do not re-add weather without site-level data. Guarded by `eval/test_wind_removed.py`; the map aria-label carries no wind claim.
+- **Alternatives:**
+  - **Keep it with a "weather data, not safety guidance" caveat (rejected, interim v0.18):** the caveat doesn't fix a wrong arrow a scared resident reads as guidance.
+  - **Multi-station interpolation (deferred):** no site-level data available for this zone.
+- **Principles applied:** P3 pragmatic, P1 completeness.
+- **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
+- **Lesson:** A data point that's wrong a third of the time is worse than no data point on a safety tool — especially one that looks like directional guidance. Remove it, and guard the removal.
+
+## D-035: No runtime image scraping
+
+- **Date:** 2026-05-31 (PR #74)
+- **Status:** Active. Supersedes the Microlink OG-fetch path of [D-026](#d-026).
+- **Context:** D-026 added a client-side Microlink OG-image fetch for article thumbnails. Scraping `og:image` at query time bypasses the provenance + human-review chokepoint — the human in the loop never sees the fetched image, and a scraped image can misrepresent its source.
+- **Decision:** No runtime image scraping. YouTube thumbnails derive from the canonical `hqdefault.jpg` formula (deterministic, provenance-true); non-YouTube items use a human-verified thumbnail or the intentional "Watch on <outlet> ↗" placeholder. Scraper removed; guarded by `eval/test_no_runtime_scraper.py`.
+- **Alternatives:**
+  - **Keep Microlink with caching (rejected):** still a human-review bypass; provenance can't be vouched for.
+  - **Server-side OG fetch in the writer (rejected):** the writer is stdlib + offline by contract (cf. [D-003](#d-003)); adding HTTP broadens the failure surface.
+- **Principles applied:** P5 explicit, P3 pragmatic.
+- **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
+- **Lesson:** Anything fetched at runtime escapes the human-review chokepoint. For a provenance-first tool, derive images from canonical formulas or human-verify them — never scrape live.
+
+## D-036: News tab → Coverage Archive
+
+- **Date:** 2026-05-31
+- **Status:** Active.
+- **Context:** The News tab needed to present scattered coverage (official statements + articles + videos) without re-deciding authority or implying live monitoring.
+- **Decision:** A banner-led **Coverage Archive** — an archive-note banner, every collected item shown (the per-base cap effectively lifted), official sources distinguished by an **OFFICIAL badge + a dedicated Official filter tab** (not by feed position), **date-only** timestamps, and headline + snippet + link + attribution only (no full-article reproduction). News "All" is pure reverse-chronological.
+- **Alternatives:**
+  - **Officials-block-first ordering (rejected):** authority belongs in the badge + filter, not feed position; a frozen archive's value is the chronological story.
+  - **A cross-outlet "N outlets covering this" cue (dropped):** can't be counted honestly across outlets.
+- **Principles applied:** P1 completeness, P5 explicit.
+- **Rubric:** Correctness 9 · Maintainability 8 · User-fit 9.
+- **Lesson:** Convey authority through honest structured signals (a badge, a filter) rather than editorial ordering, and show every collected item — silent curation is its own credibility risk.
+
+## D-037: Live → frozen historical archive
+
+- **Date:** 2026-06-01 (v0.20; data freeze finalized v0.27, 2026-06-03)
+- **Status:** Active.
+- **Context:** The incident resolved 2026-05-26 (all-clear verified). Continued polling was pointless, and a stale view still presenting as "live" is a hazard. An upstream cloud auto-refresh had also been accumulating post-all-clear events and re-stamping timestamps.
+- **Decision:** Freeze the dashboard as a historical archive of **May 21–26**. Polling disabled (`REFRESH_MS=null`), the refresh job retired (`refresh_local.py` exits with an `ARCHIVED` error), every heading date-anchored, `status.json` timestamps frozen to the all-clear, post-all-clear timeline events pruned (boundary `2026-05-27T02:30:00Z`), and Official tags derived from the source URL so a refresh can't strip them. An honesty sweep removed forward-posture framing across the docs.
+- **Alternatives:**
+  - **Keep polling "just in case" (rejected):** a resolved incident produces no updates; a live-looking stale view misleads.
+  - **Take the site down (rejected):** the archive has lasting value as a public record and as a worked example of responsible deployment.
+- **Principles applied:** P3 pragmatic, P5 explicit, P1 completeness.
+- **Rubric:** Correctness 9 · Maintainability 9 · User-fit 9.
+- **Lesson:** When the thing you monitor ends, "live" becomes a lie. Freeze deliberately — disable refresh, anchor every date, and make the data refresh-proof so an upstream job can't silently un-freeze it.
+
+## D-038: Info tab — 6 scrollable → 4 equal-width sub-tabs
+
+- **Date:** 2026-06-02 (v0.23 → v0.25)
+- **Status:** Active. Supersedes the v0.23 six-scrollable-sub-tab approach.
+- **Context:** The Info tab was first rebuilt into 6 horizontally-scrollable sub-tabs (Summary · Officials · Shelters · Schools · Recovery · About). The scrollable bar clipped "Recovery" and hid "About" at 375px (#108) — caught only after shipping, because the evals were text-only and passed (171/171) while the rendered bar overflowed.
+- **Decision:** Four **equal-width** sub-tabs (Summary · Officials · Resources · About) that fit one row at any width: `.info-subtab` is `flex:1 1 0` + `min-width:0`, the bar is ≤4 tabs with no `overflow-x`/`scroll-snap`/`flex-wrap` anti-pattern, locked by a rendered-geometry guard (`eval/test_info_subtab_fit.py`). Shelters / Schools / Recovery fold under Resources.
+- **Alternatives:**
+  - **Keep 6 scrollable tabs (rejected):** individually findable, but clips labels and scroll-snap hid the last tab.
+  - **Three tabs (rejected earlier):** under-grouped the content.
+- **Principles applied:** P1 completeness, P5 explicit, P3 pragmatic.
+- **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
+- **Lesson:** Text-only evals pass while pixels overflow. Set a fixed acceptance target up front and gate on rendered geometry (`getBoundingClientRect`), not string matches — the #108 clip shipped because the guard checked text, not layout. (See `docs/info-tab-acceptance-rubric.md`.)
+
+## D-039: Responsible deployment — noindex, phase-gating, entity + insurance
+
+- **Date:** ongoing (current as of 2026-06-08)
+- **Status:** Deferred (a gate deliberately not yet crossed).
+- **Context:** A safety tool reaching scale needs real legal review and an accountable entity first. Two private volunteers carry no statutory immunity (the Volunteer Protection Act needs a nonprofit / government nexus).
+- **Decision:** `noindex, nofollow` enforced via HTTP header (`vercel.json`) + `robots.txt: Disallow: /` until attorney clearance; a nonprofit entity + liability insurance before any wide launch; a phase-gated rollout (Phase 0–3, gates G1–G5) of which only Phase 0 was executed; and no ads / subscriptions / tracking / login (free, no commercial nexus → Restatement §552 shield + privacy). As a frozen archive of a *resolved* incident the live-system liability is low, so lifting `noindex` is needed only for search discoverability — not for portfolio or direct-link use.
+- **Alternatives:**
+  - **Uncontrolled launch (rejected):** distribution is earned, not assumed.
+  - **Monetize (rejected):** a commercial nexus weakens the pecuniary-interest liability shield.
+- **Principles applied:** P5 explicit, P3 pragmatic.
+- **Rubric:** TBD (the launch gate has not been crossed).
+- **Lesson:** For a safety tool, deployment is a gate, not a default. Keep `noindex` on and the entity/insurance unbuilt until an attorney clears it, and document the gate so the temptation to "just launch" stays visible.
 
 ---
 
