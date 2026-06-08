@@ -1521,7 +1521,7 @@ var STRINGS = {
   "safety.strip.official": { en: "Official source:" },
   "safety.strip.terms": { en: "Terms" },
   "safety.strip.route": { en: "Current info:" },
-  "disclosure.ai": { en: "Summaries in this archive are compiled with AI assistance from official and news sources, then checked by a person." },
+  "disclosure.ai": { en: "Summaries in this archive are compiled with AI assistance from official and news sources, then checked by people." },
   "hero.severity.label": { en: "Incident severity:" },
   "hero.summary.loading": { en: "Loading current status…" },
   "hero.summary.resolved": { en: "Incident resolved. See ggcity.org/emergency for the latest." },
@@ -2270,7 +2270,7 @@ function renderInfoConfigData() {
 /* ============ PRINT CONTENT ============ */
 function renderPrintContent(snap) {
   var html = '<h1>GG Tank Watch — Printed Summary</h1>';
-  html += '<p style="font-size:11px;color:#666">Printed from gg-tank-watch. Verify at ggcity.org/emergency. AI-assisted summaries checked by a person.</p>';
+  html += '<p style="font-size:11px;color:#666">Printed from gg-tank-watch. Verify at ggcity.org/emergency. AI-assisted summaries checked by people.</p>';
   html += '<section><h2>Incident Status</h2>';
   var tank = snap.tank || {};
   var evac = snap.evacuation || {};
