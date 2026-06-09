@@ -7,7 +7,7 @@
 [![Stack](https://img.shields.io/badge/stack-vanilla%20JS%20%2B%20Python%20stdlib-lightgrey)](#stack)
 [![Eval](https://img.shields.io/badge/eval-211%20tests-orange)](eval/)
 [![Indexing](https://img.shields.io/badge/robots-noindex-lightgrey)](#responsible-deployment)
-[![Live](https://img.shields.io/badge/live-gg--tank--watch.vercel.app-2ea44f)](https://gg-tank-watch.vercel.app)
+[![Live](https://img.shields.io/badge/live-ggtankwatch.org-2ea44f)](https://ggtankwatch.org)
 
 > **Informational only — not official emergency guidance.** The incident resolved **May 26, 2026**. For any current emergency, call **911** and see **[ggcity.org/emergency](https://ggcity.org/emergency)**.
 >
@@ -24,7 +24,7 @@ A consumer-facing AI system kept inside its authority by **code and tests, not p
 The rest of this README is the decisions record behind that — what was built, what was deliberately *not*, and why.
 
 <p align="center">
-  <a href="https://gg-tank-watch.vercel.app"><img src="docs/assets/preview-map.png" alt="GG Tank Watch map view — the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
+  <a href="https://ggtankwatch.org"><img src="docs/assets/preview-map.png" alt="GG Tank Watch map view — the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
 </p>
 
 <table align="center">
@@ -248,7 +248,7 @@ Before this README, the whole archive was audited end-to-end ([`docs/AUDIT_2026-
 
 ## Running it yourself
 
-**View it live:** **[gg-tank-watch.vercel.app](https://gg-tank-watch.vercel.app)** — the frozen archive, hosted. It is intentionally `noindex` (not listed in search engines); the direct link works.
+**View it live:** **[ggtankwatch.org](https://ggtankwatch.org)** — the frozen archive, hosted. It is intentionally `noindex` (not listed in search engines); the direct link works.
 
 To run it locally instead — see [`USAGE.md`](USAGE.md). The dashboard is a static file — serve the repo root and open `dashboard.html`:
 
