@@ -17,7 +17,7 @@ One-page cheat sheet mapping each Anthropic safety principle to its implementati
 
 | Control | Property | What it prevents | Test count | Key tests |
 |---------|----------|-----------------|------------|-----------|
-| **P0-1** Corroboration gate | Danger downgrades require ≥2 sources, ≥1 official | Fabricated all-clear (F1) | 2 | `test_lifted_requires_corroboration`, `test_resolved_requires_two_sources` |
+| **P0-1** Corroboration gate | Downgrades toward all-clear require ≥2 sources, ≥1 official | Fabricated all-clear (F1) | 2 | `test_lifted_requires_corroboration`, `test_resolved_requires_two_sources` |
 | **P0-2** Source/URL integrity | Statements must cite a URL actually retrieved this run | Fabricated provenance (F2) | 3 | `test_fabricated_source_url_not_in_snapshot`, `test_statement_without_source_url_rejected`, `test_sources_checked_all_wellformed` |
 | **P0-3** Freshness honesty | `data_as_of_iso` advances only on source-backed facts | Stale-but-fresh-stamped (F4) | 3 | `test_empty_facts_do_not_advance_data_as_of`, `test_all_null_facts_treated_as_no_data`, `test_stale_after_is_data_as_of_plus_maxage` |
 | **P1-1** Date sanity | Future/malformed timestamps nulled | Fabricated resolution date (F11) | 3 | `test_future_resolved_iso_suppressed`, `test_malformed_resolved_iso_suppressed`, `test_valid_resolved_iso_honored` |
@@ -30,8 +30,8 @@ One-page cheat sheet mapping each Anthropic safety principle to its implementati
 
 | Direction | Gate | Rationale |
 |-----------|------|-----------|
-| Danger upgrade (injuries, expansion) | Fires on 1 source | Over-warning is acceptable |
-| Danger downgrade (lifted, resolved) | Requires ≥2 sources, ≥1 official | Under-warning is catastrophic |
+| Danger-side update (injuries, expansion) | Relays on 1 source | Over-warning is acceptable |
+| Downgrade toward all-clear (lifted, resolved) | Requires ≥2 sources, ≥1 official | Under-warning is catastrophic |
 | Data freshness | Advances only on source-backed facts | Stale-but-fresh is worse than visibly stale |
 | Provenance | Dropped unless URL was actually retrieved | A fabricated source is worse than a missing one |
 
