@@ -8,7 +8,7 @@ GG Tank Watch is a community information conduit. We amplify, translate, and rou
 
 2. **No directives.** We never tell anyone to evacuate, shelter in place, or take any specific safety action. We route residents to the official channels that do. The distinction between "you should leave" and "officials say the evacuation zone includes your area — confirm at ggcity.org/emergency" is load-bearing.
 
-3. **Accuracy over speed.** A delayed truth is better than a fast error. When sources conflict, we hold publication until corroborated. Danger downgrades (all-clears, zone reductions) require at least two sources including one official agency.
+3. **Accuracy over speed.** A delayed truth is better than a fast error. When sources conflict, we hold publication until corroborated. Relaying a downgrade toward all-clear (evacuation lifted, zone reductions) requires at least two sources including one official agency.
 
 4. **No editorializing.** We report what officials and credentialed outlets say. We do not add commentary, speculation, or opinion about what might happen, what should happen, or who is responsible.
 

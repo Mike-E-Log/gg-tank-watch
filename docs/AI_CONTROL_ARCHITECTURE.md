@@ -11,7 +11,7 @@ flowchart TD
     subgraph CONTROL ["CONTROL LAYER — update_status.py"]
         direction TB
         B["chokepoint\n(single entry point)"]
-        B --> C["P0-1 Corroboration gate\nDanger downgrade? Needs ≥2 sources\n+≥1 official host. Single source → safe default."]
+        B --> C["P0-1 Corroboration gate\nDowngrade toward all-clear? Needs ≥2 sources\n+≥1 official host. Single source → safe default."]
         B --> D["P0-2 Provenance check\nSource URL not in sources_checked? Drop it.\nNo source_url at all? Reject statement."]
         B --> E["P0-3 Freshness honesty\nEmpty-facts tick? data_as_of_iso stays old.\nStaleness banner keys off data age, not write age."]
         B --> F["P1-1 Date sanity\nFuture or malformed resolved_iso? Null it.\nSeverity = computed, never extracted."]
@@ -30,7 +30,7 @@ flowchart TD
     style H fill:#dcfce7,stroke:#16a34a,color:#000
 ```
 
-**Asymmetric gating principle:** danger upgrades fire on 1 source (over-warning is acceptable); danger downgrades require ≥2 sources including ≥1 official host (under-warning is catastrophic). The LLM cannot write `status.json` directly — all output passes through the chokepoint.
+**Asymmetric gating principle:** danger-side updates relay on 1 source (over-warning is acceptable); downgrades toward all-clear (`evacuation_lifted`, `incident_resolved_iso`, severity drop) require ≥2 sources including ≥1 official host (under-warning is catastrophic). These gates govern which official facts get republished — the site never authored or displayed an alert level of its own. The LLM cannot write `status.json` directly — all output passes through the chokepoint.
 
 ## The problem
 
@@ -46,7 +46,7 @@ gather_facts.py          update_status.py            dashboard.html
                          ┌─────────────────────┐
                          │  CONTROL LAYER       │
                          │                      │
-                         │  P0-1 Corroboration  │ ← danger downgrades need ≥2 sources
+                         │  P0-1 Corroboration  │ ← downgrades toward all-clear need ≥2 sources
                          │  P0-2 Provenance     │ ← fabricated URLs dropped
                          │  P0-3 Freshness      │ ← empty facts can't fake currency
                          │  P1-1 Date sanity    │ ← future/malformed dates nulled
@@ -66,12 +66,12 @@ From the 12-mode failure map in `docs/DATA_QUALITY.md`, three are catastrophic:
 
 **Control: P0-1 Corroboration Gate** (`update_status.py:apply_corroboration_gate`)
 
-Danger downgrades require ≥2 independent sources, at least one from an official agency host (`ocfa.org`, `ggcity.org`, `epa.gov`, etc.). If the threshold isn't met, the field is forced back to its safe default:
+Downgrades toward all-clear require ≥2 independent sources, at least one from an official agency host (`ocfa.org`, `ggcity.org`, `epa.gov`, etc.). If the threshold isn't met, the field is forced back to its safe default:
 
 - `evacuation_lifted: true` → forced to `false`
 - `incident_resolved_iso: "2026-..."` → forced to `null`
 
-Danger upgrades (injuries, expansion, new statements) fire immediately on one source. The asymmetry is intentional: over-warning is acceptable, under-warning is not.
+Danger-side updates (injuries, expansion, new statements) relay immediately on one source. The asymmetry is intentional: over-warning is acceptable, under-warning is not.
 
 **Tests that catch it:**
 - `test_lifted_requires_corroboration` — single source cannot authorize `lifted=true`
@@ -142,8 +142,8 @@ The central design principle is **asymmetric trust**:
 
 | Direction | Gate | Rationale |
 |-----------|------|-----------|
-| Danger upgrade (injuries, expansion, new statement) | Fires on 1 source | Over-warning is acceptable |
-| Danger downgrade (lifted, resolved, severity drop) | Requires ≥2 sources, ≥1 official | Under-warning is catastrophic |
+| Danger-side update (injuries, expansion, new statement) | Relays on 1 source | Over-warning is acceptable |
+| Downgrade toward all-clear (lifted, resolved, severity drop) | Requires ≥2 sources, ≥1 official | Under-warning is catastrophic |
 | Data freshness | Advances only on source-backed facts | Stale-but-fresh is worse than visibly stale |
 | Provenance | Dropped unless URL was actually retrieved | A fabricated source is worse than a missing one |
 

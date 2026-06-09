@@ -30,7 +30,7 @@ How GG Tank Watch differs from existing emergency information tools, and why the
 |-----------|-------------------|--------------|-----------------|---------------|
 | Update cadence | Bulk statements | Live blog (manual) | Real-time (crowdsourced) | Every 30 min (AI-compiled, human-checked) |
 | Source verification | Authoritative by definition | Editorial standards | Crowdsourced, unverified | Automated provenance validation (P0-2) |
-| Danger downgrade safety | N/A (they are the authority) | Editorial judgment | None | Corroboration gate (P0-1): ≥2 sources, ≥1 official |
+| All-clear relay safety | N/A (they are the authority) | Editorial judgment | None | Corroboration gate (P0-1): ≥2 sources, ≥1 official |
 | Freshness honesty | Timestamp on statement | Timestamp on post | None | Two-timestamp system (write age vs. data age, P0-3) |
 | Address-level context | Zonehaven zone lookup | None | None | Geocode → official-zone router (defers to officials) |
 | Bilingual | Varies by agency | English only | English only | English now; Vietnamese drafted but held pending fluent-native verification (G1) |

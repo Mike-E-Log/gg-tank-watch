@@ -40,12 +40,12 @@ The model never writes the file people see. Its output goes through one chokepoi
 
 | Direction | Gate | Why |
 |---|---|---|
-| Danger upgrade (injuries, expansion) | fires on 1 source | over-warning is acceptable |
-| Danger downgrade (lifted, resolved) | needs 2+ sources, 1+ official | under-warning is catastrophic |
+| Danger-side update (injuries, expansion) | relays on 1 source | over-warning is acceptable |
+| Downgrade toward all-clear (lifted, resolved) | needs 2+ sources, 1+ official | under-warning is catastrophic |
 | Data freshness | advances only on source-backed facts | stale-but-fresh is worse than visibly stale |
 | Provenance | dropped unless the URL was actually retrieved | a fabricated source is worse than a missing one |
 
-**P0-1, corroboration gate.** A danger downgrade (`evacuation_lifted: true`, or an `incident_resolved_iso`) needs at least two independent sources, at least one of them an official agency host. Below that bar, the field is forced back to its safe default. One hallucinated boolean can't produce an all-clear. Danger upgrades fire on a single source, on purpose.
+**P0-1, corroboration gate.** A downgrade toward all-clear (`evacuation_lifted: true`, or an `incident_resolved_iso`) needs at least two independent sources, at least one of them an official agency host. Below that bar, the field is forced back to its safe default. One hallucinated boolean can't produce an all-clear. Danger-side updates relay on a single source, on purpose.
 
 **P0-2, provenance check.** Every statement's `source_url` is checked against the URLs actually retrieved that run. A citation to a URL that wasn't fetched gets dropped. An unsourced statement gets rejected. The model can't invent a quote and pin it on an agency.
 
