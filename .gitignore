@@ -39,6 +39,10 @@ loop/
 plan/
 prompts/
 
+# Repo-glowup scratch: social-card drafts + render scripts. The final card is
+# uploaded at GitHub Settings -> Social preview, not committed to the repo.
+glowup/
+
 # Secrets / local env (never commit)
 .env
 .env.local

@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you reference this project, please cite it as below."
+title: "GG Tank Watch: an AI-assisted information conduit for a chemical-tank emergency"
+abstract: >-
+  A single-page emergency-information dashboard built downwind of the May 2026
+  Garden Grove (California) methyl-methacrylate tank evacuation. It is a pure
+  information conduit: it amplifies and timestamps official and news sources and
+  routes every protective-action decision back to the responsible authority,
+  authoring no hazard verdicts of its own. An LLM gathers facts; deterministic
+  Python enforces corroboration, provenance, freshness, and date-sanity gates at
+  a single validation chokepoint before anything is published. The repository is
+  a frozen archive of the build and its safety and design decisions, kept behind
+  a pre-distribution (attorney) review gate.
+type: software
+authors:
+  - given-names: Mike
+    family-names: Ilog
+repository-code: "https://github.com/Mike-E-Log/gg-tank-watch"
+url: "https://github.com/Mike-E-Log/gg-tank-watch"
+license: MIT
+keywords:
+  - ai-safety
+  - ai-control
+  - scalable-oversight
+  - responsible-ai
+  - civic-tech
+  - emergency-information
+  - frozen-archive
+version: "1.0-archive"
+date-released: 2026-06-01

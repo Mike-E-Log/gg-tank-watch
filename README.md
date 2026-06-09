@@ -10,6 +10,8 @@
 [![Live](https://img.shields.io/badge/live-gg--tank--watch.vercel.app-2ea44f)](https://gg-tank-watch.vercel.app)
 
 > **Informational only — not official emergency guidance.** The incident resolved **May 26, 2026**. For any current emergency, call **911** and see **[ggcity.org/emergency](https://ggcity.org/emergency)**.
+>
+> *Independent and not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.*
 
 ---
 
@@ -37,7 +39,7 @@ This README is the project's **decisions record** — what was decided, *why*, a
 
 ## How to read this
 
-**Reviewing this (fellowship, grant, or peer read)?** Start with [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md) — the whole method in one first-person read: bounded authority enforced in code, the single validation chokepoint, the eval harness, and an honest account of what it *can't* catch. Its companion [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md) is a one-page map from each safety principle to its implementation and tests.
+**Reviewing this (fellowship, grant, or peer read)?** Start with [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md) — the whole method in one first-person read: bounded authority enforced in code, the single validation chokepoint, the eval harness, and an honest account of what it *can't* catch. Its companion [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md) is a one-page map from each safety principle to its implementation and tests. A third companion, [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md), is the short arc behind the method: the help-versus-restraint decisions as they actually evolved, and an honest note on how far the tool reached.
 
 Recommended reading path: this README's [Safety & ethics decisions](#safety--ethics-decisions-the-core) → [`CLAUDE.md`](CLAUDE.md) (the binding safety-principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (red-team failure modes) → [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md) (the conduit pattern) → [`eval/`](eval/).
 
@@ -281,4 +283,4 @@ gg-tank-watch/
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE). **Data is informational only, NOT authoritative emergency guidance.** For any emergency, call 911; for status refer to OCFA and [ggcity.org/emergency](https://ggcity.org/emergency). This project is independent and **not** affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.
+MIT — see [`LICENSE`](LICENSE).
