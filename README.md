@@ -19,7 +19,7 @@ A consumer-facing AI system kept inside its authority by **code and tests, not p
 
 - **Scalable oversight.** A 211-test behavioral harness catches drift from the safety contract — fabricated sources, authored directives, stale data stamped fresh — *before* it ships, not after.
 - **Bounded authority, enforced in code.** The LLM never writes the published snapshot; its output clears a single validation chokepoint it can't bypass. The system *cannot* exceed "route to officials only."
-- **The asymmetry that matters most.** A false all-clear is catastrophic; a false danger-warning is survivable — so danger *downgrades* need ≥2 sources (incl. an official agency) while *upgrades* fire on one. Enforced in `scripts/update_status.py`, never asked of a model.
+- **The asymmetry that matters most.** A false all-clear is catastrophic; a false danger-warning is survivable — so relaying an official stand-down (e.g. `evacuation_lifted`) required ≥2 sources (incl. an official agency), while danger-side updates relayed on one. A gate on what got *republished* — the site never authored or displayed an alert level of its own. Enforced in `scripts/update_status.py`, never asked of a model.
 
 The rest of this README is the decisions record behind that — what was built, what was deliberately *not*, and why.
 
@@ -66,7 +66,7 @@ The LLM never writes the published snapshot. Its output passes through **one cho
 
 | Control | What it prevents | The asymmetry |
 |---------|------------------|---------------|
-| **P0-1 Corroboration gate** | A single hallucinated `evacuation_lifted: true` firing a false all-clear | Danger *downgrades* need **≥2 sources incl. ≥1 official agency**; danger *upgrades* fire on 1. A wrong "you're safe" is catastrophic; a wrong "still dangerous" is survivable. |
+| **P0-1 Corroboration gate** | A single hallucinated `evacuation_lifted: true` firing a false all-clear | Relaying an official stand-down needs **≥2 sources incl. ≥1 official agency**; danger-side updates relay on 1. A wrong "you're safe" is catastrophic; a wrong "still dangerous" is survivable. |
 | **P0-2 Provenance check** | A fabricated source URL or unattributed quote reaching the dashboard | A statement is dropped unless its `source_url` was *actually fetched* this run. |
 | **P0-3 Freshness honesty** | An empty-facts run stamping a fresh timestamp on stale data | `data_as_of_iso` (data age) is tracked separately from write time; the staleness banner keys off data age. |
 | **P1-1 Date sanity** | A future-dated or malformed `incident_resolved_iso` flipping the incident to "resolved" | Out-of-range / malformed timestamps are nulled before the snapshot is written. |
@@ -132,8 +132,8 @@ Every decision below is logged with its rationale and, where direction changed, 
 | Decision | Why | Rejected alternative |
 |----------|-----|----------------------|
 | **Single chokepoint control layer** (`update_status.py`) | One place where every safety-relevant field is validated before publish; the model can't write the snapshot directly | Distributed validation across gatherer + writer + frontend |
-| **Asymmetric corroboration gate (P0-1)** | A false all-clear is the worst outcome; downgrades need ≥2 sources incl. ≥1 of 6 official-agency hosts | A symmetric gate that lets one source authorize an all-clear |
-| **Severity is *derived*, never model-extracted** | A partial-facts tick must not silently downgrade severity to "low" | Accept severity from the model / recompute on every tick |
+| **Asymmetric corroboration gate (P0-1)** | A false all-clear is the worst outcome; relaying an official all-clear needs ≥2 sources incl. ≥1 of 6 official-agency hosts | A symmetric gate that lets one source authorize an all-clear |
+| **Severity is *derived*, never model-extracted** (internal pipeline state — never displayed to residents) | A partial-facts tick must not silently downgrade the internal severity field to "low" | Accept severity from the model / recompute on every tick |
 | **Gatherer fail-closed contract** | If a gather fails, the writer writes nothing — the page goes visibly stale, never confidently wrong | Emit empty facts + exit 0 (fresh-stamps stale data) |
 | **A 211-test behavioral eval gates merges** | Safety properties regress silently without a machine-checkable gate | Manual review only |
 
