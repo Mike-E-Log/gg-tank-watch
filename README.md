@@ -13,6 +13,28 @@
 >
 > *Independent and not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.*
 
+<p align="center">
+  <a href="https://gg-tank-watch.vercel.app"><img src="docs/assets/preview-map.png" alt="GG Tank Watch map view — the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
+</p>
+
+<table align="center">
+  <tr>
+    <td width="50%"><img src="docs/assets/preview-news.png" alt="Coverage Archive — official statements and news, each badged and dated"></td>
+    <td width="50%"><img src="docs/assets/preview-info.png" alt="What happened — sourced incident facts"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub><b>Coverage Archive</b> — every source badged and dated</sub></td>
+    <td align="center"><sub><b>What happened</b> — sourced incident facts</sub></td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <td align="center" valign="top"><img src="docs/assets/preview-map-dark.png" alt="Map view in dark mode" width="360"><br><sub><b>Dark mode</b></sub></td>
+    <td align="center" valign="top"><img src="docs/assets/preview-mobile.png" alt="Mobile view" width="150"><br><sub><b>Mobile</b></sub></td>
+  </tr>
+</table>
+
 ---
 
 ## Origin
