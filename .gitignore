@@ -43,6 +43,9 @@ prompts/
 # uploaded at GitHub Settings -> Social preview, not committed to the repo.
 glowup/
 
+# Generated task-list mirror (regenerated from the live Claude Code task list)
+TASKS.md
+
 # Secrets / local env (never commit)
 .env
 .env.local
