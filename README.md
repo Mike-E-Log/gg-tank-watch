@@ -1,6 +1,6 @@
 # GG Tank Watch
 
-**A frozen historical archive of the May 21–26, 2026 Garden Grove methyl-methacrylate (MMA) chemical-tank emergency** — a real Orange County, California incident that evacuated ~50,000 residents from a ~9-square-mile zone across six cities. Built during the emergency by two local volunteers to amplify official information for evacuees, it is now a settled record of a resolved event — **no longer updated**.
+**A frozen historical archive of the May 21–26, 2026 Garden Grove methyl-methacrylate (MMA) chemical-tank emergency** — a real Orange County, California incident that evacuated ~50,000 residents from a ~9-square-mile zone across six cities. Built during the emergency by a local volunteer to amplify official information for evacuees, it is now a settled record of a resolved event — **no longer updated**.
 
 [![Status](https://img.shields.io/badge/status-frozen%20archive-informational)](#)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -13,25 +13,26 @@
 >
 > *Independent and not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.*
 
+## What this demonstrates
+
+A consumer-facing AI system kept inside its authority by **code and tests, not prompting** — bounded, verifiable safety work that had to hold under real stakes:
+
+- **Scalable oversight.** A 211-test behavioral harness catches drift from the safety contract — fabricated sources, authored directives, stale data stamped fresh — *before* it ships, not after.
+- **Bounded authority, enforced in code.** The LLM never writes the published snapshot; its output clears a single validation chokepoint it can't bypass. The system *cannot* exceed "route to officials only."
+- **The asymmetry that matters most.** A false all-clear is catastrophic; a false danger-warning is survivable — so danger *downgrades* need ≥2 sources (incl. an official agency) while *upgrades* fire on one. Enforced in `scripts/update_status.py`, never asked of a model.
+
+The rest of this README is the decisions record behind that — what was built, what was deliberately *not*, and why.
+
 <p align="center">
   <a href="https://gg-tank-watch.vercel.app"><img src="docs/assets/preview-map.png" alt="GG Tank Watch map view — the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
 </p>
 
 <table align="center">
   <tr>
-    <td width="50%"><img src="docs/assets/preview-news.png" alt="Coverage Archive — official statements and news, each badged and dated"></td>
-    <td width="50%"><img src="docs/assets/preview-info.png" alt="What happened — sourced incident facts"></td>
-  </tr>
-  <tr>
-    <td align="center"><sub><b>Coverage Archive</b> — every source badged and dated</sub></td>
-    <td align="center"><sub><b>What happened</b> — sourced incident facts</sub></td>
-  </tr>
-</table>
-
-<table align="center">
-  <tr>
-    <td align="center" valign="top"><img src="docs/assets/preview-map-dark.png" alt="Map view in dark mode" width="360"><br><sub><b>Dark mode</b></sub></td>
-    <td align="center" valign="top"><img src="docs/assets/preview-mobile.png" alt="Mobile view" width="150"><br><sub><b>Mobile</b></sub></td>
+    <td align="center" valign="top"><img src="docs/assets/preview-mobile.png" alt="Map view on mobile" width="190"><br><sub><b>Map</b></sub></td>
+    <td align="center" valign="top"><img src="docs/assets/preview-news.png" alt="Coverage Archive on mobile — every source badged and dated" width="190"><br><sub><b>Coverage Archive</b></sub></td>
+    <td align="center" valign="top"><img src="docs/assets/preview-info.png" alt="What happened on mobile — sourced incident facts" width="190"><br><sub><b>What happened</b></sub></td>
+    <td align="center" valign="top"><img src="docs/assets/preview-map-dark.png" alt="Map view in dark mode on mobile" width="190"><br><sub><b>Dark mode</b></sub></td>
   </tr>
 </table>
 
@@ -59,19 +60,7 @@ This README is the project's **decisions record** — what was decided, *why*, a
 
 ---
 
-## How to read this
-
-**Reviewing this (fellowship, grant, or peer read)?** Start with [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md) — the whole method in one first-person read: bounded authority enforced in code, the single validation chokepoint, the eval harness, and an honest account of what it *can't* catch. Its companion [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md) is a one-page map from each safety principle to its implementation and tests. A third companion, [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md), is the short arc behind the method: the help-versus-restraint decisions as they actually evolved, and an honest note on how far the tool reached.
-
-Recommended reading path: this README's [Safety & ethics decisions](#safety--ethics-decisions-the-core) → [`CLAUDE.md`](CLAUDE.md) (the binding safety-principles table) → [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) (control layer + test mapping) → [`docs/FAILURE_ANALYSIS.md`](docs/FAILURE_ANALYSIS.md) (red-team failure modes) → [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md) (the conduit pattern) → [`eval/`](eval/).
-
-**What this demonstrates:**
-
-- **Scalable oversight on a consumer-facing AI system.** An automated behavioral test suite catches when the system drifts from its safety contract — fabricated sources, authored directives, stale data stamped fresh — *before* it ships, not after.
-- **Bounded authority, enforced in code.** The system *cannot* exceed its authority (route to officials only). That limit is enforced by code structure and tests, not by prompting alone.
-- **Empirical safety thinking.** Every safety property has a test that fails *before* the property is violated.
-
-### Safety architecture (30-second scan)
+## Safety architecture & verification
 
 The LLM never writes the published snapshot. Its output passes through **one chokepoint** — `scripts/update_status.py` — which enforces four structural properties before anything reaches `status.json`. No prompting required.
 
@@ -100,6 +89,8 @@ Expected (211 tests, all green):
 ```
 
 **65 test files / 211 deterministic tests** spanning the writer state machine, the corroboration / provenance / freshness / date-sanity gates, the conduit guard (no authored verdicts), the English-only language gate, frozen-archive invariants, and rendered-geometry guards for the UI. Results append to [`eval/scores.jsonl`](eval/scores.jsonl) for regression tracking. (Run *without* `--quiet` — that flag suppresses `[FAIL]` lines.)
+
+*Reviewing the method in depth?* [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md) is the whole approach in one first-person read; [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md) maps each safety principle to its tests, and [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md) is the honest arc of the help-versus-restraint calls.
 
 ---
 
