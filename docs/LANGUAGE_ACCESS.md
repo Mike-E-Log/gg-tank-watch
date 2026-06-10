@@ -77,7 +77,8 @@ following hold — anything less stays English-only:
   and checked only a few strings), ideally backed by **funded certified translation**.
 - The translation is **maintained** for the life of an incident, not a one-time
   pass — stale safety copy in another language is its own hazard.
-- It clears attorney review alongside the rest of the pre-launch gate.
+- It gets a deliberate human sign-off like the rest of the safety copy (the original
+  pre-launch attorney-review gate was retired when the archive froze).
 
 Until all three hold, the conduit routes non-English residents to officials (above).
 
