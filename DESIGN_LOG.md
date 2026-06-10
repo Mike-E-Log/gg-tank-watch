@@ -59,7 +59,7 @@ Each decision has:
 | D-036 | 2026-05-31 | News tab → Coverage Archive | Active | 8.7 |
 | D-037 | 2026-06-01 | Live → frozen historical archive | Active | 9.0 |
 | D-038 | 2026-06-02 | Info tab: 6 scrollable → 4 equal-width sub-tabs | Active | 8.7 |
-| D-039 | 2026-06-08 | Responsible deployment: noindex + phase-gating | Deferred | TBD |
+| D-039 | 2026-06-09 | Responsible deployment: noindex + phase-gating | Active | 8.7 |
 
 ---
 
@@ -575,16 +575,16 @@ Each decision has:
 
 ## D-039: Responsible deployment — noindex, phase-gating, entity + insurance
 
-- **Date:** ongoing (current as of 2026-06-08)
-- **Status:** Deferred (a gate deliberately not yet crossed).
+- **Date:** 2026-06-08, settled 2026-06-09
+- **Status:** Active — settled as the permanent posture (2026-06-09), no longer a pending gate.
 - **Context:** A safety tool reaching scale needs real legal review and an accountable entity first. Two private volunteers carry no statutory immunity (the Volunteer Protection Act needs a nonprofit / government nexus).
-- **Decision:** `noindex, nofollow` enforced via HTTP header (`vercel.json`) + `robots.txt: Disallow: /` until attorney clearance; a nonprofit entity + liability insurance before any wide launch; a phase-gated rollout (Phase 0–3, gates G1–G5) of which only Phase 0 was executed; and no ads / subscriptions / tracking / login (free, no commercial nexus → Restatement §552 shield + privacy). As a frozen archive of a *resolved* incident the live-system liability is low, so lifting `noindex` is needed only for search discoverability — not for portfolio or direct-link use.
+- **Decision:** `noindex, nofollow` enforced via HTTP header (`vercel.json`) + `robots.txt: Disallow: /` — kept **permanently, by choice**: search discoverability is not a goal for a resolved-incident archive, and attorney review (originally the launch gate) was judged unnecessary once the incident resolved and the site froze. The wide-launch preconditions (nonprofit entity + liability insurance) were never triggered — no wide launch happened or is planned. The phase-gated rollout (Phase 0–3, gates G1–G5) ended with only Phase 0 executed, and no ads / subscriptions / tracking / login stands (free, no commercial nexus → Restatement §552 shield + privacy). The archive serves direct links, not search.
 - **Alternatives:**
   - **Uncontrolled launch (rejected):** distribution is earned, not assumed.
   - **Monetize (rejected):** a commercial nexus weakens the pecuniary-interest liability shield.
 - **Principles applied:** P5 explicit, P3 pragmatic.
-- **Rubric:** TBD (the launch gate has not been crossed).
-- **Lesson:** For a safety tool, deployment is a gate, not a default. Keep `noindex` on and the entity/insurance unbuilt until an attorney clears it, and document the gate so the temptation to "just launch" stays visible.
+- **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
+- **Lesson:** For a safety tool, deployment is a gate, not a default — and a gate can be retired, not just crossed. Once the incident resolved and the site froze, the honest end state was to settle the posture (`noindex` permanent, entity/insurance never needed) rather than leave an un-executed gate implying a launch still pending.
 
 ---
 

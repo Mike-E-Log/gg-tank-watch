@@ -17,7 +17,7 @@
 
 A consumer-facing AI system kept inside its authority by **code and tests, not prompting** — bounded, verifiable safety work that had to hold under real stakes:
 
-- **Scalable oversight.** A 211-test behavioral harness catches drift from the safety contract — fabricated sources, authored directives, stale data stamped fresh — *before* it ships, not after.
+- **Scalable oversight.** A 211-test behavioral harness (the count as reported by `python eval/run_all.py --skip integration`) catches drift from the safety contract — fabricated sources, authored directives, stale data stamped fresh — *before* it ships, not after.
 - **Bounded authority, enforced in code.** The LLM never writes the published snapshot; its output clears a single validation chokepoint it can't bypass. The system *cannot* exceed "route to officials only."
 - **The asymmetry that matters most.** A false all-clear is catastrophic; a false danger-warning is survivable — so relaying an official stand-down (e.g. `evacuation_lifted`) required ≥2 sources (incl. an official agency), while danger-side updates relayed on one. A gate on what got *republished* — the site never authored or displayed an alert level of its own. Enforced in `scripts/update_status.py`, never asked of a model.
 
@@ -149,8 +149,8 @@ This is the project's clearest case of that: the conservative call (remove rathe
 
 | Decision | Why | Status |
 |----------|-----|--------|
-| **Attorney review gates public launch; `noindex` until cleared** | A safety tool reaching scale needs real legal review first | `noindex, nofollow` enforced via HTTP header (`vercel.json`) + `robots.txt: Disallow: /`; **still on** |
-| **Nonprofit entity + liability insurance before wide launch** | Two private volunteers carry no statutory immunity (the Volunteer Protection Act needs a nonprofit/government nexus) | **Not yet done** — deliberately gated |
+| **`noindex` kept permanently — by choice, not as a pending gate** | Search discoverability was never a goal for a resolved-incident archive, and attorney review (originally the launch gate) was judged unnecessary once the incident resolved and the site froze | `noindex, nofollow` enforced via HTTP header (`vercel.json`) + `robots.txt: Disallow: /`; **settled** |
+| **Nonprofit entity + liability insurance before wide launch** | Two private volunteers carry no statutory immunity (the Volunteer Protection Act needs a nonprofit/government nexus) | **Never needed** — no wide launch happened or is planned; the frozen archive stays direct-link only |
 | **Phase-gated rollout (Phase 0–3, gates G1–G5)** | Distribution is earned, not assumed; only Phase 0 was ever executed | Uncontrolled launch |
 | **No ads, no subscriptions, no tracking, no login** | Free + no commercial nexus keeps the pecuniary-interest liability shield (Restatement §552) and respects privacy | Monetize / collect analytics |
 
