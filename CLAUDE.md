@@ -14,7 +14,7 @@ The organizing principle: responsible and helpful are the same lane. Every safet
 | **Avoiding harm** | Information conduit only — routes to officials, authors NO directives. The §552/§230 line is load-bearing | `scripts/update_status.py`, `docs/CODE_OF_CONDUCT.md` |
 | **Human oversight** | A person reviews all AI summaries pre-publish. English-only; safety copy is never surfaced in a language we can't reliably verify (G1); LEP residents are routed to officials | `docs/LANGUAGE_ACCESS.md`, `eval/test_language_access.py` |
 | **Scalable oversight** | A 211-test eval harness monitors behavioral properties incl. the G1 language gate, provenance (no fabricated sources), and the corroboration gate on danger downgrades | `eval/` harness, `test_provenance.py`, `test_language_access.py` |
-| **Responsible deployment** | Attorney review gates public launch; entity + insurance required; `noindex` until cleared | `vercel.json`, `robots.txt` |
+| **Responsible deployment** | `noindex` kept permanently by choice — search discoverability is not a goal; attorney review judged unnecessary for a resolved-incident archive | `vercel.json`, `robots.txt` |
 | **Alignment tax = zero** | Safety constraints made the product better (more trustworthy, more useful), not worse | conduit > verdict design |
 
 ## Constraints
@@ -22,7 +22,7 @@ The organizing principle: responsible and helpful are the same lane. Every safet
 - **G1:** No non-English safety copy. English-only by design — never surface a translation (even a link framed as ours) without reliable human verification; route LEP residents to officials.
 - **No directives:** never tell anyone to evacuate or take action. Route to officials.
 - **No new deps without approval.**
-- **Attorney review blocks launch:** do not remove `noindex` until attorney review clears.
+- **`noindex` is permanent:** founder decision (2026-06-09) — do not remove it, and do not re-raise the attorney/launch threads.
 
 ## Technical
 
