@@ -6,7 +6,7 @@ Operational guide for GG Tank Watch. For the project pitch / case study, see [`R
 
 ## View the live archive (hosted)
 
-The frozen archive is hosted at **[gg-tank-watch.vercel.app](https://gg-tank-watch.vercel.app)** — open it directly, nothing to install. It is intentionally `noindex` (not listed in search engines); the direct link works.
+The frozen archive is hosted at **[ggtankwatch.org](https://ggtankwatch.org)** — open it directly, nothing to install. It is intentionally `noindex` (not listed in search engines); the direct link works.
 
 ## View the frozen archive locally
 
@@ -49,6 +49,6 @@ During the May 21–26 emergency the dashboard polled `status.json` every 30 sec
 - **⚠️ Data is stale** — the writer hadn't run in >30 min.
 - **Offline / file missing** — the browser couldn't fetch `status.json`.
 
-**The writer.** `scripts/update_status.py` (the control layer) read facts from stdin as JSON, diffed against the previous snapshot, and atomic-wrote `status.json`, enforcing the corroboration / provenance / freshness / date-sanity gates before any write (see [Safety architecture](README.md#safety-architecture-30-second-scan)). Running it now would overwrite the frozen snapshot, so it is left as historical reference only.
+**The writer.** `scripts/update_status.py` (the control layer) read facts from stdin as JSON, diffed against the previous snapshot, and atomic-wrote `status.json`, enforcing the corroboration / provenance / freshness / date-sanity gates before any write (see [Safety architecture](README.md#safety-architecture--verification)). Running it now would overwrite the frozen snapshot, so it is left as historical reference only.
 
 **Unattended operation.** During the incident the refresh path ran on a contributor's machine; a Windows Task Scheduler job was the unattended alternative. Both are retired with the archive.

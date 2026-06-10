@@ -5,8 +5,12 @@
 2026-05-25 conduit sprint, mutually contradictory, and now removed in favor of this doc
 plus `loop/DONE.md`.
 
-**Status (2026-05-30): PRE-LAUNCH.** Code is design-complete and live; public go-live is
-blocked by the Lane B human gates below. `noindex` stays ON until attorney review clears.
+**Status (settled 2026-06-09): FROZEN ARCHIVE — no launch.** Code is design-complete and
+the frozen archive is live at [ggtankwatch.org](https://ggtankwatch.org) (direct-link
+only). The Lane B launch gates below were never crossed and are **retired, not pending**:
+`noindex` is kept permanently by choice, and attorney review was judged unnecessary once
+the incident resolved and the site froze. Kept as the record of what a wide launch would
+have required.
 
 ## Shipped (code complete)
 
@@ -20,7 +24,7 @@ blocked by the Lane B human gates below. `noindex` stays ON until attorney revie
   personal account; the prior org/Hobby stale-data block is resolved). Honest staleness
   banner intact.
 
-## Lane B — launch gate (blocks public go-live; not code)
+## Lane B — launch gate (RETIRED 2026-06-09 — never crossed; kept for the record)
 
 - [ ] **Attorney review** (the `noindex` gate, "B3" in CLAUDE.md) — incl. naming /
   impersonation posture (any `.org` domain, non-government disclosure). Source research:
