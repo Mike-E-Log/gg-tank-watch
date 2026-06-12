@@ -90,7 +90,7 @@ Expected (211 tests, all green):
 
 **65 test files / 211 deterministic tests** spanning the writer state machine, the corroboration / provenance / freshness / date-sanity gates, the conduit guard (no authored verdicts), the English-only language gate, frozen-archive invariants, and rendered-geometry guards for the UI. Results append to [`eval/scores.jsonl`](eval/scores.jsonl) for regression tracking. (Run *without* `--quiet` — that flag suppresses `[FAIL]` lines.)
 
-*Reviewing the method in depth?* [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md) is the whole approach in one first-person read; [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md) maps each safety principle to its tests, and [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md) is the honest arc of the help-versus-restraint calls.
+*Reviewing the method in depth?* [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md) is the whole approach in one first-person read; [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md) maps each safety principle to its tests, and [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md) is the honest arc of the help-versus-restraint calls. The standalone published extract — the F1–F12 red-team, a receipted eval export, and the decision-authority note — lives in [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method).
 
 ---
 
