@@ -1,15 +1,18 @@
 # GG Tank Watch
 
-**A frozen historical archive of the May 21–26, 2026 Garden Grove methyl-methacrylate (MMA) chemical-tank emergency** — a real Orange County, California incident that evacuated ~50,000 residents from a ~9-square-mile zone across six cities. Built during the emergency by a local volunteer to amplify official information for evacuees, it is now a settled record of a resolved event — **no longer updated**.
+**A frozen historical archive of the May 21–26, 2026 Garden Grove methyl-methacrylate (MMA) chemical-tank emergency.**
+
+- A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
+- Built during the emergency by a local volunteer to amplify official information for evacuees.
+- **No longer updated.**
 
 [![Status](https://img.shields.io/badge/status-frozen%20archive-informational)](#)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Stack](https://img.shields.io/badge/stack-vanilla%20JS%20%2B%20Python%20stdlib-lightgrey)](#stack)
 [![Eval](https://img.shields.io/badge/eval-211%20tests-orange)](eval/)
-[![Indexing](https://img.shields.io/badge/robots-noindex-lightgrey)](#responsible-deployment)
 [![Live](https://img.shields.io/badge/live-ggtankwatch.org-2ea44f)](https://ggtankwatch.org)
 
-> **Informational only — not official emergency guidance.** The incident resolved **May 26, 2026**. For any current emergency, call **911** and see **[ggcity.org/emergency](https://ggcity.org/emergency)**.
+> **Informational only. Not official emergency guidance.** The incident resolved **May 26, 2026**. For any current emergency, call **911** and see **[ggcity.org/emergency](https://ggcity.org/emergency)**.
 >
 > *Independent and not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.*
 
