@@ -18,22 +18,28 @@
 
 ## What this demonstrates
 
-A consumer-facing AI system kept inside its authority by **code and tests, not prompting** — bounded, verifiable safety work that had to hold under real stakes:
+A consumer-facing AI system that informs but never instructs. That guarantee is **code and tests, not prompting**, and it had to hold under real stakes:
 
-- **Scalable oversight.** A 211-test behavioral harness (the count as reported by `python eval/run_all.py --skip integration`) catches drift from the safety contract — fabricated sources, authored directives, stale data stamped fresh — *before* it ships, not after.
-- **Bounded authority, enforced in code.** The LLM never writes the published snapshot; its output clears a single validation chokepoint it can't bypass. The system *cannot* exceed "route to officials only."
-- **The asymmetry that matters most.** A false all-clear is catastrophic; a false danger-warning is survivable — so relaying an official stand-down (e.g. `evacuation_lifted`) required ≥2 sources (incl. an official agency), while danger-side updates relayed on one. A gate on what got *republished* — the site never authored or displayed an alert level of its own. Enforced in `scripts/update_status.py`, never asked of a model.
+- **Scalable oversight.** A 211-test eval harness catches safety regressions *before* they ship, not after.
+  - What it catches: fabricated sources, synthesized directives, stale data stamped fresh.
+- **The model never published directly.**
+  - Its extracted facts reached the live page only through one validation gate (`scripts/update_status.py`) that it could not bypass.
+  - The most the system could do was route people to officials.
+  - Page copy (labels, summaries) was AI-assisted and human-reviewed, disclosed on the site itself.
+- **The asymmetry that matters most.** A false "all-clear" could have sent ~50,000 people back into danger. A false "still dangerous" only kept them away longer.
+  - Relaying an official "all-clear" took at least two sources. A new danger warning needed only one.
+  - The site never synthesized an alert level of its own.
 
-The rest of this README is the decisions record behind that — what was built, what was deliberately *not*, and why.
+The rest of this README explains each decision: what was built, what was deliberately *not* built, and why.
 
 <p align="center">
-  <a href="https://ggtankwatch.org"><img src="docs/assets/preview-map.png" alt="GG Tank Watch map view — the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
+  <a href="https://ggtankwatch.org"><img src="docs/assets/preview-map.png" alt="GG Tank Watch map view: the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
 </p>
 
 <table align="center">
   <tr>
     <td align="center" valign="top"><img src="docs/assets/preview-mobile.png" alt="Map view on mobile" width="190"><br><sub><b>Map</b></sub></td>
-    <td align="center" valign="top"><img src="docs/assets/preview-news.png" alt="Coverage Archive on mobile — every source badged and dated" width="190"><br><sub><b>Coverage Archive</b></sub></td>
+    <td align="center" valign="top"><img src="docs/assets/preview-news.png" alt="Coverage Archive on mobile: every source badged and dated" width="190"><br><sub><b>Coverage Archive</b></sub></td>
     <td align="center" valign="top"><img src="docs/assets/preview-info.png" alt="What happened on mobile — sourced incident facts" width="190"><br><sub><b>What happened</b></sub></td>
     <td align="center" valign="top"><img src="docs/assets/preview-map-dark.png" alt="Map view in dark mode on mobile" width="190"><br><sub><b>Dark mode</b></sub></td>
   </tr>
