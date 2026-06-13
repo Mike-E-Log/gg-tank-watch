@@ -37,7 +37,8 @@ def _reset_sandbox():
     if SANDBOX.exists():
         shutil.rmtree(SANDBOX)
     SANDBOX.mkdir(parents=True)
-    (SANDBOX / "config.json").write_text(json.dumps({
+    (SANDBOX / "public").mkdir()
+    (SANDBOX / "public" / "config.json").write_text(json.dumps({
         "zone_status": "outside_downwind",
         "writer_interval_minutes": 30,
         "incident": {
@@ -57,7 +58,7 @@ def _tick(facts):
         [sys.executable, str(SANDBOX / "scripts" / "update_status.py")],
         input=payload, cwd=str(SANDBOX), capture_output=True, text=True, timeout=30,
     )
-    sp = SANDBOX / "status.json"
+    sp = SANDBOX / "public" / "status.json"
     return json.loads(sp.read_text(encoding="utf-8")) if sp.exists() else None
 
 

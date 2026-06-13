@@ -19,7 +19,7 @@ from pathlib import Path
 CATEGORY = "behavioral"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-ARCHIVE = REPO_ROOT / "data" / "news_archive.json"
+ARCHIVE = REPO_ROOT / "public" / "data" / "news_archive.json"
 
 DEAD_SLUG = "unified-school-campuses-closed"  # 404 variant (the live one has no "school-")
 

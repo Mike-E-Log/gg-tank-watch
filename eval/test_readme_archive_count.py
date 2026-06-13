@@ -15,7 +15,7 @@ from pathlib import Path
 CATEGORY = "behavioral"
 REPO = Path(__file__).resolve().parent.parent
 README = REPO / "README.md"
-ARCHIVE = REPO / "data" / "news_archive.json"
+ARCHIVE = REPO / "public" / "data" / "news_archive.json"
 
 
 def _counts():

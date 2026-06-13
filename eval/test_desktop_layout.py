@@ -16,7 +16,7 @@ import re
 
 CATEGORY = "behavioral"
 ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = ROOT / "dashboard.html"
+DASHBOARD = ROOT / "public" / "dashboard.html"
 
 
 def test_desktop_layout_invariants():

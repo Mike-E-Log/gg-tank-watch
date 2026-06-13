@@ -1,13 +1,11 @@
-"""Guard: every runtime asset the app fetches must actually be DEPLOYED (2026-06-01).
+"""Guard: every runtime asset the app fetches must actually be DEPLOYED.
 
-Root cause this guards against: `.vercelignore` had a bare `data` line that excluded the
-whole directory, so `data/news_archive.json` was git-tracked (eval + local server saw it)
-but 404'd in production — the News archive silently fell back to the live videos[] feed AND
-the new service worker couldn't install (precaching a 404 makes cache.addAll reject).
-
-This asserts, against `.vercelignore`'s gitignore-style patterns, that the curated archive
-and every sw.js STATIC_ASSETS entry are NOT excluded from the Vercel upload. stdlib only
-(no pathspec) so the eval harness keeps zero third-party deps.
+The served web root is public/ (Vercel's "Other" preset serves public/ when it exists;
+2026-06-13 relocation). This asserts that (a) every sw.js STATIC_ASSETS serve-path
+resolves to a real file under public/, and (b) nothing under public/ is excluded from
+the Vercel upload by .vercelignore. Originally caught a `.vercelignore` `data` line that
+404'd data/news_archive.json in prod (2026-06-01); re-aimed at the public/ layout.
+stdlib only (no pathspec) so the eval harness keeps zero third-party deps.
 """
 import re
 from fnmatch import fnmatch
@@ -15,8 +13,9 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
+PUBLIC = REPO_ROOT / "public"
 VERCELIGNORE = REPO_ROOT / ".vercelignore"
-SW = REPO_ROOT / "sw.js"
+SW = REPO_ROOT / "public" / "sw.js"
 
 
 def _patterns():
@@ -56,20 +55,27 @@ def _sw_static_assets():
 
 
 def test_news_archive_is_deployable():
-    pats = _patterns()
-    excluded = _is_excluded("data/news_archive.json", pats)
-    return {"passed": not excluded,
-            "details": ("data/news_archive.json deploys (not .vercelignore-excluded)"
-                        if not excluded else
-                        f"data/news_archive.json is EXCLUDED by .vercelignore -> 404 in prod. patterns={pats}")}
+    rel = "public/data/news_archive.json"
+    exists = (REPO_ROOT / rel).exists()
+    excluded = _is_excluded(rel, _patterns())
+    return {"passed": exists and not excluded,
+            "details": (f"{rel} exists and is not .vercelignore-excluded"
+                        if (exists and not excluded)
+                        else f"exists={exists} excluded={excluded} for {rel}")}
 
 
 def test_sw_static_assets_all_deployable():
     pats = _patterns()
-    assets = _sw_static_assets()
-    excluded = [a for a in assets if a not in ("/",) and _is_excluded(a, pats)]
-    return {"passed": len(assets) > 0 and not excluded,
-            "details": (f"all {len(assets)} sw STATIC_ASSETS deploy"
-                        if (assets and not excluded)
-                        else f"excluded sw assets (would 404 + break SW install): {excluded}; parsed={assets}"),
-            "metrics": {"assets": len(assets), "excluded": len(excluded)}}
+    assets = [a for a in _sw_static_assets() if a != "/"]
+    problems = []
+    for a in assets:
+        rel = "public/" + a.lstrip("/")           # serve-path -> on-disk public/ path
+        if not (REPO_ROOT / rel).exists():
+            problems.append(f"{a} -> missing {rel}")
+        elif _is_excluded(rel, pats):
+            problems.append(f"{a} -> .vercelignore-excluded {rel}")
+    return {"passed": len(assets) > 0 and not problems,
+            "details": (f"all {len(assets)} sw STATIC_ASSETS exist under public/ and deploy"
+                        if (assets and not problems)
+                        else f"problems: {problems}; parsed={assets}"),
+            "metrics": {"assets": len(assets), "problems": len(problems)}}

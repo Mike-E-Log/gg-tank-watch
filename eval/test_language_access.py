@@ -22,7 +22,7 @@ from pathlib import Path
 # silence this test.
 VERIFIED_LANGS = {"en"}
 
-DASHBOARD = Path(__file__).resolve().parent.parent / "dashboard.html"
+DASHBOARD = Path(__file__).resolve().parent.parent / "public" / "dashboard.html"
 
 
 def _parse_langs(html: str):

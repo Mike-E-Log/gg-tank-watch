@@ -13,7 +13,7 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-ARCHIVE = REPO_ROOT / "data" / "news_archive.json"
+ARCHIVE = REPO_ROOT / "public" / "data" / "news_archive.json"
 BOUNDARY = "2026-05-27T02:30:00Z"  # all-clear; same literal as test_resolved_date / test_status_json_frozen
 
 

@@ -17,8 +17,8 @@ from pathlib import Path
 CATEGORY = "behavioral"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = REPO_ROOT / "dashboard.html"
-ARCHIVE = REPO_ROOT / "data" / "news_archive.json"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
+ARCHIVE = REPO_ROOT / "public" / "data" / "news_archive.json"
 
 
 def _base_key(url):

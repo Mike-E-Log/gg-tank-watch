@@ -16,7 +16,7 @@ CATEGORY = "behavioral"
 
 
 def test_no_air_quality_link():
-    html = open("dashboard.html", encoding="utf-8").read().lower()
+    html = open("public/dashboard.html", encoding="utf-8").read().lower()
     banned = ["airnow.gov", "airnowapi.org", "info.official.airnow"]
     found = [b for b in banned if b in html]
     assert not found, f"air-quality link/remnant still in dashboard.html: {found}"

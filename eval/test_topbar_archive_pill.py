@@ -5,7 +5,7 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASH = REPO_ROOT / "dashboard.html"
+DASH = REPO_ROOT / "public" / "dashboard.html"
 
 
 def test_archive_pill_present():

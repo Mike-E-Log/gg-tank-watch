@@ -14,7 +14,7 @@ from pathlib import Path
 CATEGORY = "behavioral"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = REPO_ROOT / "dashboard.html"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
 
 MAX_CORNER_INSET_PX = 24  # a corner inset; the dead CTA-clearance offset was 72px
 

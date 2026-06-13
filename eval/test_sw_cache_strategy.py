@@ -4,7 +4,7 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SW = REPO_ROOT / "sw.js"
+SW = REPO_ROOT / "public" / "sw.js"
 
 
 def test_cache_bumped_v84():

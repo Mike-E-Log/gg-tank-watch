@@ -11,7 +11,7 @@ from pathlib import Path
 CATEGORY = "behavioral"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = REPO_ROOT / "dashboard.html"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
 
 # Vietnamese-specific diacritics. Kept narrow (these do not occur in the English
 # copy or place names used here) to avoid false positives.

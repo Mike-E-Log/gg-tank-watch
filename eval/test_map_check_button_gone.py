@@ -7,7 +7,7 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO = Path(__file__).resolve().parent.parent
-DASH = REPO / "dashboard.html"
+DASH = REPO / "public" / "dashboard.html"
 
 
 def test_zone_check_button_removed():

@@ -6,7 +6,7 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-STATUS = REPO_ROOT / "status.json"
+STATUS = REPO_ROOT / "public" / "status.json"
 ALL_CLEAR = "2026-05-27T02:30:00Z"  # May 26 7:30pm PDT
 
 

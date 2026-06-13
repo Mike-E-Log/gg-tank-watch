@@ -7,9 +7,9 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = REPO_ROOT / "dashboard.html"
-STATUS = REPO_ROOT / "status.json"
-ARCHIVE = REPO_ROOT / "data" / "news_archive.json"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
+STATUS = REPO_ROOT / "public" / "status.json"
+ARCHIVE = REPO_ROOT / "public" / "data" / "news_archive.json"
 
 
 def test_archive_date_helpers_present():
