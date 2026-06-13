@@ -7,7 +7,7 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = REPO_ROOT / "dashboard.html"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
 
 
 def test_no_live_age_freshness_label():

@@ -19,7 +19,7 @@ from pathlib import Path
 CATEGORY = "behavioral"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = REPO_ROOT / "dashboard.html"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
 
 EVAC_RGB = (217, 95, 2)  # #D95F02
 

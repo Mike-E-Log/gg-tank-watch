@@ -29,7 +29,8 @@ def _reset_sandbox():
     if SANDBOX.exists():
         shutil.rmtree(SANDBOX)
     SANDBOX.mkdir(parents=True)
-    (SANDBOX / "config.json").write_text(json.dumps({
+    (SANDBOX / "public").mkdir()
+    (SANDBOX / "public" / "config.json").write_text(json.dumps({
         "zone_status": "outside_downwind",
         "writer_interval_minutes": 30,
         "incident": {
@@ -49,7 +50,7 @@ def _tick(facts):
         [sys.executable, str(SANDBOX / "scripts" / "update_status.py")],
         input=payload, cwd=str(SANDBOX), capture_output=True, text=True, timeout=30,
     )
-    sp = SANDBOX / "status.json"
+    sp = SANDBOX / "public" / "status.json"
     return json.loads(sp.read_text()) if sp.exists() else None
 
 
@@ -136,7 +137,7 @@ def test_lifted_requires_corroboration():
 
 def test_every_statement_has_source_and_time():
     """Every official statement in status.json carries source_url + time_iso (T2 data contract)."""
-    s = json.load(open(REPO_ROOT / "status.json", encoding="utf-8"))
+    s = json.load(open(REPO_ROOT / "public" / "status.json", encoding="utf-8"))
     missing = []
     for i, st in enumerate(s.get("official_statements", [])):
         if not st.get("source_url"):
@@ -151,7 +152,7 @@ def test_every_statement_has_source_and_time():
 
 def test_sources_checked_have_fetched_time():
     """Every sources_checked entry carries fetched_iso (T2 freshness contract)."""
-    s = json.load(open(REPO_ROOT / "status.json", encoding="utf-8"))
+    s = json.load(open(REPO_ROOT / "public" / "status.json", encoding="utf-8"))
     missing = []
     for i, src in enumerate(s.get("sources_checked", [])):
         if not src.get("fetched_iso"):
@@ -166,7 +167,7 @@ def test_feed_renders_source_attribution():
     """dashboard.html feed render includes source name + relative time for every item type (T2 UI).
     The per-source 'checked {date}' in the sources fold was removed (J, archive honesty 2026-06-02);
     the sources_checked fetched_iso DATA contract still holds via test_sources_checked_have_fetched_time."""
-    html = open(REPO_ROOT / "dashboard.html", encoding="utf-8").read()
+    html = open(REPO_ROOT / "public" / "dashboard.html", encoding="utf-8").read()
     checks = {
         "feed meta shows source": "it.source" in html,
         "feed meta shows relative time": "relativeTime(it.when)" in html,

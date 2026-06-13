@@ -10,8 +10,8 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO = Path(__file__).resolve().parent.parent
-DASH = REPO / "dashboard.html"
-STATUS = REPO / "status.json"
+DASH = REPO / "public" / "dashboard.html"
+STATUS = REPO / "public" / "status.json"
 
 
 def test_resolved_iso_is_may26_pacific():

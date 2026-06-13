@@ -9,8 +9,8 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO = Path(__file__).resolve().parent.parent
-DASH = REPO / "dashboard.html"
-MANIFEST = REPO / "manifest.json"
+DASH = REPO / "public" / "dashboard.html"
+MANIFEST = REPO / "public" / "manifest.json"
 
 LIVE_TERMS = ["live demonstration", "live demo", "situational awareness", "live situational"]
 

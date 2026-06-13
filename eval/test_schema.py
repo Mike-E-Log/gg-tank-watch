@@ -12,8 +12,8 @@ from pathlib import Path
 CATEGORY = "schema"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-STATUS_PATH = REPO_ROOT / "status.json"
-CONFIG_PATH = REPO_ROOT / "config.json"
+STATUS_PATH = REPO_ROOT / "public" / "status.json"
+CONFIG_PATH = REPO_ROOT / "public" / "config.json"
 
 
 def _check_keys(obj, required, label):

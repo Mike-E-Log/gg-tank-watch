@@ -7,8 +7,8 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = REPO_ROOT / "dashboard.html"
-STATUS = REPO_ROOT / "status.json"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
+STATUS = REPO_ROOT / "public" / "status.json"
 
 FORBIDDEN = ["official source", "verified", "government"]
 

@@ -23,8 +23,8 @@ from pathlib import Path
 CATEGORY = "behavioral"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SW = REPO_ROOT / "sw.js"
-DASHBOARD = REPO_ROOT / "dashboard.html"
+SW = REPO_ROOT / "public" / "sw.js"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
 
 
 def test_sw_does_not_intercept_cross_origin():

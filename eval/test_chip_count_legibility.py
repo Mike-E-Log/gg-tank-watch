@@ -9,7 +9,7 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = REPO_ROOT / "dashboard.html"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
 
 
 def test_chip_count_font_size_legible():

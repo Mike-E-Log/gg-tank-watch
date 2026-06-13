@@ -18,9 +18,9 @@ from pathlib import Path
 CATEGORY = "behavioral"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-ACCESSIBILITY = REPO_ROOT / "accessibility.html"
-TERMS = REPO_ROOT / "terms.html"
-DASHBOARD = REPO_ROOT / "dashboard.html"
+ACCESSIBILITY = REPO_ROOT / "public" / "accessibility.html"
+TERMS = REPO_ROOT / "public" / "terms.html"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
 
 # Stale/false claims that must not appear in accessibility.html (case-insensitive).
 ACCESS_FORBIDDEN = ("vietnamese", "leaflet", "wind conditions", "system preference")

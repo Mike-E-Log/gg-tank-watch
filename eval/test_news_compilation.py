@@ -15,8 +15,8 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO = Path(__file__).resolve().parent.parent
-ARCHIVE = REPO / "data" / "news_archive.json"
-DASH = REPO / "dashboard.html"
+ARCHIVE = REPO / "public" / "data" / "news_archive.json"
+DASH = REPO / "public" / "dashboard.html"
 
 
 def _archive():

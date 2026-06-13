@@ -12,7 +12,7 @@ from pathlib import Path
 
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = REPO_ROOT / "dashboard.html"
+DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
 
 
 def test_school_card_is_dense_row_not_box():

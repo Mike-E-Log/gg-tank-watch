@@ -42,9 +42,9 @@ from urllib.request import urlopen, Request
 from urllib.error import URLError
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
-CONFIG_PATH = PROJECT_DIR / "config.json"
-STATUS_PATH = PROJECT_DIR / "status.json"
-STATUS_TMP_PATH = PROJECT_DIR / "status.json.tmp"
+CONFIG_PATH = PROJECT_DIR / "public" / "config.json"
+STATUS_PATH = PROJECT_DIR / "public" / "status.json"
+STATUS_TMP_PATH = PROJECT_DIR / "public" / "status.json.tmp"
 BREAKING_LOG_PATH = PROJECT_DIR / "breaking_events.jsonl"
 UPDATES_LOG_PATH = PROJECT_DIR / "updates.log"
 

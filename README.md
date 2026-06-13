@@ -169,7 +169,7 @@ Removing the address checker and its personal verdicts made the product safer fo
 
 ## Safety & ethics decisions (the core)
 
-Five tables, one per safety principle. Each row is one decision: what was decided, why, and what was rejected (the last table tracks where each call stands instead). The complete decision log lives in [`DESIGN_LOG.md`](DESIGN_LOG.md): 39 numbered decisions (logged as D-001 through D-039), each with its reasoning, a rubric score, and any reversal.
+Five tables, one per safety principle. Each row is one decision: what was decided, why, and what was rejected (the last table tracks where each call stands instead). The complete decision log lives in [`DESIGN_LOG.md`](docs/DESIGN_LOG.md): 39 numbered decisions (logged as D-001 through D-039), each with its reasoning, a rubric score, and any reversal.
 
 ### Avoiding harm
 
@@ -233,7 +233,7 @@ The list of things *not* built is part of the design. The biggest refusals (the 
 
 ## How it was built: the journey, and the reversals
 
-The decisions worth showing are the ones that changed. Here is the whole shape of it, top to bottom; the full record is in [`DESIGN_LOG.md`](DESIGN_LOG.md).
+The decisions worth showing are the ones that changed. Here is the whole shape of it, top to bottom; the full record is in [`DESIGN_LOG.md`](docs/DESIGN_LOG.md).
 
 | Date | What changed | Type |
 |------|--------------|------|
@@ -259,7 +259,7 @@ What these changes have in common: each one removed a feature the project could 
 
 The News tab is a **Coverage Archive**: a record of *how the incident was reported*, not a live feed.
 
-It is read from [`data/news_archive.json`](data/news_archive.json), which holds **92 items across 43 outlets**:
+It is read from [`public/data/news_archive.json`](public/data/news_archive.json), which holds **92 items across 43 outlets**:
 
 - **57 articles**
 - **23 videos**
@@ -351,12 +351,12 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
 
 **View it live:** **[ggtankwatch.org](https://ggtankwatch.org)** is the hosted, frozen archive. It is intentionally `noindex` (not listed in search engines), but the direct link works.
 
-To run it locally, see [`USAGE.md`](USAGE.md). The dashboard is a single static file: serve the repo root and open `dashboard.html`.
+To run it locally, see [`USAGE.md`](docs/USAGE.md). The dashboard is a single static file: serve the `public/` folder and open `dashboard.html`.
 
 ```powershell
 git clone <this-repo>
 cd gg-tank-watch
-python -m http.server 8000   # then open http://127.0.0.1:8000/dashboard.html
+python -m http.server 8000 -d public   # then open http://127.0.0.1:8000/dashboard.html
 python eval/run_all.py --skip integration   # 211 tests, exits 0
 ```
 
@@ -370,30 +370,19 @@ The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and
 
 ```
 gg-tank-watch/
-├── README.md                  ← you are here
-├── CLAUDE.md                  ← binding safety-principles table (project instructions)
-├── LICENSE · NOTICE           ← MIT license + the safety disclaimer
-├── dashboard.html             ← the dashboard (single file)
-├── terms.html · accessibility.html
-├── config.json · status.json · timeline.json
-├── data/news_archive.json     ← the Coverage Archive (92 items, per-item provenance)
-├── sw.js · manifest.json      ← offline support
-├── DESIGN_LOG.md · DESIGN.md · CHANGELOG.md · USAGE.md
-├── scripts/
-│   ├── update_status.py        ← the writer (the validation gate)
-│   ├── gather_facts.py         ← gathers facts (cloud path)
-│   └── refresh_local.py        ← older refresh script (retired)
-├── docs/                       ← selected docs (15 in the folder)
-│   ├── AI_CONTROL_ARCHITECTURE.md   ← the validation gate + test mapping
-│   ├── FAILURE_ANALYSIS.md          ← red-team failure modes
-│   ├── CONDUIT_PATTERN.md · LEGAL.md · CODE_OF_CONDUCT.md
-│   ├── LANGUAGE_ACCESS.md · DATA_SYNC.md · DATA_QUALITY.md
-│   ├── SPEC.md · WCAG_NOTES.md
-│   └── AUDIT_2026-06-04.md          ← the close-out audit
-└── eval/
-    ├── run_all.py              ← runs everything, appends scores.jsonl
-    ├── test_*.py               ← 65 test files / 211 tests
-    └── rubrics/                ← the AI grading prompts
+├── README.md · CLAUDE.md · LICENSE · NOTICE · CITATION.cff · vercel.json
+├── public/                      ← the served web root (Vercel serves this at /)
+│   ├── dashboard.html            ← the dashboard (single file)
+│   ├── terms.html · accessibility.html
+│   ├── config.json · status.json
+│   ├── data/news_archive.json    ← the Coverage Archive (92 items, per-item provenance)
+│   ├── sw.js · manifest.json     ← offline support
+│   ├── robots.txt · og-image.png
+│   └── lib/                       ← bundled MapLibre GL (no third-party server in the map path)
+├── data/                        ← source data: timeline.json, news seed + audit
+├── docs/                        ← project + design docs (DESIGN_LOG.md, DESIGN.md, CHANGELOG.md, USAGE.md, + more)
+├── scripts/                     ← update_status.py (validation gate), gather_facts.py, start_dashboard.bat
+└── eval/                        ← run_all.py · test_*.py (65 files / 211 tests) · rubrics/
 ```
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>

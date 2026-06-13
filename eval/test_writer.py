@@ -32,8 +32,9 @@ def _reset_sandbox():
     if SANDBOX.exists():
         shutil.rmtree(SANDBOX)
     SANDBOX.mkdir(parents=True)
+    (SANDBOX / "public").mkdir()
     # Minimal config (no map needed for writer behavior tests)
-    (SANDBOX / "config.json").write_text(json.dumps({
+    (SANDBOX / "public" / "config.json").write_text(json.dumps({
         "zone_status": "outside_downwind",
         "writer_interval_minutes": 30,
         "incident": {
@@ -61,7 +62,7 @@ def _tick(facts: dict | None) -> tuple[int, dict | None]:
         text=True,
         timeout=30,
     )
-    status_path = SANDBOX / "status.json"
+    status_path = SANDBOX / "public" / "status.json"
     parsed = json.loads(status_path.read_text()) if status_path.exists() else None
     return proc.returncode, parsed
 
@@ -266,12 +267,12 @@ def test_partial_facts_dont_downgrade_severity():
     _reset_sandbox()
     # Tick 1: real evac data -> severity should derive to "high"
     _tick({"evacuation_residents": 50000, "evacuation_lifted": False, "tank_temp_f": 100})
-    snap1 = json.loads((SANDBOX / "status.json").read_text())
+    snap1 = json.loads((SANDBOX / "public" / "status.json").read_text())
     if snap1["incident"]["severity"] != "high":
         return {"passed": False, "details": f"setup failed: expected severity=high, got {snap1['incident']['severity']}"}
     # Tick 2: partial facts (only videos, no evac fields)
     _tick({"videos": [{"outlet": "test", "title": "test", "url": "https://example.invalid"}]})
-    snap2 = json.loads((SANDBOX / "status.json").read_text())
+    snap2 = json.loads((SANDBOX / "public" / "status.json").read_text())
     return {
         "passed": (
             snap2["incident"]["severity"] == "high"
@@ -285,7 +286,7 @@ def test_schema_invariants():
     """status.json must have required fields with correct types."""
     _reset_sandbox()
     _tick({"tank_temp_f": 100, "evacuation_residents": 50000, "evacuation_lifted": False})
-    snap_path = SANDBOX / "status.json"
+    snap_path = SANDBOX / "public" / "status.json"
     snap = json.loads(snap_path.read_text())
     checks = [
         ("schema_version", lambda: snap["schema_version"] == 1),

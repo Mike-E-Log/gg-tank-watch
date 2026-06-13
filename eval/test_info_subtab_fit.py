@@ -10,7 +10,7 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = ROOT / "dashboard.html"
+DASHBOARD = ROOT / "public" / "dashboard.html"
 
 
 def _css_block(selector: str, text: str) -> str:

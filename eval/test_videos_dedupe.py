@@ -29,7 +29,8 @@ def _reset_sandbox():
     if SANDBOX.exists():
         shutil.rmtree(SANDBOX)
     SANDBOX.mkdir(parents=True)
-    (SANDBOX / "config.json").write_text(json.dumps({
+    (SANDBOX / "public").mkdir()
+    (SANDBOX / "public" / "config.json").write_text(json.dumps({
         "zone_status": "outside_downwind",
         "writer_interval_minutes": 30,
         "incident": {
@@ -54,7 +55,7 @@ def _tick(facts: dict) -> dict | None:
         text=True,
         timeout=30,
     )
-    p = SANDBOX / "status.json"
+    p = SANDBOX / "public" / "status.json"
     return json.loads(p.read_text()) if p.exists() else None
 
 

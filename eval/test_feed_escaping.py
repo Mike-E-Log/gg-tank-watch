@@ -9,7 +9,7 @@ safe for both text and attribute context. Static check, no browser, no new deps.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DASHBOARD = ROOT / "dashboard.html"
+DASHBOARD = ROOT / "public" / "dashboard.html"
 
 
 def _fn_body(name: str, text: str) -> str:
