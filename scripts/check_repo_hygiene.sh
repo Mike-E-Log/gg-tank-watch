@@ -16,7 +16,7 @@ PATTERNS=(
   'AnnaThyme'
   'NancyThyme'
   'withoutaxioms'
-  'founder@gardwyn'
+  'founder@'
   'Kaya Admin'
   'Ngoc Duong'
   'Users[\\/-]witho'
