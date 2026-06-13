@@ -11,7 +11,7 @@ from pathlib import Path
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
-VERCEL = REPO_ROOT / "vercel.json"
+VERCEL = REPO_ROOT / "public" / "vercel.json"
 
 
 def test_no_og_scraper_in_dashboard():
