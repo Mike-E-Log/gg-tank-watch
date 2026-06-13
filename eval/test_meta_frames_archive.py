@@ -64,8 +64,16 @@ def test_manifest_description_frames_archive():
 
 def test_share_text_frames_archive():
     """The share-sheet text literal (a JS field) must not present the app as 'Live situational
-    awareness'; it should read as a historical archive."""
+    awareness'; it should read as a historical archive. The page's canonical / Open Graph /
+    Twitter URLs must also use the canonical ggtankwatch.org domain, not the stale
+    gg-tank-watch.vercel.app host (the .org rollout left these behind)."""
     text = DASH.read_text(encoding="utf-8")
-    ok = "Live situational awareness for the Garden Grove" not in text
-    return {"passed": ok, "details": "share text no longer 'Live situational awareness'" if ok
-            else "share text still says 'Live situational awareness'"}
+    share_ok = "Live situational awareness for the Garden Grove" not in text
+    url_ok = "gg-tank-watch.vercel.app" not in text
+    ok = share_ok and url_ok
+    fails = []
+    if not share_ok:
+        fails.append("share text still says 'Live situational awareness'")
+    if not url_ok:
+        fails.append("stale gg-tank-watch.vercel.app host still in canonical/og/twitter tags")
+    return {"passed": ok, "details": "; ".join(fails) or "share text + canonical domain OK"}
