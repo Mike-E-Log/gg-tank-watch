@@ -205,23 +205,20 @@ The list of things *not* built is part of the design. The biggest refusals (the 
 
 The decisions worth showing are the ones that changed. Here is the whole shape of it, top to bottom; the full record is in [`DESIGN_LOG.md`](DESIGN_LOG.md).
 
-```mermaid
-flowchart TD
-    E1["May 24<br/>Push alerts planned, then reversed<br/>within 90 minutes to one dashboard"]
-    E2["May 24<br/>Blast radius, chemical plume, and the<br/>evacuation zone added to the map, on request"]
-    E3["May 26 · THE CONDUIT PIVOT<br/>Address checker, blast and plume layers,<br/>and all safety verdicts removed;<br/>evacuation zone kept"]
-    E4["May 26<br/>Officials lift the evacuation;<br/>the incident is resolved"]
-    E5["May 27<br/>Map bundled into the app after<br/>a hosted map vanished on reload"]
-    E6["May 30<br/>Vietnamese safety text removed;<br/>the site goes English-only"]
-    E7["May 31<br/>Single-station wind arrow removed"]
-    E8["Jun 1<br/>Live dashboard frozen into an archive"]
-    E1 --> E2 --> E3 --> E4 --> E5 --> E6 --> E7 --> E8
-    style E3 fill:#fff3cd,stroke:#bf8700,stroke-width:4px,color:#1f2328
-```
+| Date | What changed | Type |
+|------|--------------|------|
+| May 24 | Push alerts planned, then reversed within 90 minutes to one dashboard | Reversal |
+| May 24 | Blast radius, chemical plume, and the evacuation zone added to the map, on request | Addition |
+| **May 26** | **The conduit pivot: address checker, blast and plume layers, and all safety verdicts removed; evacuation zone kept** | **Reversal** |
+| May 26 | Officials lift the evacuation; the incident is resolved | Milestone |
+| May 27 | Map bundled into the app after a hosted map vanished on reload | Fix |
+| May 30 | Vietnamese safety text removed; the site goes English-only | Removal |
+| May 31 | Single-station wind arrow removed | Removal |
+| Jun 1 | Live dashboard frozen into an archive | Milestone |
 
 What these changes have in common: each one removed a feature the project could not fully stand behind, even when that meant the site could do less.
 
-- The clearest example is the **conduit pivot** (the highlighted step): the address checker and its personal verdicts were removed on purpose, because making that kind of call was not the project's place (see [the thesis](#the-thesis-a-conduit-not-a-judge)).
+- The clearest example is the **conduit pivot** (the bold row above): the address checker and its personal verdicts were removed on purpose, because making that kind of call was not the project's place (see [the thesis](#the-thesis-a-conduit-not-a-judge)).
 - The name stayed **"GG Tank Watch," not "…Safety"**: a "safety" label would claim more authority than a volunteer archive actually has.
 
 ---
@@ -252,18 +249,17 @@ Before this README, the whole archive was audited end to end ([`docs/AUDIT_2026-
 
 ---
 
-## Architecture (frozen)
+## Architecture (the retired pipeline)
 
-The historical pipeline (now retired) flowed top to bottom. The validation gate in the middle is the one place every fact had to pass before it could be published.
+The historical pipeline flowed top to bottom. The validation gate in the middle is the one place every fact had to pass before it could be published.
 
-```mermaid
-flowchart TD
-    A["A person starts an update<br/>(by hand, not on a schedule)"] --> B["Claude with web search<br/>returns the facts it found as JSON"]
-    B --> C["update_status.py · THE VALIDATION GATE<br/>checks corroboration, provenance, freshness, and dates;<br/>sets the danger level itself; writes the file safely"]
-    C --> D["status.json · the published data file<br/>(last updated May 26, when officials lifted the evacuation)"]
-    D --> E["dashboard.html · THE READER<br/>Map, Coverage Archive, Info;<br/>no longer checks for updates; still opens offline"]
-    style C fill:#fff3cd,stroke:#bf8700,stroke-width:4px,color:#1f2328
-```
+| Step | Stage | What happens |
+|:----:|-------|--------------|
+| 1 | A person | Kept a refresh running on a schedule while the incident was active |
+| 2 | Claude (web search) | Returns the facts it found as JSON |
+| **3** | **`update_status.py`** | **The validation gate: checks corroboration, provenance, freshness, and dates; sets the danger level itself; writes the file safely** |
+| 4 | `status.json` | The published data file (last updated May 26, when officials lifted the evacuation) |
+| 5 | `dashboard.html` | The reader: Map, Coverage Archive, Info; no longer checks for updates; still opens offline |
 
 The architecture in plain terms:
 
@@ -291,8 +287,8 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
 
 ## The incident (facts, as archived)
 
-| | |
-|---|---|
+| Fact | Detail |
+|------|--------|
 | **Substance** | Methyl methacrylate (MMA): about 7,000 gallons, inside a 34,000-gallon tank |
 | **Facility** | GKN Aerospace, 12122 Western Ave, Garden Grove, CA |
 | **Peak tank temperature** | At least 100°F (it maxed out the gauge, which could not read higher) |
