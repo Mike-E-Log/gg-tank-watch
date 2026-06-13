@@ -255,8 +255,8 @@ The historical pipeline flowed top to bottom. The validation gate in the middle 
 
 | Step | Stage | What happens |
 |:----:|-------|--------------|
-| 1 | A person | Kept a refresh running on a schedule while the incident was active |
-| 2 | Claude (web search) | Returns the facts it found as JSON |
+| 1 | A scheduled refresh | A person kept it running while the incident was active; each run asked Claude to gather fresh facts |
+| 2 | Claude (web search) | Returned the facts it found as JSON |
 | **3** | **`update_status.py`** | **The validation gate: checks corroboration, provenance, freshness, and dates; sets the danger level itself; writes the file safely** |
 | 4 | `status.json` | The published data file (last updated May 26, when officials lifted the evacuation) |
 | 5 | `dashboard.html` | The reader: Map, Coverage Archive, Info; no longer checks for updates; still opens offline |
