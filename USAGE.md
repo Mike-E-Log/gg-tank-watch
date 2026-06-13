@@ -38,7 +38,7 @@ It appends scores to `eval/scores.jsonl`, prints a scorecard, and the exit code 
 
 ## Historical: how the pipeline ran during the incident
 
-> Kept for reference. **None of this is active in the frozen archive** — the dashboard no longer polls, the wind fetch was removed, and `refresh_local.py` is retired. See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) and [Architecture](README.md#architecture-frozen) for the full design.
+> Kept for reference. **None of this is active in the frozen archive** — the dashboard no longer polls, the wind fetch was removed, and `refresh_local.py` is retired. See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) and [Architecture](README.md#architecture-the-retired-pipeline) for the full design.
 
 During the May 21–26 emergency the dashboard polled `status.json` every 30 seconds, and a contributor ran the refresh job (`scripts/refresh_local.py`) on demand — roughly every 20–30 minutes — to re-gather facts and rewrite `status.json`. The map also showed a live wind reading from NOAA station KFUL, later removed for the reason above.
 
