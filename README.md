@@ -370,7 +370,7 @@ The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and
 
 ```
 gg-tank-watch/
-├── README.md · CLAUDE.md · LICENSE · NOTICE · CITATION.cff · vercel.json
+├── README.md · CLAUDE.md · LICENSE · NOTICE
 ├── public/                      ← the served web root (Vercel serves this at /)
 │   ├── dashboard.html            ← the dashboard (single file)
 │   ├── terms.html · accessibility.html
@@ -378,6 +378,7 @@ gg-tank-watch/
 │   ├── data/news_archive.json    ← the Coverage Archive (92 items, per-item provenance)
 │   ├── sw.js · manifest.json     ← offline support
 │   ├── robots.txt · og-image.png
+│   ├── vercel.json               ← deploy config (noindex, CSP, / → dashboard rewrite)
 │   └── lib/                       ← bundled MapLibre GL (no third-party server in the map path)
 ├── data/                        ← source data: timeline.json, news seed + audit
 ├── docs/                        ← project + design docs (DESIGN_LOG.md, DESIGN.md, CHANGELOG.md, USAGE.md, + more)

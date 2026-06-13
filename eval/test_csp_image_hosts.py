@@ -13,7 +13,7 @@ from pathlib import Path
 CATEGORY = "behavioral"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DASHBOARD = REPO_ROOT / "public" / "dashboard.html"
-VERCEL = REPO_ROOT / "vercel.json"
+VERCEL = REPO_ROOT / "public" / "vercel.json"
 
 
 def _img_src():
