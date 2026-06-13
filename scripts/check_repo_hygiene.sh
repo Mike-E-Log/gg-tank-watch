@@ -11,21 +11,37 @@ set -u
 # Forbidden patterns (real PII + removed framing). Specific, to avoid false
 # positives on legitimate content (e.g. "Anthropic" alone is allowed as a
 # design-standard citation; only "Anthropic Fellows" is blocked).
-PATTERNS=(
-  'anna\.thyme'
-  'AnnaThyme'
-  'NancyThyme'
-  'withoutaxioms'
+#
+# The PII half (collaborator names, handles, home-path usernames) is base64-
+# encoded so this PUBLIC file does not itself spell out the very names it
+# scrubs - the denylist must not become the leak it prevents. Decoded only in
+# memory at runtime, never written to disk. To inspect or add a PII pattern:
+#   printf '%s' 'the-pattern' | base64    # paste the output into ENCODED_PII
+ENCODED_PII=(
+  'YW5uYVwudGh5bWU='
+  'QW5uYVRoeW1l'
+  'TmFuY3lUaHltZQ=='
+  'd2l0aG91dGF4aW9tcw=='
+  'S2F5YSBBZG1pbg=='
+  'TmdvYyBEdW9uZw=='
+  'VXNlcnNbXFwvLV13aXRobw=='
+  'VXNlcnNbXFwvLV1hbm5hdA=='
+)
+
+# Removed self-promotional framing - generic phrases that identify no one, so
+# kept in cleartext.
+FRAMING=(
   'founder@'
-  'Kaya Admin'
-  'Ngoc Duong'
-  'Users[\\/-]witho'
-  'Users[\\/-]annat'
   'Anthropic Fellows'
   'portfolio piece'
   'Fellows application'
   'gg-tank-bot'
 )
+
+PATTERNS=("${FRAMING[@]}")
+for _enc in "${ENCODED_PII[@]}"; do
+  PATTERNS+=("$(printf '%s' "$_enc" | base64 -d)")
+done
 
 # Exclude self-references (this script + the workflow legitimately list the patterns).
 EXCLUDES=(':(exclude)scripts/check_repo_hygiene.sh' ':(exclude).github/workflows/hygiene.yml')
@@ -34,7 +50,7 @@ fail=0
 for p in "${PATTERNS[@]}"; do
   hits=$(git grep -I -n -E "$p" -- . "${EXCLUDES[@]}" 2>/dev/null)
   if [ -n "$hits" ]; then
-    echo "::error::repo-hygiene BLOCKED — forbidden pattern '$p':"
+    echo "::error::repo-hygiene BLOCKED — forbidden pattern detected:"
     echo "$hits"
     fail=1
   fi
