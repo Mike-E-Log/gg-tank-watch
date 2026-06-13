@@ -259,7 +259,7 @@ What these changes have in common: each one removed a feature the project could 
 
 The News tab is a **Coverage Archive**: a record of *how the incident was reported*, not a live feed.
 
-It is read from [`data/news_archive.json`](data/news_archive.json), which holds **92 items across 43 outlets**:
+It is read from [`public/data/news_archive.json`](public/data/news_archive.json), which holds **92 items across 43 outlets**:
 
 - **57 articles**
 - **23 videos**
