@@ -53,7 +53,7 @@ GG Tank Watch is a single-page dashboard built during a multi-day chemical emerg
 
 - It pulled scattered updates from officials and news outlets into one calm view and **pointed back to the authorities in charge**.
 - It is a **pure information conduit**: it relays what officials and newsrooms published, and issues no judgments of its own.
-- The emergency is over, so the dashboard is frozen: the pipeline is retired, the page no longer checks for updates, and every tab is labeled **ARCHIVE** with the incident dates (May 21–26, 2026) so it cannot be misread as live.
+- The emergency is over. The dashboard is frozen: the data pipeline is retired and the page no longer checks for updates. Every tab is labeled **ARCHIVE** with the incident dates (May 21–26, 2026), so it cannot be mistaken for a live tool.
 
 Its organizing principle:
 
@@ -79,7 +79,7 @@ The gate's four highest-stakes checks, enforced in code, not prompting:
 
 | Control | What it prevents | The rule |
 |---------|------------------|----------|
-| **P0-1 Corroboration gate** | A single hallucinated `evacuation_lifted: true` firing a false "safe to return" message | Repeating an official "evacuation lifted" announcement needs **at least 2 sources, at least 1 of them an official agency**. A new danger update repeats with 1 source. |
+| **P0-1 Corroboration gate** | A single made-up `evacuation_lifted: true` value firing a false "safe to return" message | Repeating an official "evacuation lifted" announcement needs **at least 2 sources, at least 1 of them an official agency**. A new danger update repeats with 1 source. |
 | **P0-2 Provenance check** | A fabricated source URL or unattributed quote reaching the dashboard | A statement is dropped unless its `source_url` was actually fetched in the same run that produced it. The model cannot cite a page the pipeline never visited. |
 | **P0-3 Freshness honesty** | A run that found nothing new stamping a fresh timestamp on old data | Data age (`data_as_of_iso`) is tracked separately from write time, and the staleness banner is driven by data age. |
 | **P1-1 Date sanity** | A future-dated or malformed `incident_resolved_iso` flipping the incident to "resolved" | Out-of-range or malformed timestamps are nulled before the file is written. |
@@ -117,7 +117,7 @@ Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows 
 - [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the whole approach in one first-person read.
 - [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): maps each safety principle to its tests.
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
-- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 red-team, a receipted eval export, the decision-authority note).
+- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note).
 
 ---
 
@@ -243,7 +243,7 @@ Two tests keep this honest: [`eval/test_provenance.py`](eval/) fails the build i
 
 Before this README, the whole archive was audited end to end ([`docs/AUDIT_2026-06-04.md`](docs/AUDIT_2026-06-04.md)).
 
-- **Honesty (the point of the audit).** The most important finding contradicted the project's own thesis: one news item had a dead link paired with a *fabricated* "verified" note. It was corrected. Two smaller fixes followed: the Terms and Accessibility pages still described removed features (trimmed to match the shipped app), and the summary outcome "0 displaced" (confusing next to "~50,000 evacuated") was reworded to "no permanent displacement." Each fix shipped with a new test so it cannot come back.
+- **Honesty (the point of the audit).** The most important finding contradicted the project's own thesis: one news item had a dead link paired with a *fabricated* "verified" note. It was corrected. Two smaller fixes followed. The Terms and Accessibility pages still described removed features, so they were trimmed to match the shipped app. The summary outcome "0 displaced" (confusing next to "~50,000 evacuated") was reworded to "no permanent displacement." Each fix shipped with a new test so it cannot come back.
 - **Layout.** 108 screenshots, from phone width to desktop, light and dark, every screen, taken with an automated browser. Every layout measured correct, with no new problems.
 - **Links.** 110 of the 112 links the page loads were live. One was genuinely dead (since fixed); one was briefly blocked by its server but real. A flagged concern about `abcnews.com` was checked by opening the real articles and turned out to be a false alarm.
 
@@ -277,16 +277,16 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
 
 ## Stack
 
-- **Frontend:** vanilla HTML/CSS/JS, no framework, no build step.
+- **Frontend:** plain HTML, CSS, and JavaScript, no framework, no build step.
   - The whole app is one **~116 KB** `dashboard.html`.
   - Map: [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (**~870 KB**, JavaScript + CSS) with [OpenFreeMap](https://openfreemap.org/) vector tiles (light and dark).
-  - A service worker (cache `gg-tank-v84`) caches the shell and map, so the page still opens offline.
+  - A service worker (cache `gg-tank-v84`) saves the shell and map locally, so the page still opens offline.
 - **Writer:** Python 3 **standard library only**, no outside dependencies.
 - **Security headers (production, set in `vercel.json`):**
-  - a strict Content Security Policy that only allows the site's own resources (`default-src 'self'`);
+  - a Content Security Policy that restricts the browser to loading only the site's own resources (`default-src 'self'`);
   - `X-Frame-Options: DENY` (it cannot be embedded in another site);
   - `X-Robots-Tag: noindex, nofollow` (search engines are asked not to list it).
-- **Eval:** pytest-style harness, **211 tests across 65 files** + LLM-as-judge rubrics ([`eval/rubrics/`](eval/rubrics/)).
+- **Eval:** automated test suite, **211 tests across 65 files**, plus AI-graded rubrics ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
 ---

@@ -1,16 +1,16 @@
-# Data sync — how `status.json` stays fresh
+# Data sync: how `status.json` stays fresh
 
-> **Frozen archive (historical).** The pipeline is retired — the dashboard no longer polls and `scripts/refresh_local.py` exits with an `ARCHIVED` notice. The present-tense below describes how sync ran during the May 2026 incident.
+> **Frozen archive (historical).** The pipeline is retired. The dashboard no longer polls and `scripts/refresh_local.py` exits with an `ARCHIVED` notice. The present-tense below describes how sync ran during the May 2026 incident.
 
 The dashboard polls `status.json` (incident facts) every ~30s. Something has to
 keep that file current. There are two paths; **only the local one is active right now.**
 
 ## Archived: local refresh on subscription credits
 
-`scripts/refresh_local.py` (archived — the script now exits with an `ARCHIVED` notice; see [DEPLOYMENT_READINESS.md](DEPLOYMENT_READINESS.md)), formerly run on a contributor's machine that was left on.
+`scripts/refresh_local.py` (archived: the script now exits with an `ARCHIVED` notice; see [DEPLOYMENT_READINESS.md](DEPLOYMENT_READINESS.md)), formerly run on a contributor's machine that was left on.
 
 - Gathers current facts via `claude -p` with the **OAuth subscription**
-  (`ANTHROPIC_API_KEY` unset) + the WebSearch tool — so it bills **subscription
+  (`ANTHROPIC_API_KEY` unset) + the WebSearch tool; so it bills **subscription
   credits, $0 metered**.
 - Runs the existing writer (`scripts/update_status.py`) and commits the refreshed
   `status.json` (`[skip ci]`), which Vercel auto-deploys.
@@ -42,13 +42,13 @@ while ($true) { python scripts\refresh_local.py; Start-Sleep -Seconds 1200 }
 
 Trade-off accepted for now: this depends on a machine being on. If it sleeps or
 the loop stops, `status.json` simply ages and the dashboard's staleness banner
-fires (it never shows fresh-stamped stale data — the gatherer writes nothing on
+fires (it never shows fresh-stamped stale data; the gatherer writes nothing on
 failure).
 
 ## Dormant: metered cloud cron (the "no machine required" path, for later)
 
 `.github/workflows/update-status.yml` does the same thing on GitHub's hosted
-runners every 20 min — **no machine required** — but a headless runner can't use
+runners every 20 min, **no machine required**, but a headless runner can't use
 the OAuth subscription, so it bills a **metered `ANTHROPIC_API_KEY`** (~$200-330/mo
 at 20-min cadence). The `schedule:` trigger is commented out; `workflow_dispatch`
 still works for a manual run.
@@ -61,5 +61,5 @@ Stop the local Task Scheduler job at the same time so the two don't both push.
 
 Whichever path is active, the writer is not yet hardened per
 [`DATA_QUALITY.md`](DATA_QUALITY.md) (corroboration gate, URL-integrity are
-prompt-level only). Harden before distributing — see
+prompt-level only). Harden before distributing: see
 `distribution-gating-constraints` in project memory.

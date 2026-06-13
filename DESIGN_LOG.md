@@ -5,17 +5,17 @@ Structured log of every meaningful design decision made on GG Tank Watch (the pr
 ## How to read this
 
 Each decision has:
-- **Date** — when made
-- **Status** — `Active` · `Superseded` (with link) · `Reverted` · `Deferred`
-- **Context** — what triggered the decision
-- **Decision** — what we did
-- **Alternatives** — what we considered and why each lost
-- **Principles applied** — the 6 autoplan principles (P1 completeness, P2 boil lakes, P3 pragmatic, P4 DRY, P5 explicit, P6 bias to action)
-- **Rubric score** — retrospective grading on three axes, 1–10:
+- **Date:** when made
+- **Status:** `Active` · `Superseded` (with link) · `Reverted` · `Deferred`
+- **Context:** what triggered the decision
+- **Decision:** what we did
+- **Alternatives:** what we considered and why each lost
+- **Principles applied:** the 6 autoplan principles (P1 completeness, P2 boil lakes, P3 pragmatic, P4 DRY, P5 explicit, P6 bias to action)
+- **Rubric score:** retrospective grading on three axes, 1–10:
   - **Correctness:** does it solve the actual problem?
   - **Maintainability:** would another engineer understand + extend it?
   - **User-fit:** did Nancy (the actual user) accept it?
-- **Lesson** — what to remember next time
+- **Lesson:** what to remember next time
 
 ## Decision summary table
 
@@ -50,7 +50,7 @@ Each decision has:
 | D-027 | 2026-05-25 | Writer fix: partial facts must not recompute severity | Active | 9.3 |
 | D-028 | 2026-05-25 | PR workflow: feature branches + GitHub PRs for non-trivial changes | Active | TBD |
 | D-029 | 2026-05-25 | Hero address check: move safety checker into always-visible hero | Superseded → [D-030](#d-030) | 8.7 |
-| D-030 | 2026-05-26 | The conduit pivot — remove authored verdicts | Active | 9.3 |
+| D-030 | 2026-05-26 | The conduit pivot: remove authored verdicts | Active | 9.3 |
 | D-031 | 2026-05-27 | Map: Leaflet → MapLibre GL, self-hosted | Active | 9.0 |
 | D-032 | 2026-05-28 | Name: "GG Tank Watch," not "…Safety" | Active | 8.7 |
 | D-033 | 2026-05-30 | Vietnamese → English-only (G1) | Active | 8.7 |
@@ -67,7 +67,7 @@ Each decision has:
 
 - **Date:** 2026-05-24
 - **Status:** Superseded by [D-009](#d-009) within 90 minutes of accepting it.
-- **Context:** Initial SPEC framed this as a "live dashboard" Nancy would glance at. CEO subagent challenged hard: the real failure mode isn't "I want to look but can't" — it's "I'm asleep / showering / driving when the evac expands and don't see it."
+- **Context:** Initial SPEC framed this as a "live dashboard" Nancy would glance at. CEO subagent challenged hard: the real failure mode isn't "I want to look but can't." It's "I'm asleep / showering / driving when the evac expands and don't see it."
 - **Decision:** Build push notifications (ntfy.sh) as the **primary** alert path; dashboard becomes secondary.
 - **Alternatives:**
   - **Dashboard-first (rejected):** fails the asleep/away-from-screen scenario.
@@ -78,7 +78,7 @@ Each decision has:
   - Correctness: 8 (sound at the time)
   - Maintainability: 7
   - User-fit: 3 (user reversed within 90 min)
-- **Lesson:** A strong CEO-level argument is necessary but not sufficient — the user has context the reviewer doesn't. Build for revert (the ntfy pipeline was cleanly removable when D-009 fired).
+- **Lesson:** A strong CEO-level argument is necessary but not sufficient. The user has context the reviewer doesn't. Build for revert (the ntfy pipeline was cleanly removable when D-009 fired).
 
 ## D-002: Runtime path: OneDrive vs %LOCALAPPDATA%
 
@@ -87,7 +87,7 @@ Each decision has:
 - **Context:** Eng review flagged Windows + OneDrive + atomic rename as a real `PermissionError` risk (sync client + Defender hold file handles briefly).
 - **Decision:** Keep runtime files (`status.json`, `updates.log`, `breaking_events.jsonl`) inside the OneDrive-synced project folder; add a 5-attempt exponential-backoff retry on `os.replace()` / append.
 - **Alternatives:**
-  - **Move runtime to `%LOCALAPPDATA%\gg-dashboard\` (rejected):** would kill the cross-device view (which was a v0 premise at that point — later moot per D-009).
+  - **Move runtime to `%LOCALAPPDATA%\gg-dashboard\` (rejected):** would kill the cross-device view (which was a v0 premise at that point, later moot per D-009).
   - **Disable OneDrive sync for the folder (rejected):** invasive; affects user's overall OneDrive setup.
 - **Principles applied:** P3 pragmatic, P5 explicit.
 - **Rubric:** Correctness 9 · Maintainability 8 · User-fit 7.
@@ -96,8 +96,8 @@ Each decision has:
 ## D-003: Fact extraction: WebSearch+regex vs per-site scrapers
 
 - **Date:** 2026-05-24
-- **Status:** Active. **Most load-bearing decision in the codebase.**
-- **Context:** Eng review (E1) flagged the original SPEC's "one extractor per source" as the biggest handwave — per-site HTML scrapers would be broken within a day by news-site changes.
+- **Status:** Active. **The decision the rest of the codebase depends on.**
+- **Context:** Eng review (E1) flagged the original SPEC's "one extractor per source" as the biggest handwave. Per-site HTML scrapers would be broken within a day by news-site changes.
 - **Decision:** The `/loop` cron does WebSearch (Claude's tool) and pipes a structured facts JSON to `update_status.py` via stdin. The script never touches the open web; it's pure JSON → diff → snapshot → log.
 - **Alternatives:**
   - **Per-site HTML scrapers (rejected):** fragile, days of work, dies on the next news-site redesign.
@@ -106,17 +106,17 @@ Each decision has:
   - **WebSearch in /loop, parse in Python (chosen):** fragile-things-on-the-model, deterministic-things-in-Python.
 - **Principles applied:** P3 pragmatic, P5 explicit.
 - **Rubric:** Correctness 10 · Maintainability 9 · User-fit 8.
-- **Lesson:** Where you draw the boundary between "AI does the messy part" and "code does the deterministic part" is the single most important architecture call in an LLM-augmented system. Get this wrong and you're either building a brittle scraper or a black box.
+- **Lesson:** Where you draw the boundary between "AI does the messy part" and "code does the deterministic part" is a foundational architecture call in an LLM-augmented system. Get this wrong and you're either building a brittle scraper or a black box.
 
 ## D-004: Breaking detection hysteresis (2-tick)
 
 - **Date:** 2026-05-24
 - **Status:** Reverted within 2 hours. See [D-016](#d-016).
-- **Context:** Eng review (E3) flagged that residents-count flapping between reports (45k ↔ 50k) would false-fire breaking every tick. Recommendation: 2-tick hysteresis — require the candidate to fire on two consecutive ticks before flipping.
+- **Context:** Eng review (E3) flagged that residents-count flapping between reports (45k ↔ 50k) would false-fire breaking every tick. Recommendation: 2-tick hysteresis. Require the candidate to fire on two consecutive ticks before flipping.
 - **Decision (then):** Implemented `pending_breaking_since_iso` field; first detection sets pending, second consecutive detection 30 min later flips breaking.
-- **Why reverted:** Behavioral test showed the implementation was wrong — a real evacuation expansion generates a *toggle event* on tick N (false→true) and equilibrium thereafter. The detector saw no NEW toggle on tick N+1 because the value was already `true`. Pending was reset, breaking never flipped. **Cry-wolf prevention turned into miss-the-real-event.**
+- **Why reverted:** Behavioral test showed the implementation was wrong. A real evacuation expansion generates a *toggle event* on tick N (false→true) and equilibrium thereafter. The detector saw no NEW toggle on tick N+1 because the value was already `true`. Pending was reset, breaking never flipped. **Cry-wolf prevention turned into miss-the-real-event.**
 - **Replaced with:** Toggle events fire immediately (lifted/expanded/severity-bumped/resolved/injuries/new-statement). Only the residents-shift rule gets a rate-limit (once per 2 hours). See D-016.
-- **Principles applied:** P1 completeness (over-applied — the toggle case wasn't a count case).
+- **Principles applied:** P1 completeness (over-applied: the toggle case wasn't a count case).
 - **Rubric:** Correctness 3 · Maintainability 5 · User-fit 4.
 - **Lesson:** **Test the design before shipping it.** The 5-state behavioral sequence (baseline / no-diff / toggle / stable / resolved) caught this in minutes. Without it the bug would have shipped and the next real expansion would have been silently missed.
 
@@ -124,11 +124,11 @@ Each decision has:
 
 - **Date:** 2026-05-24
 - **Status:** Active.
-- **Context:** Eng review (E4) — severity is not in news source data; needs derivation from observed facts.
+- **Context:** Eng review (E4): severity is not in news source data; needs derivation from observed facts.
 - **Decision:** Hardcoded `SEVERITY_RULES` dict in `update_status.py`, first-match-wins ordering: critical (tank failed / explosion / injuries) → high (>1000 evacuated, not lifted) → moderate (>0 evacuated) → low (resolved or lifted).
 - **Alternatives:**
   - **LLM call to classify (rejected):** overkill, brittle, latency, cost.
-  - **Configurable rules in JSON (deferred):** P5 explicit — code is where this logic should live for one user.
+  - **Configurable rules in JSON (deferred):** P5 explicit. Code is where this logic should live for one user.
 - **Principles applied:** P5 explicit, P3 pragmatic.
 - **Rubric:** Correctness 9 · Maintainability 8 · User-fit 8.
 - **Lesson:** Heuristic classification rules in code (with a clear first-match-wins order) beat both LLM calls and configurable-rules-as-data for a single-user tool.
@@ -161,19 +161,19 @@ Each decision has:
 
 - **Date:** 2026-05-24
 - **Status:** Reverted by D-009 within 90 min.
-- **Context:** CEO subagent's F1 / F2 / F11 findings (see `docs/SPEC.md`) triggered a User Challenge — both my analysis and the subagent agreed the user's stated direction ("live dashboard") should change to "push-first, dashboard-secondary."
+- **Context:** CEO subagent's F1 / F2 / F11 findings (see `docs/SPEC.md`) triggered a User Challenge. Both my analysis and the subagent agreed the user's stated direction ("live dashboard") should change to "push-first, dashboard-secondary."
 - **Decision:** Presented the User Challenge at the premise gate; user accepted the pivot.
 - **Why reverted:** User changed their mind 90 min later after seeing the implementation: "scratch all mobile plans." See D-009.
 - **Rubric:** Correctness 8 (CEO reasoning was sound) · Maintainability 7 · User-fit 6.
-- **Lesson:** A "user accepts the pivot" answer at the premise gate isn't durable — users discover what they actually want by interacting with the artifact. Build for revert.
+- **Lesson:** A "user accepts the pivot" answer at the premise gate isn't durable. Users discover what they actually want by interacting with the artifact. Build for revert.
 
 ## D-009: User reversal: scratch all mobile
 
 - **Date:** 2026-05-24
-- **Status:** Active. **The most important UX decision in the project.**
+- **Status:** Active. **A key UX decision.**
 - **Context:** User direct message: "Scratch all mobile plans. I just want a single live desktop dashboard app."
 - **Decision:** Removed the entire mobile/push pipeline (`apps-checklist.md`, ntfy POST code, `urllib` imports, `ntfy_topic`/`ntfy_server` config fields, all phone references in README/SPEC).
-- **Alternatives:** None — direct user instruction.
+- **Alternatives:** None. Direct user instruction.
 - **Principles applied:** User direction is the highest priority signal.
 - **Rubric:** Correctness 10 · Maintainability 9 · User-fit 9.
 - **Lesson:** When a user reverses a decision a reviewer talked them into, take it at face value and revert cleanly. The mobile pipeline came out in ~10 minutes because D-001 was built for revert (clean separation of concerns).
@@ -213,7 +213,7 @@ Each decision has:
 - **Decision:** Hero `clamp(20px, 3.2vw, 32px)`. Padding tightened. Severity chip + status headline merged into the hero (was a separate row).
 - **Principles applied:** P3 pragmatic.
 - **Rubric:** Correctness 9 · Maintainability 10 · User-fit 8.
-- **Lesson:** "Make the hero huge" is conventional UX advice but Nancy's screen real estate matters — the map + sidebar are the dominant artifacts, the hero just needs to be unmistakable.
+- **Lesson:** "Make the hero huge" is conventional UX advice but Nancy's screen real estate matters. The map + sidebar are the dominant artifacts, the hero just needs to be unmistakable.
 
 ## D-013: Evac polygon: extend west to ~Knott Ave
 
@@ -323,7 +323,7 @@ Each decision has:
   - **Compute intersection from two street geometries (rejected):** complex.
 - **Principles applied:** P1 completeness, P3 pragmatic.
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 9.
-- **Lesson:** Geocoder bias is a balance — too narrow misses, too wide pulls in wrong-region matches. Two-attempt strategy (free-text bias → viewbox fallback) covers most cases.
+- **Lesson:** Geocoder bias is a balance: too narrow misses, too wide pulls in wrong-region matches. Two-attempt strategy (free-text bias → viewbox fallback) covers most cases.
 
 ## D-021: Section headers for visual flow
 
@@ -360,7 +360,7 @@ Each decision has:
   4. Source link: 11px small
 - **Principles applied:** P5 explicit, P1 completeness.
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 9.
-- **Lesson:** When the user can't tell what's newest at a glance, the fix is hierarchy — make the freshness signal the largest element on the card.
+- **Lesson:** When the user can't tell what's newest at a glance, the fix is hierarchy: make the freshness signal the largest element on the card.
 
 ## D-024: Documentation: eval suite + design log
 
@@ -376,14 +376,14 @@ Each decision has:
   - MIT LICENSE + .gitignore (excludes runtime artifacts).
 - **Principles applied:** P1 completeness, P5 explicit.
 - **Rubric:** TBD (this decision is too new to retroactively score).
-- **Lesson:** TBD. Note for future-self: the highest-leverage element of documentation quality is showing the *thinking* (design log + eval suite + lessons) — not just the artifact.
+- **Lesson:** TBD. Note for future-self: the highest-leverage element of documentation quality is showing the *thinking* (design log + eval suite + lessons), not just the artifact.
 
-## D-025: Evacuation shelters — aggregate + link (hybrid)
+## D-025: Evacuation shelters: aggregate + link (hybrid)
 
 - **Date:** 2026-05-25
 - **Status:** Active.
 - **Context:** User asked to include the evacuation shelter list from `ggcity.org/emergency`. Tradeoff: scrape and display vs. just link out.
-- **Decision:** Hybrid. Pull 9 known shelter locations into `config.json.map.shelters` (geocoded via Nominatim, each with name, city, address, lat/lon, optional notes like "RV evacuees only"). Pin each on the map with a blue square 🏠 marker. Render a panel below the safety-checker with cards: name + address + "Directions ↗" link (opens Google Maps with destination pre-filled). Prominent CTA banner at top: "🛏️ Live list at ggcity.org/emergency — the city is the source of truth; the list below is a snapshot."
+- **Decision:** Hybrid. Pull 9 known shelter locations into `config.json.map.shelters` (geocoded via Nominatim, each with name, city, address, lat/lon, optional notes like "RV evacuees only"). Pin each on the map with a blue square 🏠 marker. Render a panel below the safety-checker with cards: name + address + "Directions ↗" link (opens Google Maps with destination pre-filled). Prominent CTA banner at top: "🛏️ Live list at ggcity.org/emergency. The city is the source of truth; the list below is a snapshot."
 - **Alternatives:**
   - **Just link out (rejected):** loses map context (visual relationship between home, evac zone, nearest shelter) and the one-click directions.
   - **Live-scrape ggcity.org every tick (rejected):** city's HTML structure isn't documented; would break on the first redesign; also overkill for a list that changes a few times per week.
@@ -392,11 +392,11 @@ Each decision has:
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 9.
 - **Lesson:** Aggregate-or-link is a false dichotomy on emergency tools. Aggregate for the workflow value (map context, directions); link prominently so users know where to verify. The CTA banner makes the relationship between snapshot + source explicit.
 
-## D-026: News panel — generalize to videos + articles, Microlink OG fetch
+## D-026: News panel: generalize to videos + articles, Microlink OG fetch
 
 - **Date:** 2026-05-25
-- **Status:** Active — the videos+articles generalization stands; the client-side Microlink OG-image fetch was later removed (runtime scraping bypasses provenance + human review), see [D-035](#d-035).
-- **Context:** User asked to add YouTube videos with thumbnails for major changes, then added news article URLs (ABC7 entries). Initial implementation forced everything through a video-shaped card with a play overlay — articles looked like broken videos.
+- **Status:** Active. The videos+articles generalization stands; the client-side Microlink OG-image fetch was later removed (runtime scraping bypasses provenance + human review), see [D-035](#d-035).
+- **Context:** User asked to add YouTube videos with thumbnails for major changes, then added news article URLs (ABC7 entries). Initial implementation forced everything through a video-shaped card with a play overlay. Articles looked like broken videos.
 - **Decision:**
   - Single `videos` field on `status.json` holds both types. `youtube_id` auto-derives `https://img.youtube.com/vi/{id}/hqdefault.jpg` thumbnail. `is_video: true` flag for non-YouTube videos. Otherwise treated as article.
   - Conditional render: play-button overlay only when video; article footer tag `📰 article`, video tag `▶ video`. Typed placeholder background (play-icon vs document-icon) when no thumbnail.
@@ -409,11 +409,11 @@ Each decision has:
 - **Rubric:** Correctness 9 · Maintainability 8 · User-fit 9.
 - **Lesson:** Where the deterministic-vs-fragile boundary sits matters (cf. D-003). Server-side scraping in Python = brittle. Client-side OG via a hosted service = fragile but the failure mode is graceful (placeholder) and the cache amortizes the cost. Use third-party services as the "fragile path" with deterministic fallbacks.
 
-## D-027: Writer fix — partial facts must not recompute severity
+## D-027: Writer fix: partial facts must not recompute severity
 
 - **Date:** 2026-05-25
 - **Status:** Active.
-- **Context:** Operational `cat data/news_seed.json | python scripts/update_status.py` (only `videos` in the facts) silently downgraded severity to "low" because `derive_severity()` saw `residents=0`, `lifted=None`, and walked off the bottom of the rules table. The next real tick went "low → high" and fired URGENT — a false positive caused entirely by the seeding workflow.
+- **Context:** Operational `cat data/news_seed.json | python scripts/update_status.py` (only `videos` in the facts) silently downgraded severity to "low" because `derive_severity()` saw `residents=0`, `lifted=None`, and walked off the bottom of the rules table. The next real tick went "low → high" and fired URGENT, a false positive caused entirely by the seeding workflow.
 - **Decision:** Severity is only re-derived when this tick provides one of `(evacuation_residents, evacuation_lifted, incident_resolved_iso, injuries, tank_failed, explosion_confirmed)`. Otherwise carry forward from prev snapshot. New `test_partial_facts_dont_downgrade_severity` in `eval/test_writer.py` reproduces the bug and locks the fix in.
 - **Alternatives:**
   - **Require facts to always include severity-relevant fields (rejected):** breaks the partial-update use case (e.g., adding only videos).
@@ -429,35 +429,35 @@ Each decision has:
 - **Context:** First 8 commits landed directly on `main` while iterating live during an active emergency. That was the right velocity for the build phase. Now that the repo is a public artifact, the workflow should follow professional engineering practices.
 - **Decision:** Going forward, non-trivial changes (>3 files, new dependency, schema change, doc updates spanning multiple files) land via feature branch + GitHub PR + merge. Trivial direct-to-main is still OK for one-line fixes during active incident response.
 - **Alternatives:**
-  - **Always PR (rejected):** during the build phase, the PR overhead per change was wrong — 30-sec edits being PR'd would have stalled momentum and added noise.
+  - **Always PR (rejected):** during the build phase, the PR overhead per change was wrong. 30-sec edits being PR'd would have stalled momentum and added noise.
   - **Never PR (rejected):** for a public record, the PR-merge history provides transparency and auditability.
 - **Principles applied:** P3 pragmatic (right tool per phase), P5 explicit.
-- **Rubric:** TBD — too new to score retrospectively.
+- **Rubric:** TBD. Too new to score retrospectively.
 - **Lesson:** Process maturity isn't a single switch. Build phase ≠ public-release phase ≠ team phase. Pick the lightest workflow that meets the current phase's quality bar.
 
-## D-029: Hero address check — move safety checker into always-visible hero
+## D-029: Hero address check: move safety checker into always-visible hero
 
 - **Date:** 2026-05-25
 - **Status:** Superseded by [D-030](#d-030) (the address checker it surfaced was removed the next day in the conduit pivot). A sharp irony: this entry optimized the discoverability of the very feature the pivot deleted.
-- **Context:** Three converging lenses identified the same friction point. The address-safety checker — the most personal feature ("am I safe?") — was buried in the Check tab, requiring users to discover and navigate to it. During the conduit-strategy rework, office-hours analysis confirmed the problem from safety, marketing, and builder perspectives simultaneously.
+- **Context:** Three converging lenses identified the same friction point. The address-safety checker (the most personal feature, "am I safe?") was buried in the Check tab, requiring users to discover and navigate to it. During the conduit-strategy rework, office-hours analysis confirmed the problem from safety, marketing, and builder perspectives simultaneously.
 - **Decision:** Move the address-check widget into the always-visible hero section so it's the first interactive element a user encounters. Keep the Check tab as an expanded detail view (full zone explanation, methodology notes, source links). Tabbed architecture preserved for secondary content.
 - **Alternatives:**
   - **A) Keep tabs as-is (rejected):** hides the most personal feature behind navigation. A frightened, limited-English-speaking elder shouldn't need to discover a tab to learn if their home is safe.
   - **B) Single scroll page removing all tabs (rejected):** scroll fatigue on mobile; overwhelming for the billboard-test audience. Loses the technical-sophistication signal for a public reader.
-  - **C) Hybrid with collapsible sections (rejected):** collapsibles have their own discoverability problem — users don't know what's inside until they click. Same failure mode as tabs, just repackaged.
+  - **C) Hybrid with collapsible sections (rejected):** collapsibles have their own discoverability problem. Users don't know what's inside until they click. Same failure mode as tabs, just repackaged.
   - **D) Keep tabs + hero check (chosen):** smallest change that addresses the core safety concern. Answers the user's primary question ("am I safe?") with zero navigation friction while preserving the tabbed architecture for secondary information depth.
 - **Principles applied:** P1 completeness (primary user need answered without navigation), P5 explicit (the answer is visible, not hidden), P3 pragmatic (minimal structural change).
 - **Rubric:**
   - Correctness: 9 (directly solves the "hidden primary feature" problem)
-  - Maintainability: 8 (hero section grows slightly; tab remains as detail view — clean separation)
+  - Maintainability: 8 (hero section grows slightly; tab remains as detail view, clean separation)
   - User-fit: 9 (conduit mission = answer with minimum friction; three independent lenses converged)
-- **Lesson:** When safety, marketing, and builder instincts all point at the same answer, the decision is load-bearing — not a coincidence. The "coolest version answers before you ask" framing is the same thing as "conduit with minimum friction" and "billboard test for a frightened elder." Convergence across lenses = high-confidence signal.
+- **Lesson:** When safety, marketing, and builder instincts all point at the same answer, the decision is load-bearing, not a coincidence. The "coolest version answers before you ask" framing is the same thing as "conduit with minimum friction" and "billboard test for a frightened elder." Convergence across lenses = high-confidence signal.
 
-## D-030: The conduit pivot — remove authored verdicts
+## D-030: The conduit pivot: remove authored verdicts
 
 - **Date:** 2026-05-26 (implementation landed 2026-05-27)
-- **Status:** Active. **The single most load-bearing decision in the project.** Supersedes [D-014](#d-014), [D-019](#d-019), [D-022](#d-022), [D-029](#d-029).
-- **Context:** v0.1–v0.7 shipped an "am I safe?" tool — geocode an address, compute a BLEVE blast/plume radius, render a personal verdict (`SAFE`/`ELEVATED`/`HIGH`/`CRITICAL`) and safety-colored map pins. An AI authoring "you are in the danger zone" is a protective-action directive the project has no authority to issue, and it forfeits the §230 publisher shelter the moment the app speaks a safety claim in its own voice.
+- **Status:** Active. **A load-bearing decision.** Supersedes [D-014](#d-014), [D-019](#d-019), [D-022](#d-022), [D-029](#d-029).
+- **Context:** v0.1–v0.7 shipped an "am I safe?" tool: geocode an address, compute a BLEVE blast/plume radius, render a personal verdict (`SAFE`/`ELEVATED`/`HIGH`/`CRITICAL`) and safety-colored map pins. An AI authoring "you are in the danger zone" is a protective-action directive the project has no authority to issue, and it forfeits the §230 publisher shelter the moment the app speaks a safety claim in its own voice.
 - **Decision:** Remove the address checker, the blast/plume layers, and every authored severity verdict. The dashboard becomes a pure information conduit: it states officials' facts and routes to officials' channels, authoring no directives and no hazard assessments. The map keeps the former evacuation polygon as a labeled reference, not a verdict surface.
 - **Alternatives:**
   - **Keep the verdict tool, add disclaimers (rejected):** a disclaimer does not cure a voluntarily-undertaken duty of care (Restatement (Second) of Torts §§ 323, 324A); the exposure is in the authoring, not the labeling.
@@ -465,41 +465,41 @@ Each decision has:
   - **Pure conduit (chosen):** bounded authority; §230 / *Winter v. Putnam's Sons* shelter intact; and (per the alignment-tax thesis) a more trustworthy product.
 - **Principles applied:** P3 pragmatic, P5 explicit, P1 completeness (the negative space is the design).
 - **Rubric:** Correctness 10 · Maintainability 9 · User-fit 9.
-- **Lesson:** For an AI tool in a safety-critical domain, the highest-leverage decision is what NOT to author. Removing the verdict made the product simultaneously safer, more legally defensible, and more useful to scared residents — the alignment tax was negative, not a cost.
+- **Lesson:** For an AI tool in a safety-critical domain, the highest-leverage decision is what NOT to author. Removing the verdict made the product simultaneously safer, more legally defensible, and more useful to scared residents. The alignment tax was negative, not a cost.
 
-## D-031: Map — Leaflet → MapLibre GL, self-hosted
+## D-031: Map: Leaflet → MapLibre GL, self-hosted
 
 - **Date:** 2026-05-27
 - **Status:** Active. Supersedes [D-011](#d-011).
 - **Context:** D-011 chose Leaflet + OSM tiles loaded from the unpkg CDN. During the conduit cleanup the interactive tile map was first swapped for a static zone image (dropping the blast/plume interactivity); the map then blanked on service-worker cache-first reloads, and a CDN in the critical path meant the map could vanish if unpkg changed.
-- **Decision:** MapLibre GL JS + OpenFreeMap vector tiles (light/dark), with the MapLibre JS/CSS **self-hosted in `/lib`** — no third-party CDN in the critical path. `worker-src blob:` added to the CSP for MapLibre's web worker.
+- **Decision:** MapLibre GL JS + OpenFreeMap vector tiles (light/dark), with the MapLibre JS/CSS **self-hosted in `/lib`** (no third-party CDN in the critical path). `worker-src blob:` added to the CSP for MapLibre's web worker.
 - **Alternatives:**
   - **Keep Leaflet + unpkg (rejected):** CDN single-point-of-failure; no vector-tile theming.
   - **Static zone image only (rejected, interim):** loses pan/zoom regional context for residents.
   - **MapLibre self-hosted (chosen):** offline-resilient, themeable, no upstream that can break the map.
 - **Principles applied:** P3 pragmatic, P4 DRY.
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 9.
-- **Lesson:** A CDN in the critical path of a safety tool is a liability — self-host the map runtime so it can't disappear when an upstream changes. (The reload-blank regression is locked out by `eval/test_map_reload_regressions.py`.)
+- **Lesson:** A CDN in the critical path of a safety tool is a liability. Self-host the map runtime so it can't disappear when an upstream changes. (The reload-blank regression is locked out by `eval/test_map_reload_regressions.py`.)
 
-## D-032: Name — "GG Tank Watch," not "…Safety"
+## D-032: Name: "GG Tank Watch," not "…Safety"
 
 - **Date:** by 2026-05-28 (the working title had been "GG MMA Tank Dashboard")
 - **Status:** Active.
 - **Context:** The tool needed a public, resident-legible name. "…Safety" was on the table.
-- **Decision:** **"GG Tank Watch."** "Watch" is honest about what the tool is — a watch/monitor that points at the authorities — whereas "Safety" over-claims authority and invites resident over-trust (the Citizen-app precedent, where an authoritative name drove over-reliance).
+- **Decision:** **"GG Tank Watch."** "Watch" is honest about what the tool is (a watch/monitor that points at the authorities), whereas "Safety" over-claims authority and invites resident over-trust (the Citizen-app precedent, where an authoritative name drove over-reliance).
 - **Alternatives:**
-  - **"GG Tank Safety" (rejected):** implies safety/authority the app does not have — the same failure mode as an authored verdict ([D-030](#d-030)), but encoded in the wordmark.
+  - **"GG Tank Safety" (rejected):** implies safety/authority the app does not have. The same failure mode as an authored verdict ([D-030](#d-030)), but encoded in the wordmark.
   - **"GG MMA Tank Dashboard" (superseded working title):** accurate but not resident-legible.
 - **Principles applied:** P5 explicit.
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
-- **Lesson:** The name is part of the safety contract. A name that over-claims authority is the same error as authoring a verdict — bounded authority has to be legible in the wordmark, not just the code. The eval/credentials signal lives in the repo + README, not the slug.
+- **Lesson:** The name is part of the safety contract. A name that over-claims authority is the same error as authoring a verdict. Bounded authority has to be legible in the wordmark, not just the code. The eval/credentials signal lives in the repo + README, not the slug.
 
 ## D-033: Vietnamese → English-only (G1)
 
 - **Date:** 2026-05-30 (Vietnamese first *held* 2026-05-29, v0.16)
 - **Status:** Active. Supersedes the v0.16 "held pending verification" posture.
-- **Context:** Early builds carried ~134 AI-drafted Vietnamese strings for Little Saigon's limited-English-proficiency (LEP) residents near the zone. No fluent native speaker ever verified them — the site had been serving unverified Vietnamese life-safety copy. v0.16 held them (`ready:false`, English fallback) pending verification; no fluent verifier was ever secured.
-- **Decision:** Remove all non-English entirely — the toggle, the `vi` `LANGS` entry, all `vi` STRINGS, the flag. **English-only by design.** LEP residents are routed to officials, who publish their own verified Vietnamese / Spanish / Korean per update ("withhold-and-amplify"). The G1 gate (`eval/test_language_access.py`, `test_english_only`) fails the build if any non-English language ships unverified.
+- **Context:** Early builds carried ~134 AI-drafted Vietnamese strings for Little Saigon's limited-English-proficiency (LEP) residents near the zone. No fluent native speaker ever verified them. The site had been serving unverified Vietnamese life-safety copy. v0.16 held them (`ready:false`, English fallback) pending verification; no fluent verifier was ever secured.
+- **Decision:** Remove all non-English entirely: the toggle, the `vi` `LANGS` entry, all `vi` STRINGS, the flag. **English-only by design.** LEP residents are routed to officials, who publish their own verified Vietnamese / Spanish / Korean per update ("withhold-and-amplify"). The G1 gate (`eval/test_language_access.py`, `test_english_only`) fails the build if any non-English language ships unverified.
 - **Alternatives:**
   - **Ship machine-translated Vietnamese (rejected):** a wrong safety string in a language we can't verify can get someone killed.
   - **Keep the held posture indefinitely (rejected, superseded):** dead unverified strings are a maintenance + honesty hazard; clean removal is better.
@@ -512,40 +512,40 @@ Each decision has:
 
 - **Date:** 2026-05-31 (the overlay was shrunk first in v0.18, 2026-05-30)
 - **Status:** Active (the feature was removed).
-- **Context:** The original map carried a live wind-flow arrow from a single NOAA station (KFUL). Checked against the nearest on-site station, the single-station reading pointed **≥90° wrong ~34% of the time**. On a no-directives tool, a confidently-wrong wind arrow is itself a hazard — a resident can infer plume direction from it.
+- **Context:** The original map carried a live wind-flow arrow from a single NOAA station (KFUL). Checked against the nearest on-site station, the single-station reading pointed **≥90° wrong ~34% of the time**. On a no-directives tool, a confidently-wrong wind arrow is itself a hazard. A resident can infer plume direction from it.
 - **Decision:** Remove the wind indicator entirely. Do not re-add weather without site-level data. Guarded by `eval/test_wind_removed.py`; the map aria-label carries no wind claim.
 - **Alternatives:**
   - **Keep it with a "weather data, not safety guidance" caveat (rejected, interim v0.18):** the caveat doesn't fix a wrong arrow a scared resident reads as guidance.
   - **Multi-station interpolation (deferred):** no site-level data available for this zone.
 - **Principles applied:** P3 pragmatic, P1 completeness.
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
-- **Lesson:** A data point that's wrong a third of the time is worse than no data point on a safety tool — especially one that looks like directional guidance. Remove it, and guard the removal.
+- **Lesson:** A data point that's wrong a third of the time is worse than no data point on a safety tool, especially one that looks like directional guidance. Remove it, and guard the removal.
 
 ## D-035: No runtime image scraping
 
 - **Date:** 2026-05-31 (PR #74)
 - **Status:** Active. Supersedes the Microlink OG-fetch path of [D-026](#d-026).
-- **Context:** D-026 added a client-side Microlink OG-image fetch for article thumbnails. Scraping `og:image` at query time bypasses the provenance + human-review chokepoint — the human in the loop never sees the fetched image, and a scraped image can misrepresent its source.
+- **Context:** D-026 added a client-side Microlink OG-image fetch for article thumbnails. Scraping `og:image` at query time bypasses the provenance + human-review chokepoint. The human in the loop never sees the fetched image, and a scraped image can misrepresent its source.
 - **Decision:** No runtime image scraping. YouTube thumbnails derive from the canonical `hqdefault.jpg` formula (deterministic, provenance-true); non-YouTube items use a human-verified thumbnail or the intentional "Watch on <outlet> ↗" placeholder. Scraper removed; guarded by `eval/test_no_runtime_scraper.py`.
 - **Alternatives:**
   - **Keep Microlink with caching (rejected):** still a human-review bypass; provenance can't be vouched for.
   - **Server-side OG fetch in the writer (rejected):** the writer is stdlib + offline by contract (cf. [D-003](#d-003)); adding HTTP broadens the failure surface.
 - **Principles applied:** P5 explicit, P3 pragmatic.
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
-- **Lesson:** Anything fetched at runtime escapes the human-review chokepoint. For a provenance-first tool, derive images from canonical formulas or human-verify them — never scrape live.
+- **Lesson:** Anything fetched at runtime escapes the human-review chokepoint. For a provenance-first tool, derive images from canonical formulas or human-verify them. Never scrape live.
 
 ## D-036: News tab → Coverage Archive
 
 - **Date:** 2026-05-31
 - **Status:** Active.
 - **Context:** The News tab needed to present scattered coverage (official statements + articles + videos) without re-deciding authority or implying live monitoring.
-- **Decision:** A banner-led **Coverage Archive** — an archive-note banner, every collected item shown (the per-base cap effectively lifted), official sources distinguished by an **OFFICIAL badge + a dedicated Official filter tab** (not by feed position), **date-only** timestamps, and headline + snippet + link + attribution only (no full-article reproduction). News "All" is pure reverse-chronological.
+- **Decision:** A banner-led **Coverage Archive**: an archive-note banner, every collected item shown (the per-base cap effectively lifted), official sources distinguished by an **OFFICIAL badge + a dedicated Official filter tab** (not by feed position), **date-only** timestamps, and headline + snippet + link + attribution only (no full-article reproduction). News "All" is pure reverse-chronological.
 - **Alternatives:**
   - **Officials-block-first ordering (rejected):** authority belongs in the badge + filter, not feed position; a frozen archive's value is the chronological story.
   - **A cross-outlet "N outlets covering this" cue (dropped):** can't be counted honestly across outlets.
 - **Principles applied:** P1 completeness, P5 explicit.
 - **Rubric:** Correctness 9 · Maintainability 8 · User-fit 9.
-- **Lesson:** Convey authority through honest structured signals (a badge, a filter) rather than editorial ordering, and show every collected item — silent curation is its own credibility risk.
+- **Lesson:** Convey authority through honest structured signals (a badge, a filter) rather than editorial ordering, and show every collected item. Silent curation is its own credibility risk.
 
 ## D-037: Live → frozen historical archive
 
@@ -558,33 +558,33 @@ Each decision has:
   - **Take the site down (rejected):** the archive has lasting value as a public record and as a worked example of responsible deployment.
 - **Principles applied:** P3 pragmatic, P5 explicit, P1 completeness.
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 9.
-- **Lesson:** When the thing you monitor ends, "live" becomes a lie. Freeze deliberately — disable refresh, anchor every date, and make the data refresh-proof so an upstream job can't silently un-freeze it.
+- **Lesson:** When the thing you monitor ends, "live" becomes a lie. Freeze deliberately: disable refresh, anchor every date, and make the data refresh-proof so an upstream job can't silently un-freeze it.
 
-## D-038: Info tab — 6 scrollable → 4 equal-width sub-tabs
+## D-038: Info tab: 6 scrollable → 4 equal-width sub-tabs
 
 - **Date:** 2026-06-02 (v0.23 → v0.25)
 - **Status:** Active. Supersedes the v0.23 six-scrollable-sub-tab approach.
-- **Context:** The Info tab was first rebuilt into 6 horizontally-scrollable sub-tabs (Summary · Officials · Shelters · Schools · Recovery · About). The scrollable bar clipped "Recovery" and hid "About" at 375px (#108) — caught only after shipping, because the evals were text-only and passed (171/171) while the rendered bar overflowed.
+- **Context:** The Info tab was first rebuilt into 6 horizontally-scrollable sub-tabs (Summary · Officials · Shelters · Schools · Recovery · About). The scrollable bar clipped "Recovery" and hid "About" at 375px (#108), caught only after shipping, because the evals were text-only and passed (171/171) while the rendered bar overflowed.
 - **Decision:** Four **equal-width** sub-tabs (Summary · Officials · Resources · About) that fit one row at any width: `.info-subtab` is `flex:1 1 0` + `min-width:0`, the bar is ≤4 tabs with no `overflow-x`/`scroll-snap`/`flex-wrap` anti-pattern, locked by a rendered-geometry guard (`eval/test_info_subtab_fit.py`). Shelters / Schools / Recovery fold under Resources.
 - **Alternatives:**
   - **Keep 6 scrollable tabs (rejected):** individually findable, but clips labels and scroll-snap hid the last tab.
   - **Three tabs (rejected earlier):** under-grouped the content.
 - **Principles applied:** P1 completeness, P5 explicit, P3 pragmatic.
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
-- **Lesson:** Text-only evals pass while pixels overflow. Set a fixed acceptance target up front and gate on rendered geometry (`getBoundingClientRect`), not string matches — the #108 clip shipped because the guard checked text, not layout. (See `docs/info-tab-acceptance-rubric.md`.)
+- **Lesson:** Text-only evals pass while pixels overflow. Set a fixed acceptance target up front and gate on rendered geometry (`getBoundingClientRect`), not string matches. The #108 clip shipped because the guard checked text, not layout. (See `docs/info-tab-acceptance-rubric.md`.)
 
-## D-039: Responsible deployment — noindex, phase-gating, entity + insurance
+## D-039: Responsible deployment: noindex, phase-gating, entity + insurance
 
 - **Date:** 2026-06-08, settled 2026-06-09
-- **Status:** Active — settled as the permanent posture (2026-06-09), no longer a pending gate.
+- **Status:** Active. Settled as the permanent posture (2026-06-09), no longer a pending gate.
 - **Context:** A safety tool reaching scale needs real legal review and an accountable entity first. Two private volunteers carry no statutory immunity (the Volunteer Protection Act needs a nonprofit / government nexus).
-- **Decision:** `noindex, nofollow` enforced via HTTP header (`vercel.json`) + `robots.txt: Disallow: /` — kept **permanently, by choice**: search discoverability is not a goal for a resolved-incident archive, and attorney review (originally the launch gate) was judged unnecessary once the incident resolved and the site froze. The wide-launch preconditions (nonprofit entity + liability insurance) were never triggered — no wide launch happened or is planned. The phase-gated rollout (Phase 0–3, gates G1–G5) ended with only Phase 0 executed, and no ads / subscriptions / tracking / login stands (free, no commercial nexus → Restatement §552 shield + privacy). The archive serves direct links, not search.
+- **Decision:** `noindex, nofollow` enforced via HTTP header (`vercel.json`) + `robots.txt: Disallow: /`, kept **permanently, by choice**: search discoverability is not a goal for a resolved-incident archive, and attorney review (originally the launch gate) was judged unnecessary once the incident resolved and the site froze. The wide-launch preconditions (nonprofit entity + liability insurance) were never triggered. No wide launch happened or is planned. The phase-gated rollout (Phase 0–3, gates G1–G5) ended with only Phase 0 executed, and no ads / subscriptions / tracking / login stands (free, no commercial nexus → Restatement §552 shield + privacy). The archive serves direct links, not search.
 - **Alternatives:**
   - **Uncontrolled launch (rejected):** distribution is earned, not assumed.
   - **Monetize (rejected):** a commercial nexus weakens the pecuniary-interest liability shield.
 - **Principles applied:** P5 explicit, P3 pragmatic.
 - **Rubric:** Correctness 9 · Maintainability 9 · User-fit 8.
-- **Lesson:** For a safety tool, deployment is a gate, not a default — and a gate can be retired, not just crossed. Once the incident resolved and the site froze, the honest end state was to settle the posture (`noindex` permanent, entity/insurance never needed) rather than leave an un-executed gate implying a launch still pending.
+- **Lesson:** For a safety tool, deployment is a gate, not a default. And a gate can be retired, not just crossed. Once the incident resolved and the site froze, the honest end state was to settle the posture (`noindex` permanent, entity/insurance never needed) rather than leave an un-executed gate implying a launch still pending.
 
 ---
 

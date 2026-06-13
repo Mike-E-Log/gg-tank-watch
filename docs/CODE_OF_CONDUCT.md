@@ -1,4 +1,4 @@
-# GG Tank Watch — Information Conduit Code of Conduct
+# GG Tank Watch: Information Conduit Code of Conduct
 
 GG Tank Watch is a community information conduit. We amplify, translate, and route official emergency information. We do not author safety directives, issue evacuation orders, or substitute for official channels.
 
@@ -6,7 +6,7 @@ GG Tank Watch is a community information conduit. We amplify, translate, and rou
 
 1. **Official sources only.** Every fact published must trace to a named, verifiable source (government agency, credentialed news outlet, or official public record). No hearsay, social media rumors, or unattributed claims.
 
-2. **No directives.** We never tell anyone to evacuate, shelter in place, or take any specific safety action. We route residents to the official channels that do. The distinction between "you should leave" and "officials say the evacuation zone includes your area — confirm at ggcity.org/emergency" is load-bearing.
+2. **No directives.** We never tell anyone to evacuate, shelter in place, or take any specific safety action. We route residents to the official channels that do. The distinction between "you should leave" and "officials say the evacuation zone includes your area: confirm at ggcity.org/emergency" is load-bearing.
 
 3. **Accuracy over speed.** A delayed truth is better than a fast error. When sources conflict, we hold publication until corroborated. Relaying a downgrade toward all-clear (evacuation lifted, zone reductions) requires at least two sources including one official agency.
 
@@ -18,7 +18,7 @@ GG Tank Watch is a community information conduit. We amplify, translate, and rou
 
 7. **Corrections.** When we get something wrong, we correct it promptly. The correction is visible (not a silent edit). If the error was safety-relevant, we note the correction prominently.
 
-8. **Translation integrity.** Safety-critical copy is never machine-translated into a language that ships as if verified. A non-English language goes live only after a fluent native speaker verifies it; until then the UI falls back to English. Vietnamese was held pending that bar, then removed entirely on 2026-05-30 — no fluent verifier was secured before the incident resolved — so the app is English-only by design. Any translation is marked unofficial and links to the original English source.
+8. **Translation integrity.** Safety-critical copy is never machine-translated into a language that ships as if verified. A non-English language goes live only after a fluent native speaker verifies it; until then the UI falls back to English. Vietnamese was held pending that bar, then removed entirely on 2026-05-30 (no fluent verifier was secured before the incident resolved) so the app is English-only by design. Any translation is marked unofficial and links to the original English source.
 
 ## Enforcement
 

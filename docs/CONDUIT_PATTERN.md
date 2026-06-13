@@ -44,25 +44,25 @@ The critical design question: when you put an LLM between official emergency sou
 **Option A: Authority.** The tool authors its own safety verdicts. "You are in the blast zone. Evacuate immediately." This is what GG Tank Watch did initially (v0.1-v0.7): geocode → blast-radius computation → personal hazard verdict (ELEVATED / DOWNWIND / safe).
 
 **Problems with Option A:**
-- **Liability.** Authoring a safety directive creates §552 "intended reliance" — if the verdict is wrong, the tool is liable for the harm. No volunteer immunity statute covers this.
+- **Liability.** Authoring a safety directive creates §552 "intended reliance," if the verdict is wrong, the tool is liable for the harm. No volunteer immunity statute covers this.
 - **Authority creep.** A confident AI verdict competes with the official source. A resident who sees "SAFE" on the dashboard may not check ggcity.org/emergency.
 - **LLM failure mode.** The model hallucinates an all-clear → the dashboard says "safe" → a family stops evacuating. This is F1, the catastrophic failure mode.
 
-**Option B: Conduit.** The tool amplifies, translates, and routes official information. It never says "you should" — it says "officials say X; confirm at the official source." The LLM summarizes; the controls ensure it can't fabricate or downgrade without corroboration; the UI always points to the official channel.
+**Option B: Conduit.** The tool amplifies, translates, and routes official information. It never says "you should": it says "officials say X; confirm at the official source." The LLM summarizes; the controls ensure it can't fabricate or downgrade without corroboration; the UI always points to the official channel.
 
 **Why Option B is correct:**
 - **Helping the most people and minimizing liability are the same lane.** The conduit pattern makes the tool more trustworthy (every statement is sourced), more useful (residents can check their address against the official zone), and less dangerous (a hallucination can't produce a false all-clear).
-- **The alignment tax is zero.** Safety constraints didn't make the product worse — they made it better. Removing the authored verdict and adding source attribution improved both user trust and legal standing.
-- **The safety properties are testable.** "No authored directives" is grep-checkable. "No fabricated sources" has 3 automated tests. "No single-source all-clear" has 2. You can't write an automated test for "the verdict is correct" — you can write one for "the system never exceeds its authority."
+- **The alignment tax is zero.** Safety constraints didn't make the product worse, they made it better. Removing the authored verdict and adding source attribution improved both user trust and legal standing.
+- **The safety properties are testable.** "No authored directives" is grep-checkable. "No fabricated sources" has 3 automated tests. "No single-source all-clear" has 2. You can't write an automated test for "the verdict is correct." You can write one for "the system never exceeds its authority."
 
 ## Connection to Anthropic's approach
 
-Anthropic's core insight is that AI systems should be helpful, harmless, and honest — and that these properties are complementary, not competing.
+Anthropic's core insight is that AI systems should be helpful, harmless, and honest, and that these properties are complementary, not competing.
 
 GG Tank Watch is a worked example of this insight applied to a real deployment:
 
-- **Helpful:** Residents get a single-page dashboard with structured severity, source-attributed statements, bilingual access, and an address checker — answering "should I worry?" without making them parse 8 news tabs.
+- **Helpful:** Residents get a single-page dashboard with structured severity, source-attributed statements, bilingual access, and an address checker, answering "should I worry?" without making them parse 8 news tabs.
 - **Harmless:** The system cannot exceed its authority. Corroboration gates, provenance validation, and the conduit pattern ensure that even when the LLM hallucinates, the hallucination cannot reach users as a safety directive.
-- **Honest:** AI involvement is disclosed. Source attribution is mandatory. Freshness is honest (data age, not write age). The dashboard says "this address appears to fall within the area officials have described as evacuated" — not "you are in danger."
+- **Honest:** AI involvement is disclosed. Source attribution is mandatory. Freshness is honest (data age, not write age). The dashboard says "this address appears to fall within the area officials have described as evacuated," not "you are in danger."
 
 The three are complementary: the safety constraints (harmless) made the product more trustworthy (honest), which made it more useful (helpful). No tradeoff was required.
