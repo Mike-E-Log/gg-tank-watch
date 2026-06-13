@@ -103,4 +103,4 @@ I built it on my own, during the emergency, as someone who was downwind. The cod
 
 ---
 
-*Status: the tool is held behind a pre-distribution gate (attorney review) and stays `noindex` until that clears, so this is a writeup of the method and the build, not the launch of a public service. The legal section is research, not advice.*
+*Status: this is a writeup of the method and the build, not the launch of a public service. The site is a frozen archive, kept `noindex` permanently by choice. Attorney review (originally the launch gate) was judged unnecessary once the incident resolved. It serves direct links, not search. The legal section is research, not advice.*

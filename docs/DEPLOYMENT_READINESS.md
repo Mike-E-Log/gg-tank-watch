@@ -28,7 +28,7 @@ have required.
 
 - [ ] **Attorney review** (the `noindex` gate, "B3" in CLAUDE.md): incl. naming /
   impersonation posture (any `.org` domain, non-government disclosure). Source research:
-  `docs/LEGAL.md`. Removing `noindex` requires this to clear.
+  `docs/LEGAL.md`. Removing `noindex` would have required this to clear. It stays `noindex` permanently by choice, so the gate is moot.
 - [ ] **Entity formation**: appropriate legal entity for liability shielding.
 - [ ] **Insurance**: liability coverage.
 

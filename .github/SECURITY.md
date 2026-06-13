@@ -11,4 +11,4 @@ For a security or content-integrity issue (a broken link, a stale claim, a prove
 - No secrets or credentials are stored in this repository.
 - The site is served read-only behind `X-Robots-Tag: noindex, nofollow` and a strict Content-Security-Policy (`default-src 'self'`); see [`vercel.json`](../public/vercel.json).
 - The data pipeline is retired — `scripts/refresh_local.py` exits with an `ARCHIVED` notice and the dashboard no longer polls.
-- Public launch remains gated on attorney review (see [`docs/DEPLOYMENT_READINESS.md`](../docs/DEPLOYMENT_READINESS.md)).
+- `noindex` is kept permanently by choice, not a pending gate. Attorney review (originally the launch gate) was judged unnecessary once the incident resolved and the site froze. No wide launch is planned (see [`docs/DEPLOYMENT_READINESS.md`](../docs/DEPLOYMENT_READINESS.md)).
