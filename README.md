@@ -16,6 +16,24 @@
 >
 > *Independent and not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.*
 
+## Contents
+
+- [What this demonstrates](#what-this-demonstrates)
+- [What this is, in 30 seconds](#what-this-is-in-30-seconds)
+- [Origin](#origin)
+- [Safety architecture & verification](#safety-architecture--verification)
+- [The thesis: a conduit, not a judge](#the-thesis-a-conduit-not-a-judge)
+- [Safety & ethics decisions (the core)](#safety--ethics-decisions-the-core)
+- [How it was built: the journey, and the reversals](#how-it-was-built-the-journey-and-the-reversals)
+- [The Coverage Archive (News tab)](#the-coverage-archive-news-tab)
+- [The close-out audit](#the-close-out-audit-2026-06-04)
+- [Architecture (the retired pipeline)](#architecture-the-retired-pipeline)
+- [Stack](#stack)
+- [The incident (facts, as archived)](#the-incident-facts-as-archived)
+- [Running it yourself](#running-it-yourself)
+- [Repository layout](#repository-layout)
+- [License](#license)
+
 ## What this demonstrates
 
 A consumer-facing AI system that informs but never instructs. That guarantee is **code and tests, not prompting**, and it had to hold under real stakes:
@@ -45,6 +63,8 @@ The rest of this README explains each decision: what was built, what was deliber
   </tr>
 </table>
 
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
 ---
 
 ## What this is, in 30 seconds
@@ -59,6 +79,8 @@ Its organizing principle:
 
 > **Responsible and helpful are the same lane.** Every safety constraint made the product *more* trustworthy and *more* useful to a worried reader, not less. The reasoning is the point, not just the code.
 
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
 ---
 
 ## Origin
@@ -68,6 +90,8 @@ GG Tank Watch started with one worried person. During the May 2026 emergency, Na
 > *"I didn't need more news. I needed to know my family was okay without reading twenty articles to figure it out."*
 
 *Built by Mike, with Nancy as its first user and the reason it exists.*
+
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
@@ -119,6 +143,8 @@ Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows 
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
 - [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note).
 
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
 ---
 
 ## The thesis: a conduit, not a judge
@@ -136,6 +162,8 @@ That refusal is an ethics decision and a legal decision at the same time.
 - **The line it must not cross.** The moment the app writes its *own* safety verdict, it leaves that shelter. It has volunteered safety advice, and the law holds someone who volunteers to protect people to a duty of reasonable care (Restatement (Second) of Torts §§ 323, 324A).
 
 Removing the address checker and its personal verdicts made the product safer for residents *and* legally defensible. Full analysis: [`docs/LEGAL.md`](docs/LEGAL.md) and [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md).
+
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
@@ -199,6 +227,8 @@ The list of things *not* built is part of the design. The biggest refusals (the 
 - **No full-article copies.** Headline, short snippet, link, and attribution only.
 - **No government seals or "official" look.** The site must never be mistaken for the authority it points to.
 
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
 ---
 
 ## How it was built: the journey, and the reversals
@@ -221,6 +251,8 @@ What these changes have in common: each one removed a feature the project could 
 - The clearest example is the **conduit pivot** (the bold row above): the address checker and its personal verdicts were removed on purpose, because making that kind of call was not the project's place (see [the thesis](#the-thesis-a-conduit-not-a-judge)).
 - The name stayed **"GG Tank Watch," not "…Safety"**: a "safety" label would claim more authority than a volunteer archive actually has.
 
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
 ---
 
 ## The Coverage Archive (News tab)
@@ -237,6 +269,8 @@ Each item carries its own provenance: the search that found it, whether the link
 
 Two tests keep this honest: [`eval/test_provenance.py`](eval/) fails the build if an item's source link was never actually fetched, and [`eval/test_readme_archive_count.py`](eval/) fails it if the counts above drift from the data file.
 
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
 ---
 
 ## The close-out audit (2026-06-04)
@@ -246,6 +280,8 @@ Before this README, the whole archive was audited end to end ([`docs/AUDIT_2026-
 - **Honesty (the point of the audit).** The most important finding contradicted the project's own thesis: one news item had a dead link paired with a *fabricated* "verified" note. It was corrected. Two smaller fixes followed. The Terms and Accessibility pages still described removed features, so they were trimmed to match the shipped app. The summary outcome "0 displaced" (confusing next to "~50,000 evacuated") was reworded to "no permanent displacement." Each fix shipped with a new test so it cannot come back.
 - **Layout.** 108 screenshots, from phone width to desktop, light and dark, every screen, taken with an automated browser. Every layout measured correct, with no new problems.
 - **Links.** 110 of the 112 links the page loads were live. One was genuinely dead (since fixed); one was briefly blocked by its server but real. A flagged concern about `abcnews.com` was checked by opening the real articles and turned out to be a false alarm.
+
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
@@ -273,6 +309,8 @@ The architecture in plain terms:
 
 See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their cost tradeoff.
 
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
 ---
 
 ## Stack
@@ -289,6 +327,8 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
 - **Eval:** automated test suite, **211 tests across 65 files**, plus AI-graded rubrics ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
 ---
 
 ## The incident (facts, as archived)
@@ -302,6 +342,8 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
 | **Evacuation zone** | ~9 sq mi across 6 cities (Garden Grove, Anaheim, Buena Park, Cypress, Stanton, Westminster) |
 | **Window** | May 21–26, 2026 |
 | **Outcome** | No injuries; all evacuees returned |
+
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
@@ -319,6 +361,8 @@ python eval/run_all.py --skip integration   # 211 tests, exits 0
 ```
 
 The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and exits with an "ARCHIVED" error.
+
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
@@ -352,11 +396,15 @@ gg-tank-watch/
     └── rubrics/                ← the AI grading prompts
 ```
 
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
 ---
 
 ## License
 
 Released under the MIT license (see [`LICENSE`](LICENSE)). The safety disclaimer lives in [`NOTICE`](NOTICE).
+
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
