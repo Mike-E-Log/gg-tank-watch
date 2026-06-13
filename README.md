@@ -20,14 +20,14 @@
 
 A consumer-facing AI system that informs but never instructs. That guarantee is **code and tests, not prompting**, and it had to hold under real stakes:
 
-- **Scalable oversight.** A 211-test eval harness catches safety regressions *before* they ship, not after.
+- **Scalable oversight.** A suite of 211 automated tests catches safety regressions *before* they ship, not after.
   - What it catches: fabricated sources, synthesized directives, stale data stamped fresh.
 - **The model never published directly.**
   - Its extracted facts reached the live page only through one validation gate (`scripts/update_status.py`) that it could not bypass.
   - The most the system could do was route people to officials.
   - Page copy (labels, summaries) was AI-assisted and human-reviewed, disclosed on the site itself.
-- **The asymmetry that matters most.** A false "all-clear" could have sent ~50,000 people back into danger. A false "still dangerous" only kept them away longer.
-  - Relaying an official "all-clear" took at least two sources. A new danger warning needed only one.
+- **The asymmetry that matters most.** A false "safe to return" message could have sent ~50,000 people back into danger. A false "still dangerous" only kept them away longer.
+  - Repeating officials' "evacuation lifted" announcement took at least two sources. Repeating a new danger update took one.
   - The site never synthesized an alert level of its own.
 
 The rest of this README explains each decision: what was built, what was deliberately *not* built, and why.
@@ -47,42 +47,46 @@ The rest of this README explains each decision: what was built, what was deliber
 
 ---
 
+## What this is, in 30 seconds
+
+GG Tank Watch is a single-page dashboard built during a multi-day chemical emergency.
+
+- It pulled scattered updates from officials and news outlets into one calm view and **pointed back to the authorities in charge**.
+- It is a **pure information conduit**: it relays what officials and newsrooms published, and issues no judgments of its own.
+- The emergency is over, so the dashboard is frozen: the pipeline is retired, the page no longer checks for updates, and every tab is labeled **ARCHIVE** with the incident dates (May 21–26, 2026) so it cannot be misread as live.
+
+Its organizing principle:
+
+> **Responsible and helpful are the same lane.** Every safety constraint made the product *more* trustworthy and *more* useful to a worried reader, not less. The reasoning is the point, not just the code.
+
+---
+
 ## Origin
 
-GG Tank Watch started with one worried person. During the May 2026 emergency, Nancy had family near the evacuation zone, and for days she refreshed the news on a loop — trying to tell, from scattered and contradicting reports, whether things were getting better or worse. So we built her one page that showed the official picture at a glance, honestly labeled — and it became the one place she trusted, so she could stop hunting for updates and get back to the people she loved.
+GG Tank Watch started with one worried person. During the May 2026 emergency, Nancy had family near the evacuation zone. For days she refreshed the news on a loop, trying to tell from scattered and contradicting reports whether things were getting better or worse. So Mike built her one page that showed the official picture at a glance, honestly labeled. It became the one place she trusted. She could stop hunting for updates and get back to the people she loved.
 
-> *"I didn't need more news — I needed to know my family was okay without reading twenty articles to figure it out."* — Nancy
+> *"I didn't need more news. I needed to know my family was okay without reading twenty articles to figure it out."*
 
 *Built by Mike, with Nancy as its first user and the reason it exists.*
 
 ---
 
-## What this is, in 30 seconds
-
-GG Tank Watch is a single-page dashboard that, during a multi-day chemical emergency, pulled scattered official and news signals into one calm view and **routed residents back to the authorities in charge**. It is a **pure information conduit**: it republishes official facts and links, and **authors no directives or hazard verdicts of its own**. The emergency is over, so the dashboard is frozen: the data pipeline is retired, the page no longer polls, and every heading is date-anchored so it can never be misread as live.
-
-Its organizing principle is simple:
-
-> **Responsible and helpful are the same lane.** Every safety constraint here made the product *more* trustworthy and *more* useful to scared residents, not less. The alignment tax never materialized here.
-
-This README is the project's **decisions record** — what was decided, *why*, and what was deliberately *not* built. The reasoning is the point, not just the code.
-
----
-
 ## Safety architecture & verification
 
-The LLM never writes the published snapshot. Its output passes through **one chokepoint** — `scripts/update_status.py` — which enforces four structural properties before anything reaches `status.json`. No prompting required.
+Every model output passes through **one validation gate** (`scripts/update_status.py`) before anything reaches the published data file (`status.json`, the file the page reads its facts from).
 
-| Control | What it prevents | The asymmetry |
-|---------|------------------|---------------|
-| **P0-1 Corroboration gate** | A single hallucinated `evacuation_lifted: true` firing a false all-clear | Relaying an official stand-down needs **≥2 sources incl. ≥1 official agency**; danger-side updates relay on 1. A wrong "you're safe" is catastrophic; a wrong "still dangerous" is survivable. |
-| **P0-2 Provenance check** | A fabricated source URL or unattributed quote reaching the dashboard | A statement is dropped unless its `source_url` was *actually fetched* this run. |
-| **P0-3 Freshness honesty** | An empty-facts run stamping a fresh timestamp on stale data | `data_as_of_iso` (data age) is tracked separately from write time; the staleness banner keys off data age. |
-| **P1-1 Date sanity** | A future-dated or malformed `incident_resolved_iso` flipping the incident to "resolved" | Out-of-range / malformed timestamps are nulled before the snapshot is written. |
+The gate's four highest-stakes checks, enforced in code, not prompting:
+
+| Control | What it prevents | The rule |
+|---------|------------------|----------|
+| **P0-1 Corroboration gate** | A single hallucinated `evacuation_lifted: true` firing a false "safe to return" message | Repeating an official "evacuation lifted" announcement needs **at least 2 sources, at least 1 of them an official agency**. A new danger update repeats with 1 source. |
+| **P0-2 Provenance check** | A fabricated source URL or unattributed quote reaching the dashboard | A statement is dropped unless its `source_url` was actually fetched in the same run that produced it. The model cannot cite a page the pipeline never visited. |
+| **P0-3 Freshness honesty** | A run that found nothing new stamping a fresh timestamp on old data | Data age (`data_as_of_iso`) is tracked separately from write time, and the staleness banner is driven by data age. |
+| **P1-1 Date sanity** | A future-dated or malformed `incident_resolved_iso` flipping the incident to "resolved" | Out-of-range or malformed timestamps are nulled before the file is written. |
 
 Full diagram + per-control test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md).
 
-### Eval quick-start
+### Run the tests yourself
 
 ```bash
 python eval/run_all.py --skip integration
@@ -97,9 +101,23 @@ Expected (211 tests, all green):
   TOTAL           211/211  (100.0% pass)
 ```
 
-**65 test files / 211 deterministic tests** spanning the writer state machine, the corroboration / provenance / freshness / date-sanity gates, the conduit guard (no authored verdicts), the English-only language gate, frozen-archive invariants, and rendered-geometry guards for the UI. Results append to [`eval/scores.jsonl`](eval/scores.jsonl) for regression tracking. (Run *without* `--quiet` — that flag suppresses `[FAIL]` lines.)
+**211 automated pass/fail tests across 65 files** cover:
 
-*Reviewing the method in depth?* [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md) is the whole approach in one first-person read; [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md) maps each safety principle to its tests, and [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md) is the honest arc of the help-versus-restraint calls. The standalone published extract — the F1–F12 red-team, a receipted eval export, and the decision-authority note — lives in [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method).
+- **The pipeline:** how the update script behaved on each run, plus the four gates in the table above.
+- **The content rules:** the site never produces verdicts of its own, never tells anyone what to do, and never ships safety text in a language no one on the team could verify.
+- **The frozen archive:** nothing dated after officials lifted the evacuation on May 26, the page never resumes checking for updates, the retired refresh script stays retired, and a test compares the numbers quoted in this README against the data files, so the README cannot quietly drift out of date.
+- **Security:** anything copied from the web is treated as plain text, so a malicious page cannot tamper with this one, and the page may only load content from a short approved list of sources.
+- **Honesty details:** link and share previews describe an archive (never a live tool), and features removed for safety stay removed (the misleading wind arrow, automatic image fetching).
+- **The UI:** key layouts render correctly on phone screens, and labels stay legible.
+
+Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows up in the score history. If you run the tests yourself, avoid `--quiet`: it trims the output but also hides the per-test lines that show which test failed.
+
+*Reviewing the method in depth?*
+
+- [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the whole approach in one first-person read.
+- [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): maps each safety principle to its tests.
+- [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
+- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 red-team, a receipted eval export, the decision-authority note).
 
 ---
 
