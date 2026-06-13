@@ -1,17 +1,17 @@
-# SPEC — Garden Grove MMA Tank Dashboard
+# SPEC: Garden Grove MMA Tank Dashboard
 
 > **Frozen archive (2026-06-04).** This spec documents the design and build of the dashboard during the May 21–26, 2026 emergency (the v0.1 desktop-only pivot was locked 2026-05-24). The incident resolved May 26; the site is now a historical archive and this spec is retained as a design-decision record.
 
 **Owner:** Nancy
 **Created:** 2026-05-24
 **Status:** v0 pivot locked in (post-/autoplan Phase 1 CEO review)
-**Context:** See `BRIEF_2026-05-24.md` and `~/.claude/projects/.../memory/project_gg_mma_tank_emergency.md` — there's an active multi-day MMA tank emergency in Garden Grove. Nancy is a downwind-adjacent resident sheltering in place and wants glanceable situational awareness without re-reading the news.
+**Context:** See `BRIEF_2026-05-24.md` and `~/.claude/projects/.../memory/project_gg_mma_tank_emergency.md`. There's an active multi-day MMA tank emergency in Garden Grove. Nancy is a downwind-adjacent resident sheltering in place and wants glanceable situational awareness without re-reading the news.
 
 ---
 
 ## v0 PIVOT (2026-05-24, post-CEO review)
 
-**The pivot:** push-first, dashboard-secondary. CEO subagent's F1 + F2 + F11 findings showed the original dashboard-first framing solves the wrong problem — Nancy needs to be reached when she ISN'T looking, not given more to look at. Existing battle-tested apps cover ~80% of the real alert path; the custom code is layered safety net + glance dashboard.
+**The pivot:** push-first, dashboard-secondary. CEO subagent's F1 + F2 + F11 findings showed the original dashboard-first framing solves the wrong problem. Nancy needs to be reached when she ISN'T looking, not given more to look at. Existing battle-tested apps cover ~80% of the real alert path; the custom code is layered safety net + glance dashboard.
 
 ### v0 architecture (4-hour budget)
 
@@ -33,7 +33,7 @@ Phone (Nancy's setup, ~30 min)              Laptop (CC build, ~2.5 hr)
 ```
 
 **Three layers of safety:**
-1. **Official:** Ready OC / Genasys EVAC / AirNow on phone — primary alert path, not custom code.
+1. **Official:** Ready OC / Genasys EVAC / AirNow on phone: primary alert path, not custom code.
 2. **ntfy push:** `update_status.py` detects structural changes in status.json vs prior snapshot; POSTs ntfy.sh/<topic> on breaking. Phone gets notification + history.
 3. **Desktop dashboard:** glance view when at laptop. `file://` open from OneDrive project folder.
 
@@ -45,29 +45,29 @@ Phone (Nancy's setup, ~30 min)              Laptop (CC build, ~2.5 hr)
 - First reported injury / casualty
 - `incident.resolved_iso` set (incident-end)
 
-### v0 scope — IN
+### v0 scope: IN
 
-- `update_status.py` — Python 3, runs from /loop every 30 min, writes status.json + posts ntfy on breaking
-- `dashboard.html` — vanilla JS, polls status.json every 30s, renders 4 panels (hero, tank, evac, sources)
-- `apps-checklist.md` — phone setup instructions for Nancy (Ready OC + Genasys + AirNow + ntfy)
-- `go_bag.md` — printable checklist, NOT embedded in dashboard
-- `config.json` — ntfy topic name, Nancy's zone status, dashboard refresh interval
-- `README.md` — what each file does, how to run
-- Logs (`updates.log`, `breaking_events.jsonl`) — kept in OneDrive project folder
+- `update_status.py`: Python 3, runs from /loop every 30 min, writes status.json + posts ntfy on breaking
+- `dashboard.html`: vanilla JS, polls status.json every 30s, renders 4 panels (hero, tank, evac, sources)
+- `apps-checklist.md`: phone setup instructions for Nancy (Ready OC + Genasys + AirNow + ntfy)
+- `go_bag.md`: printable checklist, NOT embedded in dashboard
+- `config.json`: ntfy topic name, Nancy's zone status, dashboard refresh interval
+- `README.md`: what each file does, how to run
+- Logs (`updates.log`, `breaking_events.jsonl`): kept in OneDrive project folder
 
-### v0 scope — OUT (deferred to v1 if incident drags >48h)
+### v0 scope: OUT (deferred to v1 if incident drags >48h)
 
 | Item | Why deferred | Substitute for v0 |
 |---|---|---|
-| SVG evacuation map | F6 — boundary changes faster than hand-edits | Link to ggcity.org/emergency |
+| SVG evacuation map | F6: boundary changes faster than hand-edits | Link to ggcity.org/emergency |
 | Go-bag accordion in dashboard | Low value in-page | Separate `go_bag.md` markdown |
 | Horizontal timeline UI | `breaking_events.jsonl` IS the timeline | Read the JSONL if you want history |
-| AirNow API integration | F8 — API key takes ~1 business day | AirNow phone app |
-| Editable You panel | F9 — you know your own status | Hardcoded "outside / downwind" |
+| AirNow API integration | F8: API key takes ~1 business day | AirNow phone app |
+| Editable You panel | F9: you know your own status | Hardcoded "outside / downwind" |
 | Windows toast notifications | ntfy phone covers it | Browser tab title flashes on breaking |
-| Breaking-news keyword poller | F3 — false positives + missed signals | Structural diff in update_status.py |
+| Breaking-news keyword poller | F3: false positives + missed signals | Structural diff in update_status.py |
 | Local-server fallback | Premature | `file://` open works for v0 |
-| LOCALAPPDATA runtime split | F5 — kills phone-via-OneDrive-web access | Stay in OneDrive folder, retry on rename collision |
+| LOCALAPPDATA runtime split | F5: kills phone-via-OneDrive-web access | Stay in OneDrive folder, retry on rename collision |
 | Cloud routine writing status.json | Architecturally impossible (sandbox can't reach OneDrive) | Cloud routine remains pure-text-delta redundancy |
 
 ### v0 file manifest
@@ -80,13 +80,13 @@ OneDrive\Desktop\GG-tank-updates\
 ├── README.md                    (NEW)
 ├── apps-checklist.md            (NEW)
 ├── go_bag.md                    (NEW)
-├── config.json                  (NEW — ntfy topic, zone status)
-├── dashboard.html               (NEW — the glance view)
-├── status.json                  (NEW — current snapshot, atomic-renamed)
-├── breaking_events.jsonl        (NEW — append-only)
-├── updates.log                  (NEW — append-only)
+├── config.json                  (NEW: ntfy topic, zone status)
+├── dashboard.html               (NEW: the glance view)
+├── status.json                  (NEW: current snapshot, atomic-renamed)
+├── breaking_events.jsonl        (NEW: append-only)
+├── updates.log                  (NEW: append-only)
 └── scripts\
-    └── update_status.py         (NEW — the writer)
+    └── update_status.py         (NEW: the writer)
 ```
 
 (`check_breaking.py`, `notify.py`, `setup_dashboard.py`, `zone.svg` from earlier draft: **dropped** in v0.)
@@ -95,9 +95,9 @@ OneDrive\Desktop\GG-tank-updates\
 
 **Critical fixes from review (folded into v0):**
 
-1. **Hero swap (Design D1):** the 72pt headline is `zone_status_verdict` (green "YOU ARE OUTSIDE THE EVAC ZONE" / red "YOU ARE INSIDE THE EVAC ZONE — EVACUATE NOW"). Tank, evac, sources demoted to smaller panels below.
+1. **Hero swap (Design D1):** the 72pt headline is `zone_status_verdict` (green "YOU ARE OUTSIDE THE EVAC ZONE" / red "YOU ARE INSIDE THE EVAC ZONE. EVACUATE NOW"). Tank, evac, sources demoted to smaller panels below.
 
-2. **WebSearch + regex (Eng E1) — not per-site scrapers:**
+2. **WebSearch + regex (Eng E1), not per-site scrapers:**
    - `update_status.py` runs ONE WebSearch with a curated query (e.g., `"Garden Grove MMA tank" evacuation residents temperature site:news`)
    - Applies regex patterns per field on returned snippets:
      - residents: `(\d{1,3}(?:,\d{3})*)\s*residents`
@@ -107,7 +107,7 @@ OneDrive\Desktop\GG-tank-updates\
      - evacuation expanded: presence of "evacuation expanded" OR "added to evacuation zone"
    - On regex fail for a field: keep previous value, log `"extraction failed for X"` to `updates.log`. Don't overwrite with `None`.
 
-3. **2-tick hysteresis on breaking (Eng E3):** structural diff must persist 2 consecutive snapshots before `breaking: true` flips. Implement via a `pending_breaking_since` field in `status.json` — first detection sets it; second consecutive detection 30 min later flips `breaking: true`; if cleared in between, `pending_breaking_since` resets.
+3. **2-tick hysteresis on breaking (Eng E3):** structural diff must persist 2 consecutive snapshots before `breaking: true` flips. Implement via a `pending_breaking_since` field in `status.json`: first detection sets it; second consecutive detection 30 min later flips `breaking: true`; if cleared in between, `pending_breaking_since` resets.
 
 4. **`os.replace()` retry on Windows (Eng E2):** 5 attempts with exponential backoff 100ms, 200ms, 400ms, 800ms, 1600ms + ±20% jitter. Catch `PermissionError` + `OSError`. Same retry applied to `breaking_events.jsonl` and `updates.log` appends.
 
@@ -128,8 +128,8 @@ OneDrive\Desktop\GG-tank-updates\
 
 - **Severity colors:** `low=#3b82f6` (blue), `moderate=#f59e0b` (amber), `high=#ef4444` (red), `critical=#991b1b` (dark red, white text).
 - **Aesthetic (NWS gov-emergency-calm):** bg `#0a0e14`, surface `#151b23`, text `#e6edf3`, borders `#30363d` (1px hairline). System UI font stack for body; **IBM Plex Mono** for all numeric values. Three sizes: 72/24/14. Two weights: 400/600. No gradients, no shadows, max border-radius 4px. Dark mode only (no toggle in v0).
-- **Staleness banner copy:** `"⚠️ Data is stale — last update was [N] min ago. The writer script may have stopped."`
-- **BREAKING tab title:** `🔴 BREAKING — GG MMA Tank` ↔ `GG MMA Tank Dashboard`, toggling every 1s while `breaking: true`.
+- **Staleness banner copy:** `"⚠️ Data is stale. Last update was [N] min ago. The writer script may have stopped."`
+- **BREAKING tab title:** `🔴 BREAKING: GG MMA Tank` ↔ `GG MMA Tank Dashboard`, toggling every 1s while `breaking: true`.
 - **BREAKING banner animation:** pulse opacity 1.0 → 0.7 over 1.5s ease-in-out, infinite. Disabled when `prefers-reduced-motion: reduce`.
 - **Timestamps:** relative ("2 min ago") up to 60 min; absolute ("3:37 PM") up to 24 h; weekday + time ("Mon 3:37 PM") beyond.
 - **Sources panel:** collapsed by default behind `<details><summary>Verified from N sources</summary>`.
@@ -157,25 +157,25 @@ OneDrive\Desktop\GG-tank-updates\
 
 - **Zone-flip outside→inside moment:** full-screen red modal + Web Audio API beep. Can't be ignored. One-click dismiss. (Design D2)
 - **Distance to boundary:** DROP. Link to ggcity.org address checker instead. No coords required. (Design D1 follow-up)
-- **Writer-down ntfy alert:** ADD to v0. `try/except` wrapping all of `update_status.py`; on any uncaught exception, last-ditch ntfy POST `"⚠️ WRITER DOWN — dashboard data is now stale"`. (Eng E6)
+- **Writer-down ntfy alert:** ADD to v0. `try/except` wrapping all of `update_status.py`; on any uncaught exception, last-ditch ntfy POST `"⚠️ WRITER DOWN. Dashboard data is now stale"`. (Eng E6)
 - **Real budget:** accept 6–8 hr build for complete v0. (Eng E8)
 
-### v0.1 SCOPE CUT — desktop-only (Nancy 2026-05-24, post-build)
+### v0.1 SCOPE CUT: desktop-only (Nancy 2026-05-24, post-build)
 
 Nancy scratched the entire mobile / phone path after the v0 build was complete. New direction: **single live desktop dashboard app. No phone, no push, no apps.**
 
 **Removed:**
 - ntfy push pipeline (POST on breaking, writer-down alert, ASCII-safe header helper)
 - `urllib.request` / `urllib.error` imports from `update_status.py`
-- `apps-checklist.md` (Ready OC / Genasys EVAC / AirNow / ntfy install guide) — deleted
+- `apps-checklist.md` (Ready OC / Genasys EVAC / AirNow / ntfy install guide): deleted
 - `ntfy_topic` and `ntfy_server` from `config.json`
 - All phone / mobile / OneDrive-web-on-phone references from README and SPEC
 
 **Kept (unchanged):**
-- `update_status.py` writer (still necessary — browser can't pull news directly)
+- `update_status.py` writer (still necessary: browser can't pull news directly)
 - Structural-diff breaking detection (toggles fire immediately, residents-shift rate-limited)
-- `dashboard.html` (BREAKING banner, zone-flip modal, NWS aesthetic — unchanged)
-- Logs (`updates.log`, `breaking_events.jsonl`) — still useful for incident history
+- `dashboard.html` (BREAKING banner, zone-flip modal, NWS aesthetic, unchanged)
+- Logs (`updates.log`, `breaking_events.jsonl`): still useful for incident history
 - /loop wiring (replaced `9b42d142` → `cb1466e5`; new prompt drops the ntfy fallback)
 - `go_bag.md` (standalone printable checklist)
 
@@ -187,7 +187,7 @@ Nancy scratched the entire mobile / phone path after the v0 build was complete. 
 
 | Phase | Subagent | Codex | Outcome |
 |---|---|---|---|
-| 1 CEO | run | unavailable | 11 findings (3 critical/high triggered user challenge) — Nancy pivoted to push-first |
+| 1 CEO | run | unavailable | 11 findings (3 critical/high triggered user challenge). Nancy pivoted to push-first |
 | 2 Design | run | unavailable | 6 findings, composite 3.9/10 → all auto-fixed in SPEC |
 | 3 Eng | run | unavailable | 10 findings, composite 6.5/10 → 3 P1 auto-fixed, 1 taste deferred to Nancy (Writer-down: add) |
 | 4 DX | skipped | n/a | No developer-facing scope (Nancy is sole user) |
@@ -298,14 +298,14 @@ WebSearch / WebFetch  ──writes──>  status.json  ──reads──>  dash
   - **Hero:** incident name, status headline, severity color band.
   - **Tank panel:** temp (big number), trend arrow, crack-observed flag.
   - **Evac panel:** residents, sq mi, boundary, lifted/expanded flags.
-  - **You panel:** Nancy's current zone status (read from JSON; one-tap edit on the page writes back via download-the-edited-JSON pattern — out of scope for v1, just display).
+  - **You panel:** Nancy's current zone status (read from JSON; one-tap edit on the page writes back via download-the-edited-JSON pattern, out of scope for v1, just display).
   - **Official statements:** newest 3, with timestamp + agency + source link.
   - **Footer:** "Last updated 2 min ago" (computed client-side from `last_updated_iso`); "Next check at 3:07 PM"; link to full brief.
-- **Staleness banner:** if `now > stale_after_iso`, red banner: "Data is stale — last update >30 min ago. Check the writer."
+- **Staleness banner:** if `now > stale_after_iso`, red banner: "Data is stale. Last update >30 min ago. Check the writer."
 - **BREAKING banner:** if `breaking: true` AND `breaking_since_iso` is within the last 15 min, top-of-page pulsing red banner with `breaking_reason` text. After 15 min the banner relaxes to a non-pulsing "Recent change" pill. After the next snapshot with `breaking: false`, banner clears.
 - **Dark mode** default; light mode toggle saved to localStorage.
 
-## 6. Writer contract — three update triggers
+## 6. Writer contract: three update triggers
 
 The dashboard updates on **three independent triggers**, OR-merged:
 
@@ -342,7 +342,7 @@ The dashboard updates on **three independent triggers**, OR-merged:
 |---|---|---|---|
 | Scheduled heartbeat | /loop job `cf846055` runs `update_status.py` | every 30 min | Existing |
 | Cloud cron | cloud routine `trig_017YEJ4zkKeeXswyXPWz3yFw` | hourly | Existing; produces own delta + status snapshot |
-| Breaking-news poller | new local /loop job runs `check_breaking.py` | every 5 min | NEW — needs second loop job |
+| Breaking-news poller | new local /loop job runs `check_breaking.py` | every 5 min | NEW: needs second loop job |
 | Manual | Nancy runs `python update_status.py` | on demand | "F5" equivalent |
 
 All three writer invocations target the same `status.json`. Atomic rename + filesystem locking handle concurrent writes (vanishingly unlikely at these cadences).
@@ -353,7 +353,7 @@ All three writer invocations target the same `status.json`. Atomic rename + file
 |---|---|
 | WebSearch returns 0 results | Writer keeps previous values; bumps `last_updated_iso` only if at least one source succeeded; logs which source failed. |
 | WebSearch returns garbage | Writer holds the previous value for that field; doesn't overwrite with junk. (Validation per field: temp is int 0–500; sq_mi is positive float; residents is int.) |
-| status.json missing on first reader load | Reader shows "Initializing — first update in <countdown>" placeholder. |
+| status.json missing on first reader load | Reader shows "Initializing, first update in <countdown>" placeholder. |
 | Disk write fails | Writer logs + exits non-zero; previous status.json untouched; reader's staleness banner fires. |
 | Browser offline | Reader keeps showing last successfully fetched JSON; "offline" indicator in footer. |
 
@@ -393,9 +393,9 @@ All three writer invocations target the same `status.json`. Atomic rename + file
 
 | # | Question | Decision | Principle |
 |---|---|---|---|
-| 1 | Writer language | **Python 3** (stdlib + `requests`) — portable across local Windows and cloud Linux | P5 explicit |
+| 1 | Writer language | **Python 3** (stdlib + `requests`), portable across local Windows and cloud Linux | P5 explicit |
 | 2 | Dashboard auto-refresh | **30 seconds** | P6 action |
-| 3 | Cloud routine writes `status.json`? | **No.** Cloud stays as redundancy — produces markdown deltas in routine log only. Local writer owns `status.json`. | P3 pragmatic |
+| 3 | Cloud routine writes `status.json`? | **No.** Cloud stays as redundancy: produces markdown deltas in routine log only. Local writer owns `status.json`. | P3 pragmatic |
 | 4 | Dashboard delivery | **`file://` direct** with documented `python -m http.server` fallback if browser blocks `fetch` | P5 explicit |
 | 5 | Breaking-news poller cadence | **5 min** with 5-min debounce after a hit | P3 pragmatic |
 | 6 | Sentinel keyword set | **Expanded:** `explod|explosion|breach|all clear|evacuation lifted|evacuation expanded|fatal|injured|injury|killed|tank failure|neutralization complete|shelter in place expanded` | P1 completeness |
@@ -446,5 +446,5 @@ OneDrive\Desktop\GG-tank-updates\
 - Should the writer be Python or PowerShell? (Python is more portable across the cloud routine and the local loop; PowerShell is Windows-native and avoids an extra dependency. Default pick: **Python**, because the cloud routine runs in a Linux sandbox.)
 - Auto-refresh interval (30 s vs 60 s vs 5 min)? Tradeoff: tab CPU vs perceived liveness.
 - Should the cloud routine write to the same `status.json`? It runs in a Linux sandbox without access to Nancy's OneDrive folder. **Likely answer:** cloud routine produces its own JSON-shaped output in the routine log; only the *local* writer touches `status.json`. Cloud is the redundancy / off-session safety net.
-- Should the dashboard also show a "what to do if you have to evacuate" go-bag checklist? Adds value for her actual situation but feels like scope creep — flag for /autoplan.
-- Where does `dashboard.html` open from — `file://` direct, OneDrive web, or quick local server? Default: `file://` works; document the `python -m http.server` fallback if `fetch` is blocked.
+- Should the dashboard also show a "what to do if you have to evacuate" go-bag checklist? Adds value for her actual situation but feels like scope creep. Flag for /autoplan.
+- Where does `dashboard.html` open from: `file://` direct, OneDrive web, or quick local server? Default: `file://` works; document the `python -m http.server` fallback if `fetch` is blocked.

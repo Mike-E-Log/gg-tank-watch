@@ -8,7 +8,7 @@ How GG Tank Watch ensures model outputs cannot break user safety.
 flowchart TD
     A["gather_facts.py\n(LLM + WebSearch)"] -->|"structured JSON\nvia stdin"| B
 
-    subgraph CONTROL ["CONTROL LAYER — update_status.py"]
+    subgraph CONTROL ["CONTROL LAYER: update_status.py"]
         direction TB
         B["chokepoint\n(single entry point)"]
         B --> C["P0-1 Corroboration gate\nDowngrade toward all-clear? Needs ≥2 sources\n+≥1 official host. Single source → safe default."]
@@ -30,7 +30,7 @@ flowchart TD
     style H fill:#dcfce7,stroke:#16a34a,color:#000
 ```
 
-**Asymmetric gating principle:** danger-side updates relay on 1 source (over-warning is acceptable); downgrades toward all-clear (`evacuation_lifted`, `incident_resolved_iso`, severity drop) require ≥2 sources including ≥1 official host (under-warning is catastrophic). These gates govern which official facts get republished — the site never authored or displayed an alert level of its own. The LLM cannot write `status.json` directly — all output passes through the chokepoint.
+**Asymmetric gating principle:** danger-side updates relay on 1 source (over-warning is acceptable); downgrades toward all-clear (`evacuation_lifted`, `incident_resolved_iso`, severity drop) require ≥2 sources including ≥1 official host (under-warning is catastrophic). These gates govern which official facts get republished. The site never authored or displayed an alert level of its own. The LLM cannot write `status.json` directly. All output passes through the chokepoint.
 
 ## The problem
 
@@ -74,8 +74,8 @@ Downgrades toward all-clear require ≥2 independent sources, at least one from 
 Danger-side updates (injuries, expansion, new statements) relay immediately on one source. The asymmetry is intentional: over-warning is acceptable, under-warning is not.
 
 **Tests that catch it:**
-- `test_lifted_requires_corroboration` — single source cannot authorize `lifted=true`
-- `test_resolved_requires_two_sources` — single source suppresses resolution; 2+ sources honor it
+- `test_lifted_requires_corroboration`: single source cannot authorize `lifted=true`
+- `test_resolved_requires_two_sources`: single source suppresses resolution; 2+ sources honor it
 
 ### F2: Fabricated provenance
 
@@ -83,12 +83,12 @@ Danger-side updates (injuries, expansion, new statements) relay immediately on o
 
 **Control: P0-2 Source/URL Integrity** (`update_status.py:validate_provenance`)
 
-Every statement's `source_url` is checked against the set of URLs actually retrieved this run (`sources_checked`). A statement citing a URL not present in `sources_checked` is silently dropped — never published. Statements with no `source_url` at all are rejected.
+Every statement's `source_url` is checked against the set of URLs actually retrieved this run (`sources_checked`). A statement citing a URL not present in `sources_checked` is silently dropped, never published. Statements with no `source_url` at all are rejected.
 
 **Tests that catch it:**
-- `test_fabricated_source_url_not_in_snapshot` — fabricated URL dropped
-- `test_statement_without_source_url_rejected` — unsourced statement rejected
-- `test_sources_checked_all_wellformed` — malformed URLs filtered
+- `test_fabricated_source_url_not_in_snapshot`: fabricated URL dropped
+- `test_statement_without_source_url_rejected`: unsourced statement rejected
+- `test_sources_checked_all_wellformed`: malformed URLs filtered
 
 ### F4: Stale-but-fresh-stamped
 
@@ -97,15 +97,15 @@ Every statement's `source_url` is checked against the set of URLs actually retri
 **Control: P0-3 Freshness Honesty** (`update_status.py:build_snapshot`)
 
 Two distinct timestamps:
-- `last_updated_iso` — when we wrote the file (heartbeat)
-- `data_as_of_iso` — when we actually learned something new
+- `last_updated_iso`: when we wrote the file (heartbeat)
+- `data_as_of_iso`: when we actually learned something new
 
-`data_as_of_iso` advances only when the current tick provides source-backed facts. An empty-facts tick inherits the previous `data_as_of_iso`. `stale_after_iso` is computed from `data_as_of_iso`, not `last_updated_iso` — so the staleness banner fires based on data age, not write age.
+`data_as_of_iso` advances only when the current tick provides source-backed facts. An empty-facts tick inherits the previous `data_as_of_iso`. `stale_after_iso` is computed from `data_as_of_iso`, not `last_updated_iso`, so the staleness banner fires based on data age, not write age.
 
 **Tests that catch it:**
-- `test_empty_facts_do_not_advance_data_as_of` — empty tick preserves data age
-- `test_all_null_facts_treated_as_no_data` — all-null facts don't fake currency
-- `test_stale_after_is_data_as_of_plus_maxage` — banner keys off data, not write
+- `test_empty_facts_do_not_advance_data_as_of`: empty tick preserves data age
+- `test_all_null_facts_treated_as_no_data`: all-null facts don't fake currency
+- `test_stale_after_is_data_as_of_plus_maxage`: banner keys off data, not write
 
 ## Additional controls
 
@@ -119,7 +119,7 @@ A hallucinated or mis-parsed resolution timestamp (e.g., "2099-01-01") can never
 
 ### Severity derivation (targets F3, F5)
 
-Severity is **computed, not extracted** from the model. The writer derives it from structured fields (`residents`, `lifted`, `resolved_iso`, `injuries`). A partial-facts tick that only updates `videos` does not recompute severity — it carries the previous value forward. This prevents a missing field from silently downgrading the dashboard to "low."
+Severity is **computed, not extracted** from the model. The writer derives it from structured fields (`residents`, `lifted`, `resolved_iso`, `injuries`). A partial-facts tick that only updates `videos` does not recompute severity. It carries the previous value forward. This prevents a missing field from silently downgrading the dashboard to "low."
 
 - `test_partial_facts_dont_downgrade_severity`
 
@@ -127,7 +127,7 @@ Severity is **computed, not extracted** from the model. The writer derives it fr
 
 If the gatherer fails (no API key, network error, model refusal), it exits non-zero and prints nothing to stdout. The writer step is skipped entirely. `status.json` is not touched. The staleness banner fires on schedule. The pipeline fails visibly stale, never confidently wrong.
 
-- `test_graceful_failure_no_api_key` — exit non-zero, empty stdout
+- `test_graceful_failure_no_api_key`: exit non-zero, empty stdout
 
 ### UTF-8 integrity (targets encoding drift)
 
@@ -147,7 +147,7 @@ The central design principle is **asymmetric trust**:
 | Data freshness | Advances only on source-backed facts | Stale-but-fresh is worse than visibly stale |
 | Provenance | Dropped unless URL was actually retrieved | A fabricated source is worse than a missing one |
 
-This mirrors Anthropic's own approach to AI control: the system's authority is bounded by design, not by instruction. The corroboration gate doesn't ask the model to be careful — it structurally prevents a single hallucinated boolean from reaching users.
+This mirrors Anthropic's own approach to AI control: the system's authority is bounded by design, not by instruction. The corroboration gate doesn't ask the model to be careful. It structurally prevents a single hallucinated boolean from reaching users.
 
 ## Test coverage summary
 
@@ -168,6 +168,6 @@ The remaining ~193 tests in the 211-test suite cover schema validation, writer s
 
 This is not an academic exercise. During the Garden Grove tank emergency, ~50,000 real people were evacuated. A volunteer-built dashboard using an LLM to summarize news has a specific failure mode that matters: the model confidently saying "it's safe" when it isn't.
 
-The architecture ensures that even if the model hallucinates — which it will, eventually — the hallucination cannot reach users in a form that looks like an official all-clear. The dashboard might go stale. It might show fewer statements than it should. It will never tell someone it's safe to go home when it isn't.
+The architecture ensures that even if the model hallucinates (which it will, eventually) the hallucination cannot reach users in a form that looks like an official all-clear. The dashboard might go stale. It might show fewer statements than it should. It will never tell someone it's safe to go home when it isn't.
 
 That is the alignment tax never materializing: the safety constraints made the product more trustworthy, not less useful.

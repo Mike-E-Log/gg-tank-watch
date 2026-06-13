@@ -4,7 +4,7 @@ Current accessibility status of `dashboard.html` and planned improvements.
 
 ## Emergency context and WCAG alignment
 
-The dashboard is designed for stressed residents checking their phone during an evacuation. This drives design choices — high contrast, large touch targets, minimal cognitive load — that naturally align with WCAG 2.1 guidelines.
+The dashboard is designed for stressed residents checking their phone during an evacuation. This drives design choices (high contrast, large touch targets, minimal cognitive load) that naturally align with WCAG 2.1 guidelines.
 
 ## What's in place
 
@@ -59,6 +59,6 @@ The gaps above were the state at the time of writing; they were resolved before 
 
 1. ✅ `:focus-visible` outlines added to interactive elements
 2. ✅ Tab content wrapped in a `<main>` landmark
-3. ➖ Visible `<label>` for the address-check input — **moot**: the address checker was removed in the conduit pivot (2026-05-26), so the input no longer exists
+3. ➖ Visible `<label>` for the address-check input, **moot**: the address checker was removed in the conduit pivot (2026-05-26), so the input no longer exists
 4. ✅ Skip-navigation link added
 5. Muted-text contrast reviewed; see `accessibility.html` for the current accessibility statement and disclosed limitations

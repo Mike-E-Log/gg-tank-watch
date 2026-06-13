@@ -1,6 +1,6 @@
 # Contributing to GG Tank Watch
 
-GG Tank Watch is a volunteer-built information conduit for residents affected by the Garden Grove chemical-tank emergency. We amplify, translate, and route official information — we never author safety directives or substitute for official channels.
+GG Tank Watch is a volunteer-built information conduit for residents affected by the Garden Grove chemical-tank emergency. We amplify, translate, and route official information; we never author safety directives or substitute for official channels.
 
 Before contributing, read the [Information Conduit Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -13,7 +13,7 @@ Every piece of content must trace to a named, verifiable source. Contributors mu
 - Publish unattributed claims or social-media rumors
 - Downgrade danger levels without corroboration from at least two sources including one official agency
 
-The distinction between "you should leave" and "officials say the evacuation zone includes your area — confirm at ggcity.org/emergency" is load-bearing.
+The distinction between "you should leave" and "officials say the evacuation zone includes your area: confirm at ggcity.org/emergency" is load-bearing.
 
 ## Branch workflow
 
@@ -46,10 +46,10 @@ AI-generated summaries carry a persistent disclosure: "compiled with AI assistan
 
 ## What to work on
 
-- **Dashboard UI** — `dashboard.html` (single-file static app)
-- **Data pipeline** — `scripts/` (Python)
-- **Eval tests** — `eval/` (pytest-style)
-- **Documentation** — `docs/`
+- **Dashboard UI:** `dashboard.html` (single-file static app)
+- **Data pipeline:** `scripts/` (Python)
+- **Eval tests:** `eval/` (pytest-style)
+- **Documentation:** `docs/`
 
 ## Questions
 

@@ -1,4 +1,4 @@
-# Source Credibility Framework — GG Tank Watch
+# Source Credibility Framework: GG Tank Watch
 
 ## Purpose
 
@@ -17,7 +17,7 @@ how sources are evaluated for credibility and prioritized in the data pipeline.
 
 ## Source Tiers
 
-### Tier 1 — Official Agencies (Score 20-25)
+### Tier 1: Official Agencies (Score 20-25)
 
 These agencies produce the information. They are the primary authority.
 
@@ -30,7 +30,7 @@ These agencies produce the information. They are the primary authority.
 | US EPA Region 9 | 23 | Air quality monitoring authority |
 | SCAQMD | 22 | Regional air quality authority |
 
-### Tier 2 — Established Primary News (Score 15-19)
+### Tier 2: Established Primary News (Score 15-19)
 
 Professional outlets with reporters on scene and editorial standards.
 
@@ -46,7 +46,7 @@ Professional outlets with reporters on scene and editorial standards.
 | CNN | 17 | National, EPA Zeldin interview |
 | Nguoi Viet Daily News | 18 | Largest Vietnamese-American daily (45+ years), professional editorial, headquartered in Westminster OC. Critical for reaching ~40% of affected population. |
 
-### Tier 3 — Reputable Secondary (Score 10-14)
+### Tier 3: Reputable Secondary (Score 10-14)
 
 Reliable outlets with less direct coverage of this incident.
 
