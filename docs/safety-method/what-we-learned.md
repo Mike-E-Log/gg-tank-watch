@@ -28,4 +28,4 @@ The honest part. This was never used at scale. The two of us who built it were e
 
 ---
 
-*Built downwind of the May 2026 Garden Grove methyl-methacrylate evacuation by two local volunteers, with an AI assistant on the code. Held pending an attorney review and kept out of search-engine results (`noindex`) until that clears; this is a writeup of the build, not the launch of a public service.*
+*Built downwind of the May 2026 Garden Grove methyl-methacrylate evacuation by two local volunteers, with an AI assistant on the code. The frozen archive is kept out of search-engine results (`noindex`) permanently by choice. Attorney review was judged unnecessary once the incident resolved. This is a writeup of the build, not the launch of a public service.*
