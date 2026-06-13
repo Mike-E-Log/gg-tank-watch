@@ -207,14 +207,14 @@ The decisions worth showing are the ones that changed. Here is the whole shape o
 
 | Date | What changed | Type |
 |------|--------------|------|
-| May 24 | Push alerts planned, then reversed within 90 minutes to one dashboard | Reversal |
-| May 24 | Blast radius, chemical plume, and the evacuation zone added to the map, on request | Addition |
-| **May 26** | **The conduit pivot: address checker, blast and plume layers, and all safety verdicts removed; evacuation zone kept** | **Reversal** |
-| May 26 | Officials lift the evacuation; the incident is resolved | Milestone |
-| May 27 | Map bundled into the app after a hosted map vanished on reload | Fix |
-| May 30 | Vietnamese safety text removed; the site goes English-only | Removal |
-| May 31 | Single-station wind arrow removed | Removal |
-| Jun 1 | Live dashboard frozen into an archive | Milestone |
+| May&nbsp;24 | Push alerts planned, then reversed within 90 minutes to one dashboard | Reversal |
+| May&nbsp;24 | Blast radius, chemical plume, and the evacuation zone added to the map, on request | Addition |
+| **May&nbsp;26** | **The conduit pivot: address checker, blast and plume layers, and all safety verdicts removed; evacuation zone kept** | **Reversal** |
+| May&nbsp;26 | Officials lift the evacuation; the incident is resolved | Milestone |
+| May&nbsp;27 | Map bundled into the app after a hosted map vanished on reload | Fix |
+| May&nbsp;30 | Vietnamese safety text removed; the site goes English-only | Removal |
+| May&nbsp;31 | Single-station wind arrow removed | Removal |
+| Jun&nbsp;1 | Live dashboard frozen into an archive | Milestone |
 
 What these changes have in common: each one removed a feature the project could not fully stand behind, even when that meant the site could do less.
 
@@ -277,9 +277,15 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
 
 ## Stack
 
-- **Frontend:** vanilla HTML/CSS/JS in a single **~116 KB** `dashboard.html` (no framework, no build step) + [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (**~870 KB**, JavaScript + CSS) + [OpenFreeMap](https://openfreemap.org/) vector tiles (light and dark). A service worker (cache `gg-tank-v84`) caches the shell and map so the page still opens offline.
+- **Frontend:** vanilla HTML/CSS/JS, no framework, no build step.
+  - The whole app is one **~116 KB** `dashboard.html`.
+  - Map: [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (**~870 KB**, JavaScript + CSS) with [OpenFreeMap](https://openfreemap.org/) vector tiles (light and dark).
+  - A service worker (cache `gg-tank-v84`) caches the shell and map, so the page still opens offline.
 - **Writer:** Python 3 **standard library only**, no outside dependencies.
-- **Security headers (production, set in `vercel.json`):** a strict Content Security Policy that only allows the site's own resources (`default-src 'self'`), `X-Frame-Options: DENY` (it cannot be embedded in another site), and `X-Robots-Tag: noindex, nofollow` (search engines are asked not to list it).
+- **Security headers (production, set in `vercel.json`):**
+  - a strict Content Security Policy that only allows the site's own resources (`default-src 'self'`);
+  - `X-Frame-Options: DENY` (it cannot be embedded in another site);
+  - `X-Robots-Tag: noindex, nofollow` (search engines are asked not to list it).
 - **Eval:** pytest-style harness, **211 tests across 65 files** + LLM-as-judge rubrics ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
