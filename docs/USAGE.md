@@ -1,6 +1,6 @@
 # USAGE: viewing the dashboard
 
-Operational guide for GG Tank Watch. For the project pitch / case study, see [`README.md`](README.md).
+Operational guide for GG Tank Watch. For the project pitch / case study, see [`README.md`](../README.md).
 
 > **This is a frozen historical archive.** The May 2026 Garden Grove tank emergency resolved on **May 26, 2026**, and the dashboard now shows a static snapshot from that date. It does **not** auto-refresh, wind direction is **not** live (the wind indicator was removed), and the refresh job (`scripts/refresh_local.py`) is **retired**; it exits with an `ARCHIVED` error if run. This guide covers (1) how to view the frozen archive today and (2) how the pipeline operated during the incident, kept for reference.
 
@@ -10,7 +10,7 @@ The frozen archive is hosted at **[ggtankwatch.org](https://ggtankwatch.org)**. 
 
 ## View the frozen archive locally
 
-1. **Double-click `start_dashboard.bat`** (or, from the repo root, run `python -m http.server 8000` and open `http://127.0.0.1:8000/dashboard.html`). A local server is required because browsers block `fetch()` on `file://` URLs; without it the page shows "Offline / file missing".
+1. **Double-click `scripts\start_dashboard.bat`** (or, from the repo root, run `python -m http.server 8000 -d public` and open `http://127.0.0.1:8000/dashboard.html`). A local server is required because browsers block `fetch()` on `file://` URLs; without it the page shows "Offline / file missing".
 2. The page loads the **frozen snapshot** (`status.json`, as of the May 26, 2026 all-clear). There is no polling and nothing to refresh.
 3. **Light / dark theme toggle** sits in the top-right; the preference is saved per browser.
 
