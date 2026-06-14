@@ -24,6 +24,10 @@
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-grid.png" alt="Mobile views of GG Tank Watch: the Map, the Coverage Archive listing every source badged and dated, the What happened tab of sourced incident facts, and the Map in dark mode." width="840"></a>
 </p>
 
+<p align="center">
+  <sub>Built by <a href="https://github.com/Mike-E-Log"><b>Mike Ilog</b></a> · AI Engineer · LLM &amp; agent evaluation &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/mikeilog/">LinkedIn</a></sub>
+</p>
+
 ## Contents
 
 - [What this demonstrates](#what-this-demonstrates)
