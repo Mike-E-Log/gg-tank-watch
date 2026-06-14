@@ -10,6 +10,6 @@ SW = REPO_ROOT / "public" / "sw.js"
 
 def test_cache_bumped_and_archive_precached():
     text = SW.read_text(encoding="utf-8")
-    bumped = 'CACHE_NAME = "gg-tank-v85"' in text
+    bumped = 'CACHE_NAME = "gg-tank-v86"' in text
     precached = '"/data/news_archive.json"' in text
-    return {"passed": bumped and precached, "details": f"v85={bumped} precached={precached}"}
+    return {"passed": bumped and precached, "details": f"v86={bumped} precached={precached}"}
