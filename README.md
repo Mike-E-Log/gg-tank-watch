@@ -20,12 +20,12 @@
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-map.png" alt="GG Tank Watch map view: the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
 </p>
 
-<table align="center">
+<table align="center" width="100%">
   <tr>
-    <td align="center" valign="top"><img src="docs/assets/preview-mobile.png" alt="Map view on mobile" width="190"><br><sub><b>Map</b></sub></td>
-    <td align="center" valign="top"><img src="docs/assets/preview-news.png" alt="Coverage Archive on mobile: every source badged and dated" width="190"><br><sub><b>Coverage Archive</b></sub></td>
-    <td align="center" valign="top"><img src="docs/assets/preview-info.png" alt="What happened on mobile: sourced incident facts" width="190"><br><sub><b>What happened</b></sub></td>
-    <td align="center" valign="top"><img src="docs/assets/preview-map-dark.png" alt="Map view in dark mode on mobile" width="190"><br><sub><b>Dark mode</b></sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/assets/preview-mobile.png" alt="Map view on mobile" width="190"><br><sub><b>Map</b></sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/assets/preview-news.png" alt="Coverage Archive on mobile: every source badged and dated" width="190"><br><sub><b>Coverage Archive</b></sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/assets/preview-info.png" alt="What happened on mobile: sourced incident facts" width="190"><br><sub><b>What happened</b></sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/assets/preview-map-dark.png" alt="Map view in dark mode on mobile" width="190"><br><sub><b>Dark mode</b></sub></td>
   </tr>
 </table>
 
