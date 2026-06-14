@@ -50,9 +50,11 @@
       --sa-border-2:  rgba(26, 22, 18, 0.16);
       --sa-shadow-sm: 0 1px 2px rgba(26, 22, 18, 0.05);
       --sa-shadow:    0 2px 12px rgba(26, 22, 18, 0.06), 0 1px 2px rgba(26, 22, 18, 0.04);
-      /* Layout: comfortable content reading column on desktop/tablet (the map breaks wide);
-         reuses the mobile .app cap value so the column reads at a consistent width. */
-      --content-cap: 800px;
+      /* Layout: comfortable content reading column on desktop/tablet (the map fills the
+         viewport full-bleed; only the content/chrome is capped). 1200px matches the Info
+         subpanel cap so all capped content reads at one consistent width and the chrome
+         doesn't read as squished-to-center on wide monitors. */
+      --content-cap: 1200px;
     }
     html.theme-dark {
       --sa-bg:        #121110;
