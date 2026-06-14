@@ -71,13 +71,7 @@ The rest of this README explains each decision: what was built, what was deliber
 
 ## What this is, in 30 seconds
 
-GG Tank Watch is a single-page dashboard built during a multi-day chemical emergency.
-
-- It pulled scattered updates from officials and news outlets into one calm view and **pointed back to the authorities in charge**.
-- It is a **pure information conduit**: it relays what officials and newsrooms published, and issues no judgments of its own.
-- The emergency is over. The dashboard is frozen: the data pipeline is retired and the page no longer checks for updates. Every tab is labeled **ARCHIVE** with the incident dates (May 21–26, 2026), so it cannot be mistaken for a live tool.
-
-Its organizing principle:
+GG Tank Watch pulled scattered, conflicting updates from officials and news outlets into one calm view, and **pointed back to the authorities in charge**. Its organizing principle:
 
 > **Responsible and helpful are the same lane.** Every safety constraint made the product *more* trustworthy and *more* useful to a worried reader, not less. The reasoning is the point, not just the code.
 
