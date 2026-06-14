@@ -50,11 +50,13 @@
       --sa-border-2:  rgba(26, 22, 18, 0.16);
       --sa-shadow-sm: 0 1px 2px rgba(26, 22, 18, 0.05);
       --sa-shadow:    0 2px 12px rgba(26, 22, 18, 0.06), 0 1px 2px rgba(26, 22, 18, 0.04);
-      /* Layout: comfortable content reading column on desktop/tablet (the map fills the
-         viewport full-bleed; only the content/chrome is capped). 1200px matches the Info
-         subpanel cap so all capped content reads at one consistent width and the chrome
-         doesn't read as squished-to-center on wide monitors. */
-      --content-cap: 1200px;
+      /* Layout (two caps): the app CHROME (header, safety strip, footer nav) centers into the
+         wide --chrome-cap so it doesn't read as squished-to-center on wide monitors, while the
+         READING CONTENT (News cards, Info rows) stays at the narrower --content-cap for a
+         comfortable measure that doesn't stretch the lines apart. The map is always full-bleed
+         (capped by neither). */
+      --chrome-cap: 1200px;
+      --content-cap: 800px;
     }
     html.theme-dark {
       --sa-bg:        #121110;
@@ -206,8 +208,8 @@
       .topbar { order: -1; }
     }
     @media (min-width: 768px) {
-      /* full-width bar; content centered into the --content-cap column (own 22px padding as the floor) */
-      .topbar { gap: 14px; padding-block: 10px; padding-inline: max(22px, calc((100% - var(--content-cap)) / 2)); }
+      /* full-width bar; content centered into the --chrome-cap column (own 22px padding as the floor) */
+      .topbar { gap: 14px; padding-block: 10px; padding-inline: max(22px, calc((100% - var(--chrome-cap)) / 2)); }
     }
     .unofficial-pill {
       display: inline-flex;
@@ -409,7 +411,7 @@
       .safety-strip {
         gap: 6px;
         padding-block: 10px;
-        padding-inline: max(22px, calc((100% - var(--content-cap)) / 2));
+        padding-inline: max(22px, calc((100% - var(--chrome-cap)) / 2));
         font-size: 12px;
       }
     }
@@ -571,7 +573,7 @@
         border-top: 1px solid var(--sa-border);
         border-bottom: none;
         padding-block: 0;
-        padding-inline: max(14px, calc((100% - var(--content-cap)) / 2));
+        padding-inline: max(14px, calc((100% - var(--chrome-cap)) / 2));
         order: 1;
       }
       .tab-btn {
@@ -1178,6 +1180,12 @@
       background: var(--sa-celadon-3);
     }
     .feed-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* Desktop: cap the video thumbnail width so the full video AND its title fit in one screenful.
+       A full-width 16:9 thumb in the 800px reading column ran ~450px tall and pushed the title below
+       the fold. Mobile keeps full-width thumbs (already short at phone widths). */
+    @media (min-width: 768px) {
+      .feed-card-thumb { max-width: 480px; }
+    }
     .feed-card-play {
       position: absolute;
       top: 50%; left: 50%;
