@@ -21,7 +21,7 @@
 </p>
 
 <p align="center">
-  <a href="https://ggtankwatch.org"><img src="docs/assets/preview-grid.png" alt="App preview grid: the Map view of the former evacuation zone across Orange County, the Coverage Archive listing every source badged and dated, the What happened tab of sourced incident facts, and the Map in dark mode." width="840"></a>
+  <a href="https://ggtankwatch.org"><img src="docs/assets/preview-grid.png" alt="Mobile views of GG Tank Watch: the Map, the Coverage Archive listing every source badged and dated, the What happened tab of sourced incident facts, and the Map in dark mode." width="840"></a>
 </p>
 
 ## Contents
