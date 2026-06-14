@@ -16,6 +16,19 @@
 >
 > *Independent and not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.*
 
+<p align="center">
+  <a href="https://ggtankwatch.org"><img src="docs/assets/preview-map.png" alt="GG Tank Watch map view: the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
+</p>
+
+<table align="center">
+  <tr>
+    <td align="center" valign="top"><img src="docs/assets/preview-mobile.png" alt="Map view on mobile" width="190"><br><sub><b>Map</b></sub></td>
+    <td align="center" valign="top"><img src="docs/assets/preview-news.png" alt="Coverage Archive on mobile: every source badged and dated" width="190"><br><sub><b>Coverage Archive</b></sub></td>
+    <td align="center" valign="top"><img src="docs/assets/preview-info.png" alt="What happened on mobile: sourced incident facts" width="190"><br><sub><b>What happened</b></sub></td>
+    <td align="center" valign="top"><img src="docs/assets/preview-map-dark.png" alt="Map view in dark mode on mobile" width="190"><br><sub><b>Dark mode</b></sub></td>
+  </tr>
+</table>
+
 ## Contents
 
 - [What this demonstrates](#what-this-demonstrates)
@@ -49,19 +62,6 @@ A consumer-facing AI system that informs but never instructs. That guarantee is 
   - The site never synthesized an alert level of its own.
 
 The rest of this README explains each decision: what was built, what was deliberately *not* built, and why.
-
-<p align="center">
-  <a href="https://ggtankwatch.org"><img src="docs/assets/preview-map.png" alt="GG Tank Watch map view: the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
-</p>
-
-<table align="center">
-  <tr>
-    <td align="center" valign="top"><img src="docs/assets/preview-mobile.png" alt="Map view on mobile" width="190"><br><sub><b>Map</b></sub></td>
-    <td align="center" valign="top"><img src="docs/assets/preview-news.png" alt="Coverage Archive on mobile: every source badged and dated" width="190"><br><sub><b>Coverage Archive</b></sub></td>
-    <td align="center" valign="top"><img src="docs/assets/preview-info.png" alt="What happened on mobile: sourced incident facts" width="190"><br><sub><b>What happened</b></sub></td>
-    <td align="center" valign="top"><img src="docs/assets/preview-map-dark.png" alt="Map view in dark mode on mobile" width="190"><br><sub><b>Dark mode</b></sub></td>
-  </tr>
-</table>
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
