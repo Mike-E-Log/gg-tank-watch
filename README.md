@@ -25,7 +25,6 @@
 </p>
 
 <p align="center">
-  <strong>Mobile</strong><br>
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-grid.png" alt="Mobile views of GG Tank Watch: the Map, the Coverage Archive listing every source badged and dated, the What happened tab of sourced incident facts, and the Map in dark mode." width="840"></a>
 </p>
 
