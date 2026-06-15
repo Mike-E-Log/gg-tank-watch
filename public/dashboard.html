@@ -259,6 +259,14 @@
       color: var(--sa-text);
       white-space: nowrap;
       flex: 0 0 auto;
+      /* it's a <button> that returns to the Map tab; strip the UA chrome so it
+         still reads as the plain wordmark, but keep it keyboard/click actionable */
+      background: none;
+      border: 0;
+      padding: 0;
+      line-height: inherit;
+      font-family: inherit;
+      cursor: pointer;
     }
     @media (min-width: 768px) {
       .topbar-wordmark { font-size: 16.5px; }
@@ -1408,7 +1416,7 @@
     <header class="topbar topbar--masthead">
       <div class="topbar-lead">
         <div class="topbar-lead-row">
-          <span class="topbar-wordmark">GG <span class="topbar-wordmark-tank">Tank</span> Watch</span>
+          <button type="button" class="topbar-wordmark" onclick="switchTab('map')" aria-label="GG Tank Watch — return to the Map">GG <span class="topbar-wordmark-tank">Tank</span> Watch</button>
           <div class="topbar-pills">
             <span class="unofficial-pill" id="unofficial-pill" data-i18n="topbar.unofficial" data-i18n-title="topbar.unofficial.title" title="Volunteer-made — not an official government source">UNOFFICIAL</span>
             <span class="archive-pill" id="archive-pill" data-i18n="topbar.archive" data-i18n-title="topbar.archive.title" title="Frozen historical record of the May 21–26, 2026 emergency">ARCHIVE</span>
