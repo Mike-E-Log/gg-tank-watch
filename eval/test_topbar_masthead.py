@@ -82,13 +82,14 @@ def test_dateline_is_inside_lead_before_controls():
 def test_wordmark_leads_above_pills():
     """Owner request (2026-06-01): the GG Tank Watch wordmark leads the masthead,
     rendered ABOVE the UNOFFICIAL/ARCHIVE pills (was: pills above the wordmark).
-    Anchored on the markup spans, not the `.topbar-wordmark {` CSS rule earlier
+    Anchored on the wordmark element (a <button> that returns to Map), not the
+    `.topbar-wordmark {` CSS rule earlier
     in the file, so this measures DOM order, not stylesheet order. With the
     lead-row stacked as a flex column (no `order:`/reverse), DOM order == the
     rendered top-to-bottom order; the visual stacking is confirmed by Edge QA."""
     text = DASHBOARD.read_text(encoding="utf-8")
     i_leadrow = text.find('<div class="topbar-lead-row">')
-    i_wordmark = text.find('<span class="topbar-wordmark">', i_leadrow)
+    i_wordmark = text.find('class="topbar-wordmark"', i_leadrow)
     i_unofficial = text.find(">UNOFFICIAL<", i_leadrow)
     i_archive = text.find(">ARCHIVE<", i_leadrow)
     ok = -1 < i_leadrow < i_wordmark < i_unofficial and i_wordmark < i_archive
