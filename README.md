@@ -314,7 +314,7 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
 - **Frontend:** plain HTML, CSS, and JavaScript, no framework, no build step.
   - The whole app is one **~116 KB** `dashboard.html`.
   - Map: [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (**~870 KB**, JavaScript + CSS) with [OpenFreeMap](https://openfreemap.org/) vector tiles (light and dark).
-  - A service worker (cache `gg-tank-v87`) saves the shell and map locally, so the page still opens offline.
+  - A service worker (cache `gg-tank-v88`) saves the shell and map locally, so the page still opens offline.
 - **Writer:** Python 3 **standard library only**, no outside dependencies.
 - **Security headers (production, set in `vercel.json`):**
   - a Content Security Policy that restricts the browser to loading only the site's own resources (`default-src 'self'`);

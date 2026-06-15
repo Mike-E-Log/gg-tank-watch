@@ -228,6 +228,9 @@
       cursor: help;
       flex: 0 0 auto;
     }
+    /* Light theme: gold text on gold-2 in the pill is 3.91:1; darken it to clear WCAG AA
+       (4.5:1). Dark theme keeps --sa-gold on its dark gold-2 (6.36:1), so scope to light. */
+    html.theme-light .unofficial-pill { color: #7a5d18; }
     .archive-pill {
       display: inline-flex;
       align-items: center;
@@ -316,6 +319,7 @@
       font-weight: 600;
     }
     .topbar-btn:hover { border-color: var(--sa-celadon); }
+    #share-btn { min-width: 44px; min-height: 44px; justify-content: center; } /* >=44px touch target (WCAG 2.5.5) */
     #share-btn.copied { border-color: var(--sa-celadon); color: var(--sa-celadon); }
     .toggle-icon { width: 14px; height: 14px; display: block; }
     .flag { width: 16px; height: 11px; border-radius: 1px; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.15); display: block; }
@@ -609,7 +613,7 @@
     }
     .maplibregl-ctrl-bottom-left,
     .maplibregl-ctrl-bottom-right { display: none; }
-    .maplibregl-ctrl-group button { width: 40px; height: 40px; }
+    .maplibregl-ctrl-group button { width: 44px; height: 44px; } /* >=44px touch target (WCAG 2.5.5) */
     .map-legend {
       position: absolute;
       bottom: 8px; /* corner inset; the bottom location-checker CTA this used to clear was removed in the archive pivot (#86) */
@@ -1124,6 +1128,11 @@
     .feed-card-badge-official { background: var(--sa-celadon); color: #fff; }
     .feed-card-badge-article { background: var(--sa-surface-2); color: var(--sa-text-2); }
     .feed-card-badge-video { background: var(--sa-gold-2); color: var(--sa-gold); }
+    /* Dark theme flips --sa-celadon from dark-green to light-mint, so #fff text on the
+       celadon-filled OFFICIAL badge and skip-link drops to ~2:1. Use dark ink on the mint
+       in dark mode to restore >=4.5:1 (WCAG AA). */
+    html.theme-dark .feed-card-badge-official,
+    html.theme-dark .skip-link { color: var(--sa-bg); }
     .feed-card-pill {
       font-family: "IBM Plex Mono", ui-monospace, monospace;
       font-size: 9px;
