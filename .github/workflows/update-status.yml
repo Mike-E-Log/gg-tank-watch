@@ -6,15 +6,8 @@ name: update-status
 # via scripts/refresh_local.py with the contributor's machine left on. See
 # docs/DATA_SYNC.md.
 #
-# To switch to this metered cloud cron later: uncomment the `schedule:` trigger
-# below. The ANTHROPIC_API_KEY repo secret is already set, so re-enabling the
-# schedule is the only change needed. workflow_dispatch stays enabled so this
-# can still be run manually on demand.
 
 on:
-  # schedule:
-  #   # Every ~20 min; lags 5-15 min, under the dashboard's 30-min stale threshold.
-  #   - cron: "*/20 * * * *"   # <-- uncomment to activate the metered cloud path
   workflow_dispatch: {}
 
 # Never run two refreshers at once (they'd race on the status.json commit).
