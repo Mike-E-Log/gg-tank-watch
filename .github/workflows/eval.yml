@@ -10,6 +10,7 @@ on:
 jobs:
   eval:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -45,6 +46,7 @@ jobs:
 
   eval-integration:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
