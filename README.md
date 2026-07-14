@@ -17,7 +17,7 @@
 >
 > *Independent and not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.*
 
-**TL;DR:** A single-page emergency dashboard built for a real ~50,000-person chemical evacuation, now a frozen archive. It only relays official information and routes people to officials; it issues no directives of its own, and that no-instructions guarantee is enforced in **code and tests, not prompting**. Stack: vanilla JS + Python stdlib, zero dependencies. Proof: `python eval/run_all.py --skip integration` runs 211/211.
+**TL;DR:** A single-page emergency dashboard built for a real ~50,000-person chemical evacuation, now a frozen archive. It only relays official information and routes people to officials; it issues no directives of its own, and that no-instructions guarantee is enforced in **code and tests, not prompting**. Stack: vanilla JS + Python stdlib, zero installed dependencies (the map library ships inside the app). Proof: `python eval/run_all.py --skip integration` runs 211/211.
 
 <p align="center">
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-desktop.png" alt="Desktop view of GG Tank Watch: the map showing the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
