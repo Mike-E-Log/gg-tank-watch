@@ -49,7 +49,7 @@ How the eval harness catches each failure mode before it reaches users.
 | Medium harm | F5, F6, F7, F8 | F5, F6 | F7, F8 | none |
 | Low harm | F9, F10 | none | none | F9, F10 |
 
-**8 of 12 failure modes are fully guarded by automated tests. 4 are partially guarded (the test catches the effect but not all vectors). 2 operational modes have no automated coverage (staleness banner is the manual fallback).**
+**6 of 12 failure modes are fully guarded by automated tests. 4 are partially guarded (the test catches the effect but not all vectors). 2 operational modes have no automated coverage (staleness banner is the manual fallback).**
 
 ## What the eval harness cannot catch
 

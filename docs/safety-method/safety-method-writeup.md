@@ -82,7 +82,7 @@ So "bound your authority, route to the real authority, and don't manufacture rel
 
 ## What this can't catch
 
-The harness is strongest where failure is binary and catastrophic, and weakest where it's gradual and subtle. Honestly: 8 of 12 mapped failure modes are fully guarded by tests, 4 are partly guarded, and 2 operational ones have no automated coverage at all. It does not catch:
+The harness is strongest where failure is binary and catastrophic, and weakest where it's gradual and subtle. Honestly: 6 of 12 mapped failure modes are fully guarded by tests, 4 are partly guarded, and 2 operational ones have no automated coverage at all. It does not catch:
 
 - Plausible-but-wrong numbers. 48,000 evacuees instead of 50,000 sails through. The gross-error gate catches a 50%-plus drop, not a small one.
 - Coordinated prompt injection (an attack where malicious text in a retrieved source tries to override the model's instructions) across two or more sources where one spoofs an official hostname. The corroboration gate blocks the single-source effect, not a determined multi-source cause. I accept that residual and write it down instead of pretending the architecture closes it.
