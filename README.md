@@ -17,11 +17,11 @@
 >
 > *Independent and not affiliated with, endorsed by, or operated by the City of Garden Grove, the Orange County Fire Authority, Cal OES, the EPA, or any government agency.*
 
-**TL;DR:** A single-page emergency dashboard built for a real ~50,000-person chemical evacuation, now a frozen archive. It only relays official information and routes people to officials; it issues no directives of its own, and that no-instructions guarantee is enforced in **code and tests, not prompting**. Stack: vanilla JS + Python stdlib, zero installed dependencies (the map library ships inside the app). Proof: `python eval/run_all.py --skip integration` runs 211/211.
-
 <p align="center">
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-desktop.png" alt="Desktop view of GG Tank Watch: the map showing the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
 </p>
+
+**TL;DR:** A single-page emergency dashboard built for a real ~50,000-person chemical evacuation, now a frozen archive. It only relays official information and routes people to officials; it issues no directives of its own, and that no-instructions guarantee is enforced in **code and tests, not prompting**. Stack: vanilla JS + Python stdlib, zero installed dependencies (the map library ships inside the app). Proof: `python eval/run_all.py --skip integration` runs 211/211.
 
 <p align="center">
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-grid.png" alt="Mobile views of GG Tank Watch: the Map, the Coverage Archive listing every source badged and dated, the What happened tab of sourced incident facts, and the Map in dark mode." width="840"></a>
@@ -121,6 +121,8 @@ Expected (211 tests, all green):
   TOTAL           211/211  (100.0% pass)
 ```
 
+(The full census is **213**: the 2 extra tests are live geocoder regressions that call OpenStreetMap's Nominatim service over the network, so they stay opt-in — drop `--skip integration` to run them.)
+
 **211 automated pass/fail tests across 65 files** cover:
 
 - **The pipeline:** how the update script behaved on each run, plus the four gates in the table above.
@@ -137,7 +139,7 @@ Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows 
 - [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the whole approach in one first-person read.
 - [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): maps each safety principle to its tests.
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
-- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note).
+- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note). Its `eval-summary.json` is a snapshot sealed at an earlier commit — **198/198** as of that commit; the suite here has since grown to the 211 above.
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
@@ -314,7 +316,7 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
 - **Frontend:** plain HTML, CSS, and JavaScript, no framework, no build step.
   - The whole app is one **~116 KB** `dashboard.html`.
   - Map: [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (**~870 KB**, JavaScript + CSS) with [OpenFreeMap](https://openfreemap.org/) vector tiles (light and dark).
-  - A service worker (cache `gg-tank-v89`) saves the shell and map locally, so the page still opens offline.
+  - A service worker (cache `gg-tank-v90`) saves the shell and map locally, so the page still opens offline.
 - **Writer:** Python 3 **standard library only**, no outside dependencies.
 - **Security headers (production, set in `vercel.json`):**
   - a Content Security Policy that restricts the browser to loading only the site's own resources (`default-src 'self'`);

@@ -877,12 +877,20 @@
     /* Responsible-AI disclosure: the panel-closing line of About (moved from the first line
        2026-06-03 — the persistent safety strip carries the always-on honesty). Stays at body
        near-black --sa-text, 13px, legible (position demoted, size not); the gold accent was
-       dropped 2026-06-02. margin-top sets it off from the Accessibility pill above. */
+       dropped 2026-06-02. margin-top sets it off from the source-code line above. */
     .info-ai-disclosure {
       font-size: 13px;
       color: var(--sa-text);
       line-height: 1.45;
       margin-top: 16px;
+    }
+    /* Source-code line (2026-07-21): same legible 13px treatment as the disclosure — the
+       open-source pointer is transparency copy, not fine print. */
+    .info-sourcecode {
+      font-size: 13px;
+      color: var(--sa-text);
+      line-height: 1.45;
+      margin-top: 12px;
     }
     .info-row {
       display: flex;
@@ -1592,6 +1600,7 @@ var STRINGS = {
   "common.yes": { en: "yes" },
   "common.no": { en: "no" },
   "info.about.a11ylink": { en: "Accessibility" },
+  "info.about.sourcecode": { en: 'This archive is open source. The code and its full test suite are public at <a href="https://github.com/Mike-E-Log/gg-tank-watch" target="_blank" rel="noopener">github.com/Mike-E-Log/gg-tank-watch</a>.' },
   "info.about.whyH": { en: "Why this was made" },
   "info.about.why": { en: "<li>In May 2026, a chemical storage tank emergency forced about 50,000 Garden Grove residents from their homes.</li><li>Official updates were scattered across city, county, and news pages.</li><li>GG Tank Watch pulled them into one calm view and pointed back to the officials in charge &mdash; it never replaced them or told anyone what to do.</li><li>The emergency was resolved on May 26, 2026; this remains as a record of it.</li>" },
   "info.group.closures": { en: "Closures" },
@@ -2199,6 +2208,8 @@ function renderInfoTab() {
   // link, then the binding AI disclosure as the panel-closing line (user 2026-06-03: moved from the
   // first line to the bottom; the persistent safety strip carries the always-on honesty, so the
   // disclosure stays present + legible at 13px, position demoted not size). Methodology stays in README.
+  // A source-code line (2026-07-21) sits between the two: the site links its own public repo so the
+  // "enforced in code and tests" claim is checkable; the disclosure keeps the closing position.
   var about =
     '<div class="about-body">' +
     '<div class="about-why-title">' + t("info.about.whyH") + '</div>' +
@@ -2207,6 +2218,7 @@ function renderInfoTab() {
     '<p class="info-fine info-sources-caption">' + t("info.sources.caption") + '</p>' +
     '<div id="info-source-list" class="info-fine" style="padding:0 0 12px"></div>' +
     '<p class="info-about-footlink"><a class="info-a11y-btn" href="accessibility.html"><span class="info-a11y-ico" aria-hidden="true">&#9855;&#65038;</span>' + t("info.about.a11ylink") + '</a></p>' +
+    '<p class="info-sourcecode">' + t("info.about.sourcecode") + '</p>' +
     '<p class="info-ai-disclosure">' + t("disclosure.ai") + '</p>' +
     '</div>';
 

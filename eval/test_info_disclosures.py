@@ -77,13 +77,21 @@ def test_about_panel_lean_keeps_disclosure_and_a11y():
     has no Accessibility link, so About is its only entry point.
 
     The past-tense integrity of the migrated pipeline text is re-guarded on the README
-    (eval/test_readme_archive_count.py::test_readme_methodology_past_tense)."""
+    (eval/test_readme_archive_count.py::test_readme_methodology_past_tense).
+
+    Source-code link (recruiter-presentation audit 2026-07-21): the site previously had zero
+    links back to its repository, so its "enforced in code and tests" claims were not checkable
+    from the site itself. About must link the public GitHub repo (transparency: the code and the
+    test suite are inspectable), and the link must stay in the About region so the panel-closing
+    AI disclosure keeps its position."""
     text = DASHBOARD.read_text(encoding="utf-8")
     i = text.find("var about =")
     j = text.find("var bodies =", i) if i >= 0 else -1
     region = text[i:j] if (i >= 0 and j > i) else ""
     checks = {
         "ai_disclosure_surfaced": "disclosure.ai" in region,
+        "source_code_link_in_about": "info.about.sourcecode" in region,
+        "source_repo_url_present": "github.com/Mike-E-Log/gg-tank-watch" in text,
         "why_section": "info.about.whyH" in region and "info.about.why" in region,
         "a11y_link": "info.about.a11ylink" in region,
         "terms_dropped_from_about": "info.about.termslink" not in region,
