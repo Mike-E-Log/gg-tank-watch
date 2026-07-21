@@ -139,7 +139,7 @@ Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows 
 - [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the whole approach in one first-person read.
 - [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): maps each safety principle to its tests.
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
-- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note). Its `eval-summary.json` is a snapshot sealed at an earlier commit — **198/198** as of that commit; the suite here has since grown to the 211 above.
+- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note). Its `eval-summary.json` is sealed at this repo's `main` commit (`d34093c`) — **210/210** (203 behavioral + 7 schema); the export intentionally excludes the one summary-export meta-test, which is why the live suite reports the 211 above.
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
