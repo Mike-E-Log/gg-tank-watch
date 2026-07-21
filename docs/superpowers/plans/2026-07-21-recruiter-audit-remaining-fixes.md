@@ -51,19 +51,19 @@
 - [x] **Step 1: RED** — extended the About guard; `python eval/run_all.py --only test_info_disclosures` → `[FAIL] … source_code_link_in_about: False, source_repo_url_present: False`, exit 1.
 - [x] **Step 2: Implement the link** — i18n string (`en:`-only, descriptive, `target="_blank" rel="noopener"` matching `info.roads.defer`) + render line + CSS.
 - [x] **Step 3: Flip the SW guards + README ref to v90** (test files + README line edited).
-- [ ] **Step 4: Land the 1-line source edit** — `public/sw.js:1` → `var CACHE_NAME = "gg-tank-v90";` (the only file still pinning v89; without it the tree is red 208/211).
+- [x] **Step 4: Land the 1-line source edit** — `public/sw.js:1` → `var CACHE_NAME = "gg-tank-v90";` (the only file still pinning v89; without it the tree is red 208/211).
 
 ### Task 4: Verify green, visual check, commit (no push)
 
-- [ ] **Step 1: GREEN (targeted)** — Run: `python eval/run_all.py --only test_info_disclosures` → all 7 pass, exit 0.
-- [ ] **Step 2: GREEN (full, non-quiet, unpiped)** — Run: `python eval/run_all.py --skip integration` → `TOTAL 211/211 (100.0% pass)`, exit 0.
-- [ ] **Step 3: Visual check** — serve `public/` (`python -m http.server <port> -d public`), open the Info → About tab, screenshot (Playwright msedge fallback if the Browser pane screenshot channel is still broken): source-code line renders at 13px between the Accessibility pill and the AI disclosure, light + dark.
-- [ ] **Step 4: Commit fix 1** — `git add README.md` is NOT possible per-hunk here; commit order instead: (a) this plan file, (b) fix 3 (dashboard + sw + guards + README cache ref + README count notes + screenshot move — see Step 5 note).
-- [ ] **Step 5: Commits** — three logical commits on the branch, each message stating the decision (repo convention), `eval/scores.jsonl` left uncommitted (pre-existing dirty state + local run appends):
+- [x] **Step 1: GREEN (targeted)** — Run: `python eval/run_all.py --only test_info_disclosures` → all 7 pass, exit 0.
+- [x] **Step 2: GREEN (full, non-quiet, unpiped)** — Run: `python eval/run_all.py --skip integration` → `TOTAL 211/211 (100.0% pass)`, exit 0.
+- [x] **Step 3: Visual check** — served `public/`, Playwright (msedge) screenshots of Info → About at 420px, light + dark: source-code line renders at 13px between the Accessibility pill and the AI disclosure.
+- [x] **Step 4: Commit order adjusted** — (a) plan file, (b) fix 3 dashboard commit first so `sw.js` and its guards never disagree in history, (c) README commit (fixes 1+2 + the v90 cache ref).
+- [x] **Step 5: Commits** — three logical commits on the branch (ba6b55f plan, 1c34758 dashboard, 10420c1 README), each message stating the decision (repo convention), `eval/scores.jsonl` left uncommitted (pre-existing dirty state + local run appends):
   1. `docs(plan): land the 2026-07-21 recruiter-audit remaining-fixes plan`
   2. `docs(readme): product shot above the fold + one canonical test-count story (211; 198 = sealed method-repo snapshot; 213 = +2 opt-in Nominatim tests)`
   3. `feat(dashboard): About links the public repo (info.about.sourcecode) + SW v90 — red-first via the About guard`
-- [ ] **Step 6: Stop** — no push, no PR; hand back to operator for approval.
+- [x] **Step 6: Stop** — no push, no PR; handed back to operator for approval. Post-review follow-up commit: stale `.info-ai-disclosure` CSS comment fixed + plan checkboxes ticked.
 
 ## Self-Review
 
