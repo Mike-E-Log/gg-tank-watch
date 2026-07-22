@@ -2,9 +2,9 @@
 
 **Workstream:** Data-Quality (distribution-readiness)
 **Owner deliverable:** this spec. Implementation lands later on `feat/data-sync`.
-**Status:** design only. No code changed.
+**Status:** design record. The P0 recommendations shipped in `scripts/update_status.py`; the remaining P1/P2 items were not built.
 
-> **Historical design spec (frozen archive).** This was a pre-resolution hardening spec for `feat/data-sync`. The incident resolved before it was implemented; the recommendations below were not shipped. Retained as a design-decision record.
+> **Historical design spec (frozen archive).** This was a pre-resolution hardening spec for `feat/data-sync`. The P0 gates below shipped before the freeze and are live in `scripts/update_status.py`: the corroboration gate (P0-1, `apply_corroboration_gate`), source/URL integrity validation (P0-2, `validate_provenance`), and freshness honesty (P0-3, `data_as_of_iso`), plus date sanity (P1-1, `validate_dates`). [`AI_CONTROL_ARCHITECTURE.md`](AI_CONTROL_ARCHITECTURE.md) documents them as deployed, and the eval suite tests them. The other P1/P2 recommendations were not built. Retained as the design-decision record. (Corrected 2026-07-21: this note previously said none of the recommendations shipped.)
 **Scope of the pipeline under review:**
 
 ```
