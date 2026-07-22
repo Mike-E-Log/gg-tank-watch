@@ -221,7 +221,7 @@ The list of things *not* built is part of the design. The biggest refusals (the 
 
 - **No single-station wind indicator.** The one nearby NOAA weather station pointed the wrong way roughly a third of the time (~34%), and a misread wind arrow on a tool that never gives instructions is a hazard (removed May 31, 2026).
 - **No automatic image collection.** The pipeline never scraped pages for images. YouTube video thumbnails are derived from the video's ID using YouTube's standard thumbnail address; other outlets' images were left alone (copyright), so their videos get a plain "Watch on <outlet>" link instead ([`eval/test_no_runtime_scraper.py`](eval/)).
-- **No outside servers in the map's critical path.** The map library (MapLibre GL) ships with the site, so the map can't vanish when a third-party server changes.
+- **No outside servers in the map's code path.** The map library (MapLibre GL) ships with the site, so the map software can't vanish when a third-party server changes. Two live outside dependencies remain: map tiles from OpenFreeMap and fonts from Google Fonts. If either is unreachable, the page still loads, with a blank map or plain system fonts.
 - **No full-article copies.** Headline, short snippet, link, and attribution only.
 - **No government seals or "official" look.** The site must never be mistaken for the authority it points to.
 
