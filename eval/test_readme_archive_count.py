@@ -7,6 +7,11 @@ review flagged it as a credibility risk: an archive-framed honesty section citin
 inventory). The archive is FROZEN, so these numbers are fixed; this guard locks the README copy
 to the data so a future edit can't re-introduce the drift. Phrasing must keep each number
 adjacent to its unit ("92 items", "56 articles", ...) so the guard can parse it.
+
+Extended 2026-07-21 (Fable 5 audit, finding B2): data/NEWS_ARCHIVE_AUDIT.md carried the same
+breakdown with 3 of 4 figures wrong, exactly because only the README was guarded. Both prose
+surfaces are now checked against the data. First number-adjacent-to-unit match per file wins,
+so the audit doc's historical compilation notes (line 100+) stay out of scope.
 """
 import json
 import re
@@ -15,6 +20,7 @@ from pathlib import Path
 CATEGORY = "behavioral"
 REPO = Path(__file__).resolve().parent.parent
 README = REPO / "README.md"
+AUDIT_DOC = REPO / "data" / "NEWS_ARCHIVE_AUDIT.md"
 ARCHIVE = REPO / "public" / "data" / "news_archive.json"
 
 
@@ -29,27 +35,30 @@ def _counts():
             "official statements": offs, "outlets": outlets}
 
 
-def _claimed(unit):
-    txt = README.read_text(encoding="utf-8")
+def _claimed(unit, doc=None):
+    txt = (doc or README).read_text(encoding="utf-8")
     m = re.search(r"(\d+)\s+" + re.escape(unit), txt)
     return int(m.group(1)) if m else None
 
 
 def test_readme_total_item_count_matches_data():
     want = _counts()["items"]
-    got = _claimed("items")
-    return {"passed": got == want, "details": f"README 'items'={got}; data={want}"}
+    got = {doc.name: _claimed("items", doc) for doc in (README, AUDIT_DOC)}
+    return {"passed": all(v == want for v in got.values()),
+            "details": f"claimed 'items'={got}; data={want}"}
 
 
 def test_readme_breakdown_matches_data():
     c = _counts()
     mismatches = {}
-    for unit in ("articles", "videos", "official statements", "outlets"):
-        got = _claimed(unit)
-        if got != c[unit]:
-            mismatches[unit] = f"README={got}/data={c[unit]}"
+    for doc in (README, AUDIT_DOC):
+        for unit in ("articles", "videos", "official statements", "outlets"):
+            got = _claimed(unit, doc)
+            if got != c[unit]:
+                mismatches[f"{doc.name}: {unit}"] = f"claimed={got}/data={c[unit]}"
     return {"passed": not mismatches,
-            "details": "README breakdown matches data" if not mismatches else f"mismatches: {mismatches}"}
+            "details": "README + NEWS_ARCHIVE_AUDIT breakdowns match data" if not mismatches
+            else f"mismatches: {mismatches}"}
 
 
 def test_readme_methodology_past_tense():
