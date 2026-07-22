@@ -44,7 +44,6 @@ python eval/run_all.py --skip integration
 
 - **Real LLM-as-judge invocation.** Rubrics exist; `run_all.py` doesn't call any LLM. Adding this requires an API key + per-run cost — left as a manual step.
 - **Browser / DOM tests.** No headless Chrome or Playwright. Would need additional deps. The dashboard renders are eyeball-checked by Nancy.
-- **Wind data freshness.** NOAA API call is in the dashboard JS, not in the Python eval path. Could add a `test_wind.py` that hits api.weather.gov; not done yet.
 - **Atomic-write retry under contention.** Hard to test deterministically (the OneDrive race is non-deterministic). Manual fault injection would be the right approach; deferred.
 
 ## Adding a new test
