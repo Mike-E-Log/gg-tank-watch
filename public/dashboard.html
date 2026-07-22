@@ -1924,12 +1924,12 @@ function setBanners(banners) {
       var bannerOnclick = 'onclick="' + tabTarget + '"';
       return '<div class="banner ' + bannerClass + '" ' + bannerOnclick + ' style="display:flex;align-items:center;gap:10px;padding:8px 22px;font-size:12.5px;animation:sa-fade-in .25s ease-out">' +
         '<span class="banner-pill ' + pillClass + '">' + pillLabel + '</span>' +
-        '<span class="banner-msg" data-reason="' + escAttr(b.message || '') + '" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + localizeBreakingReason(b.message || '') + '</span>' +
+        '<span class="banner-msg" data-reason="' + escAttr(b.message || '') + '" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + escAttr(localizeBreakingReason(b.message || '')) + '</span>' +
         '<button class="banner-dismiss" aria-label="Dismiss"' + dismissAction + '>&times;</button>' +
       '</div>';
     }
     return '<div class="banner banner-' + b.kind + '">' +
-      '<span><strong>' + b.title + '</strong> ' + (b.message || '') + '</span>' +
+      '<span><strong>' + escAttr(b.title) + '</strong> ' + escAttr(b.message || '') + '</span>' +
     '</div>';
   }).join("");
 }
@@ -2240,7 +2240,7 @@ function updateInfoData(snap) {
   if (schoolsGrid) {
     if (schools.length) {
       schoolsGrid.innerHTML = schools.map(function(s) {
-        return '<div class="info-school-card">' + s + '</div>';
+        return '<div class="info-school-card">' + escAttr(s) + '</div>';
       }).join("");
     } else {
       schoolsGrid.innerHTML = '<div class="info-fine" style="grid-column:1/-1;padding:4px 0">' + t("info.schools.none") + '</div>';
@@ -2260,7 +2260,7 @@ function updateInfoData(snap) {
         // (where the facts came from vs. corroborating press) is visible. Derived from the URL
         // host (not a data flag) so a status.json refresh can't strip it (user 2026-06-02/03).
         var tag = isOfficialSourceUrl(s.url) ? '<span class="source-official">' + t("info.sources.official") + '</span>' : '';
-        return '<a class="source-item" href="' + s.url + '" target="_blank">' + (s.title || s.url) + tag + '</a>';
+        return '<a class="source-item" href="' + escAttr(s.url) + '" target="_blank">' + escAttr(s.title || s.url) + tag + '</a>';
       }).join("");
     } else {
       sourceList.innerHTML = '<span class="info-fine">' + t("info.sources.empty") + '</span>';
@@ -2278,9 +2278,9 @@ function renderInfoConfigData() {
     if (shelters.length) {
       sheltersEl.innerHTML = '<div class="info-section">' + shelters.map(function (s) {
         var gmaps = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(s.lat + "," + s.lon);
-        var loc = s.city ? '<span class="shelter-city">&middot; ' + s.city + '</span>' : '';
+        var loc = s.city ? '<span class="shelter-city">&middot; ' + escAttr(s.city) + '</span>' : '';
         return '<a class="shelter-row" href="' + gmaps + '" target="_blank" rel="noopener">' +
-          '<span class="shelter-name">' + s.name + loc + '</span>' +
+          '<span class="shelter-name">' + escAttr(s.name) + loc + '</span>' +
           '<span class="shelter-go">' + t("info.shelters.directions") + '</span></a>';
       }).join("") + '</div>';
     } else {
@@ -2295,11 +2295,11 @@ function renderInfoConfigData() {
     var resources = (configCache && configCache.community_resources) || [];
     recoveryEl.innerHTML = resources.map(function (r) {
       var actions = [];
-      if (r.url) actions.push('<a href="' + r.url + '" target="_blank" rel="noopener" style="color:var(--sa-celadon);text-decoration:none">' + t("resources.visit") + ' ↗</a>');
-      if (r.phone) actions.push('<a href="tel:' + r.phone.replace(/[^+\d]/g, '') + '" style="color:var(--sa-celadon);text-decoration:none">☎ ' + r.phone + '</a>');
+      if (r.url) actions.push('<a href="' + escAttr(r.url) + '" target="_blank" rel="noopener" style="color:var(--sa-celadon);text-decoration:none">' + t("resources.visit") + ' ↗</a>');
+      if (r.phone) actions.push('<a href="tel:' + r.phone.replace(/[^+\d]/g, '') + '" style="color:var(--sa-celadon);text-decoration:none">☎ ' + escAttr(r.phone) + '</a>');
       return '<div class="info-section"><div class="info-who-body">' +
-        '<p><strong>' + r.title + '</strong></p>' +
-        (r.description ? '<p>' + r.description + '</p>' : '') +
+        '<p><strong>' + escAttr(r.title) + '</strong></p>' +
+        (r.description ? '<p>' + escAttr(r.description) + '</p>' : '') +
         (actions.length ? '<p>' + actions.join(' &nbsp;&middot;&nbsp; ') + '</p>' : '') +
         '</div></div>';
     }).join("");
@@ -2313,9 +2313,9 @@ function renderPrintContent(snap) {
   html += '<section><h2>Incident Status</h2>';
   var tank = snap.tank || {};
   var evac = snap.evacuation || {};
-  html += '<p>Tank temperature: ' + ((tank.temp_f != null) ? tank.temp_f + '°F' : '—') + '</p>';
+  html += '<p>Tank temperature: ' + ((tank.temp_f != null) ? escAttr(tank.temp_f) + '°F' : '—') + '</p>';
   html += '<p>Evacuees: ' + fmtNumber(evac.residents) + '</p>';
-  html += '<p>Area: ' + (evac.area_sq_mi || '—') + ' sq mi</p>';
+  html += '<p>Area: ' + escAttr(evac.area_sq_mi || '—') + ' sq mi</p>';
   html += '</section>';
   html += '<section><h2>Official Sources</h2>';
   html += '<ul><li><a href="https://ggcity.org/emergency">ggcity.org/emergency</a></li>';
