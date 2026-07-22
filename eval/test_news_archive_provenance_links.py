@@ -12,6 +12,14 @@ as verified. The School Closure Notice item was repointed to the live NBC LA
 
 Static guard (the harness has no network in the default run); locks out the
 specific dead slug so the fabrication cannot regress.
+
+Extended 2026-07-21 (Fable 5 audit headline finding): link rot recreated the
+reader-facing symptom on two more URLs (ABC wireStory -> HTTP 404; Aviation Week
+-> login wall). Those items were TRUE at collection and decayed later, so per
+archival practice they keep their URLs and get dated url_status annotations
+instead of replacement ("annotate, don't substitute" - unlike the OCDE slug,
+which was wrong at creation and was repointed). This guard now holds the class:
+no item carrying a known-rotted URL may still claim a "verified-resolves" status.
 """
 import json
 from pathlib import Path
@@ -22,6 +30,17 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 ARCHIVE = REPO_ROOT / "public" / "data" / "news_archive.json"
 
 DEAD_SLUG = "unified-school-campuses-closed"  # 404 variant (the live one has no "school-")
+
+# URLs found dead or inaccessible on a dated recheck. The item may keep the URL
+# for the historical record, but its provenance must not claim the link resolves.
+ROTTED_SLUGS = {
+    DEAD_SLUG: "OCDE 404 variant (2026-06-04 audit; also banned outright above)",
+    "officials-lift-evacuation-orders-california-residents-living-damaged-133303858":
+        "ABC wireStory HTTP 404 (2026-07-21 recheck)",
+    "gkn-aerospace-suffers-industrial-accident":
+        "Aviation Week login wall (2026-07-21 recheck)",
+}
+VERIFIED_STATUSES = {"agent-verified-resolves", "verified-resolves"}
 
 
 def test_no_dead_ocde_school_slug():
@@ -38,18 +57,19 @@ def test_no_dead_ocde_school_slug():
 
 
 def test_no_agent_verified_item_uses_known_dead_slug():
-    """No item may BOTH claim agent-verified-resolves AND carry the known dead slug."""
+    """No item may BOTH claim a verified-resolves status AND carry a known-rotted URL."""
     items = json.loads(ARCHIVE.read_text(encoding="utf-8"))["items"]
     bad = [
         i.get("title", "?")
         for i in items
-        if DEAD_SLUG in (i.get("url") or "")
-        and (i.get("provenance") or {}).get("url_status") == "agent-verified-resolves"
+        for slug in ROTTED_SLUGS
+        if slug in (i.get("url") or "")
+        and (i.get("provenance") or {}).get("url_status") in VERIFIED_STATUSES
     ]
     return {
         "passed": not bad,
         "details": "no fabricated agent-verified provenance on a dead URL"
         if not bad
-        else "fabricated provenance (agent-verified on a 404) in: " + "; ".join(bad),
+        else "verified-resolves status on a known-rotted URL in: " + "; ".join(bad),
         "metrics": {"fabricated_provenance_items": len(bad)},
     }
