@@ -1,4 +1,4 @@
-var CACHE_NAME = "gg-tank-v91";
+var CACHE_NAME = "gg-tank-v92";
 var STATIC_ASSETS = [
   "/",
   "/dashboard.html",
@@ -39,7 +39,9 @@ self.addEventListener("fetch", function (event) {
   // so serve the cached copy instantly and only hit the network on a cache miss.
   if (url.pathname.endsWith("/status.json")) {
     event.respondWith(
-      caches.match(event.request).then(function (cached) {
+      // ignoreSearch: the app fetches with ?t=<now> cache-busters; the precache
+      // stores bare paths, so a query-sensitive match would never hit (audit D4).
+      caches.match(event.request, { ignoreSearch: true }).then(function (cached) {
         if (cached) { return cached; }
         return fetch(event.request).then(function (response) {
           var clone = response.clone();
@@ -49,7 +51,7 @@ self.addEventListener("fetch", function (event) {
           return response;
         });
       }).catch(function () {
-        return caches.match(event.request);
+        return caches.match(event.request, { ignoreSearch: true });
       })
     );
     return;
@@ -58,7 +60,7 @@ self.addEventListener("fetch", function (event) {
   // Cache-first for static assets
   if (event.request.method === "GET" && url.origin === self.location.origin) {
     event.respondWith(
-      caches.match(event.request).then(function (cached) {
+      caches.match(event.request, { ignoreSearch: true }).then(function (cached) {
         if (cached) { return cached; }
         return fetch(event.request).then(function (response) {
           if (response.ok) {

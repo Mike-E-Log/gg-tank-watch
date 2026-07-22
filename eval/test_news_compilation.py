@@ -73,9 +73,18 @@ def test_archive_every_item_has_provenance():
 
 
 def test_archive_officials_have_source_url():
-    bad = [i.get("title") for i in _archive()["items"] if i.get("type") == "official" and not i.get("url")]
-    return {"passed": not bad,
-            "details": f"official items missing source url: {len(bad)}" if bad else "all official items carry a source url"}
+    """Officials carry a source url, and outlet attribution is consistent per official
+    domain. Fable 5 audit A1 (2026-07-21): a gov.ca.gov press release was labeled
+    outlet "White House / Federal" while its own provenance note and the sibling item
+    call it the CA Governor's Office. One official host, one outlet label."""
+    items = _archive()["items"]
+    bad = [i.get("title") for i in items if i.get("type") == "official" and not i.get("url")]
+    CA_GOV = "State of California / Governor's Office"
+    mislabeled = [i.get("title") for i in items
+                  if "www.gov.ca.gov/" in (i.get("url") or "") and i.get("outlet") != CA_GOV]
+    return {"passed": not bad and not mislabeled,
+            "details": ("all official items carry a source url" if not (bad or mislabeled)
+                        else f"missing source url: {len(bad)}; gov.ca.gov outlet mislabels: {mislabeled}")}
 
 
 def test_collection_policy_documented():

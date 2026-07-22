@@ -9,8 +9,10 @@ abstract: >-
   authoring no hazard verdicts of its own. An LLM gathers facts; deterministic
   Python enforces corroboration, provenance, freshness, and date-sanity gates at
   a single validation chokepoint before anything is published. The repository is
-  a frozen archive of the build and its safety and design decisions, kept behind
-  a pre-distribution (attorney) review gate.
+  a frozen archive of the build and its safety and design decisions. The site is
+  published direct-link only and kept out of search results (noindex) by choice;
+  the once-planned pre-distribution review gates were retired when the incident
+  resolved and the site froze.
 type: software
 authors:
   - given-names: Mike

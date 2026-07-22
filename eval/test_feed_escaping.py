@@ -23,20 +23,35 @@ def _fn_body(name: str, text: str) -> str:
 
 
 def test_feed_render_escapes_untrusted_fields():
-    """Every untrusted feed field (text/title/source/url/thumb) concatenated into
-    innerHTML in buildFeedCardsHtml + buildFeedHtml must be escAttr-wrapped."""
+    """Every untrusted data field concatenated into innerHTML must be escAttr-wrapped,
+    across ALL the HTML builders, not just the two feed builders.
+
+    Extended 2026-07-21 (Fable 5 audit D1/D3): the original test covered only
+    buildFeedCardsHtml + buildFeedHtml, which gave false assurance while
+    updateInfoData (schools/sources), renderInfoConfigData (shelters/recovery),
+    setBanners (title/message fall-through, incl. localizeBreakingReason's raw
+    passthrough), and renderPrintContent carried unescaped insertions of
+    status.json/config.json-sourced fields. Code constants, t() i18n strings,
+    fmtNumber output, tel:-sanitized phones, and encodeURIComponent-built URLs
+    are trusted and stay unwrapped."""
     text = DASHBOARD.read_text(encoding="utf-8")
-    cards = _fn_body("buildFeedCardsHtml", text)
-    feed = _fn_body("buildFeedHtml", text)
 
     # Raw insertion patterns the escaping fix removes (conditionals like
     # `it.url ?` / `it.title ||` do NOT match `+ it.FIELD +`, so they're allowed).
-    forbidden_cards = ["+ it.text +", "+ it.source +", "+ it.url +",
-                       "+ it.thumb +", "+ (it.title ||"]
-    forbidden_feed = ["+ it.text +", "+ it.source +", "+ it.url +",
-                      "+ it.thumb +", "+ it.title +"]
+    forbidden = {
+        "buildFeedCardsHtml": ["+ it.text +", "+ it.source +", "+ it.url +",
+                               "+ it.thumb +", "+ (it.title ||"],
+        "buildFeedHtml": ["+ it.text +", "+ it.source +", "+ it.url +",
+                          "+ it.thumb +", "+ it.title +"],
+        "updateInfoData": ["+ s +", "+ s.url +", "+ (s.title ||"],
+        "renderInfoConfigData": ["+ s.name +", "+ s.city +", "+ r.title +",
+                                 "+ r.description +", "+ r.url +", "+ r.phone +"],
+        "setBanners": ["+ b.title +", "+ (b.message ||",
+                       "+ localizeBreakingReason("],
+        "renderPrintContent": ["? tank.temp_f +", "+ (evac.area_sq_mi ||"],
+    }
 
-    hits_cards = [p for p in forbidden_cards if p in cards]
-    hits_feed = [p for p in forbidden_feed if p in feed]
-    assert not hits_cards, f"buildFeedCardsHtml has unescaped field insertions: {hits_cards}"
-    assert not hits_feed, f"buildFeedHtml has unescaped field insertions: {hits_feed}"
+    for fn, patterns in forbidden.items():
+        body = _fn_body(fn, text)
+        hits = [p for p in patterns if p in body]
+        assert not hits, f"{fn} has unescaped field insertions: {hits}"

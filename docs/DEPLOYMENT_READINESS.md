@@ -49,3 +49,15 @@ who provide their own multilingual access. This is the most conservative applica
 ## Deferred (Phase 2, not blocking)
 
 - Custom domain (`gardengrovetankwatch.org` / `ggtankwatch.org`) + final URL repoint.
+
+## Post-freeze maintenance (added 2026-07-21, Fable 5 audit F17/F20)
+
+Two operational dependencies outlive the freeze; both are owned by Mike Ilog.
+
+- **Domain renewal (`ggtankwatch.org`).** A registration lapse would let a squatter
+  serve arbitrary content on a formerly trusted emergency domain. Keep registrar
+  auto-renew and the transfer lock on; check the expiry when this doc is touched.
+- **Correction channel (`ggtankwatch@gmail.com`).** A personal inbox, answered
+  best-effort (as the site's Terms page says). If it is ever retired, the fallback
+  correction channel is this repository's issue tracker; update the Terms and
+  Accessibility pages in the same change.

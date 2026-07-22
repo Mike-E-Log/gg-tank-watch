@@ -191,6 +191,11 @@ def main():
         )
         print(f"  summary-out: {args.summary_out} ({len(summary['tests'])} tests)")
 
+    if total == 0:
+        # A --only/--skip filter that matches nothing must not read as success:
+        # a CI gate keyed on the exit code alone would be silently satisfied.
+        print("  ERROR: zero tests ran (bad --only/--skip filter?)")
+        sys.exit(2)
     if crashed_modules:
         sys.exit(2)
     sys.exit(0 if total_failed == 0 else 1)
