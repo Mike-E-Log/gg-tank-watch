@@ -9,7 +9,7 @@
 [![Status](https://img.shields.io/badge/status-frozen%20archive-informational)](#)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Stack](https://img.shields.io/badge/stack-vanilla%20JS%20%2B%20Python%20stdlib-lightgrey)](#stack)
-[![Eval](https://img.shields.io/badge/eval-211%20tests-orange)](eval/)
+[![Eval](https://img.shields.io/badge/eval-212%20tests-orange)](eval/)
 [![CI](https://github.com/Mike-E-Log/gg-tank-watch/actions/workflows/eval.yml/badge.svg)](https://github.com/Mike-E-Log/gg-tank-watch/actions/workflows/eval.yml)
 [![Live](https://img.shields.io/badge/live-ggtankwatch.org-2ea44f)](https://ggtankwatch.org)
 
@@ -21,7 +21,7 @@
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-desktop.png" alt="Desktop view of GG Tank Watch: the map showing the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
 </p>
 
-**TL;DR:** A single-page emergency dashboard built for a real ~50,000-person chemical evacuation, now a frozen archive. It only relays official information and routes people to officials; it issues no directives of its own, and that no-instructions guarantee is enforced in **code and tests, not prompting**. Stack: vanilla JS + Python stdlib, zero installed dependencies (the map library ships inside the app). Proof: `python eval/run_all.py --skip integration` runs 211/211.
+**TL;DR:** A single-page emergency dashboard built for a real ~50,000-person chemical evacuation, now a frozen archive. It only relays official information and routes people to officials; it issues no directives of its own, and that no-instructions guarantee is enforced in **code and tests, not prompting**. Stack: vanilla JS + Python stdlib, zero installed dependencies (the map library ships inside the app). Proof: `python eval/run_all.py --skip integration` runs 212/212.
 
 <p align="center">
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-grid.png" alt="Mobile views of GG Tank Watch: the Map, the Coverage Archive listing every source badged and dated, the What happened tab of sourced incident facts, and the Map in dark mode." width="840"></a>
@@ -53,7 +53,7 @@
 
 A consumer-facing AI system that informs but never instructs. That guarantee is **code and tests, not prompting**, and it had to hold under real stakes:
 
-- **Scalable oversight.** A suite of 211 automated tests catches safety regressions *before* they ship, not after.
+- **Scalable oversight.** A suite of 212 automated tests catches safety regressions *before* they ship, not after.
   - What it catches: fabricated sources, synthesized directives, stale data stamped fresh.
 - **The model never published directly.**
   - Its extracted facts reached the live page only through one validation gate (`scripts/update_status.py`) that it could not bypass.
@@ -112,18 +112,18 @@ Full diagram + per-control test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](doc
 python eval/run_all.py --skip integration
 ```
 
-Expected (211 tests, all green):
+Expected (212 tests, all green):
 
 ```
-  behavioral      203/203  (100.0% pass)
+  behavioral      204/204  (100.0% pass)
   schema            8/8    (100.0% pass)
 ----------------------------------------------------------------
-  TOTAL           211/211  (100.0% pass)
+  TOTAL           212/212  (100.0% pass)
 ```
 
-(The full census is **213**: the 2 extra tests are live geocoder regressions that call OpenStreetMap's Nominatim service over the network, so they stay opt-in — drop `--skip integration` to run them.)
+(The full census is **214**: the 2 extra tests are live geocoder regressions that call OpenStreetMap's Nominatim service over the network, so they stay opt-in — drop `--skip integration` to run them.)
 
-**211 automated pass/fail tests across 65 files** cover:
+**212 automated pass/fail tests across 66 files** cover:
 
 - **The pipeline:** how the update script behaved on each run, plus the four gates in the table above.
 - **The content rules:** the site never produces verdicts of its own, never tells anyone what to do, and never ships safety text in a language no one on the team could verify.
@@ -139,7 +139,7 @@ Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows 
 - [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the whole approach in one first-person read.
 - [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): maps each safety principle to its tests.
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
-- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note). Its `eval-summary.json` is sealed at this repo's `main` commit (`d34093c`) — **210/210** (203 behavioral + 7 schema); the export intentionally excludes the one summary-export meta-test, which is why the live suite reports the 211 above.
+- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note). Its `eval-summary.json` is sealed at this repo's `main` commit (`d34093c`) — **210/210** (203 behavioral + 7 schema). The export is a point-in-time extract: it intentionally excludes the one summary-export meta-test, and the live suite has since grown to the 212 above.
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
@@ -196,7 +196,7 @@ Five tables, one per safety principle. Each row is one decision: what was decide
 | **Stricter proof for good news than for bad** | A false "safe to return" message is the worst outcome, so the reassuring direction needs two sources and the danger direction needs one (the first rule in the safety-architecture table above) | Treating both directions the same, so a single source could authorize a "safe to return" message |
 | **The danger level is computed by the project's own code, never copied from the AI** (an internal value; residents never saw it) | A check that only found part of the facts must not quietly lower the danger level | Let the model set the danger level / recompute it from scratch on every check |
 | **If gathering fails, publish nothing** | The page goes visibly stale, never confidently wrong. This is the standard fail-safe rule: when a safety system loses its input, it must stop rather than guess | Report success with empty facts (which stamps stale data as fresh) |
-| **211 automated tests gate every merge** | Safety properties regress silently without a machine-checked gate | Manual review only |
+| **212 automated tests gate every merge** | Safety properties regress silently without a machine-checked gate | Manual review only |
 
 ### Language access
 
@@ -257,7 +257,7 @@ What these changes have in common: each one removed a feature the project could 
 
 The News tab is a **Coverage Archive**: a record of *how the incident was reported*, not a live feed.
 
-It is read from [`public/data/news_archive.json`](public/data/news_archive.json), which holds **92 items across 43 outlets**:
+It is read from [`public/data/news_archive.json`](public/data/news_archive.json), which holds **92 items across 42 outlets**:
 
 - **57 articles**
 - **23 videos**
@@ -322,7 +322,7 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
   - a Content Security Policy that restricts the browser to loading only the site's own resources (`default-src 'self'`);
   - `X-Frame-Options: DENY` (it cannot be embedded in another site);
   - `X-Robots-Tag: noindex, nofollow` (search engines are asked not to list it).
-- **Eval:** automated test suite, **211 tests across 65 files**, plus AI-graded rubrics ([`eval/rubrics/`](eval/rubrics/)).
+- **Eval:** automated test suite, **212 tests across 66 files**, plus AI-graded rubrics ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
@@ -355,7 +355,7 @@ To run it locally, see [`USAGE.md`](docs/USAGE.md). The dashboard is a single st
 git clone <this-repo>
 cd gg-tank-watch
 python -m http.server 8000 -d public   # then open http://127.0.0.1:8000/dashboard.html
-python eval/run_all.py --skip integration   # 211 tests, exits 0
+python eval/run_all.py --skip integration   # 212 tests, exits 0
 ```
 
 The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and exits with an "ARCHIVED" error.
@@ -381,7 +381,7 @@ gg-tank-watch/
 ├── data/                        ← source data: timeline.json, news seed + audit
 ├── docs/                        ← project + design docs (DESIGN_LOG.md, DESIGN.md, CHANGELOG.md, USAGE.md, + more)
 ├── scripts/                     ← update_status.py (validation gate), gather_facts.py, start_dashboard.bat
-└── eval/                        ← run_all.py · test_*.py (65 files / 211 tests) · rubrics/
+└── eval/                        ← run_all.py · test_*.py (66 files / 212 tests) · rubrics/
 ```
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>

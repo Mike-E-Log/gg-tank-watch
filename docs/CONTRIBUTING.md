@@ -32,7 +32,7 @@ The project maintains a behavioral eval harness in `eval/`. Before any PR can me
 python eval/run_all.py --skip integration
 ```
 
-All tests must pass (currently 211/211 via `python eval/run_all.py --skip integration`). The harness checks safety-critical properties: no fabricated sources, no authored directives, no stale data presented as fresh, provenance on every claim.
+All tests must pass (currently 212/212 via `python eval/run_all.py --skip integration`). The harness checks safety-critical properties: no fabricated sources, no authored directives, no stale data presented as fresh, provenance on every claim.
 
 ## Translation constraint (G1)
 
