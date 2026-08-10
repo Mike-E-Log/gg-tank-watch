@@ -167,7 +167,7 @@ Removing the address checker and its personal verdicts made the product safer fo
 
 ## Safety & ethics decisions (the core)
 
-Five tables, one per safety principle. Each row is one decision: what was decided, why, and what was rejected (the last table tracks where each call stands instead). The complete decision log lives in [`DESIGN_LOG.md`](docs/DESIGN_LOG.md): 39 numbered decisions (logged as D-001 through D-039), each with its reasoning, a rubric score, and any reversal.
+Five tables, one per safety principle. Each row is one decision: what was decided, why, and what was rejected (the last table tracks where each call stands instead). The complete decision log lives in [`DESIGN_LOG.md`](docs/archive/DESIGN_LOG.md): 39 numbered decisions (logged as D-001 through D-039), each with its reasoning, a rubric score, and any reversal.
 
 ### Avoiding harm
 
@@ -231,7 +231,7 @@ The list of things *not* built is part of the design. The biggest refusals (the 
 
 ## How it was built: the journey, and the reversals
 
-The decisions worth showing are the ones that changed. Here is the whole shape of it, top to bottom; the full record is in [`DESIGN_LOG.md`](docs/DESIGN_LOG.md).
+The decisions worth showing are the ones that changed. Here is the whole shape of it, top to bottom; the full record is in [`DESIGN_LOG.md`](docs/archive/DESIGN_LOG.md).
 
 | Date | What changed | Type |
 |------|--------------|------|
@@ -273,7 +273,7 @@ Two tests keep this honest: [`eval/test_provenance.py`](eval/) fails the build i
 
 ## The close-out audit (2026-06-04)
 
-Before this README, the whole archive was audited end to end ([`docs/AUDIT_2026-06-04.md`](docs/AUDIT_2026-06-04.md)).
+Before this README, the whole archive was audited end to end ([`docs/archive/AUDIT_2026-06-04.md`](docs/archive/AUDIT_2026-06-04.md)).
 
 - **Honesty (the point of the audit).** The most important finding contradicted the project's own thesis: one news item had a dead link paired with a *fabricated* "verified" note. It was corrected. Two smaller fixes followed. The Terms and Accessibility pages still described removed features, so they were trimmed to match the shipped app. The summary outcome "0 displaced" (confusing next to "~50,000 evacuated") was reworded to "no permanent displacement." Each fix shipped with a new test so it cannot come back.
 - **Layout.** 108 screenshots, from phone width to desktop, light and dark, every screen, taken with an automated browser. Every layout measured correct, with no new problems.
@@ -305,7 +305,7 @@ The architecture in plain terms:
 - That pipeline is now frozen.
 - The map library ships inside the app on purpose: an earlier version loaded it from an outside server and the map vanished on reload, so it now travels with the app and is saved on your device.
 
-See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their cost tradeoff.
+See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync paths and their cost tradeoff.
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
@@ -349,7 +349,7 @@ See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) for the two sync paths and their co
 
 **View it live:** **[ggtankwatch.org](https://ggtankwatch.org)** is the hosted, frozen archive. It is intentionally `noindex` (not listed in search engines), but the direct link works.
 
-To run it locally, see [`USAGE.md`](docs/USAGE.md). The dashboard is a single static file: serve the `public/` folder and open `dashboard.html`.
+To run it locally, see [`USAGE.md`](docs/archive/USAGE.md). The dashboard is a single static file: serve the `public/` folder and open `dashboard.html`.
 
 ```powershell
 git clone <this-repo>
@@ -379,7 +379,7 @@ gg-tank-watch/
 │   ├── vercel.json               ← deploy config (noindex, CSP, / → dashboard rewrite)
 │   └── lib/                       ← bundled MapLibre GL (no third-party server in the map path)
 ├── data/                        ← source data: timeline.json, news seed + audit
-├── docs/                        ← project + design docs (DESIGN_LOG.md, DESIGN.md, CHANGELOG.md, USAGE.md, + more)
+├── docs/                        ← project docs (CHANGELOG.md, safety-method/, + archive/ for design logs, audits, spec)
 ├── scripts/                     ← update_status.py (validation gate), gather_facts.py, start_dashboard.bat
 └── eval/                        ← run_all.py · test_*.py (66 files / 212 tests) · rubrics/
 ```

@@ -1,6 +1,6 @@
 # USAGE: viewing the dashboard
 
-Operational guide for GG Tank Watch. For the project pitch / case study, see [`README.md`](../README.md).
+Operational guide for GG Tank Watch. For the project pitch / case study, see [`README.md`](../../README.md).
 
 > **This is a frozen historical archive.** The May 2026 Garden Grove tank emergency resolved on **May 26, 2026**, and the dashboard now shows a static snapshot from that date. It does **not** auto-refresh, wind direction is **not** live (the wind indicator was removed), and the refresh job (`scripts/refresh_local.py`) is **retired**; it exits with an `ARCHIVED` error if run. This guide covers (1) how to view the frozen archive today and (2) how the pipeline operated during the incident, kept for reference.
 
@@ -26,7 +26,7 @@ To stop the local server, close the `cmd` window the `.bat` opened.
 
 ## Running the eval suite
 
-See [`eval/README.md`](eval/README.md). From the repo root:
+See [`eval/README.md`](../../eval/README.md). From the repo root:
 
 ```powershell
 python eval/run_all.py --skip integration
@@ -38,7 +38,7 @@ It appends scores to `eval/scores.jsonl`, prints a scorecard, and the exit code 
 
 ## Historical: how the pipeline ran during the incident
 
-> Kept for reference. **None of this is active in the frozen archive**: the dashboard no longer polls, the wind fetch was removed, and `refresh_local.py` is retired. See [`docs/DATA_SYNC.md`](docs/DATA_SYNC.md) and [Architecture](README.md#architecture-the-retired-pipeline) for the full design.
+> Kept for reference. **None of this is active in the frozen archive**: the dashboard no longer polls, the wind fetch was removed, and `refresh_local.py` is retired. See [`DATA_SYNC.md`](DATA_SYNC.md) and [Architecture](../../README.md#architecture-the-retired-pipeline) for the full design.
 
 During the May 21–26 emergency the dashboard polled `status.json` every 30 seconds, and a contributor ran the refresh job (`scripts/refresh_local.py`) on demand (roughly every 20–30 minutes) to re-gather facts and rewrite `status.json`. The map also showed a live wind reading from NOAA station KFUL, later removed for the reason above.
 

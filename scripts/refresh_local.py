@@ -14,7 +14,7 @@ Why this exists: the cloud cron (.github/workflows/update-status.yml) is the
 "no machine required" path but a headless GitHub Actions runner can only use a
 metered ANTHROPIC_API_KEY (no OAuth). For now we prefer subscription credits, so
 we run locally. To switch back to the metered cloud cron later, re-enable the
-schedule in that workflow (the API-key secret is already set). See docs/DATA_SYNC.md.
+schedule in that workflow (the API-key secret is already set). See docs/archive/DATA_SYNC.md.
 
 Reuses the prompt + JSON extraction from gather_facts.py so the two paths stay
 in lockstep — only the model call differs (claude -p subscription vs SDK + key).
