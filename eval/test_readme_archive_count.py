@@ -15,9 +15,10 @@ so the audit doc's historical compilation notes (line 100+) stay out of scope.
 
 Extended again 2026-07-21 (test-count churn root-cause fix): the TEST-COUNT story drifted
 seven times in the repo's history because a growing census was pinned as static text with no
-guard. The census check below locks README / CLAUDE.md / CONTRIBUTING.md to the actual
-number of discovered test functions, so growing the suite without updating the docs fails
-the build in the same PR. Remote surfaces (portfolio sites, applications) deliberately use
+guard. The census check below locks README / CLAUDE.md / CONTRIBUTING.md — and, since
+2026-08-10, docs/safety-method/safety-method-writeup.md + evidence-summary.md — to the
+actual number of discovered test functions, so growing the suite without updating the
+docs fails the build in the same PR. Remote surfaces (portfolio sites, applications) deliberately use
 floor wording ("more than 200") and are out of scope here.
 """
 import json
@@ -54,6 +55,8 @@ def _census_doc_mismatches():
     readme = README.read_text(encoding="utf-8")
     claude = (REPO / "CLAUDE.md").read_text(encoding="utf-8")
     contributing = (REPO / "docs" / "CONTRIBUTING.md").read_text(encoding="utf-8")
+    writeup = (REPO / "docs" / "safety-method" / "safety-method-writeup.md").read_text(encoding="utf-8")
+    evsum = (REPO / "docs" / "safety-method" / "evidence-summary.md").read_text(encoding="utf-8")
     d, full, files = c["default"], c["full"], c["files"]
     checks = {
         "readme badge": f"eval-{d}%20tests" in readme,
@@ -64,6 +67,9 @@ def _census_doc_mismatches():
         "readme full-census": f"full census is **{full}**" in readme,
         "claude.md harness": f"A {d}-test eval harness" in claude,
         "contributing N/N": f"currently {d}/{d}" in contributing,
+        "safety-writeup tldr harness": f"A {d}-test eval harness" in writeup,
+        "safety-writeup controls N/N": f"a {d}-test eval harness ({d}/{d} via" in writeup,
+        "evidence-summary suite": f"A {d}-test automated test suite" in evsum,
     }
     return [k for k, ok in checks.items() if not ok], c
 
