@@ -1,5 +1,10 @@
 # Rubric: writer data-quality (LLM-as-judge for fact extraction)
 
+> **Status:** the prompt below has never been run as written (its raw live snippets were
+> not retained when the pipeline was retired). A retrospective adaptation was run
+> 2026-08-10 — see [data_quality_results.md](data_quality_results.md) for the scores and
+> the limitations that bound them.
+
 LLM-as-judge prompt template for evaluating how well the writer turns news-derived facts into a `status.json` snapshot. Tests for precision (no hallucinated facts), recall (no missed material updates), and consistency (same input → same output).
 
 ## How to use

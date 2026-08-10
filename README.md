@@ -21,7 +21,7 @@
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-desktop.png" alt="Desktop view of GG Tank Watch: the map showing the former evacuation zone, shelters, and the tank facility across Orange County" width="840"></a>
 </p>
 
-**TL;DR:** A single-page emergency dashboard built for a real ~50,000-person chemical evacuation, now a frozen archive. It only relays official information and routes people to officials; it issues no directives of its own, and that no-instructions guarantee is enforced in **code and tests, not prompting**. Stack: vanilla JS + Python stdlib, zero installed dependencies (the map library ships inside the app). Proof: `python eval/run_all.py --skip integration` runs 212/212.
+**TL;DR:** A single-page emergency dashboard built for a real ~50,000-person chemical evacuation, now a frozen archive. While it ran, an LLM (Claude, with web search) summarized official and news sources every 30 minutes, and every model output passed through one validation gate it could not bypass; that pipeline is retired with the freeze. The dashboard only relays official information and routes people to officials; it issues no directives of its own, and that no-instructions guarantee is enforced in **code and tests, not prompting**. Stack: vanilla JS + Python stdlib, zero installed dependencies (the map library ships inside the app). Proof: `python eval/run_all.py --skip integration` runs 212/212.
 
 <p align="center">
   <a href="https://ggtankwatch.org"><img src="docs/assets/preview-grid.png" alt="Mobile views of GG Tank Watch: the Map, the Coverage Archive listing every source badged and dated, the What happened tab of sourced incident facts, and the Map in dark mode." width="840"></a>
