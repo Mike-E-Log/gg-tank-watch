@@ -132,6 +132,13 @@ Per the archive's freeze policy (corrections annotate in place, never erase), wh
 these findings produce dated correction notes in the timeline is an operator decision,
 tracked outside this file. Nothing in the timeline was altered by this run.
 
+**Update 2026-08-10:** the operator ruled that three of the four convergent findings
+produce dated correction notes: the three wrong-article citations, the three
+weekday-label events, and both halves of the probable duplicate. Eight events in
+`data/timeline.json` now carry a `correction` object beside their original text; the
+original entries are unchanged, per the freeze. The uncited Fox News half of
+evt-20260524-014 was not annotated.
+
 ## Limitations (the facts that bound every number above)
 
 Only 32 of 67 events were judgeable, with two whole categories at zero coverage. The
