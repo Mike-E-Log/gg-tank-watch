@@ -35,9 +35,9 @@ python eval/run_all.py --skip integration
 ## Design — why this is shaped the way it is
 
 - **Pure stdlib.** No `pytest`, no `pydantic`, no fixtures library. The "tests" are functions that return `{passed, details}`. This keeps the eval suite runnable on any Python 3.10+ install without `pip install`-ing anything.
-- **Append-only history (`scores.jsonl`).** Every run leaves a trace. Regression tracking comes free: `grep "test_writer" scores.jsonl` shows the history of that test.
+- **Append-only history (`scores.jsonl`).** Every run leaves a trace. Regression tracking comes free: `grep "test_writer" scores.jsonl` shows the history of that test. Rows with `category:"judge"` are LLM-as-judge rubric scores (see [rubrics/data_quality_results.md](rubrics/data_quality_results.md)), not pass/fail test runs — their `passed` flag means composite ≥ 0.80, the rubric's acceptable band.
 - **Classification: behavioral / schema / integration / subjective.** Run flags can skip categories that aren't appropriate for the current context (e.g., skip `integration` in air-gapped CI).
-- **LLM-as-judge as prompt templates, not auto-invoked.** Adding an actual Anthropic/OpenAI call requires an API key. The rubric prompts are reproducible and copy-paste-able into whatever judge you have access to. When you run a judge, paste the result into `scores.jsonl` manually with `--manual-score` (see `run_all.py --help`).
+- **LLM-as-judge as prompt templates, not auto-invoked.** Adding an actual Anthropic/OpenAI call requires an API key. The rubric prompts are reproducible and copy-paste-able into whatever judge you have access to. When you run a judge, append the scored result to `scores.jsonl` yourself as a `category:"judge"` row (`run_all.py` has no flag for this; see [rubrics/data_quality_results.md](rubrics/data_quality_results.md) for a recorded run).
 - **Held-out test cases that don't change.** The geocoder regression points (e.g., "Magnolia & Talbert" → fixed coordinates) are pinned expected outputs. If Nominatim drifts, the legacy integration test catches it.
 
 ## What's NOT covered (yet)
