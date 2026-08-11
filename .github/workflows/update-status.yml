@@ -4,7 +4,7 @@ name: update-status
 # A headless GitHub Actions runner can only use a METERED ANTHROPIC_API_KEY
 # (no OAuth subscription), so for now we refresh LOCALLY on subscription credits
 # via scripts/refresh_local.py with the contributor's machine left on. See
-# docs/DATA_SYNC.md.
+# docs/archive/DATA_SYNC.md.
 #
 
 on:

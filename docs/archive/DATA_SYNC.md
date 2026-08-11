@@ -60,7 +60,7 @@ Stop the local Task Scheduler job at the same time so the two don't both push.
 ## Before distribution
 
 Whichever path is active, the writer carries the P0 hardening from
-[`DATA_QUALITY.md`](DATA_QUALITY.md) in code, not just in the prompt: the
+[`DATA_QUALITY.md`](../DATA_QUALITY.md) in code, not just in the prompt: the
 corroboration gate (P0-1), source/URL integrity validation (P0-2), and
 `data_as_of_iso` freshness honesty (P0-3) are enforced in
 `scripts/update_status.py`. The remaining P1/P2 hardening items are unbuilt.

@@ -2,7 +2,7 @@
 system - one key/value row treatment, one horizontal gutter, one value weight, one row color. Two
 divergent row systems (.info-kv-row dashed/600 vs .info-row solid/500) plus a 12px-vs-14px gutter
 drift made the panels read as four different designs. These assert the harmonized tokens from
-docs/info-tab-acceptance-rubric.md so the consistency can't silently regress. Token-level invariants
+docs/archive/info-tab-acceptance-rubric.md so the consistency can't silently regress. Token-level invariants
 (deterministic across Blink); rendered convergence is verified by signed-Edge screenshot in the loop."""
 import re
 from pathlib import Path
