@@ -1,4 +1,5 @@
 {
+  "corrections_policy": "Incident content is frozen. When an entry is found wrong, a dated correction note is added inside the entry, beside the original text; the original is never rewritten. Notes dated 2026-08-10 come from the retrospective source-consistency check recorded in eval/rubrics/data_quality_results.md.",
   "events": [
     {
       "id": "evt-20260521-001",
@@ -438,7 +439,11 @@
       "description": "Technical specialists conduct joint operation with OCFA to assess tank more closely; successfully remove external insulation material. During operation, identify crack relieving pressure.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/entry/19163069/",
       "source_name": "ABC7 LA",
-      "category": "tank_status"
+      "category": "tank_status",
+      "correction": {
+        "date": "2026-08-10",
+        "note": "Probable double report. This entry records insulation removal on May 24 at 4:00 p.m. Pacific. evt-20260526-002 records insulation removal again as an overnight operation about 29 hours later. Both cannot be first-time removals; one of the two is likely a duplicate or misdated."
+      }
     },
     {
       "id": "evt-20260524-010",
@@ -449,7 +454,11 @@
       "description": "12 GGUSD campuses confirmed closed through May 27 (final school day): Barker, Bryant, Carver, Enders, Garden Park, Lawrence, Wakeham, Patton (elementary); Bell, Alamitos (intermediate); Pacifica, Rancho Alamitos (high school). Distance learning for final 2 instructional days, no penalties.",
       "source_url": "https://newsroom.ocde.us/several-garden-grove-unified-campuses-closed-following-chemical-leak-response/",
       "source_name": "OCDE Newsroom",
-      "category": "school_closure"
+      "category": "school_closure",
+      "correction": {
+        "date": "2026-08-10",
+        "note": "Wrong article. The cited OCDE Newsroom item is the May 26 update announcing that all evacuation orders were lifted. It does not carry this May 24 closure roster, the named campuses, or the distance-learning terms. The outlet is right, the article is not. The closure facts are plausible for the incident but unsupported by this citation."
+      }
     },
     {
       "id": "evt-20260524-011",
@@ -614,7 +623,11 @@
       "description": "Firefighters removed weather protection and insulation from the outside of the tank overnight to help water cooling be more efficient at reducing temperature.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
-      "category": "tank_status"
+      "category": "tank_status",
+      "correction": {
+        "date": "2026-08-10",
+        "note": "Probable double report. Insulation removal is already recorded by evt-20260524-009 on May 24 at 4:00 p.m. Pacific, about 29 hours before this overnight operation. Both cannot be first-time removals; one of the two is likely a duplicate or misdated."
+      }
     },
     {
       "id": "evt-20260526-003",
@@ -636,7 +649,11 @@
       "description": "OCFA Interim Chief McGovern at Monday afternoon press conference: \"The most catastrophic and worst-case scenario has been mitigated and resolved, but it's not over yet.\" No injuries to civilians or firefighters throughout the incident. OCFA Incident Commander Covey: \"The liquid potential in the tank [has been] greatly reduced, as it has been hardened.\"",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
-      "category": "official_statement"
+      "category": "official_statement",
+      "correction": {
+        "date": "2026-08-10",
+        "note": "Weekday error. The description says Monday afternoon, but the timestamp is Tuesday, May 26, 2026 at 1:00 p.m. Pacific; the Monday was May 25. Either the weekday word or the timestamp is off by one day."
+      }
     },
     {
       "id": "evt-20260526-006",
@@ -669,7 +686,11 @@
       "description": "Officials announce crews are moving product from the third, unaffected GKN Aerospace tank into a second tank that already contains a neutralizing agent — creating the conditions to eventually neutralize and isolate the MMA from the compromised primary tank. The primary tank's seized valves continue to prevent direct offloading of its contents.",
       "source_url": "https://www.nbclosangeles.com/news/local/toxic-chemical-tank-garden-grove-orange-county/3894971/",
       "source_name": "NBC LA",
-      "category": "tank_status"
+      "category": "tank_status",
+      "correction": {
+        "date": "2026-08-10",
+        "note": "Citation mismatch. The cited NBC LA page is dated May 25, one day before this announcement, and its archived summary covers the resolved explosion threat and the return of about 65 percent of residents, not the tank-to-tank transfer described here."
+      }
     },
     {
       "id": "evt-20260526-005",
@@ -680,7 +701,11 @@
       "description": "City of Garden Grove holds special City Council meeting focused on the incident, the city's response, and the latest information available.",
       "source_url": "https://ggcity.org/emergency",
       "source_name": "City of Garden Grove",
-      "category": "government_action"
+      "category": "government_action",
+      "correction": {
+        "date": "2026-08-10",
+        "note": "Wrong source. The cited City of Garden Grove page is the archived May 21 initial evacuation order, published five days before this meeting and about a different subject. It does not support any claim in this entry. The meeting itself is consistent with evt-20260527-004, which describes its own session as the second special meeting."
+      }
     },
     {
       "id": "evt-20260527-001",
@@ -691,7 +716,11 @@
       "description": "OCFA Interim Fire Chief TJ McGovern announces at Tuesday morning briefing that crews will begin gradually shutting down the two water-cooling systems to test whether the tank can stabilize on its own. \"We're going to shut down one of those two systems, and we're going to monitor the temperature. We're looking for it to stabilize. We don't want it to come up. We're hoping it comes down. If that looks good throughout the day, then we're going to shut down the second system, and we are going to watch that.\" Tank temperature holding steady at 92°F.",
       "source_url": "https://abc7.com/live-updates/garden-grove-chemical-tank-emergency-leaking-toxic-chemicals-orange-county-will-spill-explode-officials-say/19152918/",
       "source_name": "ABC7 LA",
-      "category": "tank_status"
+      "category": "tank_status",
+      "correction": {
+        "date": "2026-08-10",
+        "note": "Weekday error. The description says Tuesday morning, but the timestamp is Wednesday, May 27, 2026 at 7:00 a.m. Pacific; the Tuesday was May 26. Either the weekday word or the timestamp is off by one day."
+      }
     },
     {
       "id": "evt-20260527-003",
@@ -735,7 +764,11 @@
       "description": "At a second special Tuesday evening City Council meeting, OCFA Incident Commander Craig Covey and Garden Grove Police Chief Amir El-Farra break the news that evacuation orders will be lifted. Angry residents demand accountability from city leaders and GKN Aerospace, questioning why a company handling such chemicals operates so close to homes, schools, and businesses. Garden Grove Mayor Stephanie Klopfenstein pledges GKN will be held accountable: \"Our community deserves to know what happened, why it happened and whether laws or regulations were violated, and what steps we must take to prevent something like this from ever happening again.\"",
       "source_url": "https://voiceofoc.org/2026/05/evacuations-end-in-garden-grove-chemical-tank-emergency/",
       "source_name": "Voice of OC",
-      "category": "government_action"
+      "category": "government_action",
+      "correction": {
+        "date": "2026-08-10",
+        "note": "Two dating problems. The description says Tuesday evening, but the timestamp is Wednesday, May 27, 2026 at 6:00 p.m. Pacific. The cited Voice of OC article was published May 26 and reports the lifting on Tuesday evening, so the timestamp is the likelier error. Also, the UTC timestamp 2026-05-28T01:00:00Z falls outside the archive's stated event window, which ends at 2026-05-27T23:59:59Z; it is the only entry that does."
+      }
     }
   ],
   "generated_at": "2026-06-03T07:11:32Z"
