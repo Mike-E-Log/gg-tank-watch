@@ -31,7 +31,7 @@
 
 ## Contents
 
-- [The whole system, on one page](#the-whole-system-on-one-page)
+- [The whole system, in one diagram](#the-whole-system-in-one-diagram)
 - [What this demonstrates](#what-this-demonstrates)
 - [Origin](#origin)
 - [Safety architecture & verification](#safety-architecture--verification)
@@ -47,7 +47,7 @@
 - [Repository layout](#repository-layout)
 - [License](#license)
 
-## The whole system, on one page
+## The whole system, in one diagram
 
 ```mermaid
 flowchart TD
