@@ -29,8 +29,6 @@
   <sub>Built by <a href="https://github.com/Mike-E-Log"><b>Mike Ilog</b></a> · AI Engineer · LLM &amp; agent evaluation &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/mikeilog/">LinkedIn</a></sub>
 </p>
 
-**Proof it holds:** `python eval/run_all.py --skip integration` runs 212/212. Everything else this page claims is explained, and tested, below.
-
 ## Contents
 
 - [The whole system, on one page](#the-whole-system-on-one-page)
@@ -356,6 +354,8 @@ See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync pa
 ---
 
 ## Running it yourself
+
+**Proof it holds:** `python eval/run_all.py --skip integration` runs 212/212. Everything this page claims is explained, and tested, in this repo.
 
 **View it live:** **[ggtankwatch.org](https://ggtankwatch.org)** is the hosted, frozen archive. It is intentionally `noindex` (not listed in search engines), but the direct link works.
 
