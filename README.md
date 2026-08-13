@@ -34,8 +34,8 @@
 ## Contents
 
 - [The whole system, on one page](#the-whole-system-on-one-page)
-- [What this demonstrates](#what-this-demonstrates)
 - [What this is, in 30 seconds](#what-this-is-in-30-seconds)
+- [What this demonstrates](#what-this-demonstrates)
 - [Origin](#origin)
 - [Safety architecture & verification](#safety-architecture--verification)
 - [The thesis: a conduit, not a judge](#the-thesis-a-conduit-not-a-judge)
@@ -66,6 +66,16 @@ flowchart TD
 
 ---
 
+## What this is, in 30 seconds
+
+GG Tank Watch pulled scattered, conflicting updates from officials and news outlets into one calm view, and **pointed back to the authorities in charge**. Its organizing principle:
+
+> **Responsible and helpful are the same lane.** Every safety constraint made the product *more* trustworthy and *more* useful to a worried reader, not less. The reasoning is the point, not just the code.
+
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
+---
+
 ## What this demonstrates
 
 A consumer-facing AI system that informs but never instructs. That guarantee is **code and tests, not prompting**, and it had to hold under real stakes:
@@ -81,16 +91,6 @@ A consumer-facing AI system that informs but never instructs. That guarantee is 
   - The site never synthesized an alert level of its own.
 
 The rest of this README explains each decision: what was built, what was deliberately *not* built, and why.
-
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
-
----
-
-## What this is, in 30 seconds
-
-GG Tank Watch pulled scattered, conflicting updates from officials and news outlets into one calm view, and **pointed back to the authorities in charge**. Its organizing principle:
-
-> **Responsible and helpful are the same lane.** Every safety constraint made the product *more* trustworthy and *more* useful to a worried reader, not less. The reasoning is the point, not just the code.
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
