@@ -31,8 +31,8 @@
 
 ## Contents
 
-- [The whole system, in one diagram](#the-whole-system-in-one-diagram)
 - [What this demonstrates](#what-this-demonstrates)
+- [The whole system, in one diagram](#the-whole-system-in-one-diagram)
 - [Origin](#origin)
 - [Safety architecture & verification](#safety-architecture--verification)
 - [The thesis: a conduit, not a judge](#the-thesis-a-conduit-not-a-judge)
@@ -46,22 +46,6 @@
 - [Running it yourself](#running-it-yourself)
 - [Repository layout](#repository-layout)
 - [License](#license)
-
-## The whole system, in one diagram
-
-```mermaid
-flowchart TD
-    A["May 2026: chemical-tank emergency; <br>about 50,000 residents evacuated"] --> B["While the incident was active, <br>a scheduled check ran every ~30 minutes: <br>Claude, with web search, gathered updates <br>from official and news sources"]
-    B --> C["One validation gate the model could not bypass <br>(update_status.py): corroboration, provenance, <br>freshness, and date checks"]
-    C --> D["status.json: <br>only facts that passed the gate <br>were ever published"]
-    D --> E["dashboard.html: one calm page that <br>relays officials' information and routes <br>people to them; it never issued <br>directives of its own"]
-    E --> F["May 26: officials lift the evacuation; <br>the incident resolves"]
-    F --> G["Frozen archive: the pipeline is retired, <br>content is locked, corrections go beside <br>the original text, and automated tests <br>guard all of it"]
-```
-
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
-
----
 
 ## What this demonstrates
 
@@ -82,6 +66,22 @@ What holds it up:
   - The site never synthesized an alert level of its own.
 
 The rest of this README explains each decision: what was built, what was deliberately *not* built, and why.
+
+<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
+---
+
+## The whole system, in one diagram
+
+```mermaid
+flowchart TD
+    A["May 2026: chemical-tank emergency; <br>about 50,000 residents evacuated"] --> B["While the incident was active, <br>a scheduled check ran every ~30 minutes: <br>Claude, with web search, gathered updates <br>from official and news sources"]
+    B --> C["One validation gate the model could not bypass <br>(update_status.py): corroboration, provenance, <br>freshness, and date checks"]
+    C --> D["status.json: <br>only facts that passed the gate <br>were ever published"]
+    D --> E["dashboard.html: one calm page that <br>relays officials' information and routes <br>people to them; it never issued <br>directives of its own"]
+    E --> F["May 26: officials lift the evacuation; <br>the incident resolves"]
+    F --> G["Frozen archive: the pipeline is retired, <br>content is locked, corrections go beside <br>the original text, and automated tests <br>guard all of it"]
+```
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
