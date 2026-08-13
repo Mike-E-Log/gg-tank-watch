@@ -34,7 +34,6 @@
 ## Contents
 
 - [The whole system, on one page](#the-whole-system-on-one-page)
-- [What this is, in 30 seconds](#what-this-is-in-30-seconds)
 - [What this demonstrates](#what-this-demonstrates)
 - [Origin](#origin)
 - [Safety architecture & verification](#safety-architecture--verification)
@@ -66,19 +65,13 @@ flowchart TD
 
 ---
 
-## What this is, in 30 seconds
+## What this demonstrates
 
-GG Tank Watch pulled scattered, conflicting updates from officials and news outlets into one calm view, and **pointed back to the authorities in charge**. Its organizing principle:
+A consumer-facing AI system that informs but never instructs. That guarantee is **code and tests, not prompting**, and it had to hold under real stakes. The organizing principle:
 
 > **Responsible and helpful are the same lane.** Every safety constraint made the product *more* trustworthy and *more* useful to a worried reader, not less. The reasoning is the point, not just the code.
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
-
----
-
-## What this demonstrates
-
-A consumer-facing AI system that informs but never instructs. That guarantee is **code and tests, not prompting**, and it had to hold under real stakes:
+What holds it up:
 
 - **Scalable oversight.** A suite of 212 automated tests catches safety regressions *before* they ship, not after.
   - What it catches: fabricated sources, synthesized directives, stale data stamped fresh.
