@@ -164,9 +164,9 @@ The tests were mined from failures, not imagined. A mistake found in the real pr
 
 | The mistake we caught | The test that keeps it fixed |
 |---|---|
-| The map's wind arrow relied on one weather station ~5.7 miles away. It pointed the wrong way ~34% of the time, the site itself was calm over half the time, and a resident could misread the arrow as which way the danger was blowing. Removed. | [`eval/test_wind_removed.py`](eval/test_wind_removed.py) |
+| The wind arrow read one station ~5.7 miles away: wrong ~34% of the time, calm half the time. A resident could read it as where the danger was blowing. Removed. | [`eval/test_wind_removed.py`](eval/test_wind_removed.py) |
 | An early draft authored hazard verdicts of its own ("within injury radius") | [`eval/test_safety.py`](eval/test_safety.py) |
-| The archive must hold nothing dated after the May 26 all-clear. Dates are compared as text, so a date written in local time instead of UTC could look earlier than the cutoff and sneak in. The date format is now locked to UTC. | [`eval/test_news_archive_boundary.py`](eval/test_news_archive_boundary.py) |
+| Nothing in the archive may be dated after the May 26 all-clear. A date written in local time could look earlier than that cutoff and slip past, so the format is locked to UTC. | [`eval/test_news_archive_boundary.py`](eval/test_news_archive_boundary.py) |
 
 *Reviewing the method in depth?*
 
