@@ -152,11 +152,11 @@ Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows 
 
 ### How the eval worked: dataset, tests, scorers
 
-Every AI eval has three parts: a dataset (the material being checked), tests (the statements that must hold), and scorers (whatever decides pass or fail). What each part was here:
+Every AI eval has three parts: a dataset (the material being checked), tests (the checks it must pass), and scorers (whatever decides pass or fail). What each part was here:
 
 | Part | What it was in this project |
 |---|---|
-| **Dataset** | The archive itself: the published page, `status.json`, `config.json`, and the news archive. The pipeline tests add synthetic inputs, like a fabricated source URL or a lone source claiming the evacuation lifted, fed to a sandboxed copy of the update script. |
+| **Dataset** | Two kinds of material. Most tests read the archive's real files: the published page, `status.json`, `config.json`, and the news archive. The pipeline tests instead ran a copy of the update script in a sandbox, fed it made-up inputs (a fake source URL, a single source claiming the evacuation was lifted), and checked what it wrote. |
 | **Tests** | Plain Python functions, most of them born from a real mistake (table below). |
 | **Scorers** | Deterministic code, standard library only. Each test returns pass or fail with a one-line reason, and the runner exits nonzero on any failure. No LLM grades this gate. |
 
@@ -164,9 +164,9 @@ The tests were mined from failures, not imagined. A mistake found in the real pr
 
 | The mistake we caught | The test that keeps it fixed |
 |---|---|
-| The map's wind arrow read one distant weather station and pointed the wrong way ~34% of the time | [`eval/test_wind_removed.py`](eval/test_wind_removed.py) |
+| The map's wind arrow relied on one weather station ~5.7 miles away. It pointed the wrong way ~34% of the time, the site itself was calm over half the time, and a resident could misread the arrow as which way the danger was blowing. Removed. | [`eval/test_wind_removed.py`](eval/test_wind_removed.py) |
 | An early draft authored hazard verdicts of its own ("within injury radius") | [`eval/test_safety.py`](eval/test_safety.py) |
-| A timestamp with a non-UTC offset could sort past the May 26 archive boundary | [`eval/test_news_archive_boundary.py`](eval/test_news_archive_boundary.py) |
+| The archive must hold nothing dated after the May 26 all-clear. Dates are compared as text, so a date written in local time instead of UTC could look earlier than the cutoff and sneak in. The date format is now locked to UTC. | [`eval/test_news_archive_boundary.py`](eval/test_news_archive_boundary.py) |
 
 Two qualities can't be scored by code: fact-extraction accuracy and design quality. Those use AI judges, kept outside the gate: rubric prompts in [`eval/rubrics/`](eval/rubrics/), run manually, results recorded there.
 
