@@ -53,11 +53,13 @@ A consumer-facing AI system that informs but never instructs. That guarantee is 
 
 > **Responsible and helpful are the same lane.** Every safety constraint made the product *more* trustworthy and *more* useful to a worried reader, not less. The reasoning is the point, not just the code.
 
-That principle is Anthropic's "helpful, honest, harmless," held under real stakes:
+That principle is Anthropic's "helpful, honest, harmless" standard, held under real stakes:
 
-- **Helpful:** the official picture, one calm page, at a glance.
-- **Honest:** AI role disclosed, staleness shown, every source real.
-- **Harmless:** informs, never instructs; routes people to officials.
+| Anthropic's standard | How this project held it |
+|---|---|
+| **Helpful** | The official picture, one calm page, at a glance. |
+| **Honest** | AI's role disclosed on the page. Staleness shown honestly. Every source real. |
+| **Harmless** | Informs, never instructs. Routes people to officials. |
 
 What holds it up:
 
@@ -150,14 +152,23 @@ Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows 
 
 ### How the eval worked: dataset, tests, scorers
 
-The suite follows the standard anatomy of an AI eval. There is a dataset being evaluated, tests that state what must hold, and scorers that decide pass or fail.
+Every AI eval has three parts: a dataset (the material being checked), tests (the statements that must hold), and scorers (whatever decides pass or fail). What each part was here:
 
-- **The dataset (what was evaluated).** The archive itself. Tests read the published page, `status.json`, `config.json`, and the news archive directly. The pipeline tests go further: each one runs a sandboxed copy of the update script on synthetic inputs (a fabricated source URL, a lone source claiming the evacuation lifted) and inspects the `status.json` it writes.
-- **The tests (where they came from).** Most began as observed mistakes. A failure found in the real product became a permanent regression test:
-  - The map's wind arrow read one distant weather station and pointed the wrong way about a third of the time. It was removed, and [`eval/test_wind_removed.py`](eval/test_wind_removed.py) keeps it out.
-  - An early draft authored hazard verdicts like "within injury radius." [`eval/test_safety.py`](eval/test_safety.py) now bans those strings outright.
-  - A timestamp with a non-UTC offset could slip past the May 26 archive boundary by sorting as an earlier string. [`eval/test_news_archive_boundary.py`](eval/test_news_archive_boundary.py) locks the format.
-- **The scorers (how pass/fail was decided).** Deterministic code, standard library only. Each test returns pass or fail with a one-line reason, and the runner exits nonzero on any failure. No LLM grades this gate. The two qualities code cannot score (fact-extraction accuracy, design quality) use AI judges instead: rubric prompts in [`eval/rubrics/`](eval/rubrics/), run manually, recorded there, and never part of the pass/fail gate.
+| Part | What it was in this project |
+|---|---|
+| **Dataset** | The archive itself: the published page, `status.json`, `config.json`, and the news archive. The pipeline tests add synthetic inputs, like a fabricated source URL or a lone source claiming the evacuation lifted, fed to a sandboxed copy of the update script. |
+| **Tests** | Plain Python functions, most of them born from a real mistake (table below). |
+| **Scorers** | Deterministic code, standard library only. Each test returns pass or fail with a one-line reason, and the runner exits nonzero on any failure. No LLM grades this gate. |
+
+The tests were mined from failures, not imagined. A mistake found in the real product became a permanent regression test:
+
+| The mistake we caught | The test that keeps it fixed |
+|---|---|
+| The map's wind arrow read one distant weather station and pointed the wrong way ~34% of the time | [`eval/test_wind_removed.py`](eval/test_wind_removed.py) |
+| An early draft authored hazard verdicts of its own ("within injury radius") | [`eval/test_safety.py`](eval/test_safety.py) |
+| A timestamp with a non-UTC offset could sort past the May 26 archive boundary | [`eval/test_news_archive_boundary.py`](eval/test_news_archive_boundary.py) |
+
+Two qualities can't be scored by code: fact-extraction accuracy and design quality. Those use AI judges, kept outside the gate: rubric prompts in [`eval/rubrics/`](eval/rubrics/), run manually, results recorded there.
 
 *Reviewing the method in depth?*
 
