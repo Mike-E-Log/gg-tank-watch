@@ -156,9 +156,9 @@ Every AI eval has three parts: a dataset (the material being checked), tests (th
 
 | Part | What it was in this project |
 |---|---|
-| **Dataset** | Two kinds of material. Most tests read the archive's real files: the published page, `status.json`, `config.json`, and the news archive. The pipeline tests instead ran a copy of the update script in a sandbox, fed it made-up inputs (a fake source URL, a single source claiming the evacuation was lifted), and checked what it wrote. |
+| **Dataset** | The archive's own files, plus trick inputs fed to the update script to see what it would write (a fake source URL, a lone source claiming the evacuation lifted). |
 | **Tests** | Plain Python functions, most of them born from a real mistake (table below). |
-| **Scorers** | Deterministic code, standard library only. Each test returns pass or fail with a one-line reason, and the runner exits nonzero on any failure. No LLM grades this gate. |
+| **Scorers** | Plain code, no AI. Each test says pass or fail with a one-line reason, and one failure fails the whole run. |
 
 The tests were mined from failures, not imagined. A mistake found in the real product became a permanent regression test:
 
