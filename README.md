@@ -156,9 +156,9 @@ Every AI eval has three parts: a dataset (the material being checked), tests (th
 
 | Part | What it was in this project |
 |---|---|
-| **Dataset** | The archive's own files, plus trick inputs fed to the update script to see what it would write (a fake source URL, a lone source claiming the evacuation lifted). |
+| **Dataset** | The site's real files (the published page and its data files), plus made-up inputs fed to the update script to see what it would write (a fake source URL, a lone source claiming the evacuation lifted). |
 | **Tests** | Plain Python functions, most of them born from a real mistake (table below). |
-| **Scorers** | Plain code, no AI. Each test says pass or fail with a one-line reason, and one failure fails the whole run. |
+| **Scorers** | Plain code for every gating test: pass or fail with a one-line reason, and one failure fails the whole run. The two judgment calls (fact accuracy, design quality) used AI judges: rubric prompts in [`eval/rubrics/`](eval/rubrics/), run manually, outside the gate. |
 
 The tests were mined from failures, not imagined. A mistake found in the real product became a permanent regression test:
 
@@ -167,8 +167,6 @@ The tests were mined from failures, not imagined. A mistake found in the real pr
 | The map's wind arrow relied on one weather station ~5.7 miles away. It pointed the wrong way ~34% of the time, the site itself was calm over half the time, and a resident could misread the arrow as which way the danger was blowing. Removed. | [`eval/test_wind_removed.py`](eval/test_wind_removed.py) |
 | An early draft authored hazard verdicts of its own ("within injury radius") | [`eval/test_safety.py`](eval/test_safety.py) |
 | The archive must hold nothing dated after the May 26 all-clear. Dates are compared as text, so a date written in local time instead of UTC could look earlier than the cutoff and sneak in. The date format is now locked to UTC. | [`eval/test_news_archive_boundary.py`](eval/test_news_archive_boundary.py) |
-
-Two qualities can't be scored by code: fact-extraction accuracy and design quality. Those use AI judges, kept outside the gate: rubric prompts in [`eval/rubrics/`](eval/rubrics/), run manually, results recorded there.
 
 *Reviewing the method in depth?*
 
