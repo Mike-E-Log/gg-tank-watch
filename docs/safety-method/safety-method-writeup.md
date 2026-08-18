@@ -67,7 +67,7 @@ Structural controls are only worth trusting if you can show they hold, and keep 
 - `test_future_resolved_iso_suppressed`: a bad date can't resolve the incident.
 - a conduit guard (`test_safety.py`) that asserts the dashboard writes no hazard verdicts (no blast-zone fields, no plume layer, no injury-radius copy) and always routes to an official source. The "be a conduit" decision is held by a test, not by my good intentions.
 
-The harness is deliberately plain. Pure standard library, no pytest, no installs. Tests return `{passed, details}`. An append-only `scores.jsonl` means every run leaves a regression trace. The subjective checks (fact-extraction accuracy and completeness, plus design quality) use a rubric graded by an AI model rather than running automatically, so they're reproducible without an API key. The count isn't the point. The point is that each safety property the architecture claims has a test that fails before the property breaks, not after.
+The harness is deliberately plain. Pure standard library, no pytest, no installs. Tests return `{passed, details}`. An append-only `scores.jsonl` means every run leaves a regression trace. The subjective checks (fact-extraction accuracy and completeness, plus design quality) stayed with human judgment; their rubric prompts are recorded in `eval/rubrics/` for anyone to rerun, outside the automated gate. The count isn't the point. The point is that each safety property the architecture claims has a test that fails before the property breaks, not after.
 
 ## The legal posture is the same principle
 

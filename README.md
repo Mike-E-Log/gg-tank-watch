@@ -53,12 +53,12 @@ A consumer-facing AI system that informs but never instructs. That guarantee is 
 
 > **Responsible and helpful are the same lane.** Every safety constraint made the product *more* trustworthy and *more* useful to a worried reader, not less. The reasoning is the point, not just the code.
 
-That principle is Anthropic's "helpful, honest, harmless" standard, held under real stakes:
+That principle maps to Anthropic's "helpful, honest, harmless" standard, held under real stakes:
 
 | Anthropic's standard | How this project held it |
 |---|---|
 | **Helpful** | The official picture, one calm page, at a glance. |
-| **Honest** | AI's role disclosed on the page. Staleness shown honestly. Every source real. |
+| **Honest** | AI's role disclosed on the page. Every source real. |
 | **Harmless** | Informs, never instructs. Routes people to officials. |
 
 What holds it up:
@@ -157,14 +157,14 @@ Every AI eval has three parts: a dataset (the material being checked), tests (th
 | Part | What it was in this project |
 |---|---|
 | **Dataset** | The site's real files (the published page and its data files), plus made-up inputs fed to the update script to see what it would write (a fake source URL, a lone source claiming the evacuation lifted). |
-| **Tests** | Plain Python functions, most of them born from a real mistake (table below). |
-| **Scorers** | Plain code for every gating test: pass or fail with a one-line reason, and one failure fails the whole run. The two judgment calls (fact accuracy, design quality) used AI judges: rubric prompts in [`eval/rubrics/`](eval/rubrics/), run manually, outside the gate. |
+| **Tests** | Plain Python functions, from two sources: mistakes caught in the real product, and failures hunted before they happened (table below). |
+| **Scorers** | Plain code for every gating test: pass or fail with a one-line reason, and one failure fails the whole run. The two judgment calls (fact accuracy, design quality) stayed with human judgment; their rubric prompts are recorded in [`eval/rubrics/`](eval/rubrics/), outside the gate. |
 
-The tests were mined from failures, not imagined. A mistake found in the real product became a permanent regression test:
+Some tests began as mistakes caught in the real product; others closed off failures we hunted for before they happened. Each became a permanent guard:
 
-| The mistake we caught | The test that keeps it fixed |
+| What could go wrong | The test that guards it |
 |---|---|
-| The wind arrow read one station ~5.7 miles away: wrong ~34% of the time, calm half the time. A resident could read it as where the danger was blowing. Removed. | [`eval/test_wind_removed.py`](eval/test_wind_removed.py) |
+| The wind arrow read one station ~5.7 miles away: wrong by 90 degrees or more ~34% of the time, while the site itself was calm half the time. A resident could read it as where the danger was blowing. Removed. | [`eval/test_wind_removed.py`](eval/test_wind_removed.py) |
 | An early draft authored hazard verdicts of its own ("within injury radius") | [`eval/test_safety.py`](eval/test_safety.py) |
 | Nothing in the archive may be dated after the May 26 all-clear. A date written in local time could look earlier than that cutoff and slip past, so the format is locked to UTC. | [`eval/test_news_archive_boundary.py`](eval/test_news_archive_boundary.py) |
 
@@ -356,7 +356,7 @@ See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync pa
   - a Content Security Policy that restricts the browser to loading only the site's own resources (`default-src 'self'`);
   - `X-Frame-Options: DENY` (it cannot be embedded in another site);
   - `X-Robots-Tag: noindex, nofollow` (search engines are asked not to list it).
-- **Eval:** automated test suite, **212 tests across 66 files**, plus AI-graded rubrics ([`eval/rubrics/`](eval/rubrics/)).
+- **Eval:** automated test suite, **212 tests across 66 files**, plus rubric prompts for the subjective checks ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
