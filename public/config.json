@@ -22,7 +22,6 @@
       [33.7639, -118.0420]
     ],
     "evac_polygon_note": "Approximate area that may be affected based on news reports. Not authoritative — confirm your status at ggcity.org/emergency.",
-    "anna_location": null,
     "fixed_points": [],
     "shelters": [
       {"name": "Garden Grove Sports & Rec Center", "city": "Garden Grove", "address": "13641 Deodara Dr, Garden Grove, CA 92644", "lat": 33.7631, "lon": -117.9659, "notes": "All evacuees"},
@@ -62,5 +61,5 @@
     }
   ],
   "schema_version": 1,
-  "notes": "Edit zone_status to 'inside' if your address gets added to the evac zone. Set incident.resolved_iso (in a manual writer run via stdin) once the incident officially ends. The map coordinates are best-effort estimates - the evac polygon is the four-street rectangle. anna_location: [lat, lon] if you want your home marked on the map; null otherwise."
+  "notes": "Edit zone_status to 'inside' if your address gets added to the evac zone. Set incident.resolved_iso (in a manual writer run via stdin) once the incident officially ends. The map coordinates are best-effort estimates - the evac polygon is the four-street rectangle."
 }
