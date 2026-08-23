@@ -26,7 +26,11 @@ FRAMING=(
 # Structural PII shape: an OS home path with a real username. The placeholder
 # username "redacted" is this repo's documented scrub marker and is carved out
 # only as a full token (Users/redactedXYZ still blocks).
-GENERIC_PATH='Users[\\/-][A-Za-z0-9._-]+'
+# The separator class repeats and matching is case-insensitive: JSON/log-escaped
+# paths store doubled backslashes (Users\\name), and a single-separator,
+# case-sensitive match let exactly that form through (caught 2026-08-23 by
+# post-merge review of PR #83).
+GENERIC_PATH='Users[\\/-]+[A-Za-z0-9._-]+'
 
 # Exclude self-references (this script + the workflow legitimately list the patterns).
 EXCLUDES=(':(exclude)scripts/check_repo_hygiene.sh' ':(exclude).github/workflows/hygiene.yml')
@@ -50,10 +54,10 @@ for p in "${FRAMING[@]}"; do
   fi
 done
 
-rows=$(git grep -I -n -o -E -e "$GENERIC_PATH" -- . "${EXCLUDES[@]}")
+rows=$(git grep -I -n -o -E -i -e "$GENERIC_PATH" -- . "${EXCLUDES[@]}")
 rc=$?
 if [ "$rc" -eq 0 ]; then
-  hits=$(printf '%s\n' "$rows" | grep -Ev ':Users[\\/-]redacted$')
+  hits=$(printf '%s\n' "$rows" | grep -Evi ':Users[\\/-]+redacted$')
   grc=$?
   if [ "$grc" -eq 0 ]; then
     echo "::error::repo-hygiene BLOCKED - home-directory path with a real username:"

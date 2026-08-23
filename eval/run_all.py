@@ -16,6 +16,7 @@ import argparse
 import importlib.util
 import json
 import os
+import re
 import subprocess
 import sys
 import traceback
@@ -47,6 +48,13 @@ def load_module(name: str, path: Path):
 
 
 def run_test(fn) -> dict:
+    """Call a test_ function; normalize and sanitize its outcome."""
+    out = _run_test_raw(fn)
+    out["details"] = _sanitize_local_paths(out["details"])
+    return out
+
+
+def _run_test_raw(fn) -> dict:
     """Call a test_ function; normalize its return to {passed, details, metrics}."""
     try:
         result = fn()
@@ -71,6 +79,21 @@ def run_test(fn) -> dict:
 def append_score(entry: dict) -> None:
     with SCORES_PATH.open("a", encoding="utf-8") as f:
         f.write(json.dumps(entry, separators=(",", ":")) + "\n")
+
+
+# Machine-local absolute paths (tracebacks, interpreter paths) must never reach
+# the committed ledger or CI stdout on this public repo (a traceback leaked one
+# in PR #83). The lookbehinds keep URLs intact: "https://" contains "s://" and
+# a URL path can contain "/Users/redacted", and an over-broad scrub matched
+# both (129 ledger details clobbered, 2026-08-23). Fail closed otherwise: any
+# drive-letter or *nix home path in details is machine-local by definition here.
+_LOCAL_DRIVE_PATH = re.compile(r"(?i)(?<![a-z])[a-z]:[\\/][^\s\"']*")
+_LOCAL_NIX_HOME = re.compile(r"(?:^|(?<=[\s\"'(=]))/(?:home|Users)/[^\s\"']+", re.M)
+
+
+def _sanitize_local_paths(text: str) -> str:
+    text = _LOCAL_DRIVE_PATH.sub("<local-path>", text)
+    return _LOCAL_NIX_HOME.sub("<local-path>", text)
 
 
 def _source_commit() -> str:
