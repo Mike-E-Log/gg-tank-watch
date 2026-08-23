@@ -34,10 +34,10 @@ def test_zero_tests_run_is_a_failure():
     s = ra._sanitize_local_paths(
         'raised X: boom\n  File "C:\\Users\\redacted\\x.py", line 1\n'
         '  File "/home/redacted/x.py", line 2\n'
-        "keys=['https://example.test/Users/page']")
+        "keys=['https://example.test/Users/redacted']")
     paths_scrubbed = ("x.py" not in s and "C:" not in s and "/home/" not in s
                       and "<local-path>" in s
-                      and "https://example.test/Users/page" in s)
+                      and "https://example.test/Users/redacted" in s)
     return {
         "passed": p.returncode == 2 and paths_scrubbed,
         "details": (f"exit={p.returncode} (want 2 when zero tests run); "

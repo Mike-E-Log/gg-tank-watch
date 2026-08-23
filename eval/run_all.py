@@ -84,7 +84,7 @@ def append_score(entry: dict) -> None:
 # Machine-local absolute paths (tracebacks, interpreter paths) must never reach
 # the committed ledger or CI stdout on this public repo (a traceback leaked one
 # in PR #83). The lookbehinds keep URLs intact: "https://" contains "s://" and
-# "example.com/Users/x" contains "/Users/", and an over-broad scrub matched
+# a URL path can contain "/Users/redacted", and an over-broad scrub matched
 # both (129 ledger details clobbered, 2026-08-23). Fail closed otherwise: any
 # drive-letter or *nix home path in details is machine-local by definition here.
 _LOCAL_DRIVE_PATH = re.compile(r"(?i)(?<![a-z])[a-z]:[\\/][^\s\"']*")
