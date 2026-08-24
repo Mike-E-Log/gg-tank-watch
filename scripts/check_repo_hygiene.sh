@@ -29,8 +29,10 @@ FRAMING=(
 # The separator class repeats and matching is case-insensitive: JSON/log-escaped
 # paths store doubled backslashes (Users\\name), and a single-separator,
 # case-sensitive match let exactly that form through (caught 2026-08-23 by
-# post-merge review of PR #83).
-GENERIC_PATH='Users[\\/-]+[A-Za-z0-9._-]+'
+# post-merge review of PR #83). The /home/ alternation covers Linux-style home
+# paths (PR #84 review); it anchors on the leading slash so prose like
+# "home-page" or "smart-home" never matches.
+GENERIC_PATH='(Users[\\/-]+|/home/+)[A-Za-z0-9._-]+'
 
 # Exclude self-references (this script + the workflow legitimately list the patterns).
 EXCLUDES=(':(exclude)scripts/check_repo_hygiene.sh' ':(exclude).github/workflows/hygiene.yml')
@@ -57,7 +59,7 @@ done
 rows=$(git grep -I -n -o -E -i -e "$GENERIC_PATH" -- . "${EXCLUDES[@]}")
 rc=$?
 if [ "$rc" -eq 0 ]; then
-  hits=$(printf '%s\n' "$rows" | grep -Evi ':Users[\\/-]+redacted$')
+  hits=$(printf '%s\n' "$rows" | grep -Evi ':(Users[\\/-]+|/home/+)redacted$')
   grc=$?
   if [ "$grc" -eq 0 ]; then
     echo "::error::repo-hygiene BLOCKED - home-directory path with a real username:"
