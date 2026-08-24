@@ -31,10 +31,14 @@ def test_zero_tests_run_is_a_failure():
         cwd=EVAL_DIR.parent, capture_output=True, text=True,
     )
     import run_all as ra
-    s = ra._sanitize_local_paths(
-        'raised X: boom\n  File "C:\\Users\\redacted\\x.py", line 1\n'
-        '  File "/home/redacted/x.py", line 2\n'
-        "keys=['https://example.test/Users/redacted']")
+    fixture = ('raised X: boom\n  File "C:\\Users\\redacted\\x.py", line 1\n'
+               '  File "/home/redacted/x.py", line 2\n'
+               "keys=['https://example.test/Users/redacted']")
+    # Route through run_test (not the helper directly) so this guards the
+    # WIRING: deleting the sanitize call in run_test must fail this test
+    # (PR #84 review — the leak class is scrubbing absent at the write path).
+    s = ra.run_test(lambda: {"passed": True, "details": fixture,
+                             "metrics": {}})["details"]
     paths_scrubbed = ("x.py" not in s and "C:" not in s and "/home/" not in s
                       and "<local-path>" in s
                       and "https://example.test/Users/redacted" in s)
