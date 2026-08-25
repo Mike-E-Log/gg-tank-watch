@@ -29,24 +29,6 @@
   <sub>Built by <a href="https://github.com/Mike-E-Log"><b>Mike Ilog</b></a> · AI Engineer · LLM &amp; agent evaluation &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/mikeilog/">LinkedIn</a></sub>
 </p>
 
-## Contents
-
-- [What this demonstrates](#what-this-demonstrates)
-- [The whole system, in one diagram](#the-whole-system-in-one-diagram)
-- [Origin](#origin)
-- [Safety architecture & verification](#safety-architecture--verification)
-- [The thesis: a conduit, not a judge](#the-thesis-a-conduit-not-a-judge)
-- [Safety & ethics decisions (the core)](#safety--ethics-decisions-the-core)
-- [How it was built: the journey, and the reversals](#how-it-was-built-the-journey-and-the-reversals)
-- [The Coverage Archive (News tab)](#the-coverage-archive-news-tab)
-- [The close-out audit](#the-close-out-audit-2026-06-04)
-- [Architecture (the retired pipeline)](#architecture-the-retired-pipeline)
-- [Stack](#stack)
-- [The incident (facts, as archived)](#the-incident-facts-as-archived)
-- [Running it yourself](#running-it-yourself)
-- [Repository layout](#repository-layout)
-- [License](#license)
-
 ## What this demonstrates
 
 A consumer-facing AI system that informs but never instructs. That guarantee is **code and tests, not prompting**, and it had to hold under real stakes. The organizing principle:
@@ -75,7 +57,6 @@ What holds it up:
 
 The rest of this README explains each decision: what was built, what was deliberately *not* built, and why.
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
@@ -91,11 +72,10 @@ flowchart TD
     F --> G["Frozen archive: the pipeline is retired, <br>content is locked, corrections go beside <br>the original text, and automated tests <br>guard all of it"]
 ```
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
-## Origin
+## Origin & how it was built
 
 GG Tank Watch started with one worried person. During the May 2026 emergency, Nancy had family near the evacuation zone. For days she refreshed the news on a loop, trying to tell from scattered and contradicting reports whether things were getting better or worse. So Mike built her one page that showed the official picture at a glance, honestly labeled. It became the one place she trusted. She could stop hunting for updates and get back to the people she loved.
 
@@ -103,7 +83,38 @@ GG Tank Watch started with one worried person. During the May 2026 emergency, Na
 
 *Built by Mike, with Nancy as its first user and the reason it exists.*
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+### The build journey, and the reversals
+
+The decisions worth showing are the ones that changed. Here is the whole shape of it, top to bottom; the full record is in [`DESIGN_LOG.md`](docs/archive/DESIGN_LOG.md).
+
+| Date | What changed | Type |
+|------|--------------|------|
+| May&nbsp;24 | Push alerts planned, then reversed within 90 minutes to one dashboard | Reversal |
+| May&nbsp;24 | Blast radius, chemical plume, and the evacuation zone added to the map, on request | Addition |
+| **May&nbsp;26** | **The conduit pivot: address checker, blast and plume layers, and all safety verdicts removed; evacuation zone kept** | **Reversal** |
+| May&nbsp;26 | Officials lift the evacuation; the incident is resolved | Milestone |
+| May&nbsp;27 | Map bundled into the app after a hosted map vanished on reload | Fix |
+| May&nbsp;30 | Vietnamese safety text removed; the site goes English-only | Removal |
+| May&nbsp;31 | Single-station wind arrow removed | Removal |
+| Jun&nbsp;1 | Live dashboard frozen into an archive | Milestone |
+
+What these changes have in common: each one removed a feature the project could not fully stand behind, even when that meant the site could do less.
+
+- The clearest example is the **conduit pivot** (the bold row above): the address checker and its personal verdicts were removed on purpose, because making that kind of call was not the project's place (see [the thesis](#the-thesis-a-conduit-not-a-judge)).
+- The name stayed **"GG Tank Watch," not "…Safety"**: a "safety" label would claim more authority than a volunteer archive actually has.
+
+### The incident, as archived
+
+| Fact | Detail |
+|------|--------|
+| **Substance** | Methyl methacrylate (MMA): about 7,000 gallons, inside a 34,000-gallon tank |
+| **Facility** | GKN Aerospace, 12122 Western Ave, Garden Grove, CA |
+| **Peak tank temperature** | At least 100°F (it maxed out the gauge, which could not read higher) |
+| **Peak evacuation** | ~50,000 people |
+| **Evacuation zone** | ~9 sq mi across 6 cities (Garden Grove, Anaheim, Buena Park, Cypress, Stanton, Westminster) |
+| **Window** | May 21–26, 2026 |
+| **Outcome** | No injuries; all evacuees returned |
+
 
 ---
 
@@ -175,7 +186,10 @@ Some tests began as mistakes caught in the real product; others closed off failu
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
 - Sealed method extract, folded in from the former [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method) repo (now an archived, read-only mirror): the F1–F12 failure-mode analysis ([docs/failure-analysis.md](docs/failure-analysis.md)), the decision-authority note ([docs/decision-authority.md](docs/decision-authority.md)), and a verifiable test-results export ([docs/eval-summary.json](docs/eval-summary.json)) sealed at commit `d34093c` — **210/210** (203 behavioral + 7 schema). The export is a point-in-time extract: it intentionally excludes the one summary-export meta-test, and the live suite has since grown to the 213 above.
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+
+---
+
+**Audited before freezing.** The whole archive was checked end to end on 2026-06-04 ([the audit record](docs/archive/AUDIT_2026-06-04.md)): its sharpest finding contradicted the project's own thesis — one item paired a dead link with a fabricated “verified” note — and was corrected with a new test so it cannot come back; 108 layout screenshots and all 112 page links were checked the same day. A later review ([2026-07-21](docs/archive/AUDIT_2026-07-21_FABLE5.md)) re-checked the repo’s presentation.
 
 ---
 
@@ -195,7 +209,6 @@ That refusal is an ethics decision and a legal decision at the same time.
 
 Removing the address checker and its personal verdicts made the product safer for residents *and* legally defensible. Full analysis: [`docs/LEGAL.md`](docs/LEGAL.md) and [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md).
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
@@ -259,31 +272,6 @@ The list of things *not* built is part of the design. The biggest refusals (the 
 - **No full-article copies.** Headline, short snippet, link, and attribution only.
 - **No government seals or "official" look.** The site must never be mistaken for the authority it points to.
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
-
----
-
-## How it was built: the journey, and the reversals
-
-The decisions worth showing are the ones that changed. Here is the whole shape of it, top to bottom; the full record is in [`DESIGN_LOG.md`](docs/archive/DESIGN_LOG.md).
-
-| Date | What changed | Type |
-|------|--------------|------|
-| May&nbsp;24 | Push alerts planned, then reversed within 90 minutes to one dashboard | Reversal |
-| May&nbsp;24 | Blast radius, chemical plume, and the evacuation zone added to the map, on request | Addition |
-| **May&nbsp;26** | **The conduit pivot: address checker, blast and plume layers, and all safety verdicts removed; evacuation zone kept** | **Reversal** |
-| May&nbsp;26 | Officials lift the evacuation; the incident is resolved | Milestone |
-| May&nbsp;27 | Map bundled into the app after a hosted map vanished on reload | Fix |
-| May&nbsp;30 | Vietnamese safety text removed; the site goes English-only | Removal |
-| May&nbsp;31 | Single-station wind arrow removed | Removal |
-| Jun&nbsp;1 | Live dashboard frozen into an archive | Milestone |
-
-What these changes have in common: each one removed a feature the project could not fully stand behind, even when that meant the site could do less.
-
-- The clearest example is the **conduit pivot** (the bold row above): the address checker and its personal verdicts were removed on purpose, because making that kind of call was not the project's place (see [the thesis](#the-thesis-a-conduit-not-a-judge)).
-- The name stayed **"GG Tank Watch," not "…Safety"**: a "safety" label would claim more authority than a volunteer archive actually has.
-
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
@@ -301,23 +289,10 @@ Each item carries its own provenance: the search that found it, whether the link
 
 Two tests keep this honest: [`eval/test_provenance.py`](eval/) fails the build if an item's source link was never actually fetched, and [`eval/test_readme_archive_count.py`](eval/) fails it if the counts above drift from the data file.
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
-## The close-out audit (2026-06-04)
-
-Before this README, the whole archive was audited end to end ([`docs/archive/AUDIT_2026-06-04.md`](docs/archive/AUDIT_2026-06-04.md)).
-
-- **Honesty (the point of the audit).** The most important finding contradicted the project's own thesis: one news item had a dead link paired with a *fabricated* "verified" note. It was corrected. Two smaller fixes followed. The Terms and Accessibility pages still described removed features, so they were trimmed to match the shipped app. The summary outcome "0 displaced" (confusing next to "~50,000 evacuated") was reworded to "no permanent displacement." Each fix shipped with a new test so it cannot come back.
-- **Layout.** 108 screenshots, from phone width to desktop, light and dark, every screen, taken with an automated browser. Every layout measured correct, with no new problems.
-- **Links.** 110 of the 112 links the page loads were live. One was genuinely dead (since fixed); one was briefly blocked by its server but real. A flagged concern about `abcnews.com` was checked by opening the real articles and turned out to be a false alarm.
-
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
-
----
-
-## Architecture (the retired pipeline)
+## Architecture & stack (the retired pipeline)
 
 The historical pipeline flowed top to bottom. The validation gate in the middle is the one place every fact had to pass before it could be published.
 
@@ -341,11 +316,8 @@ The architecture in plain terms:
 
 See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync paths and their cost tradeoff.
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
----
-
-## Stack
+### Stack
 
 - **Frontend:** plain HTML, CSS, and JavaScript, no framework, no build step.
   - The whole app is one **~116 KB** `dashboard.html`.
@@ -359,23 +331,6 @@ See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync pa
 - **Eval:** automated test suite, **213 tests across 66 files**, plus rubric prompts for the subjective checks ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
-
----
-
-## The incident (facts, as archived)
-
-| Fact | Detail |
-|------|--------|
-| **Substance** | Methyl methacrylate (MMA): about 7,000 gallons, inside a 34,000-gallon tank |
-| **Facility** | GKN Aerospace, 12122 Western Ave, Garden Grove, CA |
-| **Peak tank temperature** | At least 100°F (it maxed out the gauge, which could not read higher) |
-| **Peak evacuation** | ~50,000 people |
-| **Evacuation zone** | ~9 sq mi across 6 cities (Garden Grove, Anaheim, Buena Park, Cypress, Stanton, Westminster) |
-| **Window** | May 21–26, 2026 |
-| **Outcome** | No injuries; all evacuees returned |
-
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
@@ -396,11 +351,8 @@ python eval/run_all.py --skip integration   # 213 tests, exits 0
 
 The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and exits with an "ARCHIVED" error.
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
-
----
-
-## Repository layout
+<details>
+<summary><b>Repository layout</b></summary>
 
 ```
 gg-tank-watch/
@@ -420,7 +372,8 @@ gg-tank-watch/
 └── eval/                        ← run_all.py · test_*.py (66 files / 213 tests) · rubrics/
 ```
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
+</details>
+
 
 ---
 
@@ -428,7 +381,6 @@ gg-tank-watch/
 
 Released under the MIT license (see [`LICENSE`](LICENSE)). The safety disclaimer lives in [`NOTICE`](NOTICE).
 
-<p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
 ---
 
