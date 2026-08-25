@@ -31,11 +31,11 @@
 
 ## What this demonstrates
 
-A consumer-facing AI system that informs but never instructs. That guarantee is **code and tests, not prompting**, and it had to hold under real stakes. The organizing principle:
+A consumer-facing AI system that informs but never instructs — a guarantee held by **code and tests, not prompting**, under real stakes. The organizing principle:
 
 > **Responsible and helpful are the same lane.** Every safety constraint made the product *more* trustworthy and *more* useful to a worried reader, not less. The reasoning is the point, not just the code.
 
-That principle maps to Anthropic's "helpful, honest, harmless" standard, held under real stakes:
+It maps to Anthropic's "helpful, honest, harmless" standard:
 
 | Anthropic's standard | How this project held it |
 |---|---|
@@ -45,17 +45,9 @@ That principle maps to Anthropic's "helpful, honest, harmless" standard, held un
 
 What holds it up:
 
-- **Scalable oversight.** A suite of 213 automated tests catches safety regressions *before* they ship, not after.
-  - What it catches: fabricated sources, synthesized directives, stale data stamped fresh.
-- **The model never published directly.**
-  - Its extracted facts reached the live page only through one validation gate (`scripts/update_status.py`) that it could not bypass.
-  - The most the system could do was route people to officials.
-  - Page copy (labels, summaries) was AI-assisted and human-reviewed, disclosed on the site itself.
-- **The asymmetry that matters most.** A false "safe to return" message could have sent ~50,000 people back into danger. A false "still dangerous" only kept them away longer.
-  - Repeating officials' "evacuation lifted" announcement took at least two sources. Repeating a new danger update took one.
-  - The site never synthesized an alert level of its own.
-
-The rest of this README explains each decision: what was built, what was deliberately *not* built, and why.
+- **Scalable oversight.** A suite of 213 automated tests catches safety regressions *before* they ship: fabricated sources, synthesized directives, stale data stamped fresh.
+- **The model never published directly.** Its facts reached the live page only through one validation gate (`scripts/update_status.py`) it could not bypass; page copy was AI-assisted, human-reviewed, and disclosed on the site itself.
+- **The asymmetry that matters most.** A false "safe to return" could have sent ~50,000 people back into danger — so repeating "evacuation lifted" took at least two sources, a new danger update took one, and the site never synthesized an alert level of its own.
 
 
 ---
@@ -85,7 +77,7 @@ GG Tank Watch started with one worried person. During the May 2026 emergency, Na
 
 ### The build journey, and the reversals
 
-The decisions worth showing are the ones that changed. Here is the whole shape of it, top to bottom; the full record is in [`DESIGN_LOG.md`](docs/archive/DESIGN_LOG.md).
+The decisions worth showing are the ones that changed; the full record is in [`DESIGN_LOG.md`](docs/archive/DESIGN_LOG.md).
 
 | Date | What changed | Type |
 |------|--------------|------|
@@ -98,10 +90,7 @@ The decisions worth showing are the ones that changed. Here is the whole shape o
 | May&nbsp;31 | Single-station wind arrow removed | Removal |
 | Jun&nbsp;1 | Live dashboard frozen into an archive | Milestone |
 
-What these changes have in common: each one removed a feature the project could not fully stand behind, even when that meant the site could do less.
-
-- The clearest example is the **conduit pivot** (the bold row above): the address checker and its personal verdicts were removed on purpose, because making that kind of call was not the project's place (see [the thesis](#the-thesis-a-conduit-not-a-judge)).
-- The name stayed **"GG Tank Watch," not "…Safety"**: a "safety" label would claim more authority than a volunteer archive actually has.
+The removals share one rule: cut anything the project could not fully stand behind, even when that meant the site could do less — the **conduit pivot** (the bold row) is the clearest case (see [the thesis](#the-thesis-a-conduit-not-a-judge)). Even the name stayed **"GG Tank Watch," not "…Safety"**: a "safety" label would claim more authority than a volunteer archive actually has.
 
 ### The incident, as archived
 
@@ -168,17 +157,15 @@ Expected (213 tests, all green):
 
 The most important decision in this project is what it **refuses** to do.
 
-Early builds (v0.1–v0.7) had a "check your address" tool. You typed an address; it computed a danger radius (blast and chemical plume) and answered with a personal verdict: `SAFE`, `ELEVATED`, `HIGH`, or `CRITICAL`. On **May 26, 2026** all of that was removed (the project's records call this the **conduit pivot**). Since then the dashboard repeats officials' facts and routes people to officials' channels. It never tells anyone what to do, and it never makes a safety judgment of its own.
+Early builds (v0.1–v0.7) had a "check your address" tool: type an address, get a personal verdict. On **May 26, 2026** it was removed — the **conduit pivot**. Since then the dashboard repeats officials' facts, routes people to officials' channels, and never makes a safety judgment of its own.
 
-That refusal is an ethics decision and a legal decision at the same time.
+That refusal is ethics and law at once:
 
-- **Ethics.** A volunteer dashboard has no authority to tell a family whether their street is safe. Officials do. So the dashboard points at officials instead.
-- **Law.** Two protections cover a website that only passes along what other people published:
-  - **Section 230** (47 U.S.C. § 230(c)(1)): the federal law that says a website relaying other people's content is not treated as the speaker of that content.
-  - ***Winter v. G.P. Putnam's Sons*** (9th Cir. 1991): a court decision that publishers of information owe no duty to verify it.
-- **The line it must not cross.** The moment the app writes its *own* safety verdict, it leaves that shelter. It has volunteered safety advice, and the law holds someone who volunteers to protect people to a duty of reasonable care (Restatement (Second) of Torts §§ 323, 324A).
+- **Ethics.** A volunteer dashboard has no authority to tell a family whether their street is safe. Officials do — so it points at them.
+- **Law.** A site that only relays what others published is sheltered by **Section 230** (47 U.S.C. § 230(c)(1): a relay is not the speaker) and ***Winter v. G.P. Putnam's Sons*** (9th Cir. 1991: publishers owe no duty to verify).
+- **The line it must not cross.** The moment the app writes its *own* safety verdict it leaves that shelter: it has volunteered safety advice — and owes a duty of reasonable care (Restatement (Second) of Torts §§ 323, 324A).
 
-Removing the address checker and its personal verdicts made the product safer for residents *and* legally defensible. Full analysis: [`docs/LEGAL.md`](docs/LEGAL.md) and [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md).
+Removing the verdicts made the product safer *and* legally defensible. Full analysis: [`docs/LEGAL.md`](docs/LEGAL.md) · [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md).
 
 
 ---
@@ -220,41 +207,25 @@ Two tests keep this honest: [`eval/test_provenance.py`](eval/) fails the build i
 
 ## Architecture & stack (the retired pipeline)
 
-The historical pipeline flowed top to bottom. The validation gate in the middle is the one place every fact had to pass before it could be published.
+The historical pipeline flowed top to bottom; the validation gate in the middle is the one place every fact had to pass before publishing.
 
 | Step | Stage | What happens |
 |:----:|-------|--------------|
-| 1 | A scheduled refresh | A person kept it running while the incident was active; each run asked Claude to gather fresh facts |
+| 1 | A scheduled refresh | A person kept it running during the incident; each run asked Claude to gather fresh facts |
 | 2 | Claude (web search) | Returned the facts it found as JSON |
-| **3** | **`update_status.py`** | **The validation gate: checks corroboration, provenance, freshness, and dates; sets the danger level itself; writes the file safely** |
+| **3** | **`update_status.py`** | **The validation gate: checks corroboration, provenance, freshness, and dates; computes the danger level in its own code, never copied from the model; writes the file safely** |
 | 4 | `status.json` | The published data file (last updated May 26, when officials lifted the evacuation) |
 | 5 | `dashboard.html` | The reader: Map, Coverage Archive, Info; no longer checks for updates; still opens offline |
 
-The architecture in plain terms:
-
-- **No backend, no database, no logins, no build step.**
-- The whole thing is two parts: a Python program that writes the data, and an HTML/JavaScript page that reads it.
-- The two parts pass data through plain JSON files.
-- The browser runs everything, so there is no server to keep alive.
-- While the incident was active, the data was updated every ~30 minutes, and each fact was cross-referenced against multiple sources before publishing.
-- That pipeline is now frozen.
-- The map library ships inside the app on purpose: an earlier version loaded it from an outside server and the map vanished on reload, so it now travels with the app and is saved on your device.
-
-See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync paths and their cost tradeoff.
+**No backend, no database, no logins, no build step.** Two parts — a Python writer and an HTML/JavaScript page — passing plain JSON files; the reader runs entirely in the browser, no server to keep alive. The data was updated every ~30 minutes during the incident, each fact cross-referenced against multiple sources before publishing; the pipeline is now frozen. See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync paths.
 
 
 ### Stack
 
-- **Frontend:** plain HTML, CSS, and JavaScript, no framework, no build step.
-  - The whole app is one **~116 KB** `dashboard.html`.
-  - Map: [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (**~870 KB**, JavaScript + CSS) with [OpenFreeMap](https://openfreemap.org/) vector tiles (light and dark).
-  - A service worker (cache `gg-tank-v90`) saves the shell and map locally, so the page still opens offline.
+- **Frontend:** plain HTML, CSS, and JavaScript — no framework; one **~116 KB** `dashboard.html`. Map: [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (**~870 KB**) with [OpenFreeMap](https://openfreemap.org/) vector tiles; a service worker saves the shell and map locally, so the page still opens offline.
 - **Writer:** Python 3 **standard library only**, no outside dependencies.
-- **Security headers (production, set in `vercel.json`):**
-  - a Content Security Policy that restricts the browser to loading only the site's own resources (`default-src 'self'`);
-  - `X-Frame-Options: DENY` (it cannot be embedded in another site);
-  - `X-Robots-Tag: noindex, nofollow` (search engines are asked not to list it).
-- **Eval:** automated test suite, **213 tests across 66 files**, plus rubric prompts for the subjective checks ([`eval/rubrics/`](eval/rubrics/)).
+- **Security headers** (production, `vercel.json`): a Content Security Policy limiting the browser to the site's own resources (`default-src 'self'`); `X-Frame-Options: DENY`; `X-Robots-Tag: noindex, nofollow`.
+- **Eval:** **213 tests across 66 files**, plus rubric prompts for the subjective checks ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
 
@@ -262,17 +233,16 @@ See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync pa
 
 ## Running it yourself
 
-**Proof it holds:** `python eval/run_all.py --skip integration` runs 213/213. Everything this page claims is explained, and tested, in this repo.
+**Proof it holds:** `python eval/run_all.py --skip integration` runs 213/213.
 
-**View it live:** **[ggtankwatch.org](https://ggtankwatch.org)** is the hosted, frozen archive. It is intentionally `noindex` (not listed in search engines), but the direct link works.
+**View it live:** **[ggtankwatch.org](https://ggtankwatch.org)** — the hosted, frozen archive; intentionally `noindex` (not listed in search engines), but the direct link works.
 
-To run it locally, see [`USAGE.md`](docs/archive/USAGE.md). The dashboard is a single static file: serve the `public/` folder and open `dashboard.html`.
+**Run it locally** ([`USAGE.md`](docs/archive/USAGE.md)): the dashboard is a single static file — serve the `public/` folder and open `dashboard.html`.
 
 ```powershell
 git clone <this-repo>
 cd gg-tank-watch
 python -m http.server 8000 -d public   # then open http://127.0.0.1:8000/dashboard.html
-python eval/run_all.py --skip integration   # 213 tests, exits 0
 ```
 
 The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and exits with an "ARCHIVED" error.
