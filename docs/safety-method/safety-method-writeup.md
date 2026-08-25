@@ -1,4 +1,4 @@
-# Bounding an AI model's authority by code, not prompts: a worked example from a real chemical emergency
+# A conduit, not a judge — enforced by code, not prompts: a worked example from a real chemical emergency
 
 > A first-person writeup of the method and the build. Every claim traces to a file in the repo.
 
