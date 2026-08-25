@@ -9,7 +9,7 @@
 [![Status](https://img.shields.io/badge/status-frozen%20archive-informational)](#)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Stack](https://img.shields.io/badge/stack-vanilla%20JS%20%2B%20Python%20stdlib-lightgrey)](#stack)
-[![Eval](https://img.shields.io/badge/eval-212%20tests-orange)](eval/)
+[![Eval](https://img.shields.io/badge/eval-213%20tests-orange)](eval/)
 [![CI](https://github.com/Mike-E-Log/gg-tank-watch/actions/workflows/eval.yml/badge.svg)](https://github.com/Mike-E-Log/gg-tank-watch/actions/workflows/eval.yml)
 [![Live](https://img.shields.io/badge/live-ggtankwatch.org-2ea44f)](https://ggtankwatch.org)
 
@@ -63,7 +63,7 @@ That principle maps to Anthropic's "helpful, honest, harmless" standard, held un
 
 What holds it up:
 
-- **Scalable oversight.** A suite of 212 automated tests catches safety regressions *before* they ship, not after.
+- **Scalable oversight.** A suite of 213 automated tests catches safety regressions *before* they ship, not after.
   - What it catches: fabricated sources, synthesized directives, stale data stamped fresh.
 - **The model never published directly.**
   - Its extracted facts reached the live page only through one validation gate (`scripts/update_status.py`) that it could not bypass.
@@ -128,18 +128,18 @@ Full diagram + per-control test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](doc
 python eval/run_all.py --skip integration
 ```
 
-Expected (212 tests, all green):
+Expected (213 tests, all green):
 
 ```
-  behavioral      204/204  (100.0% pass)
+  behavioral      205/205  (100.0% pass)
   schema            8/8    (100.0% pass)
 ----------------------------------------------------------------
-  TOTAL           212/212  (100.0% pass)
+  TOTAL           213/213  (100.0% pass)
 ```
 
-(The full census is **214**: the 2 extra tests are live geocoder regressions that call OpenStreetMap's Nominatim service over the network, so they stay opt-in — drop `--skip integration` to run them.)
+(The full census is **215**: the 2 extra tests are live geocoder regressions that call OpenStreetMap's Nominatim service over the network, so they stay opt-in — drop `--skip integration` to run them.)
 
-**212 automated pass/fail tests across 66 files** cover:
+**213 automated pass/fail tests across 66 files** cover:
 
 - **The pipeline:** how the update script behaved on each run, plus the four gates in the table above.
 - **The content rules:** the site never produces verdicts of its own, never tells anyone what to do, and never ships safety text in a language no one on the team could verify.
@@ -173,7 +173,7 @@ Some tests began as mistakes caught in the real product; others closed off failu
 - [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the whole approach in one first-person read.
 - [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): maps each safety principle to its tests.
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
-- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note). Its `eval-summary.json` is sealed at this repo's `main` commit (`d34093c`) — **210/210** (203 behavioral + 7 schema). The export is a point-in-time extract: it intentionally excludes the one summary-export meta-test, and the live suite has since grown to the 212 above.
+- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note). Its `eval-summary.json` is sealed at this repo's `main` commit (`d34093c`) — **210/210** (203 behavioral + 7 schema). The export is a point-in-time extract: it intentionally excludes the one summary-export meta-test, and the live suite has since grown to the 213 above.
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
@@ -230,7 +230,7 @@ Five tables, one per safety principle. Each row is one decision: what was decide
 | **Stricter proof for good news than for bad** | A false "safe to return" message is the worst outcome, so the reassuring direction needs two sources and the danger direction needs one (the first rule in the safety-architecture table above) | Treating both directions the same, so a single source could authorize a "safe to return" message |
 | **The danger level is computed by the project's own code, never copied from the AI** (an internal value; residents never saw it) | A check that only found part of the facts must not quietly lower the danger level | Let the model set the danger level / recompute it from scratch on every check |
 | **If gathering fails, publish nothing** | The page goes visibly stale, never confidently wrong. This is the standard fail-safe rule: when a safety system loses its input, it must stop rather than guess | Report success with empty facts (which stamps stale data as fresh) |
-| **212 automated tests gate every merge** | Safety properties regress silently without a machine-checked gate | Manual review only |
+| **213 automated tests gate every merge** | Safety properties regress silently without a machine-checked gate | Manual review only |
 
 ### Language access
 
@@ -356,7 +356,7 @@ See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync pa
   - a Content Security Policy that restricts the browser to loading only the site's own resources (`default-src 'self'`);
   - `X-Frame-Options: DENY` (it cannot be embedded in another site);
   - `X-Robots-Tag: noindex, nofollow` (search engines are asked not to list it).
-- **Eval:** automated test suite, **212 tests across 66 files**, plus rubric prompts for the subjective checks ([`eval/rubrics/`](eval/rubrics/)).
+- **Eval:** automated test suite, **213 tests across 66 files**, plus rubric prompts for the subjective checks ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
@@ -381,7 +381,7 @@ See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync pa
 
 ## Running it yourself
 
-**Proof it holds:** `python eval/run_all.py --skip integration` runs 212/212. Everything this page claims is explained, and tested, in this repo.
+**Proof it holds:** `python eval/run_all.py --skip integration` runs 213/213. Everything this page claims is explained, and tested, in this repo.
 
 **View it live:** **[ggtankwatch.org](https://ggtankwatch.org)** is the hosted, frozen archive. It is intentionally `noindex` (not listed in search engines), but the direct link works.
 
@@ -391,7 +391,7 @@ To run it locally, see [`USAGE.md`](docs/archive/USAGE.md). The dashboard is a s
 git clone <this-repo>
 cd gg-tank-watch
 python -m http.server 8000 -d public   # then open http://127.0.0.1:8000/dashboard.html
-python eval/run_all.py --skip integration   # 212 tests, exits 0
+python eval/run_all.py --skip integration   # 213 tests, exits 0
 ```
 
 The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and exits with an "ARCHIVED" error.
@@ -417,7 +417,7 @@ gg-tank-watch/
 ├── data/                        ← source data: timeline.json, news seed + audit
 ├── docs/                        ← project docs (CHANGELOG.md, safety-method/, + archive/ for design logs, audits, spec)
 ├── scripts/                     ← update_status.py (validation gate), gather_facts.py, start_dashboard.bat
-└── eval/                        ← run_all.py · test_*.py (66 files / 212 tests) · rubrics/
+└── eval/                        ← run_all.py · test_*.py (66 files / 213 tests) · rubrics/
 ```
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>

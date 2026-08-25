@@ -79,6 +79,7 @@ def test_english_only():
 ENGLISH_ONLY_KEYS = {
     "share.copied",
     "info.subtab.status", "info.subtab.resources", "info.subtab.about",
+    "safety.strip.ai",
 }
 
 
