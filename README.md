@@ -173,7 +173,7 @@ Some tests began as mistakes caught in the real product; others closed off failu
 - [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the whole approach in one first-person read.
 - [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): maps each safety principle to its tests.
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
-- [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method): the standalone published extract (the F1–F12 failure-mode analysis, a verifiable test-results export, and the decision-authority note). Its `eval-summary.json` is sealed at this repo's `main` commit (`d34093c`) — **210/210** (203 behavioral + 7 schema). The export is a point-in-time extract: it intentionally excludes the one summary-export meta-test, and the live suite has since grown to the 213 above.
+- Sealed method extract, folded in from the former [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method) repo (now an archived, read-only mirror): the F1–F12 failure-mode analysis ([docs/failure-analysis.md](docs/failure-analysis.md)), the decision-authority note ([docs/decision-authority.md](docs/decision-authority.md)), and a verifiable test-results export ([docs/eval-summary.json](docs/eval-summary.json)) sealed at commit `d34093c` — **210/210** (203 behavioral + 7 schema). The export is a point-in-time extract: it intentionally excludes the one summary-export meta-test, and the live suite has since grown to the 213 above.
 
 <p align="right">(<a href="#contents">↑ back to top</a>)</p>
 
