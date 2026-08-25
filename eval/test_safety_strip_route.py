@@ -66,6 +66,27 @@ def test_safety_strip_terms_outside_route_label():
             else "Terms link is inside the Current-info route row (ambiguous label scope)"}
 
 
+def test_safety_strip_discloses_ai_assistance():
+    """Honesty: the persistent strip must carry the short AI disclosure ("AI-assisted,
+    human-checked") on every tab (2026-08-17, operator option 1). The full sentence stays as
+    About's closing line; this guard makes the disclosure PERSISTENT, matching the project's
+    stated posture. Order inside the info row: disclaimer, AI clause, Terms. No trailing
+    period (flows into separators, same rule as the disclaimer)."""
+    text = DASHBOARD.read_text(encoding="utf-8")
+    m = re.search(r'<span class="safety-strip-info">(.*?)</span>\s*<span id="banner-resolved"', text, re.S)
+    block = m.group(1) if m else ""
+    has_markup = 'data-i18n="safety.strip.ai"' in block
+    order_ok = (has_markup and
+                block.find('safety.strip.info') < block.find('safety.strip.ai') < block.find('safety.strip.terms'))
+    em = re.search(r'"safety\.strip\.ai":\s*\{\s*en:\s*"([^"]*)"', text)
+    en = (em.group(1) if em else "").strip()
+    en_ok = "AI" in en and "human" in en.lower() and not en.endswith(".")
+    ok = bool(block) and has_markup and order_ok and en_ok
+    return {"passed": ok,
+            "details": f"strip discloses AI persistently: '{en}'" if ok
+            else f"markup={has_markup} order={order_ok} en='{en}'"}
+
+
 def test_safety_strip_disclaimer_has_no_trailing_period():
     """Copy: the 'Informational only - not official' disclaimer reads as a label that flows into the
     ' . Terms' link, so it must NOT end with a hard period (a trailing '.' before the separator looks
