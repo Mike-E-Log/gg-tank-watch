@@ -5,7 +5,7 @@
 - A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
 - **An AI collected candidate facts from the web — none of them trusted yet.**
-- **It could not publish. One safety filter — plain code — decided what went live.**
+- **It could not publish. A safety filter — plain code — checked every fact and let only the trustworthy ones go live on the dashboard.**
 - **Automated tests ensure we align with the site's first rule: inform, never instruct.**
 
 ![Status](https://img.shields.io/badge/status-frozen%20archive-informational)
@@ -65,7 +65,7 @@ update_status.py — THE SAFETY FILTER — code that CHECKED every candidate fac
   ↓
 status.json — only the facts that passed
   ↓
-dashboard.html — relays officials, never instructs
+dashboard.html — showed those passed facts; relayed officials, never instructed
   ↓
 May 26: resolved → frozen archive, guarded by tests
 ```
