@@ -68,6 +68,7 @@ status.json — only the facts that passed
 dashboard.html — showed those passed facts; relayed officials, never instructed
   ↓
 May 26: resolved → frozen archive, guarded by tests
+  the historical record is locked — design and wording can still improve
 ```
 
 
