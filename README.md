@@ -79,7 +79,7 @@ May 26: resolved → frozen archive, guarded by tests
 | Writing the summaries on the site | AI compiled summaries from official and news sources | A person checked them before publish; every page says "AI-assisted, human-checked" |
 | Danger level | **Not AI** — computed in the safety filter's own code, never copied from the model | The code path is the control; tests pin it |
 | Building the code, tests, and docs | Claude (an AI coding assistant) helped write the dashboard, pipeline, eval suite, and write-ups | Automated tests run before every change goes live; commit trailers disclose co-authorship |
-| Testing the safety filter | The suite includes drills — tests that hand the filter inaccurate information to prove it still refuses | Any failed test blocks a change from going live |
+| Testing the safety filter | The suite includes fact-checker tests: each hands the filter a fake fact to prove it still refuses | Any failed test blocks a change from going live |
 
 ---
 
