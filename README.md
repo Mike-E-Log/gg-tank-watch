@@ -4,7 +4,7 @@
 
 - A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
-- **An AI collected candidate facts — code decided what got published.** Every fact the AI brought back passed one gatekeeper program first — for example, "evacuation lifted" could not publish until two sources, one of them official, agreed. Automated tests still guard the site's rules — first among them: inform, never instruct.
+- **An AI collected candidate facts — code decided what got published.** If a news page said the evacuation was lifted, the AI recorded that claim with its link — and the gatekeeper program refused to publish it until a second source said it too, at least one of the two an official agency. Automated tests still guard the site's rules — first among them: inform, never instruct.
 
 ![Status](https://img.shields.io/badge/status-frozen%20archive-informational)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
