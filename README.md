@@ -4,7 +4,7 @@
 
 - A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
-- **An AI collected candidate facts from the web.**
+- **An AI collected candidate facts from the web — none of them trusted yet.**
 - **It could not publish. One safety filter — plain code — decided what went live.**
 - **Automated tests hold the site's first rule: inform, never instruct.**
 
@@ -47,7 +47,7 @@ It maps to Anthropic's "helpful, honest, harmless" standard:
 
 What holds it up:
 
-- **Scalable oversight.** A suite of automated tests catches safety regressions *before* they ship: fabricated sources, synthesized directives, stale data stamped fresh.
+- **Scalable oversight — checks that run themselves.** A suite of automated tests catches safety failures *before* anything goes live: made-up sources, orders the site invented, old data labeled as new.
 - **The model collected; it never published.** Its candidate facts reached the live page only through one safety filter (`scripts/update_status.py`) it could not bypass; page copy was AI-assisted, human-reviewed, and disclosed on the site itself.
 - **The asymmetry that matters most.** A false "safe to return" could have sent ~50,000 people back into danger — so repeating "evacuation lifted" took at least two sources, a new danger update took one, and the site never synthesized an alert level of its own.
 
@@ -94,7 +94,7 @@ The decisions worth showing are the ones that changed; the full record is in [`D
 | May&nbsp;31 | Single-station wind arrow removed | Removal |
 | Jun&nbsp;1 | Live dashboard frozen into an archive | Milestone |
 
-The removals share one rule: cut anything the project could not fully stand behind, even when that meant the site could do less — the **conduit pivot** (the bold row) is the clearest case (see [the thesis](#the-thesis-a-conduit-not-a-judge)). Even the name stayed **"GG Tank Watch," not "…Safety"**: a "safety" label would claim more authority than a volunteer archive actually has.
+The removals share one rule: cut anything the project could not fully stand behind, even when that meant the site could do less — the **conduit pivot** (the bold row — the day the site stopped judging and only passed things on; see [the thesis](#the-thesis-a-conduit-not-a-judge)). Even the name stayed **"GG Tank Watch," not "…Safety"**: a "safety" label would claim more authority than a volunteer archive actually has.
 
 ### The incident, as archived
 
@@ -124,7 +124,7 @@ The four highest-stakes rules, enforced in code, not prompting:
 | Control | The rule |
 |---------|----------|
 | **Corroboration** | "Evacuation lifted" repeated only with **at least 2 sources, 1 of them official**; a new danger repeated with 1 — a single made-up value could not fire a false "safe to return" |
-| **Provenance** | A statement was dropped unless its source URL had actually been fetched in the run that produced it — no citing pages the pipeline never visited |
+| **Where it came from** (provenance) | A statement was dropped unless its source URL had actually been fetched in the run that produced it — no citing pages the pipeline never visited |
 | **Freshness honesty** | Data age was tracked separately from write time — a run that found nothing new could not stamp old data as fresh |
 | **Date sanity** | Out-of-range or malformed timestamps were nulled — a bad date could not flip the incident to "resolved" |
 
@@ -147,16 +147,16 @@ Expected (213 tests, all green):
 
 (The full census is **215**: the 2 extra tests are live geocoder regressions that call a network service, so they stay opt-in — drop `--skip integration` to run them.)
 
-**Automated pass/fail tests** are quality control on the safety filter itself — they hand it fake forms (a lone source claiming "all clear," an invented link, a future date) and fail the build unless it refuses. They also guard the pipeline rules above, the content rules (no verdicts, no directives, no safety text in a language no one on the team could verify), and the frozen archive: nothing dated after the May 26 all-clear, and the numbers quoted in this README are checked against the data files, so this page cannot quietly drift. Others cover security (anything copied from the web is treated as plain text) and the phone-screen UI. Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows up in the score history.
+**Automated pass/fail tests** are quality control on the safety filter itself — they hand it fake forms (a lone source claiming "all clear," an invented link, a future date) and fail the build unless it refuses. They also guard the pipeline rules above, the content rules (no verdicts, no directives, no safety text in a language no one on the team could verify), and the frozen archive: nothing dated after the May 26 all-clear, and the numbers quoted in this README are checked against the data files, so this page cannot quietly drift. Others cover security (anything copied from the web is treated as plain text) and the phone-screen UI. Each run adds its score to a running log ([`eval/scores.jsonl`](eval/scores.jsonl)), so breakage shows up in the history.
 
-**What CI does here:** on every proposed change, GitHub Actions re-runs the whole suite plus a repo-hygiene check, and the branch cannot merge until both pass — so an edit that weakens the safety filter is blocked before it ships, and the author sees exactly which rule broke.
+**Every proposed edit is checked automatically (CI):** GitHub re-runs all the tests plus a tidiness check, and the edit cannot go in until both pass — so a change that weakens the safety filter is blocked before it goes live, and the author sees exactly which rule broke.
 
 *Going deeper:*
 
 - [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the controls, the eval harness, and its blind spots, in one first-person read.
 - [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): every safety principle mapped to its tests.
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
-- Sealed method extract from the archived [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method) mirror: failure-mode analysis ([docs/failure-analysis.md](docs/failure-analysis.md)), decision-authority note ([docs/decision-authority.md](docs/decision-authority.md)), and a test-results export ([docs/eval-summary.json](docs/eval-summary.json)) sealed at `d34093c` — **210/210** (the export omits its own meta-test; the live suite has since grown).
+- Copied from the archived [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method) repo and frozen at one point in time (commit `d34093c`): failure-mode analysis ([docs/failure-analysis.md](docs/failure-analysis.md)), decision-authority note ([docs/decision-authority.md](docs/decision-authority.md)), and a test-results export ([docs/eval-summary.json](docs/eval-summary.json)) — **210/210** (the export omits its own meta-test; the live suite has since grown).
 
 
 ---
@@ -169,7 +169,7 @@ Expected (213 tests, all green):
 
 The most important decision in this project is what it **refuses** to do.
 
-Early builds (v0.1–v0.7) had a "check your address" tool: type an address, get a personal verdict. On **May 26, 2026** it was removed — the **conduit pivot**. Since then the dashboard repeats officials' facts, routes people to officials' channels, and never makes a safety judgment of its own.
+Early builds (v0.1–v0.7) had a "check your address" tool: type an address, get a personal verdict. On **May 26, 2026** it was removed — the **conduit pivot**: from that day the site would only pass along what officials said, never judge. Since then the dashboard repeats officials' facts, routes people to officials' channels, and never makes a safety judgment of its own.
 
 That refusal is ethics and law at once:
 
@@ -184,7 +184,7 @@ Removing the verdicts made the product safer *and* legally defensible. Full anal
 
 ## Safety & ethics decisions (the core)
 
-Six decisions carry the project. Each gave something up. The complete record — 39 numbered decisions, each with its reasoning, a rubric score, and any reversal — lives in [`DESIGN_LOG.md`](docs/archive/DESIGN_LOG.md).
+Six decisions carry the project. Each gave something up. The complete record — 39 numbered decisions, each with its reasoning, a scored review, and any reversal — lives in [`DESIGN_LOG.md`](docs/archive/DESIGN_LOG.md).
 
 | Decision | What it bought the reader | Evidence |
 |----------|---------------------------|----------|
@@ -193,7 +193,7 @@ Six decisions carry the project. Each gave something up. The complete record —
 | **AI involvement disclosed on the page.** The About tab closes with: "Summaries in this archive are compiled with AI assistance from official and news sources, then checked by people." — legible (13px), never fine print | The reader knows what produced what they're reading | [Live site](https://ggtankwatch.org) → Info → About · [`eval/test_info_archive_clarity.py`](eval/test_info_archive_clarity.py) |
 | **Stricter proof for good news than for bad.** Repeating "evacuation lifted" took two sources; a new danger took one. And if gathering failed, nothing was published | A false "safe to return" — the worst outcome for ~50,000 evacuees — was the hardest message to publish; the page went visibly stale, never confidently wrong | [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) |
 | **English-only by design.** No safety text in a language no one on the team could verify; residents with limited English are routed to officials, who publish their own verified translations | The affected area overlaps Little Saigon — a *wrong* Vietnamese safety message is worse than none | [`docs/LANGUAGE_ACCESS.md`](docs/LANGUAGE_ACCESS.md) · [`eval/test_language_access.py`](eval/test_language_access.py) |
-| **Nothing asked of the reader.** No ads, subscriptions, tracking, or login; `noindex` kept permanently; aggregate numbers only, never personal information | A free page with no stake in its readers' attention or data — and no exposure of the people it served | [`docs/LEGAL.md`](docs/LEGAL.md) · [`public/vercel.json`](public/vercel.json) |
+| **Nothing asked of the reader.** No ads, subscriptions, tracking, or login; never listed in search engines (`noindex`, permanent); aggregate numbers only, never personal information | A free page with no stake in its readers' attention or data — and no exposure of the people it served | [`docs/LEGAL.md`](docs/LEGAL.md) · [`public/vercel.json`](public/vercel.json) |
 
 What was *not* built is design too: no single-station wind arrow, no scraped images, no full-article copies, no government-seal styling — and the map *library* ships with the site (only OpenFreeMap tiles and Google Fonts load from outside; the page still loads if either is unreachable). Each follows the same rule: **no authority of its own — route to officials.**
 
