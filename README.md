@@ -4,7 +4,9 @@
 
 - A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
-- **An AI collected candidate facts — code decided what got published.** Every fact the AI brought back passed one gatekeeper program first — for example, "evacuation lifted" could not publish until two sources, one of them official, agreed. Automated tests still guard the site's rules — first among them: inform, never instruct.
+- **An AI collected candidate facts from the web.**
+- **It could not publish. One safety filter — plain code — decided what went live.**
+- **Automated tests hold the site's first rule: inform, never instruct.**
 
 ![Status](https://img.shields.io/badge/status-frozen%20archive-informational)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -46,7 +48,7 @@ It maps to Anthropic's "helpful, honest, harmless" standard:
 What holds it up:
 
 - **Scalable oversight.** A suite of automated tests catches safety regressions *before* they ship: fabricated sources, synthesized directives, stale data stamped fresh.
-- **The model collected; it never published.** Its candidate facts reached the live page only through one validation gate (`scripts/update_status.py`) it could not bypass; page copy was AI-assisted, human-reviewed, and disclosed on the site itself.
+- **The model collected; it never published.** Its candidate facts reached the live page only through one safety filter (`scripts/update_status.py`) it could not bypass; page copy was AI-assisted, human-reviewed, and disclosed on the site itself.
 - **The asymmetry that matters most.** A false "safe to return" could have sent ~50,000 people back into danger — so repeating "evacuation lifted" took at least two sources, a new danger update took one, and the site never synthesized an alert level of its own.
 
 
@@ -57,7 +59,7 @@ What holds it up:
 ```text
 Claude + web search — COLLECTED candidate facts, every ~20-30 min (May 2026)
   ↓
-update_status.py — THE GATE — code that CHECKED every candidate fact
+update_status.py — THE SAFETY FILTER — code that CHECKED every candidate fact
   corroboration · provenance · freshness · dates
   danger level set in code, never by the model
   ↓
@@ -111,11 +113,11 @@ The removals share one rule: cut anything the project could not fully stand behi
 
 ## Safety architecture & verification
 
-The model's job ended at collection — publishing was the gatekeeper's call. How a web search became a published fact:
+The model's job ended at collection — publishing was the safety filter's call. How a web search became a published fact:
 
 1. **Collect.** Each run, Claude searched the web and had to answer with one fixed form: named boxes like *evacuation lifted? true/false* and *residents evacuated*, plus quoted statements, each carrying the link it came from. A filled box is one candidate fact; anything that didn't fit the form was rejected.
-2. **Check.** The gatekeeper (`scripts/update_status.py`) checked every box with the rules for its type — different boxes, different rules.
-3. **Publish.** Only what passed was written to `status.json`, the published data file. The page reads nothing else.
+2. **Check.** The safety filter (`scripts/update_status.py`) checked every box with the rules for its type — different boxes, different rules. For example: if a news page said the evacuation was lifted, that claim was held until a second source — at least one of the two an official agency — said it too.
+3. **Publish.** Only what passed was written to `status.json`, the published data file. The page reads nothing else. A failing fact never half-survived: a statement with an unfetched link was dropped, a bad date was blanked, and under-sourced good news was simply held until another source arrived.
 
 The four highest-stakes rules, enforced in code, not prompting:
 
@@ -126,7 +128,7 @@ The four highest-stakes rules, enforced in code, not prompting:
 | **Freshness honesty** | Data age was tracked separately from write time — a run that found nothing new could not stamp old data as fresh |
 | **Date sanity** | Out-of-range or malformed timestamps were nulled — a bad date could not flip the incident to "resolved" |
 
-Full diagram + per-control test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md).
+**Inside the safety filter**, every run took the same four steps: read the AI's form → apply each box's rules (the table above) → compute the danger level in its own code, never copied from the model → write `status.json` safely. Full structure + per-control test mapping: [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md).
 
 ### Run the tests yourself
 
@@ -145,7 +147,9 @@ Expected (213 tests, all green):
 
 (The full census is **215**: the 2 extra tests are live geocoder regressions that call a network service, so they stay opt-in — drop `--skip integration` to run them.)
 
-**Automated pass/fail tests** are quality control on the gatekeeper itself — they hand it fake forms (a lone source claiming "all clear," an invented link, a future date) and fail the build unless it refuses. They also guard the pipeline rules above, the content rules (no verdicts, no directives, no safety text in a language no one on the team could verify), and the frozen archive: nothing dated after the May 26 all-clear, and the numbers quoted in this README are checked against the data files, so this page cannot quietly drift. Others cover security (anything copied from the web is treated as plain text) and the phone-screen UI. Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows up in the score history.
+**Automated pass/fail tests** are quality control on the safety filter itself — they hand it fake forms (a lone source claiming "all clear," an invented link, a future date) and fail the build unless it refuses. They also guard the pipeline rules above, the content rules (no verdicts, no directives, no safety text in a language no one on the team could verify), and the frozen archive: nothing dated after the May 26 all-clear, and the numbers quoted in this README are checked against the data files, so this page cannot quietly drift. Others cover security (anything copied from the web is treated as plain text) and the phone-screen UI. Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows up in the score history.
+
+**What CI does here:** on every proposed change, GitHub Actions re-runs the whole suite plus a repo-hygiene check, and the branch cannot merge until both pass — so an edit that weakens the safety filter is blocked before it ships, and the author sees exactly which rule broke.
 
 *Going deeper:*
 
