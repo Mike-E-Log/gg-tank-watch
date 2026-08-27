@@ -136,16 +136,16 @@ The four highest-stakes rules, enforced in code, not prompting:
 python eval/run_all.py --skip integration
 ```
 
-Expected (213 tests, all green):
+Expected (all green):
 
 ```
-  behavioral      205/205  (100.0% pass)
-  schema            8/8    (100.0% pass)
+  behavioral      --/--  (100.0% pass)
+  schema          --/--  (100.0% pass)
 ----------------------------------------------------------------
-  TOTAL           213/213  (100.0% pass)
+  TOTAL           --/--  (100.0% pass)
 ```
 
-(The full census is **215**: the 2 extra tests are live geocoder regressions that call a network service, so they stay opt-in — drop `--skip integration` to run them.)
+(The run prints the live counts where the `--` sit. This page doesn't repeat them, so it can never drift stale as the suite grows. Some tests call a live network service and stay opt-in — drop `--skip integration` to run them too.)
 
 **Automated pass/fail tests** are quality control on the safety filter itself — they hand it fake forms (a lone source claiming "all clear," an invented link, a future date) and fail the build unless it refuses. They also guard the pipeline rules above, the content rules (no verdicts, no directives, no safety text in a language no one on the team could verify), and the frozen archive: nothing dated after the May 26 all-clear, and the numbers quoted in this README are checked against the data files, so this page cannot quietly drift. Others cover security (anything copied from the web is treated as plain text) and the phone-screen UI. Each run adds its score to a running log ([`eval/scores.jsonl`](eval/scores.jsonl)), so breakage shows up in the history.
 
@@ -156,7 +156,7 @@ Expected (213 tests, all green):
 - [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the controls, the eval harness, and its blind spots, in one first-person read.
 - [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): every safety principle mapped to its tests.
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
-- Copied from the archived [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method) repo and frozen at one point in time (commit `d34093c`): failure-mode analysis ([docs/failure-analysis.md](docs/failure-analysis.md)), decision-authority note ([docs/decision-authority.md](docs/decision-authority.md)), and a test-results export ([docs/eval-summary.json](docs/eval-summary.json)) — **210/210** (the export omits its own meta-test; the live suite has since grown).
+- Copied from the archived [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method) repo and frozen at one point in time (commit `d34093c`): failure-mode analysis ([docs/failure-analysis.md](docs/failure-analysis.md)), decision-authority note ([docs/decision-authority.md](docs/decision-authority.md)), and a test-results export ([docs/eval-summary.json](docs/eval-summary.json)) — all passing at that commit (the live suite has since grown).
 
 
 ---

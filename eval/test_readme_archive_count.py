@@ -18,13 +18,20 @@ seven times in the repo's history because a growing census was pinned as static 
 guard. The census check below locks README / CLAUDE.md / CONTRIBUTING.md — and, since
 2026-08-10, docs/safety-method/safety-method-writeup.md + evidence-summary.md — to the
 actual number of discovered test functions, so growing the suite without updating the
-docs fails the build in the same PR. Remote surfaces (portfolio sites, applications) deliberately use
-floor wording ("more than 200") and are out of scope here.
+docs fails the build in the same PR. Remote surfaces (portfolio sites, applications) formerly
+used floor wording ("more than 200").
 
 Re-scoped 2026-08-26 (operator ruling, "one exact place"): the exact count now lives ONLY
 in the README's runnable expected-output block; every other surface says "automated tests"
 with no number. The guard keeps the canonical block exact and FAILS on any stray numbered
 test-count claim in the five guarded docs, so the reconciliation burden cannot creep back.
+
+Re-scoped again 2026-08-27 (operator ruling, all-surfaces de-number — supersedes
+one-exact-place): NO test-count number survives on any doc surface, the README
+expected-output block included; the run itself prints the only tally. The guard requires
+no exact string anywhere and FAILS on any numbered test-count claim (1-4 digits, slash
+tallies included) in the six guarded docs. Remote surfaces are swept to count-free wording
+under the same ruling, still out of scope here.
 """
 import json
 import re
@@ -57,38 +64,33 @@ def _census_doc_mismatches():
     """Folded into the breakdown test (not a new test function) so the guard itself
     does not grow the census it locks.
 
-    One-exact-place policy (operator ruling 2026-08-26): the canonical expected-output
-    block in the README must match the live census exactly; everywhere else, any
-    number sitting on a test-count claim is a violation."""
+    All-surfaces de-number policy (operator ruling 2026-08-27, supersedes the
+    2026-08-26 one-exact-place ruling): no test-count number survives on any doc
+    surface — no canonical block, no allowed tokens. Any number sitting on a
+    test-count claim is a violation; the census is computed only so failure
+    details can report the live scale."""
     c = _census()
-    d, full = c["default"], c["full"]
-    readme = README.read_text(encoding="utf-8")
-    problems = [k for k, ok in {
-        "readme expected-intro": f"Expected ({d} tests, all green)" in readme,
-        "readme expected-block": f"TOTAL           {d}/{d}" in readme,
-        "readme full-census": f"full census is **{full}**" in readme,
-    }.items() if not ok]
+    problems = []
     docs = {
-        "README.md": readme,
+        "README.md": README.read_text(encoding="utf-8"),
         "CLAUDE.md": (REPO / "CLAUDE.md").read_text(encoding="utf-8"),
         "docs/CONTRIBUTING.md": (REPO / "docs" / "CONTRIBUTING.md").read_text(encoding="utf-8"),
+        "docs/AI_CONTROL_ARCHITECTURE.md":
+            (REPO / "docs" / "AI_CONTROL_ARCHITECTURE.md").read_text(encoding="utf-8"),
         "docs/safety-method/safety-method-writeup.md":
             (REPO / "docs" / "safety-method" / "safety-method-writeup.md").read_text(encoding="utf-8"),
         "docs/safety-method/evidence-summary.md":
             (REPO / "docs" / "safety-method" / "evidence-summary.md").read_text(encoding="utf-8"),
     }
-    # Canonical intro + the sealed method-extract export (a frozen historical constant).
-    allowed = (f"Expected ({d} tests, all green)", "210/210")
     for label, txt in docs.items():
-        for token in allowed:
-            txt = txt.replace(token, " ")
         for line in txt.splitlines():
             if "test" not in line.lower():
                 continue
-            hits = re.findall(r"\b\d{2,4}(?:-|\s+)(?:automated\s+|pass/fail\s+)?tests?\b", line)
-            hits += re.findall(r"\b\d{2,4}/\d{2,4}\b", line)
+            hits = re.findall(
+                r"\b\d{1,4}(?:-|\s+)(?:automated\s+|pass/fail\s+|extra\s+)?tests?\b", line)
+            hits += re.findall(r"\b\d{1,4}/\d{1,4}\b", line)
             for h in hits:
-                problems.append(f"{label}: stray numbered test-count claim '{h}'")
+                problems.append(f"{label}: numbered test-count claim '{h}'")
     return problems, c
 
 
