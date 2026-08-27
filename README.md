@@ -4,7 +4,7 @@
 
 - A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
-- **An AI gathered the facts — code decided what got published.** One safety gate checked every claim, and automated tests still guard the site's rules — first among them: inform, never instruct.
+- **An AI collected candidate facts — code decided what got published.** One safety gate checked every claim, and automated tests still guard the site's rules — first among them: inform, never instruct.
 - **Incident content is frozen** — nothing dated after May 26, 2026 is added or altered; corrections go beside the original text, dated.
 
 ![Status](https://img.shields.io/badge/status-frozen%20archive-informational)
@@ -47,7 +47,7 @@ It maps to Anthropic's "helpful, honest, harmless" standard:
 What holds it up:
 
 - **Scalable oversight.** A suite of automated tests catches safety regressions *before* they ship: fabricated sources, synthesized directives, stale data stamped fresh.
-- **The model never published directly.** Its facts reached the live page only through one validation gate (`scripts/update_status.py`) it could not bypass; page copy was AI-assisted, human-reviewed, and disclosed on the site itself.
+- **The model collected; it never published.** Its candidate facts reached the live page only through one validation gate (`scripts/update_status.py`) it could not bypass; page copy was AI-assisted, human-reviewed, and disclosed on the site itself.
 - **The asymmetry that matters most.** A false "safe to return" could have sent ~50,000 people back into danger — so repeating "evacuation lifted" took at least two sources, a new danger update took one, and the site never synthesized an alert level of its own.
 
 
@@ -112,7 +112,7 @@ The removals share one rule: cut anything the project could not fully stand behi
 
 ## Safety architecture & verification
 
-Every model output passed through **one validation gate** (`scripts/update_status.py`) before anything reached `status.json`, the published data file. The four highest-stakes checks, enforced in code, not prompting:
+The model's job ended at collection — publishing was the gate's call. Every candidate fact passed through **one validation gate** (`scripts/update_status.py`) before anything reached `status.json`, the published data file. The four highest-stakes checks, enforced in code, not prompting:
 
 | Control | The rule |
 |---------|----------|
