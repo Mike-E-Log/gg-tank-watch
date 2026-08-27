@@ -226,9 +226,7 @@ The pipeline's flow is [the flow above](#the-whole-system-at-a-glance); `status.
 
 ---
 
-## Running it yourself
-
-**Proof it holds:** `python eval/run_all.py --skip integration` runs every test green ([expected output](#run-the-tests-yourself)).
+## See it live, run it locally
 
 **View it live:** **[ggtankwatch.org](https://ggtankwatch.org)** — the hosted, frozen archive; intentionally `noindex` (not listed in search engines), but the direct link works.
 
