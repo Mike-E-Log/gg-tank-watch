@@ -4,8 +4,7 @@
 
 - A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
-- **An AI collected candidate facts — code decided what got published.** One safety gate checked every claim, and automated tests still guard the site's rules — first among them: inform, never instruct.
-- **Incident content is frozen** — nothing dated after May 26, 2026 is added or altered; corrections go beside the original text, dated.
+- **An AI collected candidate facts — code decided what got published.** One safety gate checked each of them, and automated tests still guard the site's rules — first among them: inform, never instruct.
 
 ![Status](https://img.shields.io/badge/status-frozen%20archive-informational)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
