@@ -79,7 +79,7 @@ May 26: resolved → frozen archive, guarded by tests
 | Writing the summaries on the site | AI compiled summaries from official and news sources | A person checked them before publish; every page says "AI-assisted, human-checked" |
 | Danger level | **Not AI** — computed in the safety filter's own code, never copied from the model | The code path is the control; tests pin it |
 | Building the code, tests, and docs | Claude (an AI coding assistant) helped write the dashboard, pipeline, eval suite, and write-ups | Automated tests run before every change goes live; commit trailers disclose co-authorship |
-| Testing the AI itself | The eval suite hands the filter fake AI output — a lone "all clear," an invented link, a future date — and fails the build unless it refuses | CI blocks any change that weakens the filter |
+| Testing the safety filter | Some tests are drills: they hand the filter inaccurate information — a lone "all clear," an invented link, a future date — the way you test a smoke alarm with fake smoke. The information is fake; the refusal must be real, from the code as just changed | If inaccurate information gets through, the build fails — the change never goes live |
 
 ---
 
