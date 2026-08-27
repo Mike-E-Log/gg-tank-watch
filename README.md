@@ -53,14 +53,20 @@ What holds it up:
 
 ---
 
-## The whole system, in one diagram
+## The whole system, at a glance
 
-```mermaid
-flowchart LR
-    A["May 2026 emergency:<br>Claude + web search,<br>updates every ~20-30 min"] --> B["update_status.py — the gate:<br>corroboration, provenance,<br>freshness, dates; danger level<br>set in code, never by the model"]
-    B --> C["status.json:<br>only gate-passed<br>facts"]
-    C --> D["dashboard.html:<br>relays officials,<br>never instructs"]
-    D --> E["May 26: resolved —<br>frozen archive,<br>guarded by tests"]
+```text
+Claude + web search — updates every ~20-30 min (May 2026)
+  ↓
+update_status.py — THE GATE
+  corroboration · provenance · freshness · dates
+  danger level set in code, never by the model
+  ↓
+status.json — only gate-passed facts
+  ↓
+dashboard.html — relays officials, never instructs
+  ↓
+May 26: resolved → frozen archive, guarded by tests
 ```
 
 
@@ -204,7 +210,7 @@ Two tests keep this honest: [`eval/test_provenance.py`](eval/test_provenance.py)
 
 ## Architecture & stack (the retired pipeline)
 
-The pipeline's flow is [the diagram above](#the-whole-system-in-one-diagram); `status.json` was last updated May 26, when officials lifted the evacuation, and the dashboard still opens offline.
+The pipeline's flow is [the flow above](#the-whole-system-at-a-glance); `status.json` was last updated May 26, when officials lifted the evacuation, and the dashboard still opens offline.
 
 **No backend, no database, no logins, no build step.** Two parts — a Python writer and an HTML/JavaScript page — passing plain JSON files; the reader runs entirely in the browser, no server to keep alive. The data was updated every ~20-30 minutes during the incident, with reassuring news cross-referenced against multiple sources before it published; the pipeline is now frozen. See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync paths.
 
