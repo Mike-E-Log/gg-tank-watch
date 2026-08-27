@@ -56,13 +56,13 @@ What holds it up:
 ## The whole system, at a glance
 
 ```text
-Claude + web search — updates every ~20-30 min (May 2026)
+Claude + web search — COLLECTED candidate facts, every ~20-30 min (May 2026)
   ↓
-update_status.py — THE GATE
+update_status.py — THE GATE — code that CHECKED every candidate fact
   corroboration · provenance · freshness · dates
   danger level set in code, never by the model
   ↓
-status.json — only gate-passed facts
+status.json — only the facts that passed
   ↓
 dashboard.html — relays officials, never instructs
   ↓
