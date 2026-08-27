@@ -6,7 +6,7 @@
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
 - **An AI collected candidate facts from the web — none of them trusted yet.**
 - **It could not publish. One safety filter — plain code — decided what went live.**
-- **Automated tests hold the site's first rule: inform, never instruct.**
+- **Automated tests ensure we align with the site's first rule: inform, never instruct.**
 
 ![Status](https://img.shields.io/badge/status-frozen%20archive-informational)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
