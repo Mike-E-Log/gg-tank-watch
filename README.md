@@ -4,12 +4,13 @@
 
 - A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
-- **Incident content frozen — nothing dated after May 26, 2026 is added or altered. When something is found wrong, a dated correction note goes beside it; the original text stays in place, not just in git history.**
+- **An AI gathered the facts — code decided what got published.** One safety gate checked every claim, and automated tests still guard the site's rules — first among them: inform, never instruct.
+- **Incident content is frozen** — nothing dated after May 26, 2026 is added or altered; corrections go beside the original text, dated.
 
-[![Status](https://img.shields.io/badge/status-frozen%20archive-informational)](#)
+![Status](https://img.shields.io/badge/status-frozen%20archive-informational)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Stack](https://img.shields.io/badge/stack-vanilla%20JS%20%2B%20Python%20stdlib-lightgrey)](#stack)
-[![Eval](https://img.shields.io/badge/eval-213%20tests-orange)](eval/)
+[![Eval](https://img.shields.io/badge/eval-automated%20suite-orange)](eval/)
 [![CI](https://github.com/Mike-E-Log/gg-tank-watch/actions/workflows/eval.yml/badge.svg)](https://github.com/Mike-E-Log/gg-tank-watch/actions/workflows/eval.yml)
 [![Live](https://img.shields.io/badge/live-ggtankwatch.org-2ea44f)](https://ggtankwatch.org)
 
@@ -45,7 +46,7 @@ It maps to Anthropic's "helpful, honest, harmless" standard:
 
 What holds it up:
 
-- **Scalable oversight.** A suite of 213 automated tests catches safety regressions *before* they ship: fabricated sources, synthesized directives, stale data stamped fresh.
+- **Scalable oversight.** A suite of automated tests catches safety regressions *before* they ship: fabricated sources, synthesized directives, stale data stamped fresh.
 - **The model never published directly.** Its facts reached the live page only through one validation gate (`scripts/update_status.py`) it could not bypass; page copy was AI-assisted, human-reviewed, and disclosed on the site itself.
 - **The asymmetry that matters most.** A false "safe to return" could have sent ~50,000 people back into danger — so repeating "evacuation lifted" took at least two sources, a new danger update took one, and the site never synthesized an alert level of its own.
 
@@ -55,13 +56,11 @@ What holds it up:
 ## The whole system, in one diagram
 
 ```mermaid
-flowchart TD
-    A["May 2026: chemical-tank emergency; <br>about 50,000 residents evacuated"] --> B["While the incident was active, <br>a scheduled check ran every ~30 minutes: <br>Claude, with web search, gathered updates <br>from official and news sources"]
-    B --> C["One validation gate the model could not bypass <br>(update_status.py): corroboration, provenance, <br>freshness, and date checks"]
-    C --> D["status.json: <br>only facts that passed the gate <br>were ever published"]
-    D --> E["dashboard.html: one calm page that <br>relays officials' information and routes <br>people to them; it never issued <br>directives of its own"]
-    E --> F["May 26: officials lift the evacuation; <br>the incident resolves"]
-    F --> G["Frozen archive: the pipeline is retired, <br>content is locked, corrections go beside <br>the original text, and automated tests <br>guard all of it"]
+flowchart LR
+    A["May 2026 emergency:<br>Claude + web search,<br>updates every ~20-30 min"] --> B["update_status.py — the gate:<br>corroboration, provenance,<br>freshness, dates; danger level<br>set in code, never by the model"]
+    B --> C["status.json:<br>only gate-passed<br>facts"]
+    C --> D["dashboard.html:<br>relays officials,<br>never instructs"]
+    D --> E["May 26: resolved —<br>frozen archive,<br>guarded by tests"]
 ```
 
 
@@ -72,8 +71,6 @@ flowchart TD
 GG Tank Watch started with one worried person. During the May 2026 emergency, Nancy had family near the evacuation zone. For days she refreshed the news on a loop, trying to tell from scattered and contradicting reports whether things were getting better or worse. So Mike built her one page that showed the official picture at a glance, honestly labeled. It became the one place she trusted. She could stop hunting for updates and get back to the people she loved.
 
 > *"I didn't need more news. I needed to know my family was okay without reading twenty articles to figure it out."*
-
-*Built by Mike, with Nancy as its first user and the reason it exists.*
 
 ### The build journey, and the reversals
 
@@ -137,19 +134,19 @@ Expected (213 tests, all green):
 
 (The full census is **215**: the 2 extra tests are live geocoder regressions that call a network service, so they stay opt-in — drop `--skip integration` to run them.)
 
-**213 automated pass/fail tests across 66 files** guard the pipeline gates above, the content rules (no verdicts, no directives, no safety text in a language no one on the team could verify), and the frozen archive: nothing dated after the May 26 all-clear, and the numbers quoted in this README are checked against the data files, so this page cannot quietly drift. They also cover security (anything copied from the web is treated as plain text) and the phone-screen UI. Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows up in the score history.
+**Automated pass/fail tests** guard the pipeline gates above, the content rules (no verdicts, no directives, no safety text in a language no one on the team could verify), and the frozen archive: nothing dated after the May 26 all-clear, and the numbers quoted in this README are checked against the data files, so this page cannot quietly drift. They also cover security (anything copied from the web is treated as plain text) and the phone-screen UI. Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows up in the score history.
 
 *Going deeper:*
 
 - [`docs/safety-method/safety-method-writeup.md`](docs/safety-method/safety-method-writeup.md): the controls, the eval harness, and its blind spots, in one first-person read.
 - [`docs/safety-method/evidence-summary.md`](docs/safety-method/evidence-summary.md): every safety principle mapped to its tests.
 - [`docs/safety-method/what-we-learned.md`](docs/safety-method/what-we-learned.md): the honest arc of the help-versus-restraint calls.
-- Sealed method extract from the archived [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method) mirror: failure-mode analysis ([docs/failure-analysis.md](docs/failure-analysis.md)), decision-authority note ([docs/decision-authority.md](docs/decision-authority.md)), and a test-results export ([docs/eval-summary.json](docs/eval-summary.json)) sealed at `d34093c` — **210/210** (the export omits its own meta-test; the live suite is now 213).
+- Sealed method extract from the archived [`gg-tank-watch-method`](https://github.com/Mike-E-Log/gg-tank-watch-method) mirror: failure-mode analysis ([docs/failure-analysis.md](docs/failure-analysis.md)), decision-authority note ([docs/decision-authority.md](docs/decision-authority.md)), and a test-results export ([docs/eval-summary.json](docs/eval-summary.json)) sealed at `d34093c` — **210/210** (the export omits its own meta-test; the live suite has since grown).
 
 
 ---
 
-**Audited before freezing.** The whole archive was checked end to end on 2026-06-04 ([the audit record](docs/archive/AUDIT_2026-06-04.md)): its sharpest finding contradicted the project's own thesis — one item paired a dead link with a fabricated “verified” note — and was corrected with a new test so it cannot come back; 108 layout screenshots and all 112 page links were checked the same day. A later review ([2026-07-21](docs/archive/AUDIT_2026-07-21_FABLE5.md)) re-checked the repo’s presentation.
+**Audited before freezing.** The whole archive was checked end to end on 2026-06-04 ([the audit record](docs/archive/AUDIT_2026-06-04.md)): its sharpest finding contradicted the project's own thesis — one item paired a dead link with a fabricated “verified” note — and was corrected with a new test so it cannot come back; 108 layout screenshots were checked the same day, and a link sweep found 110 of 112 page links live. A later review ([2026-07-21](docs/archive/AUDIT_2026-07-21_FABLE5.md)) re-checked the repo’s presentation.
 
 ---
 
@@ -162,7 +159,7 @@ Early builds (v0.1–v0.7) had a "check your address" tool: type an address, get
 That refusal is ethics and law at once:
 
 - **Ethics.** A volunteer dashboard has no authority to tell a family whether their street is safe. Officials do — so it points at them.
-- **Law.** A site that only relays what others published is sheltered by **Section 230** (47 U.S.C. § 230(c)(1): a relay is not the speaker) and ***Winter v. G.P. Putnam's Sons*** (9th Cir. 1991: publishers owe no duty to verify).
+- **Law.** A site that only relays what others published is sheltered by **Section 230** (47 U.S.C. § 230(c)(1): a relay is not the speaker) and ***Winter v. G.P. Putnam's Sons*** (9th Cir. 1991: publishers owe no duty to verify). This is the project's own reading — no attorney reviewed it.
 - **The line it must not cross.** The moment the app writes its *own* safety verdict it leaves that shelter: it has volunteered safety advice — and owes a duty of reasonable care (Restatement (Second) of Torts §§ 323, 324A).
 
 Removing the verdicts made the product safer *and* legally defensible. Full analysis: [`docs/LEGAL.md`](docs/LEGAL.md) · [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md).
@@ -178,12 +175,12 @@ Six decisions carry the project. Each gave something up. The complete record —
 |----------|---------------------------|----------|
 | **No verdicts of its own.** The address checker and its SAFE/ELEVATED/HIGH/CRITICAL calls were removed — the conduit pivot | Safety calls only from people with the authority to make them, on a site that keeps its legal shelter ([the thesis](#the-thesis-a-conduit-not-a-judge)) | [`docs/LEGAL.md`](docs/LEGAL.md) · [`eval/test_safety.py`](eval/test_safety.py) |
 | **No directives.** Never "evacuate" / "shelter now"; officials lead every list, and the safety strip on every tab routes to them | One calm page that points at the authorities instead of replacing them | [`docs/CONDUIT_PATTERN.md`](docs/CONDUIT_PATTERN.md) |
-| **AI involvement disclosed on the page.** The About tab closes with: "Summaries in this archive are compiled with AI assistance from official and news sources, then checked by people." — legible (13px), never fine print | The reader knows what produced what they're reading | About tab disclosure · [`eval/test_info_archive_clarity.py`](eval/test_info_archive_clarity.py) |
+| **AI involvement disclosed on the page.** The About tab closes with: "Summaries in this archive are compiled with AI assistance from official and news sources, then checked by people." — legible (13px), never fine print | The reader knows what produced what they're reading | [Live site](https://ggtankwatch.org) → Info → About · [`eval/test_info_archive_clarity.py`](eval/test_info_archive_clarity.py) |
 | **Stricter proof for good news than for bad.** Repeating "evacuation lifted" took two sources; a new danger took one. And if gathering failed, nothing was published | A false "safe to return" — the worst outcome for ~50,000 evacuees — was the hardest message to publish; the page went visibly stale, never confidently wrong | [`docs/AI_CONTROL_ARCHITECTURE.md`](docs/AI_CONTROL_ARCHITECTURE.md) |
 | **English-only by design.** No safety text in a language no one on the team could verify; residents with limited English are routed to officials, who publish their own verified translations | The affected area overlaps Little Saigon — a *wrong* Vietnamese safety message is worse than none | [`docs/LANGUAGE_ACCESS.md`](docs/LANGUAGE_ACCESS.md) · [`eval/test_language_access.py`](eval/test_language_access.py) |
 | **Nothing asked of the reader.** No ads, subscriptions, tracking, or login; `noindex` kept permanently; aggregate numbers only, never personal information | A free page with no stake in its readers' attention or data — and no exposure of the people it served | [`docs/LEGAL.md`](docs/LEGAL.md) · [`public/vercel.json`](public/vercel.json) |
 
-The refusals are design too: no single-station wind arrow, no scraped images, no full-article copies, no government-seal styling — and the map *library* ships with the site (only OpenFreeMap tiles and Google Fonts load from outside; the page still loads if either is unreachable). Each follows the same rule: **no authority of its own — route to officials.**
+What was *not* built is design too: no single-station wind arrow, no scraped images, no full-article copies, no government-seal styling — and the map *library* ships with the site (only OpenFreeMap tiles and Google Fonts load from outside; the page still loads if either is unreachable). Each follows the same rule: **no authority of its own — route to officials.**
 
 
 ---
@@ -200,24 +197,16 @@ It is read from [`public/data/news_archive.json`](public/data/news_archive.json)
 
 Each item carries its own provenance: the search that found it, whether the link was fetched, and any known caveats. Officials lead the list and news follows, the same conduit principle as the rest of the site. Nothing published after officials lifted the evacuation on May 26 is included.
 
-Two tests keep this honest: [`eval/test_provenance.py`](eval/) fails the build if an item's source link was never actually fetched, and [`eval/test_readme_archive_count.py`](eval/) fails it if the counts above drift from the data file.
+Two tests keep this honest: [`eval/test_provenance.py`](eval/test_provenance.py) fails the build if an item's source link was never actually fetched, and [`eval/test_readme_archive_count.py`](eval/test_readme_archive_count.py) fails it if the counts above drift from the data file.
 
 
 ---
 
 ## Architecture & stack (the retired pipeline)
 
-The historical pipeline flowed top to bottom; the validation gate in the middle is the one place every fact had to pass before publishing.
+The pipeline's flow is [the diagram above](#the-whole-system-in-one-diagram); `status.json` was last updated May 26, when officials lifted the evacuation, and the dashboard still opens offline.
 
-| Step | Stage | What happens |
-|:----:|-------|--------------|
-| 1 | A scheduled refresh | A person kept it running during the incident; each run asked Claude to gather fresh facts |
-| 2 | Claude (web search) | Returned the facts it found as JSON |
-| **3** | **`update_status.py`** | **The validation gate: checks corroboration, provenance, freshness, and dates; computes the danger level in its own code, never copied from the model; writes the file safely** |
-| 4 | `status.json` | The published data file (last updated May 26, when officials lifted the evacuation) |
-| 5 | `dashboard.html` | The reader: Map, Coverage Archive, Info; no longer checks for updates; still opens offline |
-
-**No backend, no database, no logins, no build step.** Two parts — a Python writer and an HTML/JavaScript page — passing plain JSON files; the reader runs entirely in the browser, no server to keep alive. The data was updated every ~30 minutes during the incident, each fact cross-referenced against multiple sources before publishing; the pipeline is now frozen. See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync paths.
+**No backend, no database, no logins, no build step.** Two parts — a Python writer and an HTML/JavaScript page — passing plain JSON files; the reader runs entirely in the browser, no server to keep alive. The data was updated every ~20-30 minutes during the incident, with reassuring news cross-referenced against multiple sources before it published; the pipeline is now frozen. See [`docs/archive/DATA_SYNC.md`](docs/archive/DATA_SYNC.md) for the two sync paths.
 
 
 ### Stack
@@ -225,7 +214,7 @@ The historical pipeline flowed top to bottom; the validation gate in the middle 
 - **Frontend:** plain HTML, CSS, and JavaScript — no framework; one **~116 KB** `dashboard.html`. Map: [MapLibre GL](https://maplibre.org/) self-hosted in `/lib` (**~870 KB**) with [OpenFreeMap](https://openfreemap.org/) vector tiles; a service worker saves the shell and map locally, so the page still opens offline.
 - **Writer:** Python 3 **standard library only**, no outside dependencies.
 - **Security headers** (production, `vercel.json`): a Content Security Policy limiting the browser to the site's own resources (`default-src 'self'`); `X-Frame-Options: DENY`; `X-Robots-Tag: noindex, nofollow`.
-- **Eval:** **213 tests across 66 files**, plus rubric prompts for the subjective checks ([`eval/rubrics/`](eval/rubrics/)).
+- **Eval:** an automated pass/fail suite ([expected output](#run-the-tests-yourself)), plus rubric prompts for the subjective checks ([`eval/rubrics/`](eval/rubrics/)).
 - **Hosting:** Vercel static (auto-deploys `main`).
 
 
@@ -233,7 +222,7 @@ The historical pipeline flowed top to bottom; the validation gate in the middle 
 
 ## Running it yourself
 
-**Proof it holds:** `python eval/run_all.py --skip integration` runs 213/213.
+**Proof it holds:** `python eval/run_all.py --skip integration` runs every test green ([expected output](#run-the-tests-yourself)).
 
 **View it live:** **[ggtankwatch.org](https://ggtankwatch.org)** — the hosted, frozen archive; intentionally `noindex` (not listed in search engines), but the direct link works.
 
@@ -247,8 +236,7 @@ python -m http.server 8000 -d public   # then open http://127.0.0.1:8000/dashboa
 
 The data pipeline is frozen; `scripts/refresh_local.py` is retired by design and exits with an "ARCHIVED" error.
 
-<details>
-<summary><b>Repository layout</b></summary>
+### Repository layout
 
 ```
 gg-tank-watch/
@@ -265,10 +253,8 @@ gg-tank-watch/
 ├── data/                        ← source data: timeline.json, news seed + audit
 ├── docs/                        ← project docs (CHANGELOG.md, safety-method/, + archive/ for design logs, audits, spec)
 ├── scripts/                     ← update_status.py (validation gate), gather_facts.py, start_dashboard.bat
-└── eval/                        ← run_all.py · test_*.py (66 files / 213 tests) · rubrics/
+└── eval/                        ← run_all.py · test_*.py · rubrics/
 ```
-
-</details>
 
 
 ---
@@ -276,8 +262,3 @@ gg-tank-watch/
 ## License
 
 Released under the MIT license (see [`LICENSE`](LICENSE)). The safety disclaimer lives in [`NOTICE`](NOTICE).
-
-
----
-
-It started with one person who needed to know her family was safe. What it became, and what it refused to become, was decided with her in mind.

@@ -20,6 +20,11 @@ guard. The census check below locks README / CLAUDE.md / CONTRIBUTING.md — and
 actual number of discovered test functions, so growing the suite without updating the
 docs fails the build in the same PR. Remote surfaces (portfolio sites, applications) deliberately use
 floor wording ("more than 200") and are out of scope here.
+
+Re-scoped 2026-08-26 (operator ruling, "one exact place"): the exact count now lives ONLY
+in the README's runnable expected-output block; every other surface says "automated tests"
+with no number. The guard keeps the canonical block exact and FAILS on any stray numbered
+test-count claim in the five guarded docs, so the reconciliation burden cannot creep back.
 """
 import json
 import re
@@ -50,28 +55,41 @@ def _census():
 
 def _census_doc_mismatches():
     """Folded into the breakdown test (not a new test function) so the guard itself
-    does not grow the census it locks."""
+    does not grow the census it locks.
+
+    One-exact-place policy (operator ruling 2026-08-26): the canonical expected-output
+    block in the README must match the live census exactly; everywhere else, any
+    number sitting on a test-count claim is a violation."""
     c = _census()
+    d, full = c["default"], c["full"]
     readme = README.read_text(encoding="utf-8")
-    claude = (REPO / "CLAUDE.md").read_text(encoding="utf-8")
-    contributing = (REPO / "docs" / "CONTRIBUTING.md").read_text(encoding="utf-8")
-    writeup = (REPO / "docs" / "safety-method" / "safety-method-writeup.md").read_text(encoding="utf-8")
-    evsum = (REPO / "docs" / "safety-method" / "evidence-summary.md").read_text(encoding="utf-8")
-    d, full, files = c["default"], c["full"], c["files"]
-    checks = {
-        "readme badge": f"eval-{d}%20tests" in readme,
-        "readme runs-N/N": f"runs {d}/{d}" in readme,
-        "readme suite-of": f"A suite of {d} automated tests" in readme,
+    problems = [k for k, ok in {
+        "readme expected-intro": f"Expected ({d} tests, all green)" in readme,
         "readme expected-block": f"TOTAL           {d}/{d}" in readme,
-        "readme tests-across-files": f"{d} automated pass/fail tests across {files} files" in readme,
         "readme full-census": f"full census is **{full}**" in readme,
-        "claude.md harness": f"A {d}-test eval harness" in claude,
-        "contributing N/N": f"currently {d}/{d}" in contributing,
-        "safety-writeup tldr harness": f"A {d}-test eval harness" in writeup,
-        "safety-writeup controls N/N": f"a {d}-test eval harness ({d}/{d} via" in writeup,
-        "evidence-summary suite": f"A {d}-test automated test suite" in evsum,
+    }.items() if not ok]
+    docs = {
+        "README.md": readme,
+        "CLAUDE.md": (REPO / "CLAUDE.md").read_text(encoding="utf-8"),
+        "docs/CONTRIBUTING.md": (REPO / "docs" / "CONTRIBUTING.md").read_text(encoding="utf-8"),
+        "docs/safety-method/safety-method-writeup.md":
+            (REPO / "docs" / "safety-method" / "safety-method-writeup.md").read_text(encoding="utf-8"),
+        "docs/safety-method/evidence-summary.md":
+            (REPO / "docs" / "safety-method" / "evidence-summary.md").read_text(encoding="utf-8"),
     }
-    return [k for k, ok in checks.items() if not ok], c
+    # Canonical intro + the sealed method-extract export (a frozen historical constant).
+    allowed = (f"Expected ({d} tests, all green)", "210/210")
+    for label, txt in docs.items():
+        for token in allowed:
+            txt = txt.replace(token, " ")
+        for line in txt.splitlines():
+            if "test" not in line.lower():
+                continue
+            hits = re.findall(r"\b\d{2,4}(?:-|\s+)(?:automated\s+|pass/fail\s+)?tests?\b", line)
+            hits += re.findall(r"\b\d{2,4}/\d{2,4}\b", line)
+            for h in hits:
+                problems.append(f"{label}: stray numbered test-count claim '{h}'")
+    return problems, c
 
 
 def _counts():
