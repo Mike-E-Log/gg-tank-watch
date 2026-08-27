@@ -4,8 +4,7 @@
 
 - A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
-- **An AI collected candidate facts — code decided what got published.** One safety gate checked every claim, and automated tests still guard the site's rules — first among them: inform, never instruct.
-- **Incident content is frozen** — nothing dated after May 26, 2026 is added or altered; corrections go beside the original text, dated.
+- **An AI collected candidate facts — code decided what got published.** Every fact the AI brought back passed one gatekeeper program first — for example, "evacuation lifted" could not publish until two sources, one of them official, agreed. Automated tests still guard the site's rules — first among them: inform, never instruct.
 
 ![Status](https://img.shields.io/badge/status-frozen%20archive-informational)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -112,7 +111,13 @@ The removals share one rule: cut anything the project could not fully stand behi
 
 ## Safety architecture & verification
 
-The model's job ended at collection — publishing was the gate's call. Every candidate fact passed through **one validation gate** (`scripts/update_status.py`) before anything reached `status.json`, the published data file. The four highest-stakes checks, enforced in code, not prompting:
+The model's job ended at collection — publishing was the gatekeeper's call. How a web search became a published fact:
+
+1. **Collect.** Each run, Claude searched the web and had to answer with one fixed form: named boxes like *evacuation lifted? true/false* and *residents evacuated*, plus quoted statements, each carrying the link it came from. A filled box is one candidate fact; anything that didn't fit the form was rejected.
+2. **Check.** The gatekeeper (`scripts/update_status.py`) checked every box with the rules for its type — different boxes, different rules.
+3. **Publish.** Only what passed was written to `status.json`, the published data file. The page reads nothing else.
+
+The four highest-stakes rules, enforced in code, not prompting:
 
 | Control | The rule |
 |---------|----------|
@@ -140,7 +145,7 @@ Expected (213 tests, all green):
 
 (The full census is **215**: the 2 extra tests are live geocoder regressions that call a network service, so they stay opt-in — drop `--skip integration` to run them.)
 
-**Automated pass/fail tests** guard the pipeline gates above, the content rules (no verdicts, no directives, no safety text in a language no one on the team could verify), and the frozen archive: nothing dated after the May 26 all-clear, and the numbers quoted in this README are checked against the data files, so this page cannot quietly drift. They also cover security (anything copied from the web is treated as plain text) and the phone-screen UI. Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows up in the score history.
+**Automated pass/fail tests** are quality control on the gatekeeper itself — they hand it fake forms (a lone source claiming "all clear," an invented link, a future date) and fail the build unless it refuses. They also guard the pipeline rules above, the content rules (no verdicts, no directives, no safety text in a language no one on the team could verify), and the frozen archive: nothing dated after the May 26 all-clear, and the numbers quoted in this README are checked against the data files, so this page cannot quietly drift. Others cover security (anything copied from the web is treated as plain text) and the phone-screen UI. Each run appends to [`eval/scores.jsonl`](eval/scores.jsonl), so breakage shows up in the score history.
 
 *Going deeper:*
 
