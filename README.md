@@ -1,6 +1,6 @@
 # GG Tank Watch
 
-**A frozen historical archive of the May 21–26, 2026 Garden Grove methyl-methacrylate (MMA) chemical-tank emergency.**
+**During the emergency, an AI drafted each update and tested code decided what was allowed on the page; now a frozen archive of the 2026 Garden Grove methyl-methacrylate (MMA) chemical-tank emergency.**
 
 - A real Orange County, California incident: ~50,000 residents evacuated from ~9 square miles across six cities.
 - Built during the emergency by a local volunteer to amplify official information for evacuees.
@@ -10,7 +10,7 @@
 
 ![Status](https://img.shields.io/badge/status-frozen%20archive-informational)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Stack](https://img.shields.io/badge/stack-vanilla%20JS%20%2B%20Python%20stdlib-lightgrey)](#stack)
+[![Stack](https://img.shields.io/badge/stack-vanilla%20JS%2C%20Python%20standard%20library%2C%20MapLibre%2C%20Anthropic%20API-lightgrey)](#stack)
 [![Eval](https://img.shields.io/badge/eval-automated%20suite-orange)](eval/)
 [![CI](https://github.com/Mike-E-Log/gg-tank-watch/actions/workflows/eval.yml/badge.svg)](https://github.com/Mike-E-Log/gg-tank-watch/actions/workflows/eval.yml)
 [![Live](https://img.shields.io/badge/live-ggtankwatch.org-2ea44f)](https://ggtankwatch.org)
